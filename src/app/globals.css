@@ -3,25 +3,169 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: 0 0% 100%;
+  --foreground: 222 47% 11%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+
+  --primary: 200 98% 39%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 170 98% 45%;
+  --secondary-foreground: 0 0% 100%;
+
+  --muted: 216 15% 91%;
+  --muted-foreground: 215 16% 46%;
+
+  --accent: 340 100% 66%;
+  --accent-foreground: 0 0% 100%;
+
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 215 16% 70%;
+  --input: 216 15% 91%;
+  --ring: 200 98% 39%;
+
+  --chart-1: 200 98% 39%;
+  --chart-2: 340 100% 66%;
+  --chart-3: 50 100% 50%;
+  --chart-4: 170 98% 45%;
+  --chart-5: 290 100% 75%;
+
+  --radius: 0.5rem;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 222 47% 11%;
+    --foreground: 0 0% 100%;
+
+    --card: 222 30% 17%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 222 30% 17%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 200 98% 39%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 170 98% 45%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 222 20% 20%;
+    --muted-foreground: 0 0% 100%;
+
+    --accent: 340 100% 66%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 222 30% 25%;
+    --input: 222 30% 25%;
+    --ring: 200 98% 39%;
+
+    --chart-1: 200 98% 39%;
+    --chart-2: 340 100% 66%;
+    --chart-3: 50 100% 50%;
+    --chart-4: 170 98% 45%;
+    --chart-5: 290 100% 75%;
+
+    --radius: 0.5rem;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  html {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: "POPPINS", sans-serif;
+    line-height: 1.5;
+  }
+
+  a {
+    @apply text-primary hover:underline;
+    text-decoration-skip-ink: auto;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold;
+    font-family: "DOSIS", sans-serif;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+
+  button {
+    @apply bg-primary text-primary-foreground rounded px-4 py-2 border-none;
+    transition: background-color 0.3s;
+    cursor: pointer;
+  }
+
+  button:hover {
+    @apply bg-primary/90 text-foreground;
+  }
+
+  input,
+  textarea {
+    @apply border border-border bg-input text-foreground rounded px-3 py-2;
+    transition: border-color 0.3s;
+  }
+
+  input:focus,
+  textarea:focus {
+    @apply outline-none border-ring;
+  }
+
+
+  /* Checkbox */
+  input[type="checkbox"] {
+    @apply appearance-none h-5 w-5 border border-border rounded bg-input text-primary focus:border-ring transition;
+  }
+
+  input[type="checkbox"]:checked {
+    @apply bg-primary border-primary;
+  }
+
+  input[type="checkbox"]:focus {
+    @apply outline-none border-ring;
+  }
+
+  /* Checkbox hover state */
+  input[type="checkbox"]:hover {
+    @apply bg-input/75;
+  }
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+@layer components {
+  .card {
+    @apply bg-card text-card-foreground p-4 rounded-lg shadow-lg;
+  }
+
+  /* Popover */
+  .popover {
+    @apply bg-popover text-popover-foreground p-4 rounded-lg shadow-lg;
+  }
+
+  /* Alert */
+  .alert {
+    @apply bg-destructive text-destructive-foreground p-4 rounded-lg;
   }
 }

@@ -1,0 +1,40 @@
+{
+  "HomePage": {
+    "title": "Hello world!",
+    "description": "Welcome to our homepage where you can find the latest updates and news."
+  },
+  "NavBar": {
+    "projects": "Projects",
+    "events": "Events",
+    "services": "Services",
+    "blog": "Blog",
+    "contact": "Contact",
+    "about": "About Us"
+  },
+  "Header": {
+    "about": {
+      "title": "About Us",
+      "description": "Learn more about our mission, vision, and values."
+    },
+    "projects": {
+      "title": "Our Projects",
+      "description": "Explore the various projects we are currently working on."
+    },
+    "events": {
+      "title": "Upcoming Events",
+      "description": "Stay updated on our upcoming events and activities."
+    },
+    "services": {
+      "title": "Our Services",
+      "description": "Discover the services we offer to our clients."
+    },
+    "blog": {
+      "title": "Blog",
+      "description": "Read our latest articles and insights."
+    },
+    "contact": {
+      "title": "Contact Us",
+      "description": "Get in touch with us for inquiries and support."
+    }
+  }
+}

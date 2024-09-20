@@ -1,0 +1,40 @@
+{
+  "HomePage": {
+    "title": "Bonjour le monde!",
+    "description": "Bienvenue sur notre page d'accueil où vous pouvez trouver les dernières mises à jour et nouvelles."
+  },
+  "NavBar": {
+    "projects": "Projets",
+    "events": "Événements",
+    "services": "Services",
+    "blog": "Blog",
+    "contact": "Contact",
+    "about": "À propos de nous"
+  },
+  "Header": {
+    "about": {
+      "title": "À propos de nous",
+      "description": "En savoir plus sur notre mission, notre vision et nos valeurs."
+    },
+    "projects": {
+      "title": "Nos Projets",
+      "description": "Découvrez les différents projets sur lesquels nous travaillons actuellement."
+    },
+    "events": {
+      "title": "Événements à venir",
+      "description": "Restez informé de nos événements et activités à venir."
+    },
+    "services": {
+      "title": "Nos Services",
+      "description": "Découvrez les services que nous offrons à nos clients."
+    },
+    "blog": {
+      "title": "Blog",
+      "description": "Lisez nos derniers articles et insights."
+    },
+    "contact": {
+      "title": "Contactez-nous",
+      "description": "Contactez-nous pour des demandes et un support."
+    }
+  }
+}

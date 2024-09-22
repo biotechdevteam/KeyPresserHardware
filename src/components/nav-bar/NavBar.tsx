@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const NavBar = () => {
-  const tab = useTranslations("NavBar");
+  const t = useTranslations("NavBar");
 
   return (
     <nav className="bg-white border-b border-gray-200">
@@ -30,34 +30,34 @@ const NavBar = () => {
               href="/projects"
               className="text-gray-800 hover:text-indigo-600"
             >
-              {tab("projects")}
+              {t("projects")}
             </Link>
             <Link
               href="/events"
               className="text-gray-800 hover:text-indigo-600"
             >
-              {tab("events")}
+              {t("events")}
             </Link>
             <Link
               href="/services"
               className="text-gray-800 hover:text-indigo-600"
             >
-              {tab("services")}
+              {t("services")}
             </Link>
             <Link href="/blog" className="text-gray-800 hover:text-indigo-600">
-              {tab("blog")}
+              {t("blog")}
             </Link>
             <Link
               href="/contact"
               className="text-gray-800 hover:text-indigo-600"
             >
-              {tab("contact")}
+              {t("contact")}
             </Link>
             <Link
               href="/about"
               className="text-gray-800 hover:text-indigo-600"
             >
-              {tab("about")}
+              {t("about")}
             </Link>
           </div>
 
@@ -72,22 +72,22 @@ const NavBar = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem asChild>
-                  <Link href="/projects">{tab("projects")}</Link>
+                  <Link href="/projects">{t("projects")}</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="/events">{tab("events")}</Link>
+                  <Link href="/events">{t("events")}</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="/services">{tab("services")}</Link>
+                  <Link href="/services">{t("services")}</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="/blog">{tab("blog")}</Link>
+                  <Link href="/blog">{t("blog")}</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="/contact">{tab("contact")}</Link>
+                  <Link href="/contact">{t("contact")}</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="/about">{tab("about")}</Link>
+                  <Link href="/about">{t("about")}</Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

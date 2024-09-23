@@ -1,63 +1,93 @@
 import React from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Tooltip } from "@/components/ui/tooltip";
-import { LeadershipTeam } from "@/types/aboutSchema";
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card"; // ShadCN card
+import { LinkedinIcon, GithubIcon, FacebookIcon } from "lucide-react"; // ShadCN icons
+import { LeadershipTeam } from "@/types/aboutSchema"; // Use the correct type for leadership team
 
 interface AboutTeamProps {
-  leadershipTeam: LeadershipTeam[] | undefined;
+  leadershipTeam: LeadershipTeam[];
 }
+
+
+// Helper function to render the appropriate icon
+const getSocialIcon = (url: string) => {
+  if (url.includes("linkedin.com")) {
+    return <LinkedinIcon className="w-6 h-6 text-blue-600 hover:text-blue-800" />;
+  }
+  if (url.includes("github.com")) {
+    return <GithubIcon className="w-6 h-6 text-gray-700 hover:text-black" />;
+  }
+  if (url.includes("facebook.com")) {
+    return <FacebookIcon className="w-6 h-6 text-blue-600 hover:text-blue-800" />;
+  }
+  // You can add more conditions for other social platforms here
+  return null; // If no match, return null
+};
 
 const AboutTeam: React.FC<AboutTeamProps> = ({ leadershipTeam }) => {
   return (
-    <Card className="p-6">
-      <h2 className="text-xl font-semibold mb-4">Leadership Team</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {leadershipTeam?.map((member, index) => (
-          <div key={index} className="flex flex-col items-center space-y-4">
-            {/* Avatar with Tooltip */}
-            <Tooltip>
-              <Avatar className="w-24 h-24">
-                <AvatarImage
-                  src={member.member.profile_photo_url}
-                  alt={member.member.last_name}
+    <div className="py-12 px-6 lg:px-24 max-w-7xl mx-auto">
+      <h2 className="text-3xl font-bold mb-8 text-center">
+        Our Leadership Team
+      </h2>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {leadershipTeam?.map((leader, index) => {
+          const { member } = leader;
+
+          // Ensure user_id and member exist
+          if (!member || !member.user_id) {
+            return null; // Skip rendering if any critical data is missing
+          }
+
+          return (
+            <Card key={index} className="rounded-lg shadow-md">
+              <CardHeader className="relative">
+                <img
+                  src={
+                    member.user_id.profile_photo_url ||
+                    "https://via.placeholder.com/150"
+                  }
+                  alt={`${member.user_id.first_name} ${member.user_id.last_name}`}
+                  className="w-full h-48 object-cover rounded-t-lg"
                 />
-                <AvatarFallback>
-                  {member.member.last_name.charAt(0)}
-                </AvatarFallback>
-              </Avatar>
-            </Tooltip>
+              </CardHeader>
 
-            {/* Name and Role */}
-            <div className="text-center">
-              <h3 className="text-lg font-bold">{member.member.last_name}</h3>
-              <p className="text-sm text-gray-500">{member.member.user_type}</p>
-            </div>
-
-            {/* Bio and Skills Popover */}
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="secondary" size="sm">
-                  View Bio
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-64">
-                <h4 className="text-md font-bold mb-2">Bio</h4>
-                <p className="text-sm text-gray-700">
-                  {member.member.bio || "No bio available."}
+              <CardContent className="p-4 text-center">
+                <CardTitle className="text-xl font-semibold">
+                  {`${member.user_id.first_name} ${member.user_id.last_name}`}
+                </CardTitle>
+                <p className="text-md text-gray-500">
+                  {member.specialization || "Specialization not provided"}
                 </p>
-              </PopoverContent>
-            </Popover>
-          </div>
-        ))}
+                <p className="mt-2 text-gray-600">
+                  {member.bio || "No bio available."}
+                </p>
+              </CardContent>
+
+              <CardFooter className="flex justify-center space-x-4 p-4">
+                {/* Map over social links and render appropriate icon */}
+                {member.social_links?.map((link, i) => (
+                  <a
+                    key={i}
+                    href={link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {getSocialIcon(link)}
+                  </a>
+                ))}
+              </CardFooter>
+            </Card>
+          );
+        })}
       </div>
-    </Card>
+    </div>
   );
 };
 

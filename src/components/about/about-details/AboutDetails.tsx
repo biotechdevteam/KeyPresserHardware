@@ -1,31 +1,33 @@
 import React from "react";
+import { Separator } from "@/components/ui/separator";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card } from "@/components/ui/card";
 
 interface AboutDetailsProps {
   mission: string;
   vision: string;
-  history?: string;
+  slogan?: string;
+  coverPhotoUrl?: string;
 }
 
 const AboutDetails: React.FC<AboutDetailsProps> = ({
   mission,
   vision,
-  history,
+  slogan,
+  coverPhotoUrl,
 }) => {
   return (
-    <Card className="p-4">
-      <h2 className="text-xl font-semibold mb-2">About Us</h2>
-      <p className="mt-2">
-        <strong>Mission:</strong> {mission}
-      </p>
-      <p className="mt-2">
-        <strong>Vision:</strong> {vision}
-      </p>
-      {history && (
-        <p className="mt-2">
-          <strong>History:</strong> {history}
-        </p>
-      )}
+    <Card className="relative">
+      {/* Mission and Vision Section */}
+      <div className="py-12 px-6 lg:px-24 max-w-5xl mx-auto">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold mb-4">Our Mission</h2>
+          <p className="text-lg leading-relaxed mb-8">{mission}</p>
+
+          <h2 className="text-3xl font-bold mb-4">Our Vision</h2>
+          <p className="text-lg leading-relaxed">{vision}</p>
+        </div>
+      </div>
     </Card>
   );
 };

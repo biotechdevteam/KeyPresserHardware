@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/lib/store";
@@ -9,6 +9,7 @@ import AboutTeam from "../about-team/AboutTeam";
 import { fetchAbout } from "@/lib/thunks/about/aboutThunks";
 import AboutPartnerships from "../about-partnerships/AboutPartnerships";
 import AboutVideos from "../about-videos/AboutVideos";
+import HistoryTimeline from "../about-history/AboutHistory";
 
 const AboutContainer: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -40,35 +41,25 @@ const AboutContainer: React.FC = () => {
         />
       </div>
 
-      {/* Mission, Vision, and History */}
-      <div className="col-span-1">
+      {/* Mission, Vision */}
+      <div className="col-span-1 lg:col-span-2">
         <AboutDetails
           mission={aboutData.mission_statement}
           vision={aboutData.vision_statement}
-          history={aboutData.history}
+          slogan={aboutData.slogan}
+          coverPhotoUrl={aboutData.cover_photo_url}
         />
       </div>
 
-      {/* Leadership Team
-      <div className="col-span-1">
+      {/* Leadership Team */}
+      <div className="col-span-1 lg:col-span-2">
         <AboutTeam leadershipTeam={aboutData.leadership_team} />
       </div>
 
-      {/* Achievements Section
+      {/* History, Timeline */}
       <div className="col-span-1 lg:col-span-2">
-        <AboutAchievements achievements={aboutData.achievements} />
+        <HistoryTimeline />
       </div>
-
-      {/* Partnerships Section
-      <div className="col-span-1 lg:col-span-2">
-        <AboutPartnerships partnerships={aboutData.partnerships} />
-      </div>
-
-      {/* Videos and Media
-      <div className="col-span-1 lg:col-span-2">
-        <AboutVideos videos={aboutData.videos} />
-      </div> 
-      */}
     </div>
   );
 };

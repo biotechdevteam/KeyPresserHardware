@@ -13,17 +13,19 @@ const AboutDetails: React.FC<AboutDetailsProps> = ({
   history,
 }) => {
   return (
-    <Card className="p-4 mb-4">
-      <h2 className="text-xl font-semibold">About Us</h2>
+    <Card className="p-4">
+      <h2 className="text-xl font-semibold mb-2">About Us</h2>
       <p className="mt-2">
         <strong>Mission:</strong> {mission}
       </p>
       <p className="mt-2">
         <strong>Vision:</strong> {vision}
       </p>
-      <p className="mt-2">
-        <strong>History:</strong> {history}
-      </p>
+      {history && (
+        <p className="mt-2">
+          <strong>History:</strong> {history}
+        </p>
+      )}
     </Card>
   );
 };

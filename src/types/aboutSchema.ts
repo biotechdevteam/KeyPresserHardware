@@ -1,4 +1,5 @@
 import { z } from "zod";
+import MemberSchema from "./memberSchema";
 
 // Social links schema
 const SocialLinksSchema = z.object({
@@ -10,9 +11,7 @@ const SocialLinksSchema = z.object({
 
 // Leadership team schema
 const LeadershipTeamSchema = z.object({
-  name: z.string(),
-  role: z.string(),
-  linkedin: z.string().url().optional(),
+  member: MemberSchema,
 });
 
 // Achievements schema
@@ -59,4 +58,5 @@ const AboutSchema = z.object({
 });
 
 export type About = z.infer<typeof AboutSchema>;
+export type LeadershipTeam = z.infer<typeof LeadershipTeamSchema>;
 export default AboutSchema;

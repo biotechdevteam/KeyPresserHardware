@@ -1,15 +1,18 @@
 "use client";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "@/lib/store"; // Import AppDispatch
+import { RootState, AppDispatch } from "@/lib/store";
 import AboutHeader from "../about-header/AboutHeader";
 import AboutDetails from "../about-details/AboutDetails";
 import AboutAchievements from "../about-achievements/AboutAchievements";
 import AboutTeam from "../about-team/AboutTeam";
 import { fetchAbout } from "@/lib/thunks/about/aboutThunks";
+import AboutPartnerships from "../about-partnerships/AboutPartnerships";
+import AboutVideos from "../about-videos/AboutVideos";
+import HistoryTimeline from "../about-history/AboutHistory";
 
 const AboutContainer: React.FC = () => {
-  const dispatch: AppDispatch = useDispatch(); // Use typed dispatch
+  const dispatch: AppDispatch = useDispatch();
   const aboutData = useSelector((state: RootState) => state.about.data);
   const loading = useSelector((state: RootState) => state.about.loading);
   const error = useSelector((state: RootState) => state.about.error);
@@ -27,26 +30,40 @@ const AboutContainer: React.FC = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
-      <div className="col-span-1">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-4">
+      {/* Main Details Section */}
+      <div className="col-span-1 lg:col-span-2">
         <AboutHeader
           name={aboutData.name}
           slogan={aboutData.slogan}
           logoUrl={aboutData.logo_url}
+          coverPhotoUrl={aboutData.cover_photo_url}
         />
       </div>
-      <div className="col-span-1">
+
+      {/* Mission, Vision */}
+      <div className="col-span-1 lg:col-span-2">
         <AboutDetails
           mission={aboutData.mission_statement}
           vision={aboutData.vision_statement}
-          history={aboutData.history}
+          slogan={aboutData.slogan}
+          coverPhotoUrl={aboutData.cover_photo_url}
         />
       </div>
-      <div className="col-span-1 md:col-span-2">
+
+      {/* Leadership Team */}
+      <div className="col-span-1 lg:col-span-2">
         <AboutTeam leadershipTeam={aboutData.leadership_team} />
       </div>
-      <div className="col-span-1 md:col-span-2">
-        <AboutAchievements achievements={aboutData.achievements} />
+
+      {/* History, Timeline */}
+      <div className="col-span-1 lg:col-span-2">
+        <HistoryTimeline />
+      </div>
+
+      {/* Acievements */}
+      <div className="col-span-1 lg:col-span-2">
+        <AboutAchievements achievements={aboutData.achievements || []} />
       </div>
     </div>
   );

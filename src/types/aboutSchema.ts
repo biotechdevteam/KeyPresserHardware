@@ -1,25 +1,26 @@
 import { z } from "zod";
+import MemberSchema from "./memberSchema";
 
 // Social links schema
-const SocialLinksSchema = z.object({
+export const SocialLinksSchema = z.object({
   linkedin: z.string().url().optional(),
   twitter: z.string().url().optional(),
   facebook: z.string().url().optional(),
   instagram: z.string().url().optional(),
+  github: z.string().url().optional(),
 });
 
 // Leadership team schema
 const LeadershipTeamSchema = z.object({
-  name: z.string(),
-  role: z.string(),
-  linkedin: z.string().url().optional(),
+  _id: z.string(),
+  member: MemberSchema,
 });
 
 // Achievements schema
 const AchievementsSchema = z.object({
   title: z.string(),
   description: z.string().optional(),
-  date: z.date().optional(),
+  date: z.string().optional(),
 });
 
 // Partnerships schema
@@ -46,7 +47,7 @@ const AboutSchema = z.object({
   contact_email: z.string().email().optional(),
   contact_phone: z.string().optional(),
   address: z.string().optional(),
-  leadership_team: z.array(LeadershipTeamSchema).optional(),
+  leadership_team: z.array(LeadershipTeamSchema),
   achievements: z.array(AchievementsSchema).optional(),
   partnerships: z.array(PartnershipsSchema).optional(),
   social_links: SocialLinksSchema.optional(),
@@ -59,4 +60,5 @@ const AboutSchema = z.object({
 });
 
 export type About = z.infer<typeof AboutSchema>;
+export type LeadershipTeam = z.infer<typeof LeadershipTeamSchema>;
 export default AboutSchema;

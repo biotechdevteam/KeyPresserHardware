@@ -60,6 +60,11 @@ const AboutContainer: React.FC = () => {
       <div className="col-span-1 lg:col-span-2">
         <HistoryTimeline />
       </div>
+
+      {/* Acievements */}
+      <div className="col-span-1 lg:col-span-2">
+        <AboutAchievements achievements={aboutData.achievements || []} />
+      </div>
     </div>
   );
 };

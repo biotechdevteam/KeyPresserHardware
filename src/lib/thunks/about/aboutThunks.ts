@@ -14,7 +14,7 @@ export const fetchAbout = createAsyncThunk(
     dispatch(setLoading(true)); // Set loading state to true before fetch
     try {
       const response = await fetchData("/about", "GET"); // Fetch the data
-      dispatch(setAboutData(response.data)); // Dispatch the data to the store
+      dispatch(setAboutData(response?.data)); // Dispatch the data to the store
     } catch (error) {
       const message = (error as Error).message || "An error occurred";
       dispatch(setError(message)); // Dispatch error message
@@ -30,8 +30,8 @@ export const createAbout = createAsyncThunk(
   async (aboutData: About, { dispatch }) => {
     try {
       const response = await fetchData("/about", "POST", aboutData); // Post the data
-      dispatch(setAboutData(response.data)); // Dispatch the new data
-      return response.data;
+      dispatch(setAboutData(response?.data)); // Dispatch the new data
+      return response?.data;
     } catch (error) {
       const message = (error as Error).message || "An error occurred";
       dispatch(setError(message)); // Dispatch error message
@@ -49,8 +49,8 @@ export const updateAbout = createAsyncThunk(
   ) => {
     try {
       const response = await fetchData(`/about/${id}`, "PUT", aboutData); // Update the data
-      dispatch(setAboutData(response.data)); // Dispatch updated data
-      return response.data;
+      dispatch(setAboutData(response?.data)); // Dispatch updated data
+      return response?.data;
     } catch (error) {
       const message = (error as Error).message || "An error occurred";
       dispatch(setError(message)); // Dispatch error message

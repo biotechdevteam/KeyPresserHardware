@@ -20,6 +20,16 @@ export const fetchData = async (
     }
   } catch (error) {
     console.error(`Error during fetch (${method}) for ${url}:`, error);
-    throw error; // Rethrow to handle it in calling functions
+    return;
+  }
+};
+
+export const fetchAboutData = async () => {
+  try {
+    const response = await fetchData("/about", "GET");
+    return response?.data;
+  } catch (error) {
+    console.error("Error during fetchAboutData:", error);
+    throw new Error("Network request failed. Falling back to cache.");
   }
 };

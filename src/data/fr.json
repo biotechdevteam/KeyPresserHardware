@@ -36,5 +36,29 @@
       "title": "Contactez-nous",
       "description": "Contactez-nous pour des demandes et un support."
     }
+  },
+  "footer": {
+    "contactInformationTitle": "Informations de contact",
+    "contactFormTitle": "Envoyez-nous un message",
+    "socialMediaTitle": "Connectez-vous avec nous",
+    "copyright": "BTVerse. Tous droits réservés."
+  },
+  "contactform": {
+    "firstNamePlaceholder": "Votre Prénom",
+    "lastNamePlaceholder": "Votre Nom de famille",
+    "phonePlaceholder": "Votre téléphone",
+    "emailPlaceholder": "Votre e-mail",
+    "messagePlaceholder": "Votre message",
+    "firstNameLabel": "Prénom",
+    "lastNameLabel": "Nom de famille",
+    "emailLabel": "E-mail",
+    "phoneLabel": "Téléphone",
+    "messageLabel": "Message",
+    "sendMessageButton": "Envoyer le message",
+    "firstNameError": "Le prénom doit comporter au moins 2 caractères.",
+    "lastNameError": "Le nom de famille doit comporter au moins 2 caractères.",
+    "emailError": "Veuillez entrer une adresse e-mail valide.",
+    "phoneError": "Veuillez entrer un numéro de téléphone valide.",
+    "messageError": "Le message doit comporter au moins 10 caractères."
   }
 }

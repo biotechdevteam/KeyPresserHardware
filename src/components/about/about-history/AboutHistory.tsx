@@ -1,5 +1,5 @@
-import React from "react";
-import { Separator } from "@/components/ui/separator"; // ShadCN Separator for timeline
+import React, { useEffect, useRef, useState } from "react";
+import { Separator } from "@/components/ui/separator"; // ShadCN Separator
 import { Card } from "@/components/ui/card";
 
 const HistoryTimeline: React.FC = () => {
@@ -7,40 +7,85 @@ const HistoryTimeline: React.FC = () => {
     {
       year: "2021",
       description: "Founded with a global presence.",
-      iconUrl: "https://via.placeholder.com/50.png?text=2021",
+      iconUrl: "https://via.placeholder.com/300x150.png?text=Global+Presence",
     },
     {
       year: "2023",
       description: "Reached 1,000 members.",
-      iconUrl: "https://via.placeholder.com/50.png?text=2023",
+      iconUrl: "https://via.placeholder.com/300x150.png?text=1000+Members",
     },
     {
       year: "2024",
       description: "Partnered with leading biotech companies.",
-      iconUrl: "https://via.placeholder.com/50.png?text=2024",
+      iconUrl:
+        "https://via.placeholder.com/300x150.png?text=Biotech+Partnership",
     },
   ];
 
+  const [isVisible, setIsVisible] = useState(false);
+  const historyRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+          } else {
+            setIsVisible(false)
+          }
+        });
+      },
+      { threshold: 0.2 } // Trigger when 20% of the component is visible
+    );
+
+    if (historyRef.current) {
+      observer.observe(historyRef.current);
+    }
+
+    return () => {
+      if (historyRef.current) {
+        observer.unobserve(historyRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <Card className="py-12 px-6 lg:px-24 max-w-5xl mx-auto">
-      <h2 className="text-3xl font-bold mb-8 text-center">Our History</h2>
-      <div className="space-y-8">
+    <Card
+      ref={historyRef}
+      className={`py-12 px-6 lg:px-24 bg-muted shadow-lg rounded-lg transition-opacity duration-500 ${
+        isVisible ? "animate-fadeIn" : "opacity-0"
+      }`}
+    >
+      <h2 className="text-4xl font-bold mb-12 text-center text-foreground">
+        Our History
+      </h2>
+      <div className="grid gap-12">
         {history.map((item, index) => (
-          <div key={index} className="flex items-start space-x-4">
-            <img
-              src={item.iconUrl}
-              alt={`${item.year} Icon`}
-              className="w-12 h-12 rounded-full object-cover"
-            />
-            <div>
-              <h3 className="text-xl font-semibold">{item.year}</h3>
-              <p className="text-md text-gray-600">{item.description}</p>
+          <div
+            key={index}
+            className={`grid grid-cols-1 md:grid-cols-2 gap-6 items-center ${
+              index % 2 === 1 ? "md:grid-cols-2-reverse" : ""
+            }`}
+          >
+            {/* Image Section with Animation */}
+            <div className="flex justify-center">
+              <img
+                src={item.iconUrl}
+                alt={`${item.year} Icon`}
+                className="w-full h-auto max-w-xs rounded-lg shadow-lg transition-transform duration-500 ease-in-out transform hover:scale-105"
+              />
             </div>
-            {index < history.length - 1 && (
-              <div className="flex-grow">
-                <Separator className="h-8 my-2" />
-              </div>
-            )}
+
+            {/* Content Section */}
+            <div className="text-center md:text-left">
+              <h3 className="text-2xl font-semibold text-foreground">
+                {item.year}
+              </h3>
+              <p className="text-md text-muted-foreground">
+                {item.description}
+              </p>
+            </div>
           </div>
         ))}
       </div>

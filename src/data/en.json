@@ -36,5 +36,29 @@
       "title": "Contact Us",
       "description": "Get in touch with us for inquiries and support."
     }
+  },
+  "footer": {
+    "contactInformationTitle": "Contact Information",
+    "contactFormTitle": "Send us a Message",
+    "socialMediaTitle": "Connect with Us",
+    "copyright": "BTVerse. All rights Reserved."
+  },
+  "contactform": {
+    "firstNamePlaceholder": "Your First Name",
+    "lastNamePlaceholder": "Your Last Name",
+    "phonePlaceholder": "Your Phone",
+    "emailPlaceholder": "Your Email",
+    "messagePlaceholder": "Type a Message",
+    "firstNameLabel": "First Name",
+    "lastNameLabel": "Last Name",
+    "emailLabel": "Email",
+    "phoneLabel": "Phone",
+    "messageLabel": "Message",
+    "sendMessageButton": "Send Message",
+    "firstNameError": "First name must be at least 2 characters.",
+    "lastNameError": "Last name must be at least 2 characters.",
+    "emailError": "Please enter a valid email address.",
+    "phoneError": "Please enter a valid phone number.",
+    "messageError": "Message must be at least 10 characters long."
   }
 }

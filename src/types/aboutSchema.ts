@@ -27,6 +27,8 @@ const AchievementsSchema = z.object({
 const PartnershipsSchema = z.object({
   partner: z.string(),
   description: z.string().optional(),
+  logo: z.string(),
+  website: z.string().optional(),
 });
 
 // File schema for videos, images, documents

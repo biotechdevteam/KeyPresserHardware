@@ -24,7 +24,11 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale}>
-      <body className={cn("min-h-screen w-full flex flex-col items-center antialiased")}>
+      <body
+        className={cn(
+          "min-h-screen w-full flex flex-col items-center antialiased"
+        )}
+      >
         <NextIntlClientProvider messages={messages}>
           <StoreProvider>
             {/* NavBar fixed at the top */}
@@ -33,14 +37,8 @@ export default async function LocaleLayout({
             </div>
 
             {/* Main content grid layout */}
-            <main className="pt-20 px-4 sm:px-6 lg:px-8">
-              <div
-                className={cn(
-                  "auto-rows-max justify-items-center items-start"
-                )}
-              >
-                {children}
-              </div>
+            <main>
+              <div>{children}</div>
             </main>
           </StoreProvider>
         </NextIntlClientProvider>

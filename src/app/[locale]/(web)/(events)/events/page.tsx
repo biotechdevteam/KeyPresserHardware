@@ -3,7 +3,7 @@ import EventsContainer from "@/components/events/events-container/EventsContaine
 
 const EventsPage: React.FC = () => {
   return (
-    <div className="max-w-7xl mx-auto bg-background text-foreground shadow-md rounded-lg p-6">
+    <div className="">
       <EventsContainer />
     </div>
   );

@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 
-interface EventDetailsModalProps {
+interface EventDetailsProps {
   open: boolean;
   event: any;
   onClose: () => void;
 }
 
-const EventDetailsModal: React.FC<EventDetailsModalProps> = ({
+const EventDetails: React.FC<EventDetailsProps> = ({
   open,
   event,
   onClose,
@@ -21,4 +21,4 @@ const EventDetailsModal: React.FC<EventDetailsModalProps> = ({
   );
 };
 
-export default EventDetailsModal;
+export default EventDetails;

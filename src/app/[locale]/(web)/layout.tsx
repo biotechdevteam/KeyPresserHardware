@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import "../../globals.css";
+import "@radix-ui/themes/styles.css";
 import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import StoreProvider from "../storeProvider";
 import NavBar from "@/components/nav-bar/NavBar";
 import { cn } from "@/lib/utils";
+import { Theme, ThemePanel } from "@radix-ui/themes";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -29,19 +31,28 @@ export default async function LocaleLayout({
           "min-h-screen w-full flex flex-col items-center antialiased"
         )}
       >
-        <NextIntlClientProvider messages={messages}>
-          <StoreProvider>
-            {/* NavBar fixed at the top */}
-            <div className="fixed top-0 left-0 right-0 z-50">
-              <NavBar />
-            </div>
+        <Theme>
+          <NextIntlClientProvider messages={messages}>
+            <StoreProvider>
+              {/* NavBar fixed at the top */}
+              <div className="fixed top-0 left-0 right-0 z-50">
+                <NavBar />
+              </div>
 
-            {/* Main content grid layout */}
-            <main>
-              <div>{children}</div>
-            </main>
-          </StoreProvider>
-        </NextIntlClientProvider>
+              {/* Main content grid layout */}
+              <main className="pt-20 px-4 sm:px-6 lg:px-8">
+                <div
+                  className={cn(
+                    "auto-rows-max justify-items-center items-start"
+                  )}
+                >
+                  {children}
+                </div>
+              </main>
+            </StoreProvider>
+          </NextIntlClientProvider>
+          {/* <ThemePanel /> */}
+        </Theme>
       </body>
     </html>
   );

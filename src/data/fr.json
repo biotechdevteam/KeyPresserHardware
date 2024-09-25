@@ -4,6 +4,7 @@
     "description": "Bienvenue sur notre page d'accueil où vous pouvez trouver les dernières mises à jour et nouvelles."
   },
   "NavBar": {
+    "home": "Accueil",
     "projects": "Projets",
     "events": "Événements",
     "services": "Services",

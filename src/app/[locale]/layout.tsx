@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import "../../globals.css";
+import "../globals.css";
 import "@radix-ui/themes/styles.css";
 import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
-import StoreProvider from "../storeProvider";
+import StoreProvider from "./storeProvider";
 import NavBar from "@/components/nav-bar/NavBar";
 import { cn } from "@/lib/utils";
 import { Theme, ThemePanel } from "@radix-ui/themes";

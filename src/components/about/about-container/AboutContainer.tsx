@@ -1,7 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import AboutHeader from "../about-header/AboutHeader";
 import AboutDetails from "../about-details/AboutDetails";
 import AboutAchievements from "../about-achievements/AboutAchievements";
 import AboutTeam from "../about-team/AboutTeam";
@@ -13,6 +12,7 @@ import TermsModal from "../terms-modal/TermsModal";
 import { extractDomain } from "@/lib/helpers";
 import { fetchAboutData } from "@/lib/fetchUtils";
 import CTASection from "../about-cta/CTASection";
+import AboutIntro from "@/components/about/about-intro/AboutIntro";
 
 // Accept the pre-fetched initialData as a prop
 const AboutContainer: React.FC<{ initialData: any }> = ({ initialData }) => {
@@ -31,30 +31,30 @@ const AboutContainer: React.FC<{ initialData: any }> = ({ initialData }) => {
   const websiteURL = extractDomain();
 
   if (loading && !aboutData) {
-    return <div className="text-center py-4">Loading...</div>;
+    return <div className="text-center inset-0">Loading...</div>;
   }
 
   if (error) {
     return (
-      <div className="text-red-600 text-center py-4">
+      <div className="text-destructive text-center inset-0">
         Error: {error.message}
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-4">
-      {/* Main Details Section */}
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-16 mt-16">
+      {/* Introduction */}
       <div className="col-span-1 lg:col-span-2">
-        <AboutHeader
-          name={aboutData.name}
-          slogan={aboutData.slogan}
-          logoUrl={aboutData.logo_url}
-          coverPhotoUrl={aboutData.cover_photo_url}
+        <AboutIntro
+          name={aboutData?.name || "Biotech Universe Group"}
+          slogan={aboutData?.slogan || "Our Slogan"}
+          coverPhotoUrl={aboutData?.aboutPic} 
+          story={aboutData?.bio} 
         />
       </div>
 
-      {/* CTA Section after About Header */}
+      {/* CTA Section after About Intro */}
       <div className="col-span-1 lg:col-span-2">
         <CTASection
           title="Join Us"

@@ -3,78 +3,95 @@
 @tailwind utilities;
 
 :root {
-  --background: 0 0% 100%;
-  --foreground: 222 47% 11%;
+  /* website theme colors*/
+  --screamin-green: 105, 81%, 64%, 1;
+  --screamin-green-2: 114, 87%, 71%, 1;
+  --white: 160, 60%, 99%, 1;
+  --white-smoke: 0, 0%, 96%, 1;
+  --davys-gray: 240, 6%, 32%, 1;
+  --oxford-blue: 240, 61%, 10%, 1;
+  --black: 264, 100%, 3%, 1;
+  --mauveine: 300, 82%, 37%, 1;
+  --dark-magenta: 300, 91%, 30%, 1;
+  --off-red-rgb: 0, 98%, 52%, 1;
 
-  --card: 0 0% 100%;
-  --card-foreground: 222 47% 11%;
+  /* variables and usage */
+  --background: var(--white-smoke);
+  --foreground: var(--black);
 
-  --popover: 0 0% 100%;
-  --popover-foreground: 222 47% 11%;
+  --card: var(--white);
+  --card-foreground: var(--black);
 
-  --primary: 200 98% 39%;
-  --primary-foreground: 0 0% 100%;
+  --popover: var(--white);
+  --popover-foreground: var(--black);
 
-  --secondary: 170 98% 45%;
-  --secondary-foreground: 0 0% 100%;
+  --primary: var(--screamin-green);
+  --primary-foreground: var(--black);
+  --primary-variant: var(--screamin-green-2);
 
-  --muted: 216 15% 91%;
-  --muted-foreground: 215 16% 46%;
+  --secondary: var(--mauveine);
+  --secondary-foreground: var(--white);
+  --secondary-variant: var(--dark-magenta);
 
-  --accent: 340 100% 66%;
-  --accent-foreground: 0 0% 100%;
+  --muted: var(--white-smoke);
+  --muted-foreground: var(--davys-gray);
 
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 0 0% 100%;
+  --accent: var(--mauveine);
+  --accent-foreground: var(--white);
 
-  --border: 215 16% 70%;
-  --input: 216 15% 91%;
-  --ring: 200 98% 39%;
+  --destructive: var(--off-red-rgb);
+  --destructive-foreground: var(--white);
 
-  --chart-1: 200 98% 39%;
-  --chart-2: 340 100% 66%;
-  --chart-3: 50 100% 50%;
-  --chart-4: 170 98% 45%;
-  --chart-5: 290 100% 75%;
+  --border: var(--davys-gray);
+  --input: var(--davys-gray);
+  --ring: var(--screamin-green);
+
+  --chart-1: var(--screamin-green-2);
+  --chart-2: var(--mauveine);
+  --chart-3: var(--oxford-blue);
+  --chart-4: var(--screamin-green);
+  --chart-5: var(--dark-magenta);
 
   --radius: 0.5rem;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: 222 47% 11%;
-    --foreground: 0 0% 100%;
+    --background: var(--oxford-blue);
+    --foreground: var(--white);
 
-    --card: 222 30% 17%;
-    --card-foreground: 0 0% 100%;
+    --card: var(--black);
+    --card-foreground: var(--white);
 
-    --popover: 222 30% 17%;
-    --popover-foreground: 0 0% 100%;
+    --popover: var(--black);
+    --popover-foreground: var(--white);
 
-    --primary: 200 98% 39%;
-    --primary-foreground: 0 0% 100%;
+    --primary: var(--screamin-green);
+    --primary-foreground: var(--black);
+    --primary-variant: var(--screamin-green-2);
 
-    --secondary: 170 98% 45%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: var(--mauveine);
+    --secondary-foreground: var(--white);
+    --secondary-variant: var(--dark-magenta);
 
-    --muted: 222 20% 20%;
-    --muted-foreground: 0 0% 100%;
+    --muted: var(--oxford-blue);
+    --muted-foreground: var(--white-smoke);
 
-    --accent: 340 100% 66%;
-    --accent-foreground: 0 0% 100%;
+    --accent: var(--mauveine);
+    --accent-foreground: var(--white);
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: var(--off-red-rgb);
+    --destructive-foreground: var(--white);
 
-    --border: 222 30% 25%;
-    --input: 222 30% 25%;
-    --ring: 200 98% 39%;
+    --border: var(--davys-gray);
+    --input: var(--davys-gray);
+    --ring: var(--screamin-green);
 
-    --chart-1: 200 98% 39%;
-    --chart-2: 340 100% 66%;
-    --chart-3: 50 100% 50%;
-    --chart-4: 170 98% 45%;
-    --chart-5: 290 100% 75%;
+    --chart-1: var(--screamin-green-2);
+    --chart-2: var(--mauveine);
+    --chart-3: var(--oxford-blue);
+    --chart-4: var(--screamin-green);
+    --chart-5: var(--dark-magenta);
 
     --radius: 0.5rem;
   }
@@ -102,25 +119,26 @@
   h4,
   h5,
   h6 {
-    @apply font-bold;
+    @apply font-bold text-foreground;
     font-family: "DOSIS", sans-serif;
     margin-top: 0;
     margin-bottom: 0.5rem;
   }
 
   p {
+    @apply text-muted-foreground;
     margin-top: 0;
     margin-bottom: 1rem;
   }
 
   button {
-    @apply bg-primary text-primary-foreground rounded px-4 py-2 border-none;
+    @apply bg-primary text-primary-foreground rounded px-4 py-2 border-none hover:bg-primary-variant;
     transition: background-color 0.3s;
     cursor: pointer;
   }
 
   button:hover {
-    @apply bg-primary/90 text-foreground;
+    @apply bg-primary-variant text-primary-foreground;
   }
 
   input,
@@ -134,10 +152,9 @@
     @apply outline-none border-ring;
   }
 
-
   /* Checkbox */
   input[type="checkbox"] {
-    @apply appearance-none h-5 w-5 border border-border rounded bg-input text-primary focus:border-ring transition;
+    @apply appearance-none h-5 w-5 border border-primary rounded bg-input text-foreground focus:border-ring transition;
   }
 
   input[type="checkbox"]:checked {
@@ -150,7 +167,7 @@
 
   /* Checkbox hover state */
   input[type="checkbox"]:hover {
-    @apply bg-input/75;
+    @apply bg-ring;
   }
 }
 

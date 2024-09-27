@@ -45,9 +45,9 @@ const AboutFooter: React.FC<AboutFooterProps> = ({
     <footer className="bg-background py-10">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Contact Information */}
-        <Card className="bg-card shadow-lg p-4">
+        <Card className="shadow-lg p-4">
           <CardContent>
-            <h3 className="text-2xl font-semibold mb-6 text-primary">
+            <h3 className="text-2xl font-semibold mb-6">
               {t("footer.contactInformationTitle")}
             </h3>
             <div className="space-y-4">
@@ -55,7 +55,7 @@ const AboutFooter: React.FC<AboutFooterProps> = ({
                 <Mail className="mr-3 text-primary" />
                 <a
                   href={`mailto:${contactEmail}`}
-                  className="text-foreground hover:text-primary transition-colors"
+                  className="text-secondary hover:text-primary transition-colors"
                 >
                   {contactEmail}
                 </a>
@@ -75,12 +75,12 @@ const AboutFooter: React.FC<AboutFooterProps> = ({
               <Separator />
               {website && (
                 <div className="flex items-center">
-                  <Globe className="mr-3 text-primary" />
+                  <Globe className="mr-3 text-foreground" />
                   <a
                     href={website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-foreground hover:text-primary transition-colors"
+                    className="text-foreground hover:text-secondary transition-colors"
                   >
                     {website}
                   </a>

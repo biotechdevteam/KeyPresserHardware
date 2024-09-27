@@ -1,57 +1,84 @@
 "use client";
-
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
-import { AvatarIcon, BellIcon, HamburgerMenuIcon } from "@radix-ui/react-icons";
 import {
-  Avatar,
-  Dialog,
-  Badge,
-  Box,
-  Flex,
-  IconButton,
-  Em,
-  Separator,
-} from "@radix-ui/themes";
+  navigationMenuTriggerStyle,
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuContent,
+  NavigationMenuTrigger,
+  NavigationMenuLink,
+} from "../ui/navigation-menu";
+import {
+  Bell,
+  BookUser,
+  CalendarFold,
+  CircleUser,
+  HandPlatter,
+  Home,
+  LibraryBig,
+  LogIn,
+  LogOut,
+  Menu,
+  Newspaper,
+  SlidersHorizontal,
+  User,
+  Users,
+} from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "../ui/badge";
+import {
+  Sheet,
+  SheetContent,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Separator } from "../ui/separator";
+import { useMediaQuery } from "usehooks-ts";
+import Image from "next/image";
+import Logo from "@/assets/images/logo.png";
 
 // array of pages
 const pages = [
   {
     title: "home",
     link: "/",
+    icon: <Home />,
   },
   {
     title: "about",
     link: "/about",
+    icon: <Users />,
   },
   {
     title: "services",
     link: "/services",
+    icon: <HandPlatter />,
   },
   {
     title: "projects",
     link: "/projects",
+    icon: <LibraryBig />,
   },
   {
     title: "events",
     link: "/events",
+    icon: <CalendarFold />,
   },
   {
     title: "blog",
     link: "/blogs",
+    icon: <Newspaper />,
   },
   {
     title: "contact",
     link: "/contact",
+    icon: <BookUser />,
   },
 ];
 
@@ -59,6 +86,7 @@ const NavBar = () => {
   const t = useTranslations("NavBar");
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const router = useRouter();
+  const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
 
   const handleLogout = () => {
     // Logout logic here
@@ -69,168 +97,185 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="bg-white border-b border-gray-200">
-      <Flex gap="8" m="4">
+    <nav className="border-b border-gray-200 fixed top-0 left-0 right-0 z-50 bg-card h-[72px]">
+      <div className="flex justify-between m-4 md:pr-8 xl:pr-16">
         {/* Logo */}
-        <Box className="flex-grow flex-shrink-0">
-          <Link href="/" className=" text-lg font-semibold color-blue-500">
-            <img src="" alt="" className="w-32 h-auto" />
-            Biotech Universe
+        <div className=" flex-shrink-0 text-center">
+          <Link href="/">
+            <Image
+              src={Logo}
+              alt="Biotech Universe"
+              className="w-[40px] rounded"
+            />
           </Link>
-        </Box>
+        </div>
 
-        {/* Desktop Menu */}
-        <Flex gap="8" justify="between">
-          <Flex gap="4">
-            {pages.map((page) => (
-              <Link
-                href={page.link}
-                key={page.title}
-                className="text-blue-500 hover:text-blue-600"
-              >
-                {t(page.title)}
-              </Link>
-            ))}
-          </Flex>
-
-          <Flex gap="8">
-            {/* {user && ( */}
-            <>
-              {/* Notifications */}
-              <Flex gap="4" direction="column">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <IconButton
-                      radius="full"
-                      variant="soft"
-                      aria-label="Show Notifications"
-                      className="relative hover:bg-transparent cursor-pointer"
-                    >
-                      <BellIcon className="w-6 h-6 text-blue-500" />
-                      {/* <Badge className="w-1 h-1 text-red-500 ">17</Badge> */}
-                    </IconButton>
-                  </DropdownMenuTrigger>
-
-                  {/* Notifications Menu */}
-                  <DropdownMenuContent>
-                    <DropdownMenuItem asChild onClick={handleNotificationsMenu}>
-                      {/* Add your notifications logic here */}
-                      <Em>No new notifications</Em>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </Flex>
-            </>
-            {/* )} */}
-
-            {/* Profile Menu */}
-            <Flex gap="4" direction="column">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Link href="#">
-                    <Avatar
-                      src="/profile-pic-url"
-                      fallback={
-                        <AvatarIcon className="w-6 h-6 text-blue-500" />
-                      }
-                      radius="full"
-                      className="cursor-pointer"
-                    ></Avatar>
-                  </Link>
-                </DropdownMenuTrigger>
-
-                <DropdownMenuContent>
+        <div>
+          {/* Display if on small device */}
+          {isSmallDevice ? (
+            <div>
+              {/* Mobile Menu */}
+              <Sheet>
+                <SheetTrigger>
+                  <Menu />
+                </SheetTrigger>
+                <SheetContent>
+                  <SheetHeader>
+                    <SheetTitle>Menu</SheetTitle>
+                  </SheetHeader>
+                  <Separator className="my-4" />
+                  {pages.map((page) => (
+                    <Link href={page.link} key={page.title}>
+                      <p className="flex gap-4 text-md hover:text-primary">
+                        {page.icon}
+                        {t(page.title)}
+                      </p>
+                    </Link>
+                  ))}
+                  <Separator className="my-4" />
                   {/* {!user ? ( */}
-                  <DropdownMenuItem asChild>
-                    <Link href="/login">{t("login")}</Link>
-                  </DropdownMenuItem>
+                  <Link href="/login">
+                    <p className="flex gap-4 text-md hover:text-primary">
+                      <LogIn />
+                      {t("login")}
+                    </p>
+                  </Link>
                   {/* ) : ( */}
-                  <>
-                    <DropdownMenuItem asChild>
-                      <Link href="/profile">{t("profile")}</Link>
-                    </DropdownMenuItem>
-                    {/* {user === "admin" && ( */}
-                    <DropdownMenuItem asChild>
-                      <Link href="/dashboard">{t("dashboard")}</Link>
-                    </DropdownMenuItem>
-                    {/* )} */}
-                    <DropdownMenuItem asChild>
-                      <Link href="#" onClick={handleLogout}>
-                        {t("logout")}
+                  {/* <> */}
+                  <Link href="/profile">
+                    <p className="flex gap-4 text-md hover:text-primary">
+                      <User />
+                      {t("profile")}
+                    </p>
+                  </Link>
+                  {/* {user.userType === "admin" && ( */}
+                  <Link href="/dashboard">
+                    <p className="flex gap-4 text-md hover:text-primary">
+                      <SlidersHorizontal />
+                      {t("dashboard")}
+                    </p>
+                  </Link>
+                  {/* )} */}
+                  <Link href="#" onClick={handleLogout}>
+                    <p className="flex gap-4 text-md hover:text-primary">
+                      <LogOut />
+                      {t("logout")}
+                    </p>
+                  </Link>
+                  {/* </> */}
+                  {/* )} */}
+                  <SheetFooter></SheetFooter>
+                </SheetContent>
+              </Sheet>
+            </div>
+          ) : (
+            <div className="flex gap-8 xl:gap-48">
+              {/* Desktop Menu */}
+              <NavigationMenu>
+                <NavigationMenuList>
+                  {pages.map((page) => (
+                    <NavigationMenuItem>
+                      <Link
+                        href={page.link}
+                        key={page.title}
+                        legacyBehavior
+                        passHref
+                      >
+                        <NavigationMenuLink
+                          className={navigationMenuTriggerStyle()}
+                        >
+                          {t(page.title)}
+                        </NavigationMenuLink>
                       </Link>
-                    </DropdownMenuItem>
-                  </>
-                  {/* )} */}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </Flex>
-          </Flex>
-        </Flex>
+                    </NavigationMenuItem>
+                  ))}
+                </NavigationMenuList>
+              </NavigationMenu>
 
-        {/* Mobile Menu */}
-        <Dialog.Root>
-          <Dialog.Trigger>
-            <Button aria-label="Open Menu">
-              <HamburgerMenuIcon />
-            </Button>
-          </Dialog.Trigger>
-
-          <Dialog.Content>
-            <Dialog.Title>Menu</Dialog.Title>
-
-            <Flex gap="4" direction="column">
-              <Flex gap="4" direction="column">
-                {pages.map((page) => (
-                  <Link
-                    href={page.link}
-                    key={page.title}
-                    className="text-blue-500 hover:text-blue-600"
-                  >
-                    {t(page.title)}
-                  </Link>
-                ))}
-              </Flex>
-
-              <Separator my="3" size="4" />
-
-              <Flex gap="4" direction="column">
-                {/* {!user ? ( */}
-                <Link
-                  href="/login"
-                  className="text-blue-500 hover:text-blue-600"
-                >
-                  {t("login")}
-                </Link>
-                {/* ) : ( */}
-                <>
-                  <Link
-                    href="/profile"
-                    className="text-blue-500 hover:text-blue-600"
-                  >
-                    {t("profile")}
-                  </Link>
-                  {/* {user === "admin" && ( */}
-                  <Link
-                    href="/dashboard"
-                    className="text-blue-500 hover:text-blue-600"
-                  >
-                    {t("dashboard")}
-                  </Link>
-                  {/* )} */}
-                  <Link
-                    href="/dashboard"
-                    onClick={handleLogout}
-                    className="text-blue-500 hover:text-blue-600"
-                  >
-                    {t("logout")}
-                  </Link>
-                </>
+              <div className="flex gap-4 sm:gap-1">
+                {/* Notifications */}
+                {/* {user && ( */}
+                {/* Notifications Menu */}
+                <NavigationMenu>
+                  <NavigationMenuList>
+                    <NavigationMenuItem>
+                      <NavigationMenuTrigger>
+                        <Bell />
+                        <Badge>17</Badge>
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent className="flex flex-column gap-3 p-2">
+                        <NavigationMenuLink
+                          href=""
+                          className={navigationMenuTriggerStyle()}
+                          asChild
+                        >
+                          <em className="text-foreground">
+                            No new notifications.
+                          </em>
+                        </NavigationMenuLink>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
+                  </NavigationMenuList>
+                </NavigationMenu>
                 {/* )} */}
-              </Flex>
-            </Flex>
-          </Dialog.Content>
-        </Dialog.Root>
-      </Flex>
+
+                {/* Profile Menu */}
+                <NavigationMenu>
+                  <NavigationMenuList>
+                    <NavigationMenuItem>
+                      <NavigationMenuTrigger>
+                        <Avatar>
+                          <AvatarImage src="https://github.com/shadcn.png" />
+                          <AvatarFallback>
+                            <CircleUser />
+                          </AvatarFallback>
+                        </Avatar>
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent className="gap-3 p-2">
+                        {/* {!user ? ( */}
+                        <NavigationMenuLink
+                          href="/login"
+                          className={navigationMenuTriggerStyle()}
+                        >
+                          <LogIn className="mr-2 h-4 w-4" />
+                          {t("login")}
+                        </NavigationMenuLink>
+                        {/* ) : ( */}
+                        {/* <> */}
+                        <NavigationMenuLink
+                          href="/profile"
+                          className={navigationMenuTriggerStyle()}
+                        >
+                          <User className="mr-2 h-4 w-4" />
+                          {t("profile")}
+                        </NavigationMenuLink>
+                        {/* {user.userType === "admin" && ( */}
+                        <NavigationMenuLink
+                          href="/dashboard"
+                          className={navigationMenuTriggerStyle()}
+                        >
+                          <SlidersHorizontal className="mr-2 h-4 w-4" />
+                          {t("dashboard")}
+                        </NavigationMenuLink>
+                        {/* )} */}
+                        <NavigationMenuLink
+                          onClick={handleLogout}
+                          className={navigationMenuTriggerStyle()}
+                        >
+                          <LogOut className="mr-2 h-4 w-4" />
+                          {t("logout")}
+                        </NavigationMenuLink>
+                        {/* </> */}
+                        {/* )} */}
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
+                  </NavigationMenuList>
+                </NavigationMenu>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </nav>
   );
 };

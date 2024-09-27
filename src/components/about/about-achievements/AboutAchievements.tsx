@@ -37,7 +37,7 @@ const AchievementCard: React.FC<{
 
   return (
     <Card
-      className={`flex items-start p-5 bg-card shadow-lg rounded-lg 
+      className={`flex items-start p-5 shadow-lg rounded-lg 
         ${isVisible ? "animate-spinCard" : "opacity-0"} 
         hover:scale-105 hover:shadow-2xl`}
       style={{
@@ -51,12 +51,12 @@ const AchievementCard: React.FC<{
             {achievement.title}
           </strong>
           {achievement.description && (
-            <p className="mt-2 text-muted-foreground">
+            <p className="mt-2">
               {achievement.description}
             </p>
           )}
           {achievement.date && (
-            <p className="mt-2 text-sm text-muted-foreground">
+            <p className="mt-2 text-sm">
               {new Date(achievement.date).toLocaleDateString()}
             </p>
           )}
@@ -98,9 +98,9 @@ const AboutAchievements: React.FC<AboutAchievementsProps> = ({
   }, []);
 
   return (
-    <Card className="p-8 bg-muted shadow-lg rounded-lg" ref={achievementRef}>
+    <Card className="p-8 bg-background shadow-lg rounded-lg" ref={achievementRef}>
       <CardHeader className="text-center mb-6">
-        <h2 className="text-3xl font-bold text-foreground">Achievements</h2>
+        <h2 className="text-3xl font-bold">Achievements</h2>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

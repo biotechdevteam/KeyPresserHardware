@@ -21,7 +21,7 @@ export default async function AboutPage() {
   const { aboutData } = await getAboutData(); // Fetch the data server-side
 
   return (
-    <div className="max-w-7xl mx-auto bg-background text-foreground rounded-lg p-6">
+    <div>
       {/* Pass the prefetched data as props to the AboutContainer */}
       <AboutContainer initialData={aboutData} />
     </div>

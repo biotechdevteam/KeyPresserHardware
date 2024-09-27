@@ -5,8 +5,7 @@ import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import StoreProvider from "../storeProvider";
 import NavBar from "@/components/nav-bar/NavBar";
-import { cn } from "@/lib/utils";
-import { Theme, ThemePanel } from "@radix-ui/themes";
+import { useTranslations } from "next-intl";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -26,34 +25,29 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale}>
-      <body
-        className={cn(
-          "min-h-screen w-full flex flex-col items-center antialiased"
-        )}
-      >
-        <Theme>
-          <NextIntlClientProvider messages={messages}>
-            <StoreProvider>
-              {/* NavBar fixed at the top */}
-              <div className="fixed top-0 left-0 right-0 z-50">
-                <NavBar />
-              </div>
+      <body>
+        <NextIntlClientProvider messages={messages}>
+          <StoreProvider>
+            {/* NavBar fixed at the top */}
+            <NavBar />
 
-              {/* Main content grid layout */}
-              <main className="pt-20 px-4 sm:px-6 lg:px-8">
-                <div
-                  className={cn(
-                    "auto-rows-max justify-items-center items-start"
-                  )}
-                >
-                  {children}
-                </div>
-              </main>
-            </StoreProvider>
-          </NextIntlClientProvider>
-          {/* <ThemePanel /> */}
-        </Theme>
+            {/* Main content */}
+            <main className="bg-background">{children}</main>
+
+            {/* Footer at the bottom end*/}
+            <FooterWrapper />
+          </StoreProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );
 }
+
+const FooterWrapper: React.FC = () => {
+  const t = useTranslations("footer");
+  return (
+    <div className="bg-primary-variant text-muted-foreground text-center text-sm">
+      &copy; {new Date().getFullYear()} {t("copyright")}
+    </div>
+  );
+};

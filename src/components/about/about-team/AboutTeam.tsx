@@ -64,7 +64,7 @@ const AboutTeam: React.FC<AboutTeamProps> = ({ leadershipTeam }) => {
 
   return (
     <div className="py-12 px-6 lg:px-24 w-full" ref={teamRef}>
-      <h2 className="text-3xl font-bold mb-12 text-center text-primary">
+      <h2 className="text-3xl font-bold mb-12 text-center">
         Our Leadership Team
       </h2>
 
@@ -96,13 +96,13 @@ const AboutTeam: React.FC<AboutTeamProps> = ({ leadershipTeam }) => {
               </CardHeader>
 
               <CardContent className="p-6 text-center">
-                <CardTitle className="text-xl font-semibold text-primary-foreground">
+                <CardTitle className="text-xl font-semibold text-foreground">
                   {`${member.user_id.first_name} ${member.user_id.last_name}`}
                 </CardTitle>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-foreground">
                   {member.specialization || "Specialization not provided"}
                 </p>
-                <p className="mt-4 text-muted">
+                <p className="mt-4">
                   {member.bio || "No bio available."}
                 </p>
               </CardContent>

@@ -40,17 +40,17 @@ const AboutDetails: React.FC<AboutDetailsProps> = ({ mission, vision }) => {
     <div className="py-12 px-6 lg:px-24 space-y-12" ref={detailsRef}>
       {/* Mission Section */}
       <Card
-        className={`bg-muted shadow-lg rounded-lg transition-all duration-700 ease-in-out transform ${
+        className={`shadow-lg rounded-lg transition-all duration-700 ease-in-out transform ${
           isVisible ? "animate-fadeInUp" : "opacity-0 translate-y-10"
         }`}
       >
         <CardHeader>
-          <h2 className="text-3xl font-bold text-center text-foreground">
+          <h2 className="text-3xl font-bold text-center">
             Our Mission
           </h2>
         </CardHeader>
         <CardContent>
-          <p className="text-lg leading-relaxed text-muted-foreground text-center px-4 lg:px-12">
+          <p className="text-lg leading-relaxed text-center px-4 lg:px-12">
             {mission}
           </p>
         </CardContent>
@@ -61,17 +61,17 @@ const AboutDetails: React.FC<AboutDetailsProps> = ({ mission, vision }) => {
 
       {/* Vision Section */}
       <Card
-        className={`bg-muted shadow-lg rounded-lg transition-all duration-700 ease-in-out transform ${
+        className={`shadow-lg rounded-lg transition-all duration-700 ease-in-out transform ${
           isVisible ? "animate-fadeInUp" : "opacity-0 translate-y-10"
         }`}
       >
         <CardHeader>
-          <h2 className="text-3xl font-bold text-center text-foreground">
+          <h2 className="text-3xl font-bold text-center">
             Our Vision
           </h2>
         </CardHeader>
         <CardContent>
-          <p className="text-lg leading-relaxed text-muted-foreground text-center px-4 lg:px-12">
+          <p className="text-lg leading-relaxed text-center px-4 lg:px-12">
             {vision}
           </p>
         </CardContent>

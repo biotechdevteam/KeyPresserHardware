@@ -4,8 +4,7 @@ import "@radix-ui/themes/styles.css";
 import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import StoreProvider from "./storeProvider";
-import NavBar from "@/components/nav-bar/NavBar";
-import { useTranslations } from "next-intl";
+import ClientLayout from "./ClientLayout";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,40 +13,24 @@ export const metadata: Metadata = {
 
 export default async function LocaleLayout({
   children,
-  params: { locale },
+  params,
 }: {
   children: React.ReactNode;
   params: { locale: string };
 }) {
-  // Providing all messages to the client
-  // side is the easiest way to get started
-  const messages = await getMessages();
+  const messages = await getMessages({ locale: params.locale });
 
   return (
-    <html lang={locale}>
+    <html lang={params.locale}>
       <body>
         <NextIntlClientProvider messages={messages}>
-          <StoreProvider>
-            {/* NavBar fixed at the top */}
-            <NavBar />
-
-            {/* Main content */}
-            <main className="bg-background">{children}</main>
-
-            {/* Footer at the bottom end*/}
-            <FooterWrapper />
-          </StoreProvider>
+          <ClientLayout>
+            <StoreProvider>
+              <main className="bg-background">{children}</main>
+            </StoreProvider>
+          </ClientLayout>
         </NextIntlClientProvider>
       </body>
     </html>
   );
 }
-
-const FooterWrapper: React.FC = () => {
-  const t = useTranslations("footer");
-  return (
-    <div className="bg-primary-variant text-muted-foreground text-center text-sm">
-      &copy; {new Date().getFullYear()} {t("copyright")}
-    </div>
-  );
-};

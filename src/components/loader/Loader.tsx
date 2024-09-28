@@ -1,17 +1,9 @@
 import Image from "next/image";
-import { useQuery } from "@tanstack/react-query";
-import { fetchAboutData } from "@/lib/fetchUtils";
+import logo from "@/assets/images/logo.png";
 
 // Accept the pre-fetched initialData as a prop
-const Loader: React.FC<{ initialData: any }> = ({ initialData }) => {
-  const {
-    data: aboutData,
-  } = useQuery({
-    queryKey: ["about"],
-    queryFn: fetchAboutData,
-    initialData,
-    staleTime: Infinity,
-  });
+const Loader: React.FC = () => {
+
   
   return (
     <div className="flex flex-col justify-center items-center h-screen animate-pulse bg-background text-foreground">
@@ -19,7 +11,7 @@ const Loader: React.FC<{ initialData: any }> = ({ initialData }) => {
         width={50}
         height={50}
         className="animate-spin"
-        src={aboutData.logo_url}
+        src={logo.src}
         alt="QuickPay-logo"
       />
 

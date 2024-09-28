@@ -9,7 +9,12 @@
     "services": "Services",
     "blog": "Blog",
     "contact": "Contact",
-    "about": "À propos de nous"
+    "about": "À propos de nous",
+    "home": "Accueil",
+    "login": "Connexion",
+    "profile": "Profil",
+    "dashboard": "Tableau de bord",
+    "logout": "Déconnexion"
   },
   "Header": {
     "about": {

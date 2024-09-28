@@ -9,7 +9,12 @@
     "services": "Services",
     "blog": "Blog",
     "contact": "Contact",
-    "about": "About Us"
+    "about": "About Us",
+    "home": "Home",
+    "login": "Login",
+    "profile": "Profile",
+    "dashboard": "Dashboard",
+    "logout": "Logout"
   },
   "Header": {
     "about": {

@@ -2,6 +2,7 @@ import { z } from "zod";
 import UserSchema from "./userSchema";
 
 const MemberSchema = UserSchema.extend({
+  _id: z.string(),
   user_id: UserSchema,
   bio: z.string().optional(),
   skills: z.array(z.string()).optional(),

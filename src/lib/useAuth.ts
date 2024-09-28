@@ -1,11 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import axios from "@/lib/axiosInstance"; // Assuming axiosInstance.ts sets up Axios
+import { User } from "@/types/userSchema";
+import { applyRequest, signInRequest, signUpRequest } from "./fetchUtils";
 
 interface AuthState {
   isAuthenticated: boolean;
-  user: null | { email: string; first_name: string; last_name: string }; // Add more fields as needed
+  user: null | User;
 }
 
 interface ApiErrorResponse {
@@ -44,15 +45,23 @@ export const useAuth = () => {
     }
   }, []);
 
-  // Helper function to handle API errors
+  // Improved handleApiError function
   const handleApiError = (errorResponse: any) => {
+    console.log("error during request", errorResponse);
     if (errorResponse.response && errorResponse.response.data) {
       const errorData: ApiErrorResponse = errorResponse.response.data;
-      return (
-        errorData.messages.join(", ") || "An error occurred. Please try again."
-      );
+
+      // If the error has messages, return them joined as a string
+      if (errorData.messages && errorData.messages.length > 0) {
+        return errorData.messages.join(", ");
+      }
+
+      // If there are no messages, return the error field or a default message
+      return errorData.error || "An error occurred. Please try again.";
     }
-    return "An error occurred. Please try again.";
+
+    // Fallback for when there's no response data
+    return "An unexpected error occurred. Please try again.";
   };
 
   // Sign-in logic
@@ -61,12 +70,8 @@ export const useAuth = () => {
     setError(null);
 
     try {
-      const response = await axios.post("/auth/signin", {
-        email,
-        password,
-      });
-
-      const { access_token, user } = response.data;
+      const data = await signInRequest(email, password);
+      const { access_token, user } = data;
 
       // Save the token and user data in localStorage
       localStorage.setItem("token", access_token);
@@ -101,16 +106,15 @@ export const useAuth = () => {
     setError(null);
 
     try {
-      const response = await axios.post("/auth/signup", {
+      const data = await signUpRequest(
         email,
         password,
-        first_name: firstName,
-        last_name: lastName,
-        user_type: userType,
-        profile_photo_url: profilePhotoUrl, // Optional
-      });
-
-      const { access_token, user } = response.data;
+        firstName,
+        lastName,
+        userType,
+        profilePhotoUrl
+      );
+      const { access_token, user } = data;
 
       // Save the token and user data in localStorage
       localStorage.setItem("token", access_token);
@@ -123,10 +127,50 @@ export const useAuth = () => {
       });
 
       // Redirect to a protected route
-      router.push("/dashboard");
+      //router.push("/dashboard");
+      return true;
     } catch (err) {
       const errorMessage = handleApiError(err);
       setError(errorMessage);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Apply function
+  const apply = async (
+    motivationLetter: string,
+    specializationArea: string,
+    resumeUrl: string,
+    referredByMemberId?: string
+  ) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      // Ensure the user is authenticated and we have their ID
+      if (!authState.user || !authState.user._id) {
+        throw new Error("User is not authenticated.");
+      }
+
+      const userId = authState.user._id;
+
+      // Call the apply request
+      await applyRequest(
+        userId,
+        motivationLetter,
+        specializationArea,
+        resumeUrl,
+        referredByMemberId
+      );
+
+      // If application was successful, you can handle further steps, e.g., redirecting
+      return true;
+    } catch (err) {
+      const errorMessage = handleApiError(err);
+      setError(errorMessage);
+      return false;
     } finally {
       setLoading(false);
     }
@@ -140,5 +184,5 @@ export const useAuth = () => {
     router.push("/auth/signin"); // Redirect to sign-in page after sign-out
   };
 
-  return { ...authState, signIn, signUp, signOut, loading, error };
+  return { ...authState, signIn, signUp, signOut, apply, loading, error };
 };

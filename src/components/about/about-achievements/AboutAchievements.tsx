@@ -51,13 +51,15 @@ const AchievementCard: React.FC<{
             {achievement.title}
           </strong>
           {achievement.description && (
-            <p className="mt-2">
-              {achievement.description}
-            </p>
+            <p className="mt-2">{achievement.description}</p>
           )}
           {achievement.date && (
             <p className="mt-2 text-sm">
-              {new Date(achievement.date).toLocaleDateString()}
+              {new Date(achievement.date).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+              })}
             </p>
           )}
         </div>

@@ -20,7 +20,6 @@ const AboutContainer: React.FC<{ initialData: any }> = ({ initialData }) => {
     data: aboutData,
     isLoading: loading,
     error,
-    isError,
   } = useQuery({
     queryKey: ["about"],
     queryFn: fetchAboutData,
@@ -49,8 +48,11 @@ const AboutContainer: React.FC<{ initialData: any }> = ({ initialData }) => {
         <AboutIntro
           name={aboutData?.name || "Biotech Universe Group"}
           slogan={aboutData?.slogan || "Our Slogan"}
-          coverPhotoUrl={aboutData?.aboutPic} 
-          story={aboutData?.bio} 
+          coverPhotoUrl={aboutData?.aboutPic}
+          story={
+            aboutData?.bio ||
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut magna vel nisl cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut magna vel nisl cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut magna vel nisl cursus."
+          }
         />
       </div>
 

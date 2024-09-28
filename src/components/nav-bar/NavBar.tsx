@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   navigationMenuTriggerStyle,
@@ -11,7 +11,7 @@ import {
   NavigationMenuContent,
   NavigationMenuTrigger,
   NavigationMenuLink,
-} from "../ui/navigation-menu";
+} from "@/components/ui/navigation-menu";
 import {
   Bell,
   BookUser,
@@ -29,7 +29,7 @@ import {
   Users,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "../ui/badge";
+import { Badge } from "@/components/ui/badge";
 import {
   Sheet,
   SheetContent,
@@ -86,7 +86,13 @@ const NavBar = () => {
   const t = useTranslations("NavBar");
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const router = useRouter();
-  const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
+  const [isSmallDevice, setIsSmallDevice] = useState(false);
+
+  const checkMediaQuery = useMediaQuery("only screen and (max-width : 768px)");
+
+  useEffect(() => {
+    setIsSmallDevice(checkMediaQuery);
+  }, []);
 
   const handleLogout = () => {
     // Logout logic here
@@ -174,13 +180,8 @@ const NavBar = () => {
               <NavigationMenu>
                 <NavigationMenuList>
                   {pages.map((page) => (
-                    <NavigationMenuItem>
-                      <Link
-                        href={page.link}
-                        key={page.title}
-                        legacyBehavior
-                        passHref
-                      >
+                    <NavigationMenuItem key={page.title}>
+                      <Link href={page.link} legacyBehavior passHref>
                         <NavigationMenuLink
                           className={navigationMenuTriggerStyle()}
                         >

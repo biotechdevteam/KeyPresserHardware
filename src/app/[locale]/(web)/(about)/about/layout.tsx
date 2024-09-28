@@ -1,44 +1,48 @@
 "use client";
-import React, { useState } from "react";
-import {
-  useQuery,
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
+import React, { useState, useEffect } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
 import localforage from "localforage";
-import { fetchAboutData } from "@/lib/fetchUtils";
 import AboutHeader from "@/components/about/about-header/AboutHeader";
 
 const AboutLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Create the QueryClient once and persist it across renders
-  const [queryClient] = useState(() => {
-    const client = new QueryClient({
-      defaultOptions: {
-        queries: {
-          staleTime: Infinity,
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: Infinity,
+          },
         },
-      },
-    });
+      })
+  );
 
-    // Create a persister using localforage (for async storage)
-    const persister = createAsyncStoragePersister({
-      storage: localforage,
-    });
+  // State to track if the code is running on the client side
+  const [isClient, setIsClient] = useState(false);
 
-    // Set up cache persistence
-    persistQueryClient({
-      queryClient: client,
-      persister,
-      maxAge: 1000 * 60 * 60 * 24, // Only persist cache for 24 hours
-    });
+  useEffect(() => {
+    // Only run this when on the client-side (window is available)
+    if (typeof window !== "undefined") {
+      setIsClient(true);
 
-    return client;
-  });
+      const persister = createAsyncStoragePersister({
+        storage: localforage,
+      });
 
-  // Wrap the entire component in QueryClientProvider
+      // Set up cache persistence
+      persistQueryClient({
+        queryClient,
+        persister,
+        maxAge: 1000 * 60 * 60 * 24, // Only persist cache for 24 hours
+      });
+    }
+  }, [queryClient]);
+
+  // Only render the persistence on the client side
+  if (!isClient) return null;
+
   return (
     <QueryClientProvider client={queryClient}>
       <section>

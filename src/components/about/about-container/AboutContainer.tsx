@@ -13,6 +13,7 @@ import { extractDomain } from "@/lib/helpers";
 import { fetchAboutData } from "@/lib/fetchUtils";
 import CTASection from "../about-cta/CTASection";
 import AboutIntro from "@/components/about/about-intro/AboutIntro";
+import AboutPic from "@/assets/images/about-header.jpg"; // Image for AboutHeader
 
 // Accept the pre-fetched initialData as a prop
 const AboutContainer: React.FC<{ initialData: any }> = ({ initialData }) => {
@@ -48,7 +49,7 @@ const AboutContainer: React.FC<{ initialData: any }> = ({ initialData }) => {
         <AboutIntro
           name={aboutData?.name || "Biotech Universe Group"}
           slogan={aboutData?.slogan || "Our Slogan"}
-          coverPhotoUrl={aboutData?.aboutPic}
+          coverPhotoUrl={aboutData?.aboutPic || AboutPic}
           story={
             aboutData?.bio ||
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut magna vel nisl cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut magna vel nisl cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut magna vel nisl cursus."

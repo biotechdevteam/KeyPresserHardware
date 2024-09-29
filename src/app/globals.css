@@ -100,11 +100,12 @@
 @layer base {
   html {
     @apply border-border;
+    font-family: Arial, Helvetica, verdana, sans-serif;
   }
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: "POPPINS", sans-serif;
+    font-family: Arial, Helvetica, verdana, sans-serif;
     line-height: 1.5;
   }
 
@@ -120,7 +121,6 @@
   h5,
   h6 {
     @apply font-bold text-foreground;
-    font-family: "DOSIS", sans-serif;
     margin-top: 0;
     margin-bottom: 0.5rem;
   }

@@ -66,9 +66,9 @@ const AboutIntro: React.FC<AboutIntroProps> = ({
       </div>
 
       {/* Cover Photo Section */}
-      <div className="relative mt-4">
+      <div className="relative mt-16">
         {coverPhotoUrl && (
-          <AspectRatio ratio={16 / 9}>
+          <AspectRatio ratio={16 / 7}>
             <Image
               src={coverPhotoUrl}
               alt={name}
@@ -81,7 +81,7 @@ const AboutIntro: React.FC<AboutIntroProps> = ({
       </div>
 
       {/* Story/Bio Section */}
-      <div className="mt-4 text-center">
+      <div className="p-8 mt-2 text-center">
         {story && (
           <>
             <h3

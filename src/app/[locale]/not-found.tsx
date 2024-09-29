@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { useRouter } from "next/navigation";
 import {
   HomeIcon,
   Facebook,
@@ -15,9 +14,10 @@ import { fetchAboutData } from "@/lib/fetchUtils"; // Import the fetch function
 import Loader from "@/components/loader/Loader";
 import { Separator } from "@radix-ui/react-separator"; // Import Separator
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // Import Card components
+import { useTransitionRouter } from "next-view-transitions";
 
 const Custom404 = () => {
-  const router = useRouter();
+  const router = useTransitionRouter();
 
   // Fetch about data using useQuery
   const {
@@ -47,9 +47,16 @@ const Custom404 = () => {
     return <Loader />;
   }
 
-  if (error) {
-    return <Loader />;
-  }
+if (error) {
+  return (
+    <div className="flex flex-col items-center">
+      <p className="text-red-500 mb-4">
+        Something went wrong. Please try again later.
+      </p>
+      <Button onClick={() => router.refresh()}>Retry</Button>
+    </div>
+  );
+}
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground p-6">
@@ -92,8 +99,12 @@ const Custom404 = () => {
             onSubmit={handleSearch}
             className="grid grid-cols-[1fr_auto] gap-4 items-center"
           >
+            <label htmlFor="search" className="sr-only">
+              Search
+            </label>
             <input
               type="text"
+              id="search"
               name="search"
               placeholder="Search for something..."
               className="border px-4 py-2 rounded-md w-full"

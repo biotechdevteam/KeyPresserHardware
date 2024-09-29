@@ -5,6 +5,7 @@ import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import StoreProvider from "./storeProvider";
 import ClientLayout from "./ClientLayout";
+import { ViewTransitions } from "next-view-transitions";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -21,16 +22,18 @@ export default async function LocaleLayout({
   const messages = await getMessages({ locale: params.locale });
 
   return (
-    <html lang={params.locale}>
-      <body>
-        <NextIntlClientProvider messages={messages}>
-          <ClientLayout>
-            <StoreProvider>
-              <main className="bg-background">{children}</main>
-            </StoreProvider>
-          </ClientLayout>
-        </NextIntlClientProvider>
-      </body>
-    </html>
+    <ViewTransitions>
+      <html lang={params.locale}>
+        <body>
+          <NextIntlClientProvider messages={messages}>
+            <ClientLayout>
+              <StoreProvider>
+                <main className="bg-background pt-20">{children}</main>
+              </StoreProvider>
+            </ClientLayout>
+          </NextIntlClientProvider>
+        </body>
+      </html>
+    </ViewTransitions>
   );
 }

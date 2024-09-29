@@ -1,17 +1,15 @@
 import React from "react";
 import { UserIcon, FileTextIcon, CheckCircleIcon } from "lucide-react";
-
-interface ProgressBarProps {
-  currentStep: number;
-}
+import { useStep } from "@/contexts/ApplicationStepContext";
 
 const steps = [
+  { label: "Review Policies", icon: CheckCircleIcon },
   { label: "Personal Information", icon: UserIcon },
   { label: "Applicant Details", icon: FileTextIcon },
-  { label: "Review Policies", icon: CheckCircleIcon },
 ];
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep }) => {
+const ProgressBar: React.FC = () => {
+  const { currentStep } = useStep()
   return (
     <div className="w-full grid grid-cols-3 gap-4 mb-8">
       {steps.map((step, index) => (

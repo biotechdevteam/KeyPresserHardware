@@ -4,6 +4,7 @@
     "description": "Welcome to our homepage where you can find the latest updates and news."
   },
   "NavBar": {
+    "home": "Home",
     "projects": "Projects",
     "events": "Events",
     "services": "Services",
@@ -14,7 +15,8 @@
     "login": "Login",
     "profile": "Profile",
     "dashboard": "Dashboard",
-    "logout": "Logout"
+    "logout": "Logout",
+    "faqs": "FAQs"
   },
   "Header": {
     "about": {
@@ -40,6 +42,10 @@
     "contact": {
       "title": "Contact Us",
       "description": "Get in touch with us for inquiries and support."
+    },
+    "faq": {
+      "title": "FAQs",
+      "description": "Find answers to frequently asked questions about our services and projects."
     }
   },
   "footer": {

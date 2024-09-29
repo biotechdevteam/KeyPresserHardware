@@ -80,6 +80,11 @@ const pages = [
     link: "/contact",
     icon: <BookUser />,
   },
+  {
+    title: "faqs",
+    link: "/faqs",
+    icon: <BookUser />,
+  },
 ];
 
 const NavBar = () => {

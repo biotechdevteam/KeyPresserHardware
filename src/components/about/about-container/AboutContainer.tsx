@@ -13,6 +13,9 @@ import { extractDomain } from "@/lib/helpers";
 import { fetchAboutData } from "@/lib/fetchUtils";
 import CTASection from "../about-cta/CTASection";
 import AboutIntro from "@/components/about/about-intro/AboutIntro";
+import { Loader } from "lucide-react";
+import { useTransitionRouter } from "next-view-transitions";
+import SubscribeSection from "../subscribe/SubscribeSection";
 import AboutPic from "@/assets/images/about-header.jpg"; // Image for AboutHeader
 
 // Accept the pre-fetched initialData as a prop
@@ -28,10 +31,11 @@ const AboutContainer: React.FC<{ initialData: any }> = ({ initialData }) => {
     staleTime: Infinity, // Prevent unnecessary refetching, keep data fresh
   });
 
+  const router = useTransitionRouter()
   const websiteURL = extractDomain();
 
   if (loading && !aboutData) {
-    return <div className="text-center inset-0">Loading...</div>;
+    return <Loader />;
   }
 
   if (error) {
@@ -62,6 +66,7 @@ const AboutContainer: React.FC<{ initialData: any }> = ({ initialData }) => {
         <CTASection
           title="Join Us"
           description="Become a part of our mission!"
+          action={() => router.push("/apply")}
         />
       </div>
 
@@ -82,6 +87,7 @@ const AboutContainer: React.FC<{ initialData: any }> = ({ initialData }) => {
       <div className="col-span-1 lg:col-span-2">
         <CTASection
           title="Support Our Vision"
+          action={() => console.log("clicked")}
           description="Help us achieve our goals through your contributions."
         />
       </div>
@@ -111,7 +117,19 @@ const AboutContainer: React.FC<{ initialData: any }> = ({ initialData }) => {
         <CTASection
           title="Stay Connected"
           description="Subscribe to our newsletter for the latest updates."
+          action={() => {
+            const subscribeSection =
+              document.getElementById("subscribe-section");
+            if (subscribeSection) {
+              subscribeSection.scrollIntoView({ behavior: "smooth" });
+            }
+          }}
         />
+      </div>
+
+      {/* Subscribe Section */}
+      <div className="col-span-1 lg:col-span-2" id="subscribe-section">
+        <SubscribeSection />
       </div>
 
       {/* Footer Section */}

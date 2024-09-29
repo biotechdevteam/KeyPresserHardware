@@ -6,6 +6,7 @@ import { NextIntlClientProvider } from "next-intl";
 import StoreProvider from "./storeProvider";
 import ClientLayout from "./ClientLayout";
 import { ViewTransitions } from "next-view-transitions";
+import { StepProvider } from "@/contexts/ApplicationStepContext";
 
 export const metadata: Metadata = {
   title: "Create Next App",

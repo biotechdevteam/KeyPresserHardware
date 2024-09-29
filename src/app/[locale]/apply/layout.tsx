@@ -2,13 +2,15 @@
 import React, { ReactNode, useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import authBG from "@/assets/images/auth-bg.png"; // Ensure the path is correct
+import authBG1 from "@/assets/images/auth-bg-t.png"; // Ensure the path is correct
+import authBG2 from "@/assets/images/auth-bg-p.png"; // Ensure the path is correct
+import authBG3 from "@/assets/images/auth-bg.png"; // Ensure the path is correct
 import ProgressBar from "@/components/progress-bar/ProgressBar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
 import localforage from "localforage";
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
-import { StepProvider } from "@/contexts/ApplicationStepContext";
+import { StepProvider, useStep } from "@/contexts/ApplicationStepContext"; // Make sure this is imported correctly
 
 interface ApplyLayoutProps {
   children: ReactNode;
@@ -54,42 +56,85 @@ const ApplyLayout: React.FC<ApplyLayoutProps> = ({ children }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <StepProvider>
-        <div className={cn("min-h-screen overflow-hidden")}>
-          {/* Main Content */}
-          <div className="flex flex-1 relative">
-            {/* Left Side - Background with Title Overlay */}
-            <div className="hidden md:block w-1/2 relative">
-              <Image
-                src={authBG.src}
-                alt="Background Illustration"
-                fill
-                className="object-cover"
-                quality={100}
-              />
-              {/* Title on top of the image */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <h1 className="text-4xl font-bold text-foreground drop-shadow-lg">
-                  Apply to Join the Team
-                </h1>
-              </div>
-            </div>
+        {" "}
+        {/* Ensure StepProvider is applied here */}
+        <ApplyContent>{children}</ApplyContent>{" "}
+        {/* Moved content to separate component */}
+      </StepProvider>
+    </QueryClientProvider>
+  );
+};
 
-            {/* Right Side - Progress Bar and Form Section */}
-            <div className="w-full h-screen md:w-1/2 bg-white p-10 flex flex-col justify-center items-center relative">
-              {/* Progress Bar at the Top */}
-              <ProgressBar />
+// Separate out the content part that depends on `useStep`
+const ApplyContent: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const { currentStep } = useStep(); // Now useStep has the proper context
 
-              {/* Form Section */}
-              <div className="relative w-full h-full mt-5">
-                <div className="w-full max-w-lg absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2">
-                  {children}
-                </div>
-              </div>
+  // Choose background image based on the current step
+  const getBackgroundImage = () => {
+    switch (currentStep) {
+      case 0:
+        return authBG1.src;
+      case 1:
+        return authBG2.src;
+      case 2:
+        return authBG3.src;
+      default:
+        return authBG1.src;
+    }
+  };
+
+  // Set subtitle based on the current step
+  const getSubtitle = () => {
+    switch (currentStep) {
+      case 0:
+        return "Step 1: Review Our Terms and Policies";
+      case 1:
+        return "Step 2: Provide Personal Information";
+      case 2:
+        return "Step 3: Finalize Application";
+      default:
+        return "";
+    }
+  };
+
+  return (
+    <div className={cn("min-h-screen overflow-hidden")}>
+      {/* Main Content */}
+      <div className="flex flex-1 relative">
+        {/* Left Side - Background with Title Overlay */}
+        <div className="hidden md:block w-1/2 relative">
+          <Image
+            src={getBackgroundImage()}
+            alt="Background Illustration"
+            fill
+            className="object-cover"
+            quality={100}
+          />
+          {/* Title on top of the image */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <h1 className="text-4xl font-bold text-foreground drop-shadow-lg">
+              Apply to Join the Team
+            </h1>
+            <h2 className="text-xl font-medium text-foreground drop-shadow-sm mt-2">
+              {getSubtitle()}
+            </h2>
+          </div>
+        </div>
+
+        {/* Right Side - Progress Bar and Form Section */}
+        <div className="w-full h-screen md:w-1/2 bg-white p-10 flex flex-col justify-center items-center relative">
+          {/* Progress Bar at the Top */}
+          <ProgressBar />
+
+          {/* Form Section */}
+          <div className="relative w-full h-full mt-5">
+            <div className="w-full max-w-lg absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2">
+              {children}
             </div>
           </div>
         </div>
-      </StepProvider>
-    </QueryClientProvider>
+      </div>
+    </div>
   );
 };
 

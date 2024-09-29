@@ -21,10 +21,12 @@ interface ApplicationFormProps {
 }
 
 const specializationOptions = [
-  "UI/UX design",
-  "Web design",
-  "Graphic design",
-  "Design system",
+  "Molecular Biology",
+  "Biotechnology",
+  "Bioinformatics",
+  "Chemical Engineering",
+  "Pharmaceutical Research",
+  "Genetic Engineering",
   "Other",
 ];
 
@@ -155,7 +157,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
     >
       {/* Display Error */}
       {error && <div className="col-span-2 text-red-500">{error}</div>}
-      
+
       {/* Motivation Letter */}
       <div className="col-span-2">
         <label htmlFor="motivation_letter" className="block mb-2 font-bold">
@@ -235,19 +237,19 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
       {/* Referred by Member - ShadCN Select Dropdown */}
       <div className="col-span-2">
         <label htmlFor="referred_by_member" className="block mb-2 font-bold">
-          Referred by Member
+          Were you referred by a member of our team?
         </label>
         <Select
           value={formData.referred_by_member_id}
           onValueChange={handleDropdownChange}
         >
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select a referring member" />
+          <SelectTrigger className="w-full px-4 py-2 rounded-lg shadow-lg">
+            <SelectValue placeholder="Select a team member" />
           </SelectTrigger>
           <SelectContent>
             {/* Disable the default "Select a referring member" */}
             <SelectItem value="none" disabled>
-              Select a referring member
+              Select a team member
             </SelectItem>
             {members.map((member) => (
               <SelectItem key={member._id} value={member._id}>

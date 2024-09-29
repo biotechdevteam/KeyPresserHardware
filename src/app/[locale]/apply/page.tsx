@@ -1,15 +1,16 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { useAuth } from "@/lib/useAuth";
+import React from "react";
 import { useRouter } from "next/navigation";
 import ApplicationForm from "@/components/application-form/ApplicationForm";
 import SignUpForm from "@/components/application-form/SignUpForm";
 import { useQuery } from "@tanstack/react-query";
 import { fetchAboutData, fetchMembers } from "@/lib/fetchUtils"; // Fetch both about data and members
 import TermsCard from "@/components/about/terms-modal/TermsCard";
+import { useStep } from "@/contexts/ApplicationStepContext";
+import Loader from "@/components/loader/Loader";
 
 const ApplyPage: React.FC = () => {
-  const [currentStep, setCurrentStep] = useState(0); // Default to step 0 (Terms and Conditions)
+  const { currentStep, setCurrentStep } = useStep(); // Default to step 0 (Terms and Conditions)
   const router = useRouter();
 
   // Fetch about data using react-query
@@ -42,7 +43,7 @@ const ApplyPage: React.FC = () => {
 
   // Show a loading state while the data is being fetched
   if (aboutLoading || membersLoading) {
-    return <div>Loading...</div>;
+    return <div><Loader /></div>;
   }
 
   return (

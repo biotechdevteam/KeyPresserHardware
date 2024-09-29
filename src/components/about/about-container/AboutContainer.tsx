@@ -53,9 +53,9 @@ const AboutContainer: React.FC<{ initialData: any }> = ({ initialData }) => {
         <AboutIntro
           name={aboutData?.name || "Biotech Universe Group"}
           slogan={aboutData?.slogan || "Our Slogan"}
-          coverPhotoUrl={aboutData?.aboutPic || AboutPic}
+          coverPhotoUrl={aboutData?.cover_photo_url || AboutPic}
           story={
-            aboutData?.bio ||
+            aboutData?.history ||
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut magna vel nisl cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut magna vel nisl cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut magna vel nisl cursus."
           }
         />

@@ -8,7 +8,7 @@ const AboutHeader = () => {
   const t = useTranslations("Header.about");
 
   return (
-    <div className="relative h-[32vh] top-[64px] right-0 left-0 overflow-hidden">
+    <div className="relative h-[32vh] top-0 right-0 left-0 overflow-hidden">
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
 

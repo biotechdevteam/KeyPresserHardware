@@ -111,11 +111,11 @@ const ApplyContent: React.FC<{ children: ReactNode }> = ({ children }) => {
             quality={100}
           />
           {/* Title on top of the image */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <h1 className="text-4xl font-bold text-foreground drop-shadow-lg">
+          <div className="absolute inset-0 flex flex-col items-center justify-around">
+            <h1 className="text-4xl font-bold text-primary drop-shadow-lg">
               Apply to Join the Team
             </h1>
-            <h2 className="text-xl font-medium text-foreground drop-shadow-sm mt-2">
+            <h2 className="text-2xl font-semibold text-foreground drop-shadow-sm mt-2">
               {getSubtitle()}
             </h2>
           </div>

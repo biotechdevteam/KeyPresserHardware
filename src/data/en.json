@@ -1,0 +1,74 @@
+{
+  "HomePage": {
+    "title": "Hello world!",
+    "description": "Welcome to our homepage where you can find the latest updates and news."
+  },
+  "NavBar": {
+    "projects": "Projects",
+    "events": "Events",
+    "services": "Services",
+    "blog": "Blog",
+    "contact": "Contact",
+    "about": "About Us",
+    "home": "Home",
+    "login": "Login",
+    "profile": "Profile",
+    "dashboard": "Dashboard",
+    "logout": "Logout",
+    "faqs": "FAQs"
+  },
+  "Header": {
+    "about": {
+      "title": "About Us",
+      "description": "Learn more about our mission, vision, and values."
+    },
+    "projects": {
+      "title": "Our Projects",
+      "description": "Explore the various projects we are currently working on."
+    },
+    "events": {
+      "title": "Upcoming Events",
+      "description": "Stay updated on our upcoming events and activities."
+    },
+    "services": {
+      "title": "Our Services",
+      "description": "Discover the services we offer to our clients."
+    },
+    "blog": {
+      "title": "Blog",
+      "description": "Read our latest articles and insights."
+    },
+    "contact": {
+      "title": "Contact Us",
+      "description": "Get in touch with us for inquiries and support."
+    },
+    "faq": {
+      "title": "FAQs",
+      "description": "Find answers to frequently asked questions about our services and projects."
+    }
+  },
+  "footer": {
+    "contactInformationTitle": "Contact Information",
+    "contactFormTitle": "Send us a Message",
+    "socialMediaTitle": "Connect with Us",
+    "copyright": "BTVerse. All rights Reserved."
+  },
+  "contactform": {
+    "firstNamePlaceholder": "Your First Name",
+    "lastNamePlaceholder": "Your Last Name",
+    "phonePlaceholder": "Your Phone",
+    "emailPlaceholder": "Your Email",
+    "messagePlaceholder": "Type a Message",
+    "firstNameLabel": "First Name",
+    "lastNameLabel": "Last Name",
+    "emailLabel": "Email",
+    "phoneLabel": "Phone",
+    "messageLabel": "Message",
+    "sendMessageButton": "Send Message",
+    "firstNameError": "First name must be at least 2 characters.",
+    "lastNameError": "Last name must be at least 2 characters.",
+    "emailError": "Please enter a valid email address.",
+    "phoneError": "Please enter a valid phone number.",
+    "messageError": "Message must be at least 10 characters long."
+  }
+}

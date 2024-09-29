@@ -3,25 +3,186 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* website theme colors*/
+  --screamin-green: 105, 81%, 64%, 1;
+  --screamin-green-2: 114, 87%, 71%, 1;
+  --white: 160, 60%, 99%, 1;
+  --white-smoke: 0, 0%, 96%, 1;
+  --davys-gray: 240, 6%, 32%, 1;
+  --oxford-blue: 240, 61%, 10%, 1;
+  --black: 264, 100%, 3%, 1;
+  --mauveine: 300, 82%, 37%, 1;
+  --dark-magenta: 300, 91%, 30%, 1;
+  --off-red-rgb: 0, 98%, 52%, 1;
+
+  /* variables and usage */
+  --background: var(--white-smoke);
+  --foreground: var(--black);
+
+  --card: var(--white);
+  --card-foreground: var(--black);
+
+  --popover: var(--white);
+  --popover-foreground: var(--black);
+
+  --primary: var(--screamin-green);
+  --primary-foreground: var(--black);
+  --primary-variant: var(--screamin-green-2);
+
+  --secondary: var(--mauveine);
+  --secondary-foreground: var(--white);
+  --secondary-variant: var(--dark-magenta);
+
+  --muted: var(--white-smoke);
+  --muted-foreground: var(--davys-gray);
+
+  --accent: var(--mauveine);
+  --accent-foreground: var(--white);
+
+  --destructive: var(--off-red-rgb);
+  --destructive-foreground: var(--white);
+
+  --border: var(--davys-gray);
+  --input: var(--davys-gray);
+  --ring: var(--screamin-green);
+
+  --chart-1: var(--screamin-green-2);
+  --chart-2: var(--mauveine);
+  --chart-3: var(--oxford-blue);
+  --chart-4: var(--screamin-green);
+  --chart-5: var(--dark-magenta);
+
+  --radius: 0.5rem;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: var(--oxford-blue);
+    --foreground: var(--white);
+
+    --card: var(--black);
+    --card-foreground: var(--white);
+
+    --popover: var(--black);
+    --popover-foreground: var(--white);
+
+    --primary: var(--screamin-green);
+    --primary-foreground: var(--black);
+    --primary-variant: var(--screamin-green-2);
+
+    --secondary: var(--mauveine);
+    --secondary-foreground: var(--white);
+    --secondary-variant: var(--dark-magenta);
+
+    --muted: var(--oxford-blue);
+    --muted-foreground: var(--white-smoke);
+
+    --accent: var(--mauveine);
+    --accent-foreground: var(--white);
+
+    --destructive: var(--off-red-rgb);
+    --destructive-foreground: var(--white);
+
+    --border: var(--davys-gray);
+    --input: var(--davys-gray);
+    --ring: var(--screamin-green);
+
+    --chart-1: var(--screamin-green-2);
+    --chart-2: var(--mauveine);
+    --chart-3: var(--oxford-blue);
+    --chart-4: var(--screamin-green);
+    --chart-5: var(--dark-magenta);
+
+    --radius: 0.5rem;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  html {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: "POPPINS", sans-serif;
+    line-height: 1.5;
+  }
+
+  a {
+    @apply text-primary hover:underline;
+    text-decoration-skip-ink: auto;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold text-foreground;
+    font-family: "DOSIS", sans-serif;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    @apply text-muted-foreground;
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+
+  button {
+    @apply bg-primary text-primary-foreground rounded px-4 py-2 border-none hover:bg-primary-variant;
+    transition: background-color 0.3s;
+    cursor: pointer;
+  }
+
+  button:hover {
+    @apply bg-primary-variant text-primary-foreground;
+  }
+
+  input,
+  textarea {
+    @apply border border-border bg-input text-foreground rounded px-3 py-2;
+    transition: border-color 0.3s;
+  }
+
+  input:focus,
+  textarea:focus {
+    @apply outline-none border-ring;
+  }
+
+  /* Checkbox */
+  input[type="checkbox"] {
+    @apply appearance-none h-5 w-5 border border-primary rounded bg-input text-foreground focus:border-ring transition;
+  }
+
+  input[type="checkbox"]:checked {
+    @apply bg-primary border-primary;
+  }
+
+  input[type="checkbox"]:focus {
+    @apply outline-none border-ring;
+  }
+
+  /* Checkbox hover state */
+  input[type="checkbox"]:hover {
+    @apply bg-ring;
+  }
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+@layer components {
+  .card {
+    @apply bg-card text-card-foreground p-4 rounded-lg shadow-lg;
+  }
+
+  /* Popover */
+  .popover {
+    @apply bg-popover text-popover-foreground p-4 rounded-lg shadow-lg;
+  }
+
+  /* Alert */
+  .alert {
+    @apply bg-destructive text-destructive-foreground p-4 rounded-lg;
   }
 }

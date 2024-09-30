@@ -16,6 +16,7 @@ import AboutIntro from "@/components/about/about-intro/AboutIntro";
 import { Loader } from "lucide-react";
 import { useTransitionRouter } from "next-view-transitions";
 import SubscribeSection from "../subscribe/SubscribeSection";
+import AboutPic from "@/assets/images/about-header.jpg"; // Image for AboutHeader
 
 // Accept the pre-fetched initialData as a prop
 const AboutContainer: React.FC<{ initialData: any }> = ({ initialData }) => {
@@ -52,9 +53,9 @@ const AboutContainer: React.FC<{ initialData: any }> = ({ initialData }) => {
         <AboutIntro
           name={aboutData?.name || "Biotech Universe Group"}
           slogan={aboutData?.slogan || "Our Slogan"}
-          coverPhotoUrl={aboutData?.aboutPic}
+          coverPhotoUrl={aboutData?.cover_photo_url || AboutPic}
           story={
-            aboutData?.bio ||
+            aboutData?.history ||
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut magna vel nisl cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut magna vel nisl cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut magna vel nisl cursus."
           }
         />

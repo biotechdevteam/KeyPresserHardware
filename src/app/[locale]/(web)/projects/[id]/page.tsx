@@ -1,8 +1,10 @@
+import React from "react";
 import { QueryClient, dehydrate } from "@tanstack/react-query";
 import { fetchProjectsData } from "@/lib/fetchUtils";
-import ProjectsContainer from "@/components/projects/projects-container/ProjectsContainer";
+import ProjectDetails from "@/components/projects/project-details/ProjectDetails";
+import { notFound } from "next/navigation";
 
-// This function runs on the server-side and fetches the projects data.
+// Helper function to fetch project data
 async function getProjectData() {
   const queryClient = new QueryClient();
 
@@ -20,13 +22,25 @@ async function getProjectData() {
 }
 
 // Page component
-export default async function ProjectsPage() {
+export default async function ProjectPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const { projectsData } = await getProjectData(); // Fetch the data server-side
+
+  // Find the project with the matching ID
+  const project = projectsData.find((p: any) => p._id === params.id);
+
+  // If the project is not found, show a 404 page
+  if (!project) {
+    return notFound();
+  }
 
   return (
     <div>
-      {/* Pass the prefetched data as props to the ProjectsContainer */}
-      <ProjectsContainer initialData={projectsData} />
+      {/* Render the ProjectDetails component and pass the project */}
+      <ProjectDetails project={project} />
     </div>
   );
 }

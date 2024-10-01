@@ -2,6 +2,7 @@ import axiosInstance from "@/lib/axiosInstance";
 import { About } from "@/types/aboutSchema";
 import { FAQs, FAQsSchema } from "@/types/FAQSchema";
 import { Member } from "@/types/memberSchema";
+import { Project } from "@/types/projectSchema";
 import { AxiosError } from "axios";
 
 export const fetchData = async (
@@ -129,5 +130,16 @@ export const fetchFAQs = async (): Promise<FAQs> => {
   } catch (error) {
     console.error("Error during fetchFAQs:", error);
     throw new Error("Failed to fetch FAQs.");
+  }
+};
+
+// Fetch Projects Data
+export const fetchProjectsData = async (): Promise<Project[]> => {
+  try {
+    const response = await fetchData("/projects", "GET"); // Adjust the URL if necessary
+    return response?.data;
+  } catch (error) {
+    console.error("Error during fetchProjectsData:", error);
+    throw new Error("Failed to fetch projects.");
   }
 };

@@ -33,7 +33,7 @@
   --secondary-foreground: var(--white);
   --secondary-variant: var(--dark-magenta);
 
-  --muted: var(--white-smoke);
+  --muted: var(--davys-gray);
   --muted-foreground: var(--davys-gray);
 
   --accent: var(--mauveine);

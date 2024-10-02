@@ -9,7 +9,7 @@ const FAQLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <div className="w-full max-w-4xl mx-auto">
         <header className="mb-8 text-center">
           <h1 className="text-4xl font-bold">{t("title")}</h1>
-          <p className="text-lg text-gray-600 mt-4">{t("description")}</p>
+          <p className="text-lg mt-4">{t("description")}</p>
         </header>
         <div>{children}</div>
       </div>

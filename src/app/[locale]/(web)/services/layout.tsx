@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslations } from "next-intl";
+import ClientLayout from "../../ClientLayout";
 
 const ServiceLayout: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -7,15 +8,17 @@ const ServiceLayout: React.FC<{ children: React.ReactNode }> = ({
   const t = useTranslations("Header.services");
 
   return (
-    <section className="grid min-h-screen place-items-center p-8">
-      <div className="w-full max-w-4xl mx-auto">
-        <header className="mb-8 text-center">
-          <h1 className="text-4xl font-bold">{t("title")}</h1>
-          <p className="text-lg text-gray-600 mt-4">{t("description")}</p>
-        </header>
-        <div>{children}</div>
-      </div>
-    </section>
+    <ClientLayout>
+      <section className="grid min-h-screen">
+        <div className="w-full max-w-4xl mx-auto">
+          <header className="mb-8 text-center">
+            <h1 className="text-4xl font-bold">{t("title")}</h1>
+            <p className="text-lg mt-4">{t("description")}</p>
+          </header>
+          <div>{children}</div>
+        </div>
+      </section>
+    </ClientLayout>
   );
 };
 

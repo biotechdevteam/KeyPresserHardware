@@ -1,9 +1,12 @@
 import axiosInstance from "@/lib/axiosInstance";
 import { About } from "@/types/aboutSchema";
 import { FAQs, FAQsSchema } from "@/types/FAQSchema";
+import FeedbackSchema, { Feedback } from "@/types/feedbackSchema";
 import { Member } from "@/types/memberSchema";
 import { Project } from "@/types/projectSchema";
+import { Service } from "@/types/ServiceSchema";
 import { AxiosError } from "axios";
+import { z } from "zod";
 
 export const fetchData = async (
   url: string,
@@ -45,6 +48,17 @@ export const fetchAboutData = async (): Promise<About> => {
     return response?.data;
   } catch (error) {
     console.error("Error during fetchAboutData:", error);
+    throw new Error("Network request failed.");
+  }
+};
+
+// Fetch About Data
+export const fetchServices = async (): Promise<Service[]> => {
+  try {
+    const response = await fetchData("/services", "GET");
+    return response?.data;
+  } catch (error) {
+    console.error("Error during fetcServices:", error);
     throw new Error("Network request failed.");
   }
 };
@@ -133,6 +147,18 @@ export const fetchFAQs = async (): Promise<FAQs> => {
   }
 };
 
+// Fetch Feedbacks Data
+export const fetchFeedbacks = async (): Promise<Feedback[]> => {
+  try {
+    const response = await fetchData("/feedback", "GET");
+    return response?.data;
+  } catch (error) {
+    console.error("Error during fetchFeedbacks:", error);
+    throw new Error("Failed to fetch feedbacks.");
+  }
+};
+
+
 // Fetch Projects Data
 export const fetchProjectsData = async (): Promise<Project[]> => {
   try {
@@ -143,3 +169,24 @@ export const fetchProjectsData = async (): Promise<Project[]> => {
     throw new Error("Failed to fetch projects.");
   }
 };
+
+// Book Service Function
+export const bookService = async (
+  userId: string,
+  serviceId: string,
+  bookingDate: string,
+  description: string
+) => {
+  try {
+    const response = await fetchData("/services/book", "POST", {
+      user_id: userId,
+      service_id: serviceId,
+      booking_date: bookingDate,
+      description,
+    });
+    return response?.data;
+  } catch (error) {
+    console.error("Error during bookService:", error);
+    throw error;
+  }
+}

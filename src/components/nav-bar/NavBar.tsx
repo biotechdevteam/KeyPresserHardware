@@ -1,8 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import React from "react";
 import {
   navigationMenuTriggerStyle,
   NavigationMenu,
@@ -89,22 +88,14 @@ const pages = [
 
 const NavBar = () => {
   const t = useTranslations("NavBar");
-  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
-  const router = useRouter();
-  const [isSmallDevice, setIsSmallDevice] = useState(false);
-
-  const checkMediaQuery = useMediaQuery("only screen and (max-width : 768px)");
-
-  useEffect(() => {
-    setIsSmallDevice(checkMediaQuery);
-  }, []);
+  const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
 
   const handleLogout = () => {
     // Logout logic here
   };
 
-  const handleNotificationsMenu = () => {
-    setIsNotificationsOpen(!isNotificationsOpen);
+  const handleNotifications = () => {
+    // Notifications logic here
   };
 
   return (
@@ -115,8 +106,11 @@ const NavBar = () => {
           <Link href="/">
             <Image
               src={Logo}
+              width={40}
+              height={40}
+              priority={true}
               alt="Biotech Universe"
-              className="w-[40px] rounded"
+              className="rounded"
             />
           </Link>
         </div>

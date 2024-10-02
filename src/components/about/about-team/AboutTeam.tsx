@@ -9,6 +9,7 @@ import {
 import { LinkedinIcon, GithubIcon, FacebookIcon } from "lucide-react";
 import { LeadershipTeam } from "@/types/aboutSchema";
 import { Separator } from "@/components/ui/separator";
+import { useTransitionRouter } from "next-view-transitions";
 
 interface AboutTeamProps {
   leadershipTeam: LeadershipTeam[];
@@ -37,6 +38,8 @@ const getSocialIcon = (url: string) => {
 const AboutTeam: React.FC<AboutTeamProps> = ({ leadershipTeam }) => {
   const [isVisible, setIsVisible] = useState(false);
   const teamRef = useRef<HTMLDivElement | null>(null);
+
+  const router = useTransitionRouter() 
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -83,6 +86,7 @@ const AboutTeam: React.FC<AboutTeamProps> = ({ leadershipTeam }) => {
               className={`mx-auto rounded-lg shadow-lg hover:shadow-2xl transition-shadow bg-card ${
                 isVisible ? "animate-spinCard" : "opacity-0"
               }`}
+              onClick={() => router.push(`/members/${leader.member._id}`)} // Redirect to the member profile page
             >
               <CardHeader className="relative">
                 <img

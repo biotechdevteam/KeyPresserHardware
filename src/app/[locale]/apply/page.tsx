@@ -7,7 +7,6 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchAboutData, fetchMembers } from "@/lib/fetchUtils"; // Fetch both about data and members
 import TermsCard from "@/components/about/terms-modal/TermsCard";
 import { useStep } from "@/contexts/ApplicationStepContext";
-import Loader from "@/components/loader/Loader";
 
 const ApplyPage: React.FC = () => {
   const { currentStep, setCurrentStep } = useStep(); // Default to step 0 (Terms and Conditions)
@@ -43,7 +42,7 @@ const ApplyPage: React.FC = () => {
 
   // Show a loading state while the data is being fetched
   if (aboutLoading || membersLoading) {
-    return <div><Loader /></div>;
+    return <div>Loading...</div>;
   }
 
   return (

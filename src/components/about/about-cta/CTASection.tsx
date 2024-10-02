@@ -12,11 +12,11 @@ const CTASection: React.FC<CTASectionProps> = ({ title, description, action }) =
   return (
     <div
       className={cn(
-        "bg-card p-6 text-center rounded-lg shadow-lg",
+        "bg-card p-6 text-center rounded-lg shadow-lg max-w-lg mx-auto",
       )}
     >
       <h2 className="text-2xl font-bold mb-2">{title}</h2>
-      <p className="mb-4 text-base">{description}</p>
+      <p className="mb-4">{description}</p>
       <Button
         className="animate-pulse"
         size="lg"

@@ -32,7 +32,7 @@ const AboutContainer: React.FC<{ initialData: any }> = ({ initialData }) => {
     staleTime: Infinity, // Prevent unnecessary refetching, keep data fresh
   });
 
-  const router = useTransitionRouter()
+  const router = useTransitionRouter();
   const websiteURL = extractDomain();
 
   if (loading && !aboutData) {
@@ -48,7 +48,7 @@ const AboutContainer: React.FC<{ initialData: any }> = ({ initialData }) => {
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-16 sm:p-8 lg:mt-8 width-auto">
       {/* Introduction */}
       <div className="col-span-1 lg:col-span-2 p-3">
         <AboutIntro

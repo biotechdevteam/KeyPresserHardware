@@ -19,17 +19,17 @@ interface AboutTeamProps {
 const getSocialIcon = (url: string) => {
   if (url.includes("linkedin.com")) {
     return (
-      <LinkedinIcon className="w-6 h-6 text-primary hover:text-accent transition-colors" />
+      <LinkedinIcon className="w-5 h-5 text-primary hover:text-accent transition-colors" />
     );
   }
   if (url.includes("github.com")) {
     return (
-      <GithubIcon className="w-6 h-6 text-primary hover:text-accent transition-colors" />
+      <GithubIcon className="w-5 h-5 text-primary hover:text-accent transition-colors" />
     );
   }
   if (url.includes("facebook.com")) {
     return (
-      <FacebookIcon className="w-6 h-6 text-primary hover:text-accent transition-colors" />
+      <FacebookIcon className="w-5 h-5 text-primary hover:text-accent transition-colors" />
     );
   }
   return null; // If no match, return null
@@ -71,7 +71,7 @@ const AboutTeam: React.FC<AboutTeamProps> = ({ leadershipTeam }) => {
       <h2 className="text-xl font-bold">Our Leadership Team</h2>
       <Separator className="w-16 mx-auto mt-4 mb-12" />
 
-      <div className="flex flex-wrap lg:flex-row gap-8">
+      <div className="flex flex-col sm:flex-row gap-8">
         {leadershipTeam?.map((leader, index) => {
           const { member } = leader;
 
@@ -83,7 +83,7 @@ const AboutTeam: React.FC<AboutTeamProps> = ({ leadershipTeam }) => {
           return (
             <Card
               key={index}
-              className={`mx-auto rounded-lg shadow-lg hover:shadow-2xl transition-shadow bg-card ${
+              className={` rounded-lg shadow-lg hover:shadow-2xl transition-shadow bg-card ${
                 isVisible ? "animate-spinCard" : "opacity-0"
               }`}
               onClick={() => router.push(`/members/${leader.member._id}`)} // Redirect to the member profile page
@@ -100,13 +100,13 @@ const AboutTeam: React.FC<AboutTeamProps> = ({ leadershipTeam }) => {
               </CardHeader>
 
               <CardContent className="p-2">
-                <CardTitle className="text-xl font-semibold text-foreground">
+                <CardTitle className="text-lg font-semibold text-foreground">
                   {`${member.user_id.first_name} ${member.user_id.last_name}`}
                 </CardTitle>
                 <p className="text-xs uppercase">
                   {member.specialization || null}
                 </p>
-                <p className="m-4">{member.bio || null}</p>
+                <p className="m-4 max-w-64">{member.bio || null}</p>
               </CardContent>
 
               <CardFooter className="flex justify-center space-x-4 p-4">

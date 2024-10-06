@@ -100,12 +100,12 @@ const AboutAchievements: React.FC<AboutAchievementsProps> = ({
   }, []);
 
   return (
-    <Card className="p-8 bg-background shadow-lg rounded-lg" ref={achievementRef}>
-      <CardHeader className="text-center mb-6">
-        <h2 className="text-3xl font-bold">Achievements</h2>
+    <Card className="lg:p-8 bg-background shadow-lg rounded-lg" ref={achievementRef}>
+      <CardHeader className="text-center mb-4">
+        <h2 className="text-2xl font-bold">Achievements</h2>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {achievements.map((achievement, index) => (
             <AchievementCard
               key={index}

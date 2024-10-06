@@ -12,8 +12,8 @@ interface AboutVideosProps {
 
 const AboutVideos: React.FC<AboutVideosProps> = ({ videos }) => {
   return (
-    <Card className="p-4">
-      <h2 className="text-xl font-semibold mb-2">Videos</h2>
+    <Card className="p-4 lg:w-[18cm] mx-auto text-center">
+      <h2 className="text-xl font-semibold m-2">Videos</h2>
       <div className="grid grid-cols-1 gap-4">
         {videos.map((video, index) => (
           <div key={index} className="w-full">

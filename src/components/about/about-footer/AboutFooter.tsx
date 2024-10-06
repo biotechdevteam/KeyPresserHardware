@@ -42,7 +42,7 @@ const AboutFooter: React.FC<AboutFooterProps> = ({
   const t = useTranslations();
 
   return (
-    <footer className="bg-background py-10">
+    <footer className="py-10">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Contact Information */}
         <Card className="shadow-lg p-4">
@@ -80,7 +80,7 @@ const AboutFooter: React.FC<AboutFooterProps> = ({
                     href={website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-foreground hover:text-secondary transition-colors"
+                    className="hover:text-secondary transition-colors"
                   >
                     {website}
                   </a>
@@ -93,7 +93,7 @@ const AboutFooter: React.FC<AboutFooterProps> = ({
         {/* Social Media Links */}
         <Card className="bg-card shadow-lg p-4">
           <CardContent>
-            <h3 className="text-2xl font-semibold mb-6 text-primary">
+            <h3 className="text-2xl font-semibold mb-6">
               {t("footer.socialMediaTitle")}
             </h3>
             <div className="space-y-4">
@@ -103,9 +103,9 @@ const AboutFooter: React.FC<AboutFooterProps> = ({
                     href={socialLinks.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-foreground hover:text-primary transition-colors flex items-center"
+                    className="hover:text-primary transition-colors flex items-center"
                   >
-                    <Linkedin className="w-7 h-7 mr-3" />
+                    <Linkedin className="w-5 h-5 mr-3" />
                     {extractUsername(socialLinks.linkedin)}
                   </a>
                 </div>
@@ -117,9 +117,9 @@ const AboutFooter: React.FC<AboutFooterProps> = ({
                     href={socialLinks.twitter}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-foreground hover:text-primary transition-colors flex items-center"
+                    className="hover:text-primary transition-colors flex items-center"
                   >
-                    <Twitter className="w-7 h-7 mr-3" />
+                    <Twitter className="w-5 h-5 mr-3" />
                     {extractUsername(socialLinks.twitter)}
                   </a>
                 </div>
@@ -131,9 +131,9 @@ const AboutFooter: React.FC<AboutFooterProps> = ({
                     href={socialLinks.facebook}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-foreground hover:text-primary transition-colors flex items-center"
+                    className="hover:text-primary transition-colors flex items-center"
                   >
-                    <Facebook className="w-7 h-7 mr-3" />
+                    <Facebook className="w-5 h-5 mr-3" />
                     {extractUsername(socialLinks.facebook)}
                   </a>
                 </div>
@@ -145,9 +145,9 @@ const AboutFooter: React.FC<AboutFooterProps> = ({
                     href={socialLinks.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-foreground hover:text-primary transition-colors flex items-center"
+                    className="hover:text-primary transition-colors flex items-center"
                   >
-                    <Github className="w-7 h-7 mr-3" />
+                    <Github className="w-5 h-5 mr-3" />
                     {extractUsername(socialLinks.github)}
                   </a>
                 </div>
@@ -159,9 +159,9 @@ const AboutFooter: React.FC<AboutFooterProps> = ({
                     href={socialLinks.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-foreground hover:text-primary transition-colors flex items-center"
+                    className="hover:text-primary transition-colors flex items-center"
                   >
-                    <Instagram className="w-7 h-7 mr-3" />
+                    <Instagram className="w-5 h-5 mr-3" />
                     {extractUsername(socialLinks.instagram)}
                   </a>
                 </div>
@@ -174,10 +174,10 @@ const AboutFooter: React.FC<AboutFooterProps> = ({
         {/* Contact Form */}
         <Card className="bg-card shadow-lg col-span-1 md:col-span-2 p-4">
           <CardContent className="flex flex-col items-center justify-center">
-            <h3 className="text-2xl font-semibold mb-6 text-primary">
+            <h3 className="text-2xl font-semibold mb-6">
               {t("footer.contactFormTitle")}
             </h3>
-            <div className="w-full max-w-lg">
+            <div className="max-w-lg">
               <ContactForm />
             </div>
           </CardContent>

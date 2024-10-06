@@ -147,26 +147,26 @@ const NavBar = () => {
                   </Link>
                   {/* ) : ( */}
                   {/* <> */}
-                  <Link href="/profile">
+                  {/* <Link href="/profile">
                     <p className="flex gap-4 text-md hover:text-primary">
                       <User />
                       {t("profile")}
                     </p>
-                  </Link>
+                  </Link> */}
                   {/* {user.userType === "admin" && ( */}
-                  <Link href="/dashboard">
+                  {/* <Link href="/dashboard">
                     <p className="flex gap-4 text-md hover:text-primary">
                       <SlidersHorizontal />
                       {t("dashboard")}
                     </p>
-                  </Link>
+                  </Link> */}
                   {/* )} */}
-                  <Link href="#" onClick={handleLogout}>
+                  {/* <Link href="#" onClick={handleLogout}>
                     <p className="flex gap-4 text-md hover:text-primary">
                       <LogOut />
                       {t("logout")}
                     </p>
-                  </Link>
+                  </Link> */}
                   {/* </> */}
                   {/* )} */}
                   <SheetFooter></SheetFooter>
@@ -196,7 +196,7 @@ const NavBar = () => {
                 {/* Notifications */}
                 {/* {user && ( */}
                 {/* Notifications Menu */}
-                <NavigationMenu>
+                {/* <NavigationMenu>
                   <NavigationMenuList>
                     <NavigationMenuItem>
                       <NavigationMenuTrigger>
@@ -216,7 +216,7 @@ const NavBar = () => {
                       </NavigationMenuContent>
                     </NavigationMenuItem>
                   </NavigationMenuList>
-                </NavigationMenu>
+                </NavigationMenu> */}
                 {/* )} */}
 
                 {/* Profile Menu */}
@@ -225,7 +225,7 @@ const NavBar = () => {
                     <NavigationMenuItem>
                       <NavigationMenuTrigger>
                         <Avatar>
-                          <AvatarImage src="https://github.com/shadcn.png" />
+                          <AvatarImage src="" />
                           <AvatarFallback>
                             <CircleUser />
                           </AvatarFallback>
@@ -242,29 +242,29 @@ const NavBar = () => {
                         </NavigationMenuLink>
                         {/* ) : ( */}
                         {/* <> */}
-                        <NavigationMenuLink
+                        {/* <NavigationMenuLink
                           href="/profile"
                           className={navigationMenuTriggerStyle()}
                         >
                           <User className="mr-2 h-4 w-4" />
                           {t("profile")}
-                        </NavigationMenuLink>
+                        </NavigationMenuLink> */}
                         {/* {user.userType === "admin" && ( */}
-                        <NavigationMenuLink
+                        {/* <NavigationMenuLink
                           href="/dashboard"
                           className={navigationMenuTriggerStyle()}
                         >
                           <SlidersHorizontal className="mr-2 h-4 w-4" />
                           {t("dashboard")}
-                        </NavigationMenuLink>
+                        </NavigationMenuLink> */}
                         {/* )} */}
-                        <NavigationMenuLink
+                        {/* <NavigationMenuLink
                           onClick={handleLogout}
                           className={navigationMenuTriggerStyle()}
                         >
                           <LogOut className="mr-2 h-4 w-4" />
                           {t("logout")}
-                        </NavigationMenuLink>
+                        </NavigationMenuLink> */}
                         {/* </> */}
                         {/* )} */}
                       </NavigationMenuContent>

@@ -112,21 +112,6 @@ const AboutContainer: React.FC<{ initialData: any }> = ({ initialData }) => {
         <AboutVideos videos={aboutData.videos || []} />
       </div>
 
-      {/* CTA Section before Footer */}
-      <div className="col-span-1 lg:col-span-2">
-        <CTASection
-          title="Stay Connected"
-          description="Subscribe to our newsletter for the latest updates."
-          action={() => {
-            const subscribeSection =
-              document.getElementById("subscribe-section");
-            if (subscribeSection) {
-              subscribeSection.scrollIntoView({ behavior: "smooth" });
-            }
-          }}
-        />
-      </div>
-
       {/* Subscribe Section */}
       <div className="col-span-1 lg:col-span-2" id="subscribe-section">
         <SubscribeSection />

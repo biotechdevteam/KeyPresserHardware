@@ -49,10 +49,10 @@ const TermsModal: React.FC<TermsModalProps> = ({
 
   return (
     <Dialog>
-      <DialogTrigger asChild className="py-8 w-full flex justify-center">
+      <DialogTrigger asChild className="py-8 flex justify-center">
         <Link
           href="#"
-          className="bg-primary text-foreground p-6 text-lg font-bold rounded-lg hover:bg-primary-dark transition duration-300 ease-in-out"
+          className="bg-primary text-foreground p-6 w-40 mx-auto font-bold rounded-lg hover:bg-card transition duration-300 ease-in-out"
         >
           Join Our Team
         </Link>
@@ -124,7 +124,7 @@ const TermsModal: React.FC<TermsModalProps> = ({
             {/* Apply Now button with alert handling */}
             <Button
               onClick={handleApplyNow}
-              className="w-full bg-primary text-white hover:bg-primary-dark"
+              className="w-auto bg-primary text-foreground hover:bg-card"
             >
               Apply Now
             </Button>

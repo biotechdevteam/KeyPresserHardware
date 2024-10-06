@@ -37,7 +37,7 @@ const AboutDetails: React.FC<AboutDetailsProps> = ({ mission, vision }) => {
   }, []);
 
   return (
-    <div className="py-12 px-6 lg:px-24 space-y-12" ref={detailsRef}>
+    <div className="py-12 lg:px-24 space-y-12" ref={detailsRef}>
       {/* Mission Section */}
       <Card
         className={`shadow-lg rounded-lg transition-all duration-700 ease-in-out transform ${
@@ -45,19 +45,15 @@ const AboutDetails: React.FC<AboutDetailsProps> = ({ mission, vision }) => {
         }`}
       >
         <CardHeader>
-          <h2 className="text-3xl font-bold text-center">
-            Our Mission
-          </h2>
+          <h2 className="text-2xl font-bold text-center">Our Mission</h2>
+          <Separator className="w-16 mx-auto" />
         </CardHeader>
         <CardContent>
-          <p className="text-lg leading-relaxed text-center px-4 lg:px-12">
+          <p className="text-lg leading-relaxed text-center px-1 lg:px-12">
             {mission}
           </p>
         </CardContent>
       </Card>
-
-      {/* Separator for Mission and Vision */}
-      <Separator className="my-6" />
 
       {/* Vision Section */}
       <Card
@@ -66,12 +62,11 @@ const AboutDetails: React.FC<AboutDetailsProps> = ({ mission, vision }) => {
         }`}
       >
         <CardHeader>
-          <h2 className="text-3xl font-bold text-center">
-            Our Vision
-          </h2>
+          <h2 className="text-2xl font-bold text-center">Our Vision</h2>
+          <Separator className="w-16 mx-auto" />
         </CardHeader>
         <CardContent>
-          <p className="text-lg leading-relaxed text-center px-4 lg:px-12">
+          <p className="text-lg leading-relaxed text-center px-1 lg:px-12">
             {vision}
           </p>
         </CardContent>

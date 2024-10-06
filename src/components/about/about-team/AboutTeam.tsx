@@ -9,7 +9,6 @@ import {
 import { LinkedinIcon, GithubIcon, FacebookIcon } from "lucide-react";
 import { LeadershipTeam } from "@/types/aboutSchema";
 import { useTransitionRouter } from "next-view-transitions";
-import { Separator } from "@/components/ui/separator";
 
 interface AboutTeamProps {
   leadershipTeam: LeadershipTeam[];

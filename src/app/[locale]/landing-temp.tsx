@@ -16,7 +16,7 @@ import { Separator } from "@radix-ui/react-separator"; // Import Separator
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // Import Card components
 import { useTransitionRouter } from "next-view-transitions";
 
-const Custom404 = () => {
+const LandingTemp = () => {
   const router = useTransitionRouter();
 
   // Fetch about data using useQuery
@@ -47,45 +47,24 @@ const Custom404 = () => {
     return <Loader />;
   }
 
-if (error) {
-  return (
-    <div className="flex flex-col items-center">
-      <p className="text-destructive mb-4">
-        Something went wrong. Please try again later.
-      </p>
-      <Button onClick={() => router.refresh()}>Refresh</Button>
-    </div>
-  );
-}
+  if (error) {
+    return (
+      <div className="flex flex-col items-center">
+        <p className="text-destructive mb-4">
+          Something went wrong. Please try again later.
+        </p>
+        <Button onClick={() => router.refresh()}>Refresh</Button>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen text-foreground p-6">
-      {/* Error Message Section */}
-      <Card className="w-full max-w-2xl">
-        <CardHeader>
-          <CardTitle className="text-center text-6xl font-bold mb-4">
-            Oops!
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-center text-2xl mb-8">
-            We can't seem to find the page you're looking for. But don’t worry,
-            we’re here to help!
-          </p>
-          <div className="flex justify-center">
-            <Button
-              onClick={handleGoHome}
-              className="inline-flex items-center px-6 py-3"
-            >
-              <HomeIcon className="mr-2 h-5 w-5" />
-              Back to Home
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Separator */}
-      <Separator className="my-8" />
+      {/* Coming soon */}
+      <h1 className="text-5xl font-bold">Coming Soon!</h1>
+      <p className="text-lg">
+        This feature is currently under development. Stay tuned for updates!
+      </p>
 
       {/* Search Section */}
       <Card className="w-full max-w-2xl">
@@ -129,16 +108,16 @@ if (error) {
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <Button onClick={() => router.push("/blog")} className="w-full">
-              Visit Blog
+              Visit Our Blogs
             </Button>
             <Button onClick={() => router.push("/about")} className="w-full">
-              About Us
+              Know More About Us
             </Button>
             <Button onClick={() => router.push("/services")} className="w-full">
-              Our Services
+              Explore Our Services
             </Button>
             <Button onClick={() => router.push("/contact")} className="w-full">
-              Contact Us
+              Browse Our Projects
             </Button>
           </div>
         </CardContent>
@@ -203,4 +182,4 @@ if (error) {
   );
 };
 
-export default Custom404;
+export default LandingTemp;

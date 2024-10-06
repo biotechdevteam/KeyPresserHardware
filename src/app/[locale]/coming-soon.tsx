@@ -5,7 +5,7 @@ const ComingSoon: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center my-20 text-center space-y-4">
       <h1 className="text-5xl font-bold">Coming Soon!</h1>
-      <p className="text-lg text-muted-foreground">
+      <p className="text-lg">
         This feature is currently under development. Stay tuned for updates!
       </p>
       <div className="relative mt-8 flex justify-center">
@@ -16,9 +16,12 @@ const ComingSoon: React.FC = () => {
         {/* Inner Circle */}
         <div className="relative w-16 h-16 rounded-full bg-primary"></div>
       </div>
-      <Button size="lg" className="mt-8">
-        Notify Me
-      </Button>
+      <div>
+        <p>We can notify you once the work is done</p>
+        <Button size="lg" className="mt-8">
+          Notify Me
+        </Button>
+      </div>
     </div>
   );
 };

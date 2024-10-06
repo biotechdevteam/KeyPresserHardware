@@ -75,7 +75,7 @@ const LandingTemp = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Button onClick={() => router.push("/blog")} className="w-full">
+            <Button onClick={() => router.push("/blogs")} className="w-full">
               Visit Our Blogs
             </Button>
             <Button onClick={() => router.push("/about")} className="w-full">
@@ -84,7 +84,7 @@ const LandingTemp = () => {
             <Button onClick={() => router.push("/services")} className="w-full">
               Explore Our Services
             </Button>
-            <Button onClick={() => router.push("/contact")} className="w-full">
+            <Button onClick={() => router.push("/projects")} className="w-full">
               Browse Our Projects
             </Button>
           </div>

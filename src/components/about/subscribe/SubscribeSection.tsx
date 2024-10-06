@@ -20,25 +20,33 @@ const SubscribeSection: React.FC = () => {
   };
 
   return (
-    <div className="p-6 bg-card rounded-lg shadow-lg">
-      <h3 className="text-xl font-bold mb-4">Subscribe to Our Newsletter</h3>
-      <Input
-        type="email"
-        placeholder="Enter your email"
-        value={email}
-        onChange={(e) => {
-          setEmail(e.target.value);
-          setError("");
-        }}
-        className="mb-4"
-      />
-      {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
-      <Button onClick={handleSubscribe} size="lg" className="w-full">
-        Subscribe
-      </Button>
-      {isSubscribed && (
-        <p className="text-green-500 mt-4">Thank you for subscribing!</p>
-      )}
+    <div className="p-6 bg-card rounded-lg shadow-lg max-w-md mx-auto text-center">
+      <h3 className="text-2xl font-bold mb-2">Stay Connected</h3>
+      <p className="mb-4">Subscribe to our newsletter for the latest updates</p>
+      <div className="max-w-xs mx-auto">
+        <Input
+          type="email"
+          placeholder="Enter your email"
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setError("");
+          }}
+          className="mb-4"
+        />
+        {isSubscribed ? (
+          <div className="text-center bg-primary w-auto mx-auto">
+            <p className="text-primary-foreground">Thank you for subscribing!</p>
+          </div>
+        ) : (
+          <>
+            {error && <p className="text-destructive text-sm mb-2">{error}</p>}
+            <Button onClick={handleSubscribe} size="lg" className="w-full">
+              Subscribe
+            </Button>
+          </>
+        )}
+      </div>
     </div>
   );
 };

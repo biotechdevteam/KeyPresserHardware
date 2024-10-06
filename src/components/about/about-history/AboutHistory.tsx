@@ -53,11 +53,11 @@ const HistoryTimeline: React.FC = () => {
   return (
     <Card
       ref={historyRef}
-      className={`py-12 px-6 lg:px-24 shadow-lg rounded-lg transition-opacity duration-500 ${
+      className={`py-12 px-6 lg:px-24 max-w-4xl mx-auto shadow-lg rounded-lg transition-opacity duration-500 ${
         isVisible ? "animate-fadeIn" : "opacity-0"
       }`}
     >
-      <h2 className="text-4xl font-bold mb-12 text-center">
+      <h2 className="text-2xl font-bold mb-12 text-center">
         Our History
       </h2>
       <div className="grid gap-12">
@@ -79,7 +79,7 @@ const HistoryTimeline: React.FC = () => {
 
             {/* Content Section */}
             <div className="text-center md:text-left">
-              <h3 className="text-2xl font-semibold">
+              <h3 className="text-xl font-semibold">
                 {item.year}
               </h3>
               <p className="text-md">

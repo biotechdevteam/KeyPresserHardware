@@ -76,13 +76,13 @@ const ServicesContainer: React.FC<ServicesContainerProps> = ({
       )}
 
       {/* Gallery Section */}
-      {selectedCategory !== null && (
+      {/* {selectedCategory !== null && (
         <Gallery
           services={services}
           selectedCategory={selectedCategory}
           onServiceClick={handleServiceClick}
         />
-      )}
+      )} */}
 
       {/* Testimonials Section */}
       {selectedCategory !== null && (

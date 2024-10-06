@@ -9,6 +9,7 @@ import {
 import { LinkedinIcon, GithubIcon, FacebookIcon } from "lucide-react";
 import { LeadershipTeam } from "@/types/aboutSchema";
 import { Separator } from "@/components/ui/separator";
+import { Separator } from "@/components/ui/separator";
 import { useTransitionRouter } from "next-view-transitions";
 
 interface AboutTeamProps {
@@ -20,15 +21,18 @@ const getSocialIcon = (url: string) => {
   if (url.includes("linkedin.com")) {
     return (
       <LinkedinIcon className="w-5 h-5 text-primary hover:text-accent transition-colors" />
+      <LinkedinIcon className="w-5 h-5 text-primary hover:text-accent transition-colors" />
     );
   }
   if (url.includes("github.com")) {
     return (
       <GithubIcon className="w-5 h-5 text-primary hover:text-accent transition-colors" />
+      <GithubIcon className="w-5 h-5 text-primary hover:text-accent transition-colors" />
     );
   }
   if (url.includes("facebook.com")) {
     return (
+      <FacebookIcon className="w-5 h-5 text-primary hover:text-accent transition-colors" />
       <FacebookIcon className="w-5 h-5 text-primary hover:text-accent transition-colors" />
     );
   }
@@ -70,7 +74,11 @@ const AboutTeam: React.FC<AboutTeamProps> = ({ leadershipTeam }) => {
     <div className="py-12 lg:px-24 text-center" ref={teamRef}>
       <h2 className="text-xl font-bold">Our Leadership Team</h2>
       <Separator className="w-16 mx-auto mt-4 mb-12" />
+    <div className="py-12 lg:px-24 text-center" ref={teamRef}>
+      <h2 className="text-xl font-bold">Our Leadership Team</h2>
+      <Separator className="w-16 mx-auto mt-4 mb-12" />
 
+      <div className="flex flex-col sm:flex-row gap-8">
       <div className="flex flex-col sm:flex-row gap-8">
         {leadershipTeam?.map((leader, index) => {
           const { member } = leader;
@@ -84,6 +92,7 @@ const AboutTeam: React.FC<AboutTeamProps> = ({ leadershipTeam }) => {
             <Card
               key={index}
               className={` rounded-lg shadow-lg hover:shadow-2xl transition-shadow bg-card ${
+              className={` rounded-lg shadow-lg hover:shadow-2xl transition-shadow bg-card ${
                 isVisible ? "animate-spinCard" : "opacity-0"
               }`}
               onClick={() => router.push(`/members/${leader.member._id}`)} // Redirect to the member profile page
@@ -96,16 +105,22 @@ const AboutTeam: React.FC<AboutTeamProps> = ({ leadershipTeam }) => {
                   }
                   alt={`${member.user_id.first_name} ${member.user_id.last_name}`}
                   className="w-24 h-24 lg:w-32 lg:h-32 mx-auto object-cover rounded-full"
+                  className="w-24 h-24 lg:w-32 lg:h-32 mx-auto object-cover rounded-full"
                 />
               </CardHeader>
 
+              <CardContent className="p-2">
+                <CardTitle className="text-lg font-semibold text-foreground">
               <CardContent className="p-2">
                 <CardTitle className="text-lg font-semibold text-foreground">
                   {`${member.user_id.first_name} ${member.user_id.last_name}`}
                 </CardTitle>
                 <p className="text-xs uppercase">
                   {member.specialization || null}
+                <p className="text-xs uppercase">
+                  {member.specialization || null}
                 </p>
+                <p className="m-4 max-w-64">{member.bio || null}</p>
                 <p className="m-4 max-w-64">{member.bio || null}</p>
               </CardContent>
 

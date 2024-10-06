@@ -66,38 +66,6 @@ const LandingTemp = () => {
         This feature is currently under development. Stay tuned for updates!
       </p>
 
-      {/* Search Section */}
-      <Card className="w-full max-w-2xl">
-        <CardHeader>
-          <CardTitle className="text-2xl font-semibold text-center mb-4">
-            Search for Something
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form
-            onSubmit={handleSearch}
-            className="grid grid-cols-[1fr_auto] gap-4 items-center"
-          >
-            <label htmlFor="search" className="sr-only">
-              Search
-            </label>
-            <input
-              type="text"
-              id="search"
-              name="search"
-              placeholder="Search for something..."
-              className="border px-4 py-2 rounded-md w-full"
-            />
-            <Button type="submit" className="px-6 py-2">
-              Search
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-
-      {/* Separator */}
-      <Separator className="my-8" />
-
       {/* Navigation Section */}
       <Card className="w-full max-w-2xl">
         <CardHeader>

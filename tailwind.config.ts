@@ -131,6 +131,10 @@ const config: Config = {
             height: "0",
           },
         },
+        beep: {
+          "0%, 100%": { transform: "scale(1)" },
+          "50%": { transform: "scale(1.1)" },
+        },
       },
       animation: {
         fadeInUp: "fadeInUp 0.5s ease-out forwards",
@@ -139,6 +143,7 @@ const config: Config = {
         spinUp: "spinUp 1s ease-out forwards",
         spinCard: "spinCard 0.8s ease-out forwards",
         slide: "slide 20s linear infinite",
+        beep: "beep 1.5s ease-in-out infinite",
         "spin-slow": "spin 4s linear infinite",
         "spin-slow-reverse": "spin 4s linear infinite reverse",
         "accordion-down": "accordion-down 0.2s ease-out",

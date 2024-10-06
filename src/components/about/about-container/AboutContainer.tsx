@@ -24,6 +24,7 @@ const AboutContainer: React.FC<{ initialData: any }> = ({ initialData }) => {
     data: aboutData,
     isLoading: loading,
     error,
+    isError
   } = useQuery({
     queryKey: ["about"],
     queryFn: fetchAboutData,
@@ -38,7 +39,7 @@ const AboutContainer: React.FC<{ initialData: any }> = ({ initialData }) => {
     return <Loader />;
   }
 
-  if (error) {
+  if (error || isError) {
     return (
       <div className="text-destructive text-center inset-0">
         Error: {error.message}
@@ -47,9 +48,9 @@ const AboutContainer: React.FC<{ initialData: any }> = ({ initialData }) => {
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-16 mt-16">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
       {/* Introduction */}
-      <div className="col-span-1 lg:col-span-2">
+      <div className="col-span-1 lg:col-span-2 p-3">
         <AboutIntro
           name={aboutData?.name || "Biotech Universe Group"}
           slogan={aboutData?.slogan || "Our Slogan"}
@@ -62,7 +63,7 @@ const AboutContainer: React.FC<{ initialData: any }> = ({ initialData }) => {
       </div>
 
       {/* CTA Section after About Intro */}
-      <div className="col-span-1 lg:col-span-2">
+      <div className="col-span-1 lg:col-span-2 p-5">
         <CTASection
           title="Join Us"
           description="Become a part of our mission!"

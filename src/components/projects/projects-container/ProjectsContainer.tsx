@@ -95,77 +95,24 @@ const ProjectsContainer: React.FC<ProjectsContainerProps> = ({
     return filtered;
   }, [filters, projectsData]);
 
+  // Create a set of unique categories from projectsData and convert it to an array
+  const categories = useMemo(() => {
+    if (!projectsData) return [];
+    const categorySet = new Set<string>();
+    projectsData.forEach((project) => {
+      if (project.category) {
+        categorySet.add(project.category);
+      }
+    });
+    return Array.from(categorySet);
+  }, [projectsData]);
+
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading projects...</div>;
 
   return (
-    <div className="relative grid place-items-center p-6">
-      <Popover>
-        <PopoverTrigger>Filter Preferences</PopoverTrigger>
-        <PopoverContent className="w-full">
-          <ProjectFilters onFilterChange={handleFilterChange} />
-        </PopoverContent>
-      </Popover>
-
-      {/* Selected Preferences Indicator */}
-      <div className="p-4 mt-4 rounded-md shadow-md text-sm max-w-md">
-        <h3 className="font-semibold mb-2 text-gray-700">Applied Filters</h3>
-        <ul className="space-x-2 flex">
-          {filters.search && (
-            <li>
-              <span className="font-bold text-gray-600">Search:</span>{" "}
-              <span className="text-gray-800">{filters.search}</span>
-            </li>
-          )}
-          {filters.category && (
-            <li>
-              <span className="font-bold text-gray-600">Category:</span>{" "}
-              <span className="text-gray-800">{filters.category}</span>
-            </li>
-          )}
-          {filters.status && (
-            <li>
-              <span className="font-bold text-gray-600">Status:</span>{" "}
-              <span className="text-gray-800">
-                {filters.status.charAt(0).toUpperCase() +
-                  filters.status.slice(1)}
-              </span>
-            </li>
-          )}
-          {filters.startDate && (
-            <li>
-              <span className="font-bold text-gray-600">Start Date:</span>{" "}
-              <span className="text-gray-800">
-                {new Date(filters.startDate).toLocaleDateString()}
-              </span>
-            </li>
-          )}
-          {filters.endDate && (
-            <li>
-              <span className="font-bold text-gray-600">End Date:</span>{" "}
-              <span className="text-gray-800">
-                {new Date(filters.endDate).toLocaleDateString()}
-              </span>
-            </li>
-          )}
-          {filters.sortOption && (
-            <li>
-              <span className="font-bold text-gray-600">Sort By:</span>{" "}
-              <span className="text-gray-800 capitalize">
-                {filters.sortOption}
-              </span>
-            </li>
-          )}
-          {!filters.search &&
-            !filters.category &&
-            !filters.status &&
-            !filters.startDate &&
-            !filters.endDate &&
-            !filters.sortOption && (
-              <li className="text-gray-500">No filters applied</li>
-            )}
-        </ul>
-      </div>
+    <div className="relative grid place-items-center">
+      <ProjectFilters onFilterChange={handleFilterChange} categories={categories} />
 
       {/* Project List */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">

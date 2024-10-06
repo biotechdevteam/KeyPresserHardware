@@ -1,6 +1,5 @@
 import React from "react";
 import { Service } from "@/types/ServiceSchema";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 // Category-specific titles and descriptions
@@ -52,7 +51,7 @@ const categoryDescriptions: {
 interface GalleryProps {
   services: Service[];
   selectedCategory: string | null;
-  onServiceClick: (serviceId: string) => void;
+  onServiceClick?: (serviceId: string) => void;
 }
 
 const Gallery: React.FC<GalleryProps> = ({
@@ -84,44 +83,41 @@ const Gallery: React.FC<GalleryProps> = ({
         <p className="text-lg text-foreground">{description}</p>
       </div>
 
+      {/* Loop through each service and display its images in a grid */}
       {filteredServices.length > 0 ? (
         filteredServices.map((service) => (
           <div key={service._id} className="mb-12">
-            {/* Service description with improved UX */}
-            <Card className="mb-4">
-              <CardHeader>
-                <div className="text-lg font-semibold">
-                  Explore Our Work in {service.title}
+            {/* Service title and description */}
+            <div className="mb-4">
+              <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
+              {/* Responsive grid for portfolio images */}
+              {service.portfolio_urls && service.portfolio_urls.length > 0 ? (
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+                  {service.portfolio_urls.map((url, index) => (
+                    <div
+                      key={index}
+                      className="relative overflow-hidden shadow-lg"
+                    >
+                      <img
+                        src={url}
+                        alt={`Portfolio image ${index + 1} for ${
+                          service.title
+                        }`}
+                        className="w-full h-64 object-cover rounded-md"
+                      />
+                    </div>
+                  ))}
                 </div>
-              </CardHeader>
-              <CardContent>
-                {/* Render portfolio images in a responsive grid */}
-                {service.portfolio_urls && service.portfolio_urls.length > 0 ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {service.portfolio_urls.map((url, index) => (
-                      <div
-                        key={index}
-                        className="relative overflow-hidden rounded-md shadow-lg"
-                      >
-                        <img
-                          src={url}
-                          alt={`Portfolio image ${index + 1} for ${
-                            service.title
-                          }`}
-                          width={400}
-                          height={300}
-                          className="w-full h-auto object-cover rounded-md"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-muted-foreground">
-                    No images available for this service.
-                  </p>
-                )}
-              </CardContent>
-              <CardFooter className="flex justify-end p-4">
+              ) : (
+                <p className="text-muted-foreground">
+                  No images available for this service.
+                </p>
+              )}
+            </div>
+
+            {/* View Details Button */}
+            {onServiceClick && (
+              <div className="flex justify-end mt-4">
                 <Button
                   variant="default"
                   onClick={() => onServiceClick(service._id)}
@@ -129,12 +125,12 @@ const Gallery: React.FC<GalleryProps> = ({
                 >
                   View Details
                 </Button>
-              </CardFooter>
-            </Card>
+              </div>
+            )}
           </div>
         ))
       ) : (
-        <p className="text-center text-muted-foregound">
+        <p className="text-center text-muted-foreground">
           No services found for this category.
         </p>
       )}

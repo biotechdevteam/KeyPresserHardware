@@ -1,5 +1,6 @@
 import axiosInstance from "@/lib/axiosInstance";
 import { About } from "@/types/aboutSchema";
+import { Blog, blogSchema } from "@/types/blogSchema";
 import { FAQs, FAQsSchema } from "@/types/FAQSchema";
 import FeedbackSchema, { Feedback } from "@/types/feedbackSchema";
 import { Member } from "@/types/memberSchema";
@@ -39,7 +40,6 @@ export const fetchData = async (
     throw new Error("Network error occurred.");
   }
 };
-
 
 // Fetch About Data
 export const fetchAboutData = async (): Promise<About> => {
@@ -158,7 +158,6 @@ export const fetchFeedbacks = async (): Promise<Feedback[]> => {
   }
 };
 
-
 // Fetch Projects Data
 export const fetchProjectsData = async (): Promise<Project[]> => {
   try {
@@ -167,6 +166,17 @@ export const fetchProjectsData = async (): Promise<Project[]> => {
   } catch (error) {
     console.error("Error during fetchProjectsData:", error);
     throw new Error("Failed to fetch projects.");
+  }
+};
+
+// Fetch Blogs Function
+export const fetchBlogs = async (): Promise<Blog[]> => {
+  try {
+    const response = await fetchData("/blog/posts", "GET");
+    return response?.data;
+  } catch (error) {
+    console.error("Error during fetchBlogs:", error);
+    throw new Error("Failed to fetch blogs.");
   }
 };
 
@@ -189,4 +199,4 @@ export const bookService = async (
     console.error("Error during bookService:", error);
     throw error;
   }
-}
+};

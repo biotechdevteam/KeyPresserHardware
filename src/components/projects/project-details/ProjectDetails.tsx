@@ -107,8 +107,6 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
           ))}
         </div>
       </section>
-
-      {/* Collaboration Opportunities */}
       <section className="mb-10">
         <h2 className="text-2xl font-semibold mb-4">
           Collaboration Opportunities
@@ -116,11 +114,19 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
 
         {project.collaborationOpportunities &&
         project.collaborationOpportunities.length > 0 ? (
-          <ul className="list-disc list-inside mb-6">
+          <ul className="space-y-4 mb-6">
             {project.collaborationOpportunities.map((opportunity) => (
-              <li key={opportunity._id} className="mb-4">
-                <h3 className="font-semibold">{opportunity.expertise}</h3>
-                <p>{opportunity.description}</p>
+              <li key={opportunity._id}>
+                <div className="flex items-start space-x-2">
+                  {/* Custom bullet point */}
+                  <span className="text-xl">•</span>
+                  <div>
+                    <h3 className="font-semibold text-lg">
+                      {opportunity.expertise}
+                    </h3>
+                    <p className="text-sm">{opportunity.description}</p>
+                  </div>
+                </div>
               </li>
             ))}
           </ul>
@@ -131,7 +137,9 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
         )}
 
         {/* Collaborate Button */}
-        <Button className="bg-primary w-full">Collaborate</Button>
+        <Button className="bg-primary text-foreground w-full font-semibold py-3 rounded-md hover:bg-secondary transition-colors">
+          Collaborate
+        </Button>
       </section>
 
       {/* Project Partners and Sponsors */}

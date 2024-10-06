@@ -1,7 +1,7 @@
 // app/services/[id]/page.tsx
 import React from "react";
 import { QueryClient, dehydrate } from "@tanstack/react-query";
-import { fetchServices as fetchServicesData } from "@/lib/fetchUtils"; // Fetch function for services
+import { fetchFeedbacks, fetchServices as fetchServicesData } from "@/lib/fetchUtils"; // Fetch function for services
 import { notFound } from "next/navigation";
 import ServiceDetails from "@/components/services/service-details/ServiceDetails";
 
@@ -14,11 +14,16 @@ async function getServiceData() {
     queryKey: ["services"],
     queryFn: fetchServicesData,
   });
+  await queryClient.prefetchQuery({
+    queryKey: ["feedbacks"],
+    queryFn: fetchFeedbacks,
+  });
 
   // Return the prefetched data and the dehydrated state
   return {
     dehydratedState: dehydrate(queryClient),
     servicesData: await fetchServicesData(),
+    feedbacks: await fetchFeedbacks(),
   };
 }
 
@@ -28,10 +33,11 @@ export default async function ServicePage({
 }: {
   params: { id: string };
 }) {
-  const { servicesData } = await getServiceData(); // Fetch the data server-side
+  const { servicesData, feedbacks } = await getServiceData(); // Fetch the data server-side
 
   // Find the service with the matching ID
   const service = servicesData.find((s: any) => s._id === params.id);
+  const filteredFeedbacks = feedbacks.filter((f) => f.serviceId?._id === params.id)
 
   // If the service is not found, show a 404 page
   if (!service) {
@@ -41,7 +47,7 @@ export default async function ServicePage({
   return (
     <div>
       {/* Render the ServiceDetails component and pass the service */}
-      <ServiceDetails service={service} />
+      <ServiceDetails service={service} feedbacks={filteredFeedbacks} />
     </div>
   );
 }

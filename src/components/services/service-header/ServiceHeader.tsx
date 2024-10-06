@@ -12,16 +12,19 @@ const ServiceHeader: React.FC<ServiceHeaderProps> = ({
   backgroundImageUrl,
 }) => {
   return (
-    <div
-      className="h-64 flex items-center justify-center"
-      style={{
-        backgroundImage: `url(${backgroundImageUrl})`,
-      }}
-    >
-      <div className="bg-opacity-75 bg-background px-8 py-6 rounded-lg shadow-md text-center">
-        <h1 className="text-4xl font-boldn text-primary">{title}</h1>
-        <p className="text-lg mt-4">{summary}</p>
+    <div className="w-full flex flex-col items-center space-y-4 p-6">
+      {/* Title and Summary */}
+      <div className="text-center">
+        <h1 className="text-4xl font-bold text-primary">{title}</h1>
+        <p className="text-lg mt-2">{summary}</p>
       </div>
+
+      {/* Image below the title and summary */}
+      <img
+        src={backgroundImageUrl}
+        alt="Service Background"
+        className="w-full h-auto max-h-96 object-cover rounded-lg shadow-md"
+      />
     </div>
   );
 };

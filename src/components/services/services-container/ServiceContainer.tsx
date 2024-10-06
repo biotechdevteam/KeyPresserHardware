@@ -44,7 +44,7 @@ const ServicesContainer: React.FC<ServicesContainerProps> = ({
   const router = useTransitionRouter();
 
   const handleServiceClick = (serviceId: string) => {
-    router.push(`/services/${serviceId}`);
+    router.push(`/service/${serviceId}`);
   };
 
   const handleCategoryClick = (category: string | null) => {

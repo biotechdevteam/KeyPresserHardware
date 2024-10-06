@@ -46,3 +46,4 @@ events
 blogs
 members
 testimonials
+contact

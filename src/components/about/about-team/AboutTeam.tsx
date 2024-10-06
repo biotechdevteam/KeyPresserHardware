@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import { LinkedinIcon, GithubIcon, FacebookIcon } from "lucide-react";
 import { LeadershipTeam } from "@/types/aboutSchema";
+import { Separator } from "@/components/ui/separator";
 import { useTransitionRouter } from "next-view-transitions";
 
 interface AboutTeamProps {
@@ -70,9 +71,6 @@ const AboutTeam: React.FC<AboutTeamProps> = ({ leadershipTeam }) => {
     <div className="py-12 lg:px-24 text-center" ref={teamRef}>
       <h2 className="text-xl font-bold">Our Leadership Team</h2>
       <Separator className="w-16 mx-auto mt-4 mb-12" />
-    <div className="py-12 lg:px-24 text-center" ref={teamRef}>
-      <h2 className="text-xl font-bold">Our Leadership Team</h2>
-      <Separator className="w-16 mx-auto mt-4 mb-12" />
 
       <div className="flex flex-col sm:flex-row gap-8">
         {leadershipTeam?.map((leader, index) => {
@@ -99,7 +97,6 @@ const AboutTeam: React.FC<AboutTeamProps> = ({ leadershipTeam }) => {
                   }
                   alt={`${member.user_id.first_name} ${member.user_id.last_name}`}
                   className="w-24 h-24 lg:w-32 lg:h-32 mx-auto object-cover rounded-full"
-                  className="w-24 h-24 lg:w-32 lg:h-32 mx-auto object-cover rounded-full"
                 />
               </CardHeader>
 
@@ -107,8 +104,6 @@ const AboutTeam: React.FC<AboutTeamProps> = ({ leadershipTeam }) => {
                 <CardTitle className="text-lg font-semibold text-foreground">
                   {`${member.user_id.first_name} ${member.user_id.last_name}`}
                 </CardTitle>
-                <p className="text-xs uppercase">
-                  {member.specialization || null}
                 <p className="text-xs uppercase">
                   {member.specialization || null}
                 </p>

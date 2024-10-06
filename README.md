@@ -4,3 +4,4 @@ projects
 events
 blogs
 members
+testimonials

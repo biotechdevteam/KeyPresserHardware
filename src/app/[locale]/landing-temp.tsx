@@ -59,7 +59,7 @@ const LandingTemp = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen text-foreground p-6">
+    <div className="flex flex-col items-center justify-center text-center min-h-screen text-foreground p-6">
       {/* Coming soon */}
       <h1 className="text-5xl font-bold">Coming Soon!</h1>
       <p className="text-lg">

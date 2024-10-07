@@ -3,12 +3,12 @@ import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Service } from "@/types/ServiceSchema";
 import { fetchFeedbacks, fetchServices } from "@/lib/fetchUtils";
-import { useTransitionRouter } from "next-view-transitions";
 import ServiceOverview from "../service-overview/ServiceOverview";
 import FilteredServices from "../filtered-services/FilteredServices";
 import { Feedback } from "@/types/feedbackSchema";
 import Gallery from "../gallery-section/GallerySection";
 import Testimonials from "../testimonials/Testimonials";
+import { useTransitionRouter } from "next-view-transitions";
 
 interface ServicesContainerProps {
   initialData: {
@@ -59,7 +59,7 @@ const ServicesContainer: React.FC<ServicesContainerProps> = ({
   if (servicesError || feedbacksError) return <div>Error loading data...</div>;
 
   return (
-    <section className="relative p-6">
+    <section className="relative p-3 grid place-items-center">
       {/* Service Overview Section with categories */}
       <ServiceOverview
         services={services}

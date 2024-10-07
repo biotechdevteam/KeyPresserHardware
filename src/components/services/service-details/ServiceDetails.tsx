@@ -7,6 +7,7 @@ import PricingPlan from "../pricing-plans/PricingPlans";
 import Testimonials from "../testimonials/Testimonials";
 import { Feedback } from "@/types/feedbackSchema";
 import ServiceCTA from "../service-cta/ServiceCTA";
+import ServiceHeader from "../service-header/ServiceHeader";
 
 interface ServiceDetailsProps {
   service: Service;
@@ -29,6 +30,13 @@ const ServiceDetails: React.FC<ServiceDetailsProps> = ({
 
   return (
     <div className="space-y-6">
+      
+      <ServiceHeader
+        title={service.title}
+        summary={service.summary}
+        backgroundImageUrl={service.portfolio_urls ? service.portfolio_urls[0] : ""}
+      />
+
       {/* Service Title and Description */}
       <Card>
         <CardHeader>

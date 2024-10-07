@@ -5,7 +5,7 @@ import { ThumbsUp, ThumbsDown, MessageSquare } from "lucide-react"; // Using ico
 interface ReactionsSectionProps {
   initialLikes: number;
   initialDislikes: number;
-  commentsCount: number;
+  commentsCount?: number;
 }
 
 const ReactionsSection: React.FC<ReactionsSectionProps> = ({
@@ -73,10 +73,12 @@ const ReactionsSection: React.FC<ReactionsSectionProps> = ({
       </Button>
 
       {/* Comments Button */}
-      <Button variant="ghost" className="flex items-center space-x-2">
-        <MessageSquare className="w-5 h-5" />
-        <span>{commentsCount} Comments</span>
-      </Button>
+      {commentsCount && (
+        <Button variant="ghost" className="flex items-center space-x-2">
+          <MessageSquare className="w-5 h-5" />
+          <span>{commentsCount} Comments</span>
+        </Button>
+      )}
     </div>
   );
 };

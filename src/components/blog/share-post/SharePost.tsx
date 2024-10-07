@@ -18,9 +18,9 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ title, url }) => {
   const mailUrl = `mailto:?subject=${encodedTitle}&body=Check out this post: ${encodedUrl}`;
 
   return (
-    <div className="flex space-x-4 mt-6">
+    <div className="grid grid-cols-2 gap-4 md:grid-cols-4 mt-6">
       {/* Facebook Button */}
-      <Button variant="outline">
+      <Button variant="secondary">
         <a
           href={facebookUrl}
           target="_blank"
@@ -33,7 +33,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ title, url }) => {
       </Button>
 
       {/* Twitter Button */}
-      <Button variant="outline">
+      <Button variant="secondary">
         <a
           href={twitterUrl}
           target="_blank"
@@ -46,7 +46,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ title, url }) => {
       </Button>
 
       {/* LinkedIn Button */}
-      <Button variant="outline">
+      <Button variant="secondary">
         <a
           href={linkedinUrl}
           target="_blank"
@@ -59,7 +59,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ title, url }) => {
       </Button>
 
       {/* Email Button */}
-      <Button variant="outline">
+      <Button variant="secondary">
         <a
           href={mailUrl}
           target="_blank"

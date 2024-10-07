@@ -104,12 +104,11 @@ const CommentsSection: React.FC<CommentsSectionProps> = ({
                       </div>
                     </div>
                   </div>
-                    {/* Reactions Section for the comment */}
-                    <ReactionsSection
-                      initialLikes={likes}
-                      initialDislikes={dislikes}
-                      commentsCount={0} // No nested comments in this example
-                    />
+                  {/* Reactions Section for the comment */}
+                  <ReactionsSection
+                    initialLikes={likes}
+                    initialDislikes={dislikes}
+                  />
                 </div>
               );
             })

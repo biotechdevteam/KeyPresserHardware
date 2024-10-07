@@ -52,7 +52,7 @@ export default async function ProjectLayout({
       />
 
       {/* Render the children (page content) below the header */}
-      <main className="p-6">{children}</main>
+      <main className="p-3">{children}</main>
     </div>
   );
 }

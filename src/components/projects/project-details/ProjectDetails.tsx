@@ -12,7 +12,7 @@ interface ProjectDetailsProps {
 
 const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
   return (
-    <div className="container mx-auto p-6">
+    <div className="container mx-auto">
       {/* Project Description Section */}
       <section className="mb-10">
         <h2 className="text-2xl font-semibold mb-4">Project Description</h2>

@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 const EventsLayout: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const t = useTranslations("Header.events");
+  const t = useTranslations("Header.contact");
 
   return (
     <section className="grid min-h-screen place-items-center p-8">

@@ -1,22 +1,22 @@
 import React from "react";
-import { useTranslations } from "next-intl";
+import EventsHeader from "@/components/events/events-header/EventsHeader";
 
-const EventsLayout: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const t = useTranslations("Header.events");
+const EventLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   return (
-    <section className="grid min-h-screen place-items-center p-8">
-      <div className="w-full max-w-4xl mx-auto">
-        <header className="mb-8 text-center">
-          <h1 className="text-4xl font-bold">{t("title")}</h1>
-          <p className="text-lg mt-4">{t("description")}</p>
-        </header>
-        <div>{children}</div>
-      </div>
+    <section className="">
+      {/* Header */}
+      <header>
+        <EventsHeader />
+      </header>
+
+      {/* Page Content */}
+      <main className="flex-grow container mx-auto py-8">{children}</main>
+
+      {/* Footer */}
+      <footer></footer>
     </section>
   );
 };
 
-export default EventsLayout;
+export default EventLayout;

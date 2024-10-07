@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 import { Service } from "@/types/ServiceSchema";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
@@ -7,6 +7,7 @@ import PricingPlan from "../pricing-plans/PricingPlans";
 import Testimonials from "../testimonials/Testimonials";
 import { Feedback } from "@/types/feedbackSchema";
 import ServiceCTA from "../service-cta/ServiceCTA";
+import DOMPurify from "dompurify";
 import ServiceHeader from "../service-header/ServiceHeader";
 
 interface ServiceDetailsProps {
@@ -45,20 +46,10 @@ const ServiceDetails: React.FC<ServiceDetailsProps> = ({
         <CardContent>
           <div
             className="text-lg"
-            dangerouslySetInnerHTML={{ __html: service.description }}
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(service.description) }}
           />
         </CardContent>
       </Card>
-
-      {/* Portfolio URLs */}
-      {service.portfolio_urls && service.portfolio_urls.length > 0 && (
-        <Card>
-          <Gallery
-            services={[service]}
-            selectedCategory={service.service_category}
-          />
-        </Card>
-      )}
 
       {/* Call to Action after portfolio */}
       <ServiceCTA
@@ -82,20 +73,15 @@ const ServiceDetails: React.FC<ServiceDetailsProps> = ({
         </Card>
       )}
 
-      {/* Call to Action after pricing plans */}
-      <ServiceCTA
-        title="Ready to get started?"
-        description="Choose the best pricing plan and let's work together!"
-        buttonText="Get Started"
-        onClick={handleBookService}
-      />
-
-      {/* Testimonials Section */}
-      <Testimonials
-        feedbacks={feedbacks}
-        selectedCategory={service.service_category}
-        title={"What others are saying"}
-      />
+      {/* Portfolio URLs */}
+      {service.portfolio_urls && service.portfolio_urls.length > 0 && (
+        <Card>
+          <Gallery
+            services={[service]}
+            selectedCategory={service.service_category}
+          />
+        </Card>
+      )}
 
       {/* Final Call to Action */}
       <ServiceCTA
@@ -103,6 +89,21 @@ const ServiceDetails: React.FC<ServiceDetailsProps> = ({
         description="Click below to book this service or reach out to us for more information."
         buttonText="Book This Service"
         onClick={handleBookService}
+      />
+
+      {/* Call to Action after pricing plans */}
+      {/* <ServiceCTA
+        title="Ready to get started?"
+        description="Choose the best pricing plan and let's work together!"
+        buttonText="Get Started"
+        onClick={handleBookService}
+      /> */}
+
+      {/* Testimonials Section */}
+      <Testimonials
+        feedbacks={feedbacks}
+        selectedCategory={service.service_category}
+        title={"What others are saying"}
       />
     </div>
   );

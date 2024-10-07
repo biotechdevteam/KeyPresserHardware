@@ -66,19 +66,18 @@ const AboutIntro: React.FC<AboutIntroProps> = ({
       </div>
 
       {/* Cover Photo Section */}
-      <div className="relative mt-16">
+      <div className="mt-16">
         {coverPhotoUrl && (
-          <AspectRatio ratio={16/9}>
-            <Image
-              src={coverPhotoUrl}
-              alt={name}
-              width={500}
-              height={500}
-              className={`w-auto h-auto mx-auto object-cover rounded-lg transition-all duration-500 ease-in-out ${
-                isVisible ? "animate-fadeIn" : "opacity-0"
-              }`}
-            />
-          </AspectRatio>
+          <Image
+            src={coverPhotoUrl}
+            alt={name}
+            width={700}
+            height={700}
+            priority={true}
+            className={`w-auto h-auto mx-auto object-cover rounded-lg transition-all duration-500 ease-in-out ${
+              isVisible ? "animate-fadeIn" : "opacity-0"
+            }`}
+          />
         )}
       </div>
 
@@ -91,7 +90,7 @@ const AboutIntro: React.FC<AboutIntroProps> = ({
                 isVisible ? "animate-fadeInUp" : "opacity-0"
               }`}
             >
-              Who We Are
+              Our Story
             </h3>
             <p className="mt-2">{story}</p>
           </>

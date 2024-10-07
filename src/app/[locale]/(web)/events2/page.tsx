@@ -1,8 +1,12 @@
 import React from "react";
-import ComingSoon from "../../coming-soon";
+import EventsContainer from "@/components/events/events-container/EventsContainer"; // Main container component
 
 const EventsPage: React.FC = () => {
-  return <ComingSoon />;
+  return (
+    <div className="">
+      <EventsContainer />
+    </div>
+  );
 };
 
 export default EventsPage;

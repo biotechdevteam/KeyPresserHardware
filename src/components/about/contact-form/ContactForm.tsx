@@ -34,7 +34,7 @@ const ContactForm: React.FC = () => {
       <div className="transition-opacity duration-500 ease-in-out">
         <label
           htmlFor="firstName"
-          className="block mb-2 text-sm font-medium text-gray-900"
+          className="block mb-2 text-sm font-medium text-muted"
         >
           {t("firstNameLabel")}
         </label>
@@ -42,10 +42,10 @@ const ContactForm: React.FC = () => {
           id="firstName"
           {...register("firstName")}
           placeholder={t("firstNamePlaceholder")}
-          className="w-full rounded-md border-muted focus:border-primary focus:ring-primary"
+          className="w-auto rounded-md border-muted focus:border-primary focus:ring-primary"
         />
         {errors.firstName && (
-          <p className="text-sm text-red-600">{t("firstNameError")}</p>
+          <p className="text-sm text-destructive">{t("firstNameError")}</p>
         )}
       </div>
 
@@ -53,7 +53,7 @@ const ContactForm: React.FC = () => {
       <div className="">
         <label
           htmlFor="lastName"
-          className="block mb-2 text-sm font-medium text-gray-900"
+          className="block mb-2 text-sm font-medium text-muted"
         >
           {t("lastNameLabel")}
         </label>
@@ -61,10 +61,10 @@ const ContactForm: React.FC = () => {
           id="lastName"
           {...register("lastName")}
           placeholder={t("lastNamePlaceholder")}
-          className="w-full rounded-md border-muted focus:border-primary focus:ring-primary"
+          className="w-auto rounded-md border-muted focus:border-primary focus:ring-primary"
         />
         {errors.lastName && (
-          <p className="text-sm text-red-600">{t("lastNameError")}</p>
+          <p className="text-sm text-destructive">{t("lastNameError")}</p>
         )}
       </div>
 
@@ -72,7 +72,7 @@ const ContactForm: React.FC = () => {
       <div className="">
         <label
           htmlFor="email"
-          className="block mb-2 text-sm font-medium text-gray-900"
+          className="block mb-2 text-sm font-medium text-muted"
         >
           {t("emailLabel")}
         </label>
@@ -81,10 +81,10 @@ const ContactForm: React.FC = () => {
           type="email"
           {...register("email")}
           placeholder={t("emailPlaceholder")}
-          className="w-full rounded-md border-muted focus:border-primary focus:ring-primary"
+          className="w-auto rounded-md border-muted focus:border-primary focus:ring-primary"
         />
         {errors.email && (
-          <p className="text-sm text-red-600">{t("emailError")}</p>
+          <p className="text-sm text-destructive">{t("emailError")}</p>
         )}
       </div>
 
@@ -92,7 +92,7 @@ const ContactForm: React.FC = () => {
       <div className="">
         <label
           htmlFor="phone"
-          className="block mb-2 text-sm font-medium text-gray-900"
+          className="block mb-2 text-sm font-medium text-muted"
         >
           {t("phoneLabel")}
         </label>
@@ -100,10 +100,10 @@ const ContactForm: React.FC = () => {
           id="phone"
           {...register("phone")}
           placeholder={t("phonePlaceholder")}
-          className="w-full rounded-md border-muted focus:border-primary focus:ring-primary"
+          className="w-auto rounded-md border-muted focus:border-primary focus:ring-primary"
         />
         {errors.phone && (
-          <p className="text-sm text-red-600">{t("phoneError")}</p>
+          <p className="text-sm text-destructive">{t("phoneError")}</p>
         )}
       </div>
 
@@ -111,7 +111,7 @@ const ContactForm: React.FC = () => {
       <div className="sm:col-span-2">
         <label
           htmlFor="message"
-          className="block mb-2 text-sm font-medium text-gray-900"
+          className="block mb-2 text-sm font-medium text-muted"
         >
           {t("messageLabel")}
         </label>
@@ -119,10 +119,10 @@ const ContactForm: React.FC = () => {
           id="message"
           {...register("message")}
           placeholder={t("messagePlaceholder")}
-          className="w-full rounded-md border-muted focus:border-primary focus:ring-primary"
+          className="w-auto rounded-md border-muted focus:border-primary focus:ring-primary"
         />
         {errors.message && (
-          <p className="text-sm text-red-600">{t("messageError")}</p>
+          <p className="text-sm text-destructive">{t("messageError")}</p>
         )}
       </div>
 
@@ -130,7 +130,7 @@ const ContactForm: React.FC = () => {
       <div className="sm:col-span-2">
         <Button
           type="submit"
-          className="w-full bg-primary text-primary-foreground hover:bg-secondary transition-colors rounded-md"
+          className="w-auto bg-primary text-primary-foreground hover:bg-card transition-colors rounded-md"
         >
           {t("sendMessageButton")}
         </Button>

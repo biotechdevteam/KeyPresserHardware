@@ -1,5 +1,7 @@
+import { Event } from "@/types/eventsSchema";
+
 interface SearchResultCardProps {
-  result: any[];
+  result: Event;
 }
 
 const SearchResultCard: React.FC<SearchResultCardProps> = (result) => {

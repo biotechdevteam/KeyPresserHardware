@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
+import { Event } from "@/types/eventsSchema";
 
 interface EventDetailsProps {
   open: boolean;
-  event: any;
+  event: Event;
   onClose: () => void;
 }
 

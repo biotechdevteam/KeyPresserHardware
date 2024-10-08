@@ -1,20 +1,41 @@
 import { z } from "zod";
+import MemberSchema from "./memberSchema";
+import UserSchema from "./userSchema";
 
-const eventsSchema = z.object({
+export const SpeakerSchema = z.object({
+  _id: z.string(),
+  eventId: z.string(),
+  memberId: MemberSchema,
+  speakerRole: z.string(),
+  createdAt: z.date()
+})
+
+export const AttendeeSchema = z.object({
+  _id: z.string(),
+  eventId: z.string(),
+  userId: UserSchema,
+  attendeeStatus: z.string(),
+  createdAt: z.date()
+})
+
+export const eventsSchema = z.object({
   _id: z.string(),
   title: z.string(),
-  description: z.string().optional(),
-  details: z.string().optional(),
-  startTime: z.string().optional(),
-  endTime: z.string().optional(),
-  location: z.string().optional(),
-  eventType: z.string().optional(),
-  eventImageUrl: z.string().url().optional(),
-  registrationDeadline: z.string().optional(),
+  summary: z.string(),
+  description: z.string(),
+  startTime: z.string(),
+  endTime: z.string(),
+  location: z.string(),
+  eventType: z.enum(["physical", "hybrid", "online"]),
+  eventImageUrl: z.string().url(),
+  registrationDeadline: z.string(),
   createdAt: z.string().optional(),
   updatedAt: z.string().optional(),
-  isRegistrationOpen: z.boolean().optional(),
+  isRegistrationOpen: z.boolean(),
+  speakers: z.array(SpeakerSchema),
+  attendees: z.array(AttendeeSchema),
 });
 
-export type Events = z.infer<typeof eventsSchema>;
-export default eventsSchema;
+export type Event = z.infer<typeof eventsSchema>;
+export type Speakers = z.infer<typeof SpeakerSchema>;
+export type Attendees = z.infer<typeof AttendeeSchema>;

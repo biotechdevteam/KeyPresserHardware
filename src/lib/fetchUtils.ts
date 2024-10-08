@@ -1,6 +1,7 @@
 import axiosInstance from "@/lib/axiosInstance";
 import { About } from "@/types/aboutSchema";
 import { Blog, blogSchema } from "@/types/blogSchema";
+import { Event } from "@/types/eventsSchema";
 import { FAQs, FAQsSchema } from "@/types/FAQSchema";
 import FeedbackSchema, { Feedback } from "@/types/feedbackSchema";
 import { Member } from "@/types/memberSchema";
@@ -177,6 +178,17 @@ export const fetchBlogs = async (): Promise<Blog[]> => {
   } catch (error) {
     console.error("Error during fetchBlogs:", error);
     throw new Error("Failed to fetch blogs.");
+  }
+};
+
+// Fetch Blogs Function
+export const fetchEvents = async (): Promise<Event[]> => {
+  try {
+    const response = await fetchData("/events", "GET");
+    return response?.data;
+  } catch (error) {
+    console.error("Error during fetchEvents:", error);
+    throw new Error("Failed to fetch events.");
   }
 };
 

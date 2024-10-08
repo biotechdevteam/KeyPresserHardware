@@ -1,7 +1,9 @@
+import { Event } from "@/types/eventsSchema";
+
 interface SearchContainerProps {
     searchTerm: string;
     handleSearchChange: (term: string) => void;
-    filteredData: any[];
+    filteredData: Event[];
   }
   
   const SearchContainer: React.FC<SearchContainerProps> = ({ searchTerm, handleSearchChange, filteredData }) => {
@@ -12,7 +14,7 @@ interface SearchContainerProps {
           value={searchTerm}
           onChange={(e) => handleSearchChange(e.target.value)}
           placeholder="Search events..."
-          className="w-full p-2 border border-gray-300 rounded-md"
+          className="w-full p-2 border border-border rounded-md"
         />
       </div>
     );

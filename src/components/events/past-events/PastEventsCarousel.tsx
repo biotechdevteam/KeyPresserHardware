@@ -1,7 +1,8 @@
 import SearchResultCard from "@/components/events/search-event/SearchResultCard";
+import { Event } from "@/types/eventsSchema";
 
 interface PastEventsCarouselProps {
-  events: any[];
+  events: Event[];
 }
 
 const PastEventsCarousel: React.FC<PastEventsCarouselProps> = ({ events }) => {

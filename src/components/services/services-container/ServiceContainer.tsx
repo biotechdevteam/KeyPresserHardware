@@ -87,7 +87,7 @@ const ServicesContainer: React.FC<ServicesContainerProps> = ({
       {/* Testimonials Section */}
       {selectedCategory !== null && (
         <Testimonials
-          feedbacks={feedbacks}
+          feedbacks={feedbacks.filter(f=>f.type==="testimonial")}
           selectedCategory={selectedCategory}
           title={testimonialsTitle}
         />

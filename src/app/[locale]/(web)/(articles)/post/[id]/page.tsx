@@ -1,8 +1,9 @@
 "use client";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchBlogs } from "@/lib/fetchUtils"; // Import fetch utility to get blogs
+import { fetchBlogs } from "@/lib/fetchUtils";
 import PostContainer from "@/components/blog/post-container/PostContainer";
+import Loader from "@/components/loader/Loader";
 import { Blog } from "@/types/blogSchema";
 
 interface PageProps {
@@ -18,21 +19,28 @@ const PostPage: React.FC<PageProps> = ({ params }) => {
   } = useQuery({
     queryKey: ["blogs"],
     queryFn: fetchBlogs,
+    staleTime: Infinity, // Avoid refetching unnecessarily
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
+  // Handle loading state
   if (isLoading) {
-    return <div>Loading...</div>; // Show a loading state
+    return <Loader />;
   }
 
+  // Handle error state
   if (isError || !blogsData) {
-    return <div>Error fetching the post data...</div>; // Handle any error state or if blogsData is undefined
+    return <div>Error fetching the post data...</div>;
   }
 
   // Find the specific post by ID from the query data
   const post = blogsData?.find((p: Blog) => p._id === params.id);
 
+  // Handle the case where the post is not found
   if (!post) {
-    return <div>Post not found</div>; // Handle the case where no post is found
+    return <div>Post not found</div>;
   }
 
   // Filter out the current post to pass the rest as relatedPosts

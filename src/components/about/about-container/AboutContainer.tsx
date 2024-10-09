@@ -16,20 +16,24 @@ import AboutIntro from "@/components/about/about-intro/AboutIntro";
 import { Loader } from "lucide-react";
 import { useTransitionRouter } from "next-view-transitions";
 import SubscribeSection from "../subscribe/SubscribeSection";
-import AboutPic from "@/assets/images/about-header.jpg"; // Image for AboutHeader
+import AboutPic from "@/assets/images/about-header.jpg";
+import { About } from "@/types/aboutSchema";
 
 // Accept the pre-fetched initialData as a prop
-const AboutContainer: React.FC<{ initialData: any }> = ({ initialData }) => {
+const AboutContainer: React.FC<{ initialData: About}> = ({ initialData }) => {
   const {
     data: aboutData,
     isLoading: loading,
     error,
-    isError
+    isError,
   } = useQuery({
     queryKey: ["about"],
     queryFn: fetchAboutData,
     initialData, // Use pre-fetched data as initial value
     staleTime: Infinity, // Prevent unnecessary refetching, keep data fresh
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
   const router = useTransitionRouter();
@@ -54,7 +58,11 @@ const AboutContainer: React.FC<{ initialData: any }> = ({ initialData }) => {
         <AboutIntro
           name={aboutData?.name || "Biotech Universe Group"}
           slogan={aboutData?.slogan || "Our Slogan"}
-          coverPhotoUrl={aboutData?.cover_photo_url || AboutPic}
+          coverPhotoUrl={
+            typeof aboutData.cover_photo_url === "string"
+              ? aboutData.cover_photo_url
+              : AboutPic.src
+          }
           story={
             aboutData?.history ||
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut magna vel nisl cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut magna vel nisl cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut magna vel nisl cursus."

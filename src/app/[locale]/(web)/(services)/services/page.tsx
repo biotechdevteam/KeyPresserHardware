@@ -1,43 +1,83 @@
-import { QueryClient, dehydrate } from "@tanstack/react-query";
-import { fetchFeedbacks, fetchServices } from "@/lib/fetchUtils";
+"use client";
+import { useQuery } from "@tanstack/react-query";
+import { fetchServices, fetchFeedbacks } from "@/lib/fetchUtils";
 import ServicesContainer from "@/components/services/services-container/ServiceContainer";
+import Loader from "@/components/loader/Loader";
+import { Service } from "@/types/ServiceSchema";
+import { Feedback } from "@/types/feedbackSchema";
 
-// This function runs on the server-side and fetches the services and feedbacks
-async function getServicesAndFeedbacks() {
-  const queryClient = new QueryClient();
-
-  // Prefetch the services and feedbacks on the server
-  await queryClient.prefetchQuery({
+// This function runs on the server-side and fetches both services and feedbacks data.
+async function getServicesAndFeedbacksData() {
+  const servicesQuery = useQuery({
     queryKey: ["services"],
     queryFn: fetchServices,
+    staleTime: Infinity, // Prevent unnecessary refetching, keep data fresh
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
-  await queryClient.prefetchQuery({
+
+  const feedbacksQuery = useQuery({
     queryKey: ["feedbacks"],
     queryFn: fetchFeedbacks,
+    staleTime: Infinity,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
-  // Fetch services and feedbacks data
-  const [services, feedbacks] = await Promise.all([
-    fetchServices(),
-    fetchFeedbacks(),
-  ]);
-
-  // Return the prefetched data and the dehydrated state
   return {
-    dehydratedState: dehydrate(queryClient),
-    services,
-    feedbacks,
+    servicesData: servicesQuery.data,
+    servicesLoading: servicesQuery.isLoading,
+    servicesFetching: servicesQuery.isFetching,
+    servicesError: servicesQuery.isError,
+    feedbacksData: feedbacksQuery.data,
+    feedbacksLoading: feedbacksQuery.isLoading,
+    feedbacksFetching: feedbacksQuery.isFetching,
+    feedbacksError: feedbacksQuery.isError,
   };
 }
 
-// Page component
-export default async function ServicesPage() {
-  const { services, feedbacks } = await getServicesAndFeedbacks(); // Fetch the data server-side
+// ServicesPage component to fetch and display services and feedbacks data
+const ServicesPage: React.FC = async () => {
+  // Fetch services and feedbacks data
+  const {
+    servicesData,
+    servicesLoading,
+    servicesFetching,
+    servicesError,
+    feedbacksData,
+    feedbacksLoading,
+    feedbacksFetching,
+    feedbacksError,
+  } = await getServicesAndFeedbacksData();
 
+  // Handle loading states
+  if (
+    servicesLoading ||
+    servicesFetching ||
+    feedbacksLoading ||
+    feedbacksFetching
+  ) {
+    return <Loader />;
+  }
+
+  // Handle error states
+  if (servicesError || feedbacksError) {
+    return <div>Error loading services or feedback data...</div>;
+  }
+
+  // Render the ServicesContainer with the prefetched data
   return (
     <div>
-      {/* Pass both services and feedbacks data to the ServicesContainer */}
-      <ServicesContainer initialData={{ services, feedbacks }} />
+      <ServicesContainer
+        initialData={{
+          services: servicesData as Service[],
+          feedbacks: feedbacksData as Feedback[],
+        }}
+      />
     </div>
   );
-}
+};
+
+export default ServicesPage;

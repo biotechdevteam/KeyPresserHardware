@@ -14,7 +14,7 @@ interface BlogsContainerProps {
   };
 }
 
-const BlogsContainer: React.FC<BlogsContainerProps> = ({ initialData }) => {
+const BlogsContainer: React.FC<BlogsContainerProps> = ({ initialData: { blogs: initialBlogs} }) => {
   const {
     data: blogs,
     isLoading: blogsLoading,
@@ -22,10 +22,10 @@ const BlogsContainer: React.FC<BlogsContainerProps> = ({ initialData }) => {
   } = useQuery({
     queryKey: ["blogs"],
     queryFn: fetchBlogs,
-    initialData: initialData.blogs,
+    initialData: initialBlogs,
   });
 
-  const [filteredBlogs, setFilteredBlogs] = useState<Blog[]>(initialData.blogs); // State for filtered blogs
+  const [filteredBlogs, setFilteredBlogs] = useState<Blog[]>(initialBlogs); // State for filtered blogs
   const router = useTransitionRouter();
 
   // Handle blog click for navigation

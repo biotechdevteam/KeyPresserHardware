@@ -1,6 +1,5 @@
 import React from "react";
 import { useTranslations } from "next-intl";
-import ClientLayout from "../../ClientLayout";
 
 const ProjectsLayout: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -8,7 +7,6 @@ const ProjectsLayout: React.FC<{ children: React.ReactNode }> = ({
   const t = useTranslations("Header.projects");
 
   return (
-    <ClientLayout>
       <section className="grid min-h-screen p-8">
         <div className="w-full max-w-4xl mx-auto">
           <header className="mb-8 text-center">
@@ -18,7 +16,6 @@ const ProjectsLayout: React.FC<{ children: React.ReactNode }> = ({
           <div>{children}</div>
         </div>
       </section>
-    </ClientLayout>
   );
 };
 

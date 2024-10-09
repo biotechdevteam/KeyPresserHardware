@@ -9,7 +9,7 @@ interface ProjectCardProps {
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   return (
-    <Card className="max-w-sm w-full shadow-md hover:shadow-lg transition-shadow duration-300 bg-card text-card-foreground">
+    <Card className="max-w-sm w-full h-full shadow-md hover:shadow-lg transition-shadow duration-300 bg-card text-card-foreground overflow-hidden">
       {/* Thumbnail Image */}
       {project.projectImageUrl && (
         <img

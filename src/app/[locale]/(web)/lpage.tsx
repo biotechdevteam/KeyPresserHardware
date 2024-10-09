@@ -1,5 +1,4 @@
 import { useTranslations } from "next-intl";
-import ComingSoon from "../coming-soon";
 import LandingTemp from "../landing-temp";
 
 export default function HomePage() {

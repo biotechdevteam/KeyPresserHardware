@@ -1,46 +1,59 @@
-import React from "react";
-import { QueryClient, dehydrate } from "@tanstack/react-query";
+"use client";
+import { useQuery } from "@tanstack/react-query";
 import { fetchProjectsData } from "@/lib/fetchUtils";
+import Loader from "@/components/loader/Loader";
 import ProjectDetails from "@/components/projects/project-details/ProjectDetails";
+import { useRouter } from "next/router";
 import { notFound } from "next/navigation";
+import { Project } from "@/types/projectSchema";
 
-// Helper function to fetch project data
-async function getProjectData() {
-  const queryClient = new QueryClient();
-
-  // Prefetch the project data on the server
-  await queryClient.prefetchQuery({
+// Helper function to fetch project data based on the project ID
+async function getProjectData(id: string) {
+  const { data, isLoading, isFetching, isError, error } = useQuery({
     queryKey: ["projects"],
     queryFn: fetchProjectsData,
+    staleTime: Infinity, // Keep data fresh
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
-  // Return the prefetched data and the dehydrated state
+  // Find the project by its ID
+  const project = data?.find((p: Project) => p._id === id);
+
   return {
-    dehydratedState: dehydrate(queryClient),
-    projectsData: await fetchProjectsData(),
+    project,
+    isLoading,
+    isFetching,
+    isError,
+    error,
   };
 }
 
-// Page component
-export default async function ProjectPage({
+// ProjectPage component
+const ProjectPage: React.FC<{ params: { id: string } }> = async ({
   params,
-}: {
-  params: { id: string };
-}) {
-  const { projectsData } = await getProjectData(); // Fetch the data server-side
+}) => {
+  const { project, isLoading, isFetching, isError } = await getProjectData(
+    params.id
+  );
 
-  // Find the project with the matching ID
-  const project = projectsData.find((p: any) => p._id === params.id);
-
-  // If the project is not found, show a 404 page
-  if (!project) {
-    return notFound();
+  // Handle loading state
+  if (isLoading || isFetching) {
+    return <Loader />;
   }
 
+  // Handle error or not found project
+  if (isError || !project) {
+    return notFound(); // Return 404 if no project found
+  }
+
+  // Render the ProjectDetails component with the found project data
   return (
     <div>
-      {/* Render the ProjectDetails component and pass the project */}
       <ProjectDetails project={project} />
     </div>
   );
-}
+};
+
+export default ProjectPage;

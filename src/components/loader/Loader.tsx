@@ -1,20 +1,20 @@
 import Image from "next/image";
 import logo from "@/assets/images/logo.png";
 
-// Accept the pre-fetched initialData as a prop
+// Loader Component
 const Loader: React.FC = () => {
-
-  
   return (
-    <div className="flex flex-col justify-center items-center h-screen animate-pulse bg-background text-foreground">
+    <div className="fixed inset-0 z-50 flex flex-col justify-center items-center bg-background text-foreground">
+      {/* Logo */}
       <Image
         width={50}
         height={50}
-        className="animate-spin"
+        className="animate-pulse"
         src={logo.src}
         alt="QuickPay-logo"
       />
 
+      {/* Loading animation dots */}
       <div className="absolute top-[80%]">
         <div className="flex space-x-2 animate-pulse">
           <div
@@ -37,6 +37,6 @@ const Loader: React.FC = () => {
       </div>
     </div>
   );
-}
+};
 
-export default Loader
+export default Loader;

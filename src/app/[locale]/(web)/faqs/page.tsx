@@ -1,29 +1,50 @@
-import { QueryClient, dehydrate } from "@tanstack/react-query";
-import { fetchFAQs } from "@/lib/fetchUtils"; // Assuming fetchFAQs is in fetchUtils
+"use client";
+import { useQuery } from "@tanstack/react-query";
+import { fetchFAQs } from "@/lib/fetchUtils";
 import FAQContainer from "@/components/faq/faq-container/FAQContainer";
+import Loader from "@/components/loader/Loader";
+import { FAQ } from "@/types/FAQSchema";
 
 // This function runs on the server-side and fetches the FAQs data.
 async function getFAQData() {
-  const queryClient = new QueryClient();
+  const faqQuery = useQuery({
+    queryKey: ["faqs"],
+    queryFn: fetchFAQs,
+    staleTime: Infinity, // Prevent unnecessary refetching, keep data fresh
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  });
 
-  // Prefetch the FAQs data on the server
-  await queryClient.prefetchQuery({ queryKey: ["faqs"], queryFn: fetchFAQs });
-
-  // Return the prefetched data and the dehydrated state
   return {
-    dehydratedState: dehydrate(queryClient),
-    faqData: await fetchFAQs(),
+    faqData: faqQuery.data,
+    faqLoading: faqQuery.isLoading,
+    faqFetching: faqQuery.isFetching,
+    faqError: faqQuery.isError,
   };
 }
 
-// Page component
-export default async function FAQPage() {
-  const { faqData } = await getFAQData(); // Fetch the data server-side
+// FAQPage component to fetch and display FAQs data
+const FAQPage: React.FC = async () => {
+  // Fetch the FAQs data
+  const { faqData, faqLoading, faqFetching, faqError } = await getFAQData();
 
+  // Handle loading state
+  if (faqLoading || faqFetching) {
+    return <Loader />;
+  }
+
+  // Handle error state
+  if (faqError) {
+    return <div>Error loading FAQ data...</div>;
+  }
+
+  // Render the FAQContainer with the prefetched data
   return (
     <div>
-      {/* Pass the prefetched data as props to the FAQContainer */}
-      <FAQContainer initialData={faqData} />
+      <FAQContainer initialData={faqData as FAQ[]} />
     </div>
   );
-}
+};
+
+export default FAQPage;

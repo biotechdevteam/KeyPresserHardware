@@ -1,28 +1,55 @@
-import React from "react";
-import { Member } from "@/types/memberSchema";
+"use client";
+import { useQuery } from "@tanstack/react-query";
 import { fetchMembers } from "@/lib/fetchUtils"; // Fetch member details
-import { notFound } from "next/navigation";
+import Loader from "@/components/loader/Loader";
 import MemberContainer from "@/components/member/member-container/MemberContainer";
+import { Member } from "@/types/memberSchema";
 
-export default async function MemberPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const members: Member[] = await fetchMembers(); // Fetch all members
+// This function fetches member data based on the ID from the params
+async function getMemberData(id: string) {
+  const { data, isLoading, isFetching, isError, error } = useQuery({
+    queryKey: ["members"],
+    queryFn: fetchMembers,
+    staleTime: Infinity,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  });
 
-  // Find the member with the matching ID
-  const member: Member | undefined = members.find(
-    (m: any) => m._id === params.id
+  // Find the specific member based on the ID
+  const member = data?.find((m: Member) => m._id === id);
+
+  return {
+    member,
+    isLoading,
+    isFetching,
+    isError,
+    error,
+  };
+}
+
+// MemberPage component to fetch and display a specific member based on ID
+const MemberPage: React.FC<{ params: { id: string } }> = async ({ params }) => {
+  const { member, isLoading, isFetching, isError } = await getMemberData(
+    params.id
   );
 
-  if (!member) {
-    return notFound(); // Handle case where the member doesn't exist
+  // Handle loading state
+  if (isLoading || isFetching) {
+    return <Loader />;
   }
 
+  // Handle error or missing member state
+  if (isError || !member) {
+    return <div>Member not found</div>; // You could also use `notFound()` if available in this environment
+  }
+
+  // Render the MemberContainer with the found member data
   return (
     <div>
-      <MemberContainer member={member} /> {/* Render the MemberContainer */}
+      <MemberContainer member={member} />
     </div>
   );
-}
+};
+
+export default MemberPage;

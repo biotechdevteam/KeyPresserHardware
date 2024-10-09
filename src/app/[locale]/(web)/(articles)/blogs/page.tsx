@@ -1,37 +1,57 @@
-import React from "react";
-import { dehydrate, QueryClient } from "@tanstack/react-query";
+"use client";
+import { useQuery } from "@tanstack/react-query";
 import { fetchBlogs } from "@/lib/fetchUtils";
 import BlogsContainer from "@/components/blog/blogs-container/BlogsContainer";
-import ComingSoon from "@/app/[locale]/coming-soon";
+import Loader from "@/components/loader/Loader";
+import { Blog } from "@/types/blogSchema";
 
-const BlogsPage: React.FC = async () => {
-  const { initialData } = await getBlogs(); // Fetch blogs from server-side
-
-  return (
-    <div>
-      <BlogsContainer initialData={initialData} />
-    </div>
-  );
-};
-
-export default BlogsPage;
-
-// Server-side function for fetching blogs
-async function getBlogs() {
-  const queryClient = new QueryClient();
-
-  // Prefetch the blogs on the server
-  await queryClient.prefetchQuery({
+// This function runs on the server-side and fetches the blogs data.
+async function getBlogsData() {
+  const {
+    data,
+    isLoading: loading,
+    isFetching: fetching,
+    error,
+    isError,
+  } = useQuery({
     queryKey: ["blogs"],
     queryFn: fetchBlogs,
+    staleTime: Infinity, // Prevent unnecessary refetching, keep data fresh
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
-  // Fetch the blogs directly
-  const blogs = await fetchBlogs();
-
-  // Return the prefetched data and the dehydrated state
+  // Return the prefetched data, loading, and error state
   return {
-    dehydratedState: dehydrate(queryClient),
-    initialData: { blogs },
+    blogsData: data,
+    loading,
+    fetching,
+    isError,
+    error,
   };
+}
+
+// Page component for Blogs
+export default async function BlogsPage() {
+  // Get the prefetched data from the server
+  const { blogsData, loading, fetching, isError, error } = await getBlogsData();
+
+  // Handle loading state
+  if (loading || fetching) {
+    return <Loader />;
+  }
+
+  // Handle error state
+  if (isError) {
+    return <div>Error loading blogs: {error?.message}</div>;
+  }
+
+  // Render the BlogsContainer if data is successfully fetched
+  return (
+    <div>
+      {/* Pass the prefetched data as props to the BlogsContainer */}
+      <BlogsContainer initialData={{ blogs: blogsData as Blog[] }} />
+    </div>
+  );
 }

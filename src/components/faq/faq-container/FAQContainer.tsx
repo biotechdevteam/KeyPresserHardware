@@ -3,7 +3,14 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { fetchFAQs } from "@/lib/fetchUtils";
 import FAQList from "../faq-list/FAQList";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"; // Import shadcn card components
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card"; // Import shadcn card components
+import { Button } from "@/components/ui/button";
 
 const FAQContainer: React.FC<{ initialData: any; general?: boolean }> = ({
   initialData,
@@ -50,16 +57,28 @@ const FAQContainer: React.FC<{ initialData: any; general?: boolean }> = ({
           (general
             ? // If general prop is true, display only FAQs from the general category
               groupedFAQs["General"] && (
-                <Card key="general" className="border rounded-lg shadow-lg">
+                <div key="general">
+                  <h2 className="text-3xl font-bold text-center mb-8 text-primary">
+                    Frequently Asked Questions
+                  </h2>
                   <CardHeader>
-                    <CardTitle className="text-2xl md:text-3xl text-center font-bold">
-                      General
+                    <CardTitle className="text-2xl md:text-3xl text-center text-secondary font-semibold">
+                      General FAQs
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <FAQList faqs={groupedFAQs["General"]} />
                   </CardContent>
-                </Card>
+                  {/* CTA Button - Contact Us */}
+                  <CardFooter className="flex justify-center mt-12">
+                    <Button
+                      variant={"secondary"}
+                      onClick={() => (window.location.href = "/contact")}
+                    >
+                      Contact Us if you have more questions
+                    </Button>
+                  </CardFooter>
+                </div>
               )
             : // Otherwise, display all categories
               Object.keys(groupedFAQs).map((category) => (

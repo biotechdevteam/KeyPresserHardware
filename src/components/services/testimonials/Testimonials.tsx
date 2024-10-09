@@ -11,7 +11,7 @@ import {
 
 interface TestimonialsProps {
   feedbacks: Feedback[];
-  selectedCategory: string | null;
+  selectedCategory?: string | null;
   title: string
 }
 

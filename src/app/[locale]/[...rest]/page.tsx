@@ -1,5 +1,5 @@
-import { notFound } from "next/navigation";
+import Custom404 from "../not-found";
 
 export default function CatchAllPage() {
-  notFound();
+  return <Custom404 />;
 }

@@ -60,5 +60,3 @@ export const selectEventsLoading = (state: RootState) => state.events.loading;
 export const selectEventsError = (state: RootState) => state.events.error;
 
 export default eventsSlice.reducer;
-
-export default eventsSlice.reducer;

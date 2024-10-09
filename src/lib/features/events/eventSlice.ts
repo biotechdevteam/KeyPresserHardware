@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Events } from "@/types/eventsSchema";
+import { Event } from "@/types/eventsSchema"; // assuming you renamed it to Event
 import { RootState } from "@/lib/store";
 
 interface EventsState {
-  data: Events;
+  data: Event;
   loading: boolean;
   error: string | null;
 }
@@ -12,17 +12,19 @@ const initialState: EventsState = {
   data: {
     _id: "",
     title: "",
+    summary: "",
     description: "",
-    // details: "",
     startTime: "",
     endTime: "",
     location: "",
-    eventType: "",
+    eventType: "online", // default value
     eventImageUrl: "",
     registrationDeadline: "",
     createdAt: "",
     updatedAt: "",
-    // isRegistrationOpen: false,
+    isRegistrationOpen: false,
+    speakers: [], // empty array as initial value
+    attendees: [], // empty array as initial value
   },
   loading: false,
   error: null,
@@ -32,12 +34,12 @@ const eventsSlice = createSlice({
   name: "events",
   initialState,
   reducers: {
-    setEventsData(state, action: PayloadAction<Events>) {
+    setEventsData(state, action: PayloadAction<Event>) {
       state.data = action.payload;
     },
-    updateEventsField(
+    updateEventsField<K extends keyof Event>(
       state,
-      action: PayloadAction<{ key: keyof Events; value: never }> // rough work, you will probably need to edit in future
+      action: PayloadAction<{ key: K; value: Event[K] }>
     ) {
       state.data[action.payload.key] = action.payload.value;
     },
@@ -54,5 +56,9 @@ export const { setEventsData, updateEventsField, setLoading, setError } =
   eventsSlice.actions;
 
 export const selectEvents = (state: RootState) => state.events;
+export const selectEventsLoading = (state: RootState) => state.events.loading;
+export const selectEventsError = (state: RootState) => state.events.error;
+
+export default eventsSlice.reducer;
 
 export default eventsSlice.reducer;

@@ -1,3 +1,5 @@
 - made comment section and sare buttons responsive on blogs page
 - made service categories responsive and added grid slid animation
 - reduced page padding on projects page
+- added landing page
+- updated event fetcing

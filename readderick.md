@@ -3,3 +3,4 @@
 - reduced page padding on projects page
 - added landing page
 - updated event fetcing
+- removed even from redux store

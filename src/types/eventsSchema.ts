@@ -37,6 +37,6 @@ export const eventsSchema = z.object({
 });
 
 export type Event = z.infer<typeof eventsSchema>;
-export type Events = Event[];
+export type Events = Event;
 export type Speakers = z.infer<typeof SpeakerSchema>;
 export type Attendees = z.infer<typeof AttendeeSchema>;

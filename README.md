@@ -1,7 +1,6 @@
 # portfolio_frontend
 
 
-
 ---
 
 ## **Contribution Guidelines**

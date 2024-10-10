@@ -15,11 +15,11 @@ const FAQList: React.FC<{ faqs: any[] }> = ({ faqs }) => {
           value={`faq-${faq._id}`}
           className="border rounded-md"
         >
-          <AccordionTrigger className="text-lg md:text-xl font-semibold bg-transparent hover:bg-gray-100 focus:bg-gray-200 transition-all">
+          <AccordionTrigger className="text-lg md:text-xl font-semibold transition-all">
             {faq.question}
           </AccordionTrigger>
           <AccordionContent className="p-4 bg-gray-50">
-            <p className="text-base md:text-lg">{faq.answer}</p>
+            <p className="md:text-lg">{faq.answer}</p>
           </AccordionContent>
         </AccordionItem>
       ))}

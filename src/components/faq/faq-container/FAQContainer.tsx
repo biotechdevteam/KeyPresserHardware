@@ -33,7 +33,7 @@ const FAQContainer: React.FC<{ initialData: any; general?: boolean }> = ({
 
   if (error) {
     return (
-      <div className="text-red-500 text-center inset-0">
+      <div className="text-destructive text-center inset-0">
         Error: {error.message}
       </div>
     );
@@ -58,11 +58,11 @@ const FAQContainer: React.FC<{ initialData: any; general?: boolean }> = ({
             ? // If general prop is true, display only FAQs from the general category
               groupedFAQs["General"] && (
                 <div key="general">
-                  <h2 className="text-3xl font-bold text-center mb-8 text-primary">
+                  <h2 className="text-3xl font-bold text-center mb-8">
                     Frequently Asked Questions
                   </h2>
                   <CardHeader>
-                    <CardTitle className="text-2xl md:text-3xl text-center text-secondary font-semibold">
+                    <CardTitle className="text-2xl md:text-3xl text-center font-semibold">
                       General FAQs
                     </CardTitle>
                   </CardHeader>
@@ -72,7 +72,6 @@ const FAQContainer: React.FC<{ initialData: any; general?: boolean }> = ({
                   {/* CTA Button - Contact Us */}
                   <CardFooter className="flex justify-center mt-12">
                     <Button
-                      variant={"secondary"}
                       onClick={() => (window.location.href = "/contact")}
                     >
                       Contact Us if you have more questions

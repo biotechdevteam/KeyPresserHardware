@@ -4,29 +4,29 @@
 
 :root {
   /* website theme colors*/
-  --screamin-green: 114, 86%, 71%, 1;
-  --tea-green: 105, 88%, 90%, 1;
-  --white: 160, 60%, 99%, 1;
-  --white-smoke: 0, 0%, 96%, 1;
-  --platinum: 240, 4%, 86%, 1;
-  --davys-gray: 240, 6%, 32%, 1;
-  --dark-purple: 263, 100%, 5%, 1;
-  --oxford-blue: 240, 61%, 10%, 1;
-  --mauveine: 300, 82%, 37%, 1;
-  --off-red-rgb: 0, 98%, 52%, 1;
+  --screamin-green: hsla(114, 86%, 71%, 1);
+  --tea-green: hsla(105, 88%, 90%, 1);
+  --white: hsla(160, 60%, 99%, 1);
+  --white-smoke: hsla(0, 0%, 96%, 1);
+  --platinum: hsla(240, 4%, 86%, 1);
+  --davys-gray: hsla(240, 6%, 32%, 1);
+  --dark-purple: hsla(263, 100%, 5%, 1);
+  --oxford-blue: hsla(240, 61%, 10%, 1);
+  --mauveine: hsla(300, 82%, 37%, 1);
+  --off-red-rgb: hsla(0, 98%, 52%, 1);
 
   /* variables and usage */
   --background: var(--white-smoke);
-  --foreground: var(--oxford-blue);
+  --foreground: var(--dark-purple);
 
   --card: var(--white);
-  --card-foreground: var(--oxford-blue);
+  --card-foreground: var(--dark-purple);
 
   --popover: var(--white);
-  --popover-foreground: var(--oxford-blue);
+  --popover-foreground: var(--dark-purple);
 
   --primary: var(--screamin-green);
-  --primary-foreground: var(--oxford-blue);
+  --primary-foreground: var(--dark-purple);
 
   --secondary: var(--mauveine);
   --secondary-foreground: var(--white);
@@ -35,8 +35,8 @@
   --muted-foreground: var(--davys-gray);
   --muted-primary: var(--tea-green);
 
-  --accent: var(--mauveine);
-  --accent-foreground: var(--white);
+  --accent: var(--screamin-green);
+  --accent-foreground: var(--dark-purple);
 
   --destructive: var(--off-red-rgb);
   --destructive-foreground: var(--white);
@@ -47,7 +47,7 @@
 
   --chart-1: var(--screamin-green);
   --chart-2: var(--mauveine);
-  --chart-3: var(--oxford-blue);
+  --chart-3: var(--dark-purple);
   --chart-4: var(--davys-gray);
   --chart-5: var(--off-red-rgb);
 
@@ -56,17 +56,17 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: var(--dark-purple);
+    --background: var(--oxford-blue);
     --foreground: var(--white);
 
-    --card: var(--oxford-blue);
+    --card: var(--dark-purple);
     --card-foreground: var(--white);
 
-    --popover: var(--oxford-blue);
+    --popover: var(--dark-purple);
     --popover-foreground: var(--white);
 
     --primary: var(--screamin-green);
-    --primary-foreground: var(--oxford-blue);
+    --primary-foreground: var(--dark-purple);
 
     --secondary: var(--mauveine);
     --secondary-foreground: var(--white);
@@ -75,8 +75,8 @@
     --muted-foreground: var(--platinum);
     --muted-primary: var(--tea-green);
 
-    --accent: var(--mauveine);
-    --accent-foreground: var(--white);
+    --accent: var(--screamin-green);
+    --accent-foreground: var(--dark-purple);
 
     --destructive: var(--off-red-rgb);
     --destructive-foreground: var(--white);
@@ -144,25 +144,9 @@
     @apply bg-muted-primary;
   }
 
-  input,
-  textarea {
-    @apply border border-border bg-input text-muted-foreground rounded px-3 py-2;
-    transition: border-color 0.3s;
-  }
-
-  input:focus,
-  textarea:focus {
-    @apply outline-none border-ring;
-  }
-
   /* Checkbox */
   input[type="checkbox"] {
-    @apply appearance-none h-5 w-5 border border-primary rounded bg-input text-muted-foreground transition;
-    cursor: pointer;
-  }
-
-  input[type="checkbox"]:checked {
-    @apply bg-primary border-ring;
+    @apply appearance-none transition;
   }
 
   input[type="checkbox"]:focus {

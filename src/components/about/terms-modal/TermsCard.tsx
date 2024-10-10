@@ -49,13 +49,13 @@ const TermsCard: React.FC<TermsCardProps> = ({
         <TabsList className="flex justify-center items-center p-0 mb-4">
           <TabsTrigger
             value="terms"
-            className="px-4 py-2 font-medium text-primary bg-transparent data-[state=active]:bg-primary data-[state=active]:text-white rounded w-full"
+            className="px-4 py-2 rounded w-full"
           >
             Terms & Conditions
           </TabsTrigger>
           <TabsTrigger
             value="privacy"
-            className="px-4 py-2 font-medium text-primary bg-transparent data-[state=active]:bg-primary data-[state=active]:text-white rounded w-full"
+            className="px-4 py-2 rounded w-full"
           >
             Privacy & Security Policy
           </TabsTrigger>
@@ -68,13 +68,13 @@ const TermsCard: React.FC<TermsCardProps> = ({
         >
           <TabsContent value="terms" className="pt-4">
             <div
-              className="text-muted-foreground leading-relaxed"
+              className="leading-relaxed"
               dangerouslySetInnerHTML={{ __html: termsAndConditions }}
             />
           </TabsContent>
           <TabsContent value="privacy" className="pt-4">
             <div
-              className="text-muted-foreground leading-relaxed"
+              className="leading-relaxed"
               dangerouslySetInnerHTML={{ __html: privacyPolicy }}
             />
           </TabsContent>
@@ -106,7 +106,7 @@ const TermsCard: React.FC<TermsCardProps> = ({
           </Button>
           <Button
             onClick={handleApplyNow}
-            className="w-1/3 bg-primary text-white hover:bg-primary-dark"
+            className="w-1/3"
           >
             Apply Now
           </Button>

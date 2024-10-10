@@ -42,7 +42,7 @@
   --destructive-foreground: var(--white);
 
   --border: var(--davys-gray);
-  --input: var(--davys-gray);
+  --input: var(--platinum);
   --ring: var(--screamin-green);
 
   --chart-1: var(--screamin-green);
@@ -82,7 +82,7 @@
     --destructive-foreground: var(--white);
 
     --border: var(--platinum);
-    --input: var(--platinum);
+    --input: var(--davys-gray);
     --ring: var(--screamin-green);
 
     --chart-1: var(--screamin-green);
@@ -108,7 +108,12 @@
   }
 
   a {
-    @apply text-primary hover:underline;
+    @apply text-primary;
+  }
+
+  a:hover {
+    @apply text-secondary;
+    text-decoration: underline;
     text-decoration-skip-ink: auto;
   }
 
@@ -118,7 +123,7 @@
   h4,
   h5,
   h6 {
-    @apply font-bold text-foreground;
+    @apply font-bold;
     margin-top: 0;
     margin-bottom: 0.5rem;
   }
@@ -130,18 +135,18 @@
   }
 
   button {
-    @apply bg-primary text-primary-foreground rounded px-4 py-2 border-none hover:bg-primary-variant;
+    @apply bg-primary text-primary-foreground rounded px-4 py-2 border-none hover:bg-muted-primary;
     transition: background-color 0.3s;
     cursor: pointer;
   }
 
   button:hover {
-    @apply bg-primary-variant text-primary-foreground;
+    @apply bg-muted-primary;
   }
 
   input,
   textarea {
-    @apply border border-border bg-input text-foreground rounded px-3 py-2;
+    @apply border border-border bg-input text-muted-foreground rounded px-3 py-2;
     transition: border-color 0.3s;
   }
 
@@ -152,11 +157,12 @@
 
   /* Checkbox */
   input[type="checkbox"] {
-    @apply appearance-none h-5 w-5 border border-primary rounded bg-input text-foreground focus:border-ring transition;
+    @apply appearance-none h-5 w-5 border border-primary rounded bg-input text-muted-foreground transition;
+    cursor: pointer;
   }
 
   input[type="checkbox"]:checked {
-    @apply bg-primary border-primary;
+    @apply bg-primary border-ring;
   }
 
   input[type="checkbox"]:focus {
@@ -165,7 +171,7 @@
 
   /* Checkbox hover state */
   input[type="checkbox"]:hover {
-    @apply bg-ring;
+    @apply bg-muted-primary;
   }
 
   /* Base typography for blog content */
@@ -203,7 +209,7 @@
   }
 
   .blog-content li {
-    @apply text-base leading-relaxed text-gray-700;
+    @apply text-base leading-relaxed text-muted-foreground;
   }
 
   .blog-content blockquote {
@@ -211,7 +217,7 @@
   }
 
   .blog-content pre {
-    @apply bg-gray-100 p-4 rounded-md overflow-x-auto;
+    @apply bg-muted p-4 rounded-md overflow-x-auto;
   }
 
   .blog-content code {
@@ -219,11 +225,17 @@
   }
 
   .blog-content a {
-    @apply text-primary hover:underline;
+    @apply text-primary;
+  }
+
+  .blog-content a:hover {
+    @apply text-secondary;
+    text-decoration: underline;
+    text-decoration-skip-ink: auto;
   }
 
   .blog-content img {
-    @apply max-w-full h-auto rounded-md my-4;
+    @apply max-w-auto h-auto rounded-md my-4;
   }
 }
 
@@ -239,6 +251,6 @@
 
   /* Alert */
   .alert {
-    @apply bg-destructive text-destructive-foreground p-4 rounded-lg;
+    @apply bg-card text-muted-foreground border-border p-4 rounded-lg;
   }
 }

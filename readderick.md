@@ -4,3 +4,4 @@
 - added landing page
 - updated event fetcing
 - removed event from redux store, tunks and slice deleted
+the say readme you form ya own, readderick, hmm okay

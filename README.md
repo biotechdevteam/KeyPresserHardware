@@ -46,3 +46,4 @@ blogs
 members
 testimonials
 contact
+FAQs

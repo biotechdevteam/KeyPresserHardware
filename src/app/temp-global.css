@@ -4,37 +4,36 @@
 
 :root {
   /* website theme colors*/
-  --screamin-green: 105, 81%, 64%, 1;
-  --screamin-green-2: 114, 87%, 71%, 1;
+  --screamin-green: 114, 86%, 71%, 1;
+  --tea-green: 105, 88%, 90%, 1;
   --white: 160, 60%, 99%, 1;
   --white-smoke: 0, 0%, 96%, 1;
+  --platinum: 240, 4%, 86%, 1;
   --davys-gray: 240, 6%, 32%, 1;
+  --dark-purple: 263, 100%, 5%, 1;
   --oxford-blue: 240, 61%, 10%, 1;
-  --black: 264, 100%, 3%, 1;
   --mauveine: 300, 82%, 37%, 1;
-  --dark-magenta: 300, 91%, 30%, 1;
   --off-red-rgb: 0, 98%, 52%, 1;
 
   /* variables and usage */
   --background: var(--white-smoke);
-  --foreground: var(--black);
+  --foreground: var(--oxford-blue);
 
   --card: var(--white);
-  --card-foreground: var(--black);
+  --card-foreground: var(--oxford-blue);
 
   --popover: var(--white);
-  --popover-foreground: var(--black);
+  --popover-foreground: var(--oxford-blue);
 
   --primary: var(--screamin-green);
-  --primary-foreground: var(--black);
-  --primary-variant: var(--screamin-green-2);
+  --primary-foreground: var(--oxford-blue);
 
   --secondary: var(--mauveine);
   --secondary-foreground: var(--white);
-  --secondary-variant: var(--dark-magenta);
 
-  --muted: var(--davys-gray);
+  --muted: var(--platinum);
   --muted-foreground: var(--davys-gray);
+  --muted-primary: var(--tea-green);
 
   --accent: var(--mauveine);
   --accent-foreground: var(--white);
@@ -43,39 +42,38 @@
   --destructive-foreground: var(--white);
 
   --border: var(--davys-gray);
-  --input: var(--davys-gray);
+  --input: var(--platinum);
   --ring: var(--screamin-green);
 
-  --chart-1: var(--screamin-green-2);
+  --chart-1: var(--screamin-green);
   --chart-2: var(--mauveine);
   --chart-3: var(--oxford-blue);
-  --chart-4: var(--screamin-green);
-  --chart-5: var(--dark-magenta);
+  --chart-4: var(--davys-gray);
+  --chart-5: var(--off-red-rgb);
 
   --radius: 0.5rem;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: var(--oxford-blue);
+    --background: var(--dark-purple);
     --foreground: var(--white);
 
-    --card: var(--black);
+    --card: var(--oxford-blue);
     --card-foreground: var(--white);
 
-    --popover: var(--black);
+    --popover: var(--oxford-blue);
     --popover-foreground: var(--white);
 
     --primary: var(--screamin-green);
-    --primary-foreground: var(--black);
-    --primary-variant: var(--screamin-green-2);
+    --primary-foreground: var(--oxford-blue);
 
     --secondary: var(--mauveine);
     --secondary-foreground: var(--white);
-    --secondary-variant: var(--dark-magenta);
 
-    --muted: var(--oxford-blue);
-    --muted-foreground: var(--white-smoke);
+    --muted: var(--davys-gray);
+    --muted-foreground: var(--platinum);
+    --muted-primary: var(--tea-green);
 
     --accent: var(--mauveine);
     --accent-foreground: var(--white);
@@ -83,15 +81,15 @@
     --destructive: var(--off-red-rgb);
     --destructive-foreground: var(--white);
 
-    --border: var(--davys-gray);
+    --border: var(--platinum);
     --input: var(--davys-gray);
     --ring: var(--screamin-green);
 
-    --chart-1: var(--screamin-green-2);
+    --chart-1: var(--screamin-green);
     --chart-2: var(--mauveine);
-    --chart-3: var(--oxford-blue);
-    --chart-4: var(--screamin-green);
-    --chart-5: var(--dark-magenta);
+    --chart-3: var(--white);
+    --chart-4: var(--platinum);
+    --chart-5: var(--off-red-rgb);
 
     --radius: 0.5rem;
   }
@@ -110,7 +108,12 @@
   }
 
   a {
-    @apply text-primary hover:underline;
+    @apply text-primary;
+  }
+
+  a:hover {
+    @apply text-secondary;
+    text-decoration: underline;
     text-decoration-skip-ink: auto;
   }
 
@@ -120,7 +123,7 @@
   h4,
   h5,
   h6 {
-    @apply font-bold text-foreground;
+    @apply font-bold;
     margin-top: 0;
     margin-bottom: 0.5rem;
   }
@@ -132,18 +135,18 @@
   }
 
   button {
-    @apply bg-primary text-primary-foreground rounded px-4 py-2 border-none hover:bg-primary-variant;
+    @apply bg-primary text-primary-foreground rounded px-4 py-2 border-none;
     transition: background-color 0.3s;
     cursor: pointer;
   }
 
   button:hover {
-    @apply bg-primary-variant text-primary-foreground;
+    @apply bg-muted-primary;
   }
 
   input,
   textarea {
-    @apply border border-border bg-input text-foreground rounded px-3 py-2;
+    @apply border border-border bg-input text-muted-foreground rounded px-3 py-2;
     transition: border-color 0.3s;
   }
 
@@ -154,11 +157,12 @@
 
   /* Checkbox */
   input[type="checkbox"] {
-    @apply appearance-none h-5 w-5 border border-primary rounded bg-input text-foreground focus:border-ring transition;
+    @apply appearance-none h-5 w-5 border border-primary rounded bg-input text-muted-foreground transition;
+    cursor: pointer;
   }
 
   input[type="checkbox"]:checked {
-    @apply bg-primary border-primary;
+    @apply bg-primary border-ring;
   }
 
   input[type="checkbox"]:focus {
@@ -167,7 +171,7 @@
 
   /* Checkbox hover state */
   input[type="checkbox"]:hover {
-    @apply bg-ring;
+    @apply bg-muted-primary;
   }
 
   /* Base typography for blog content */
@@ -205,7 +209,7 @@
   }
 
   .blog-content li {
-    @apply text-base leading-relaxed text-gray-700;
+    @apply text-base leading-relaxed text-muted-foreground;
   }
 
   .blog-content blockquote {
@@ -213,7 +217,7 @@
   }
 
   .blog-content pre {
-    @apply bg-gray-100 p-4 rounded-md overflow-x-auto;
+    @apply bg-muted p-4 rounded-md overflow-x-auto;
   }
 
   .blog-content code {
@@ -221,11 +225,17 @@
   }
 
   .blog-content a {
-    @apply text-primary hover:underline;
+    @apply text-primary;
+  }
+
+  .blog-content a:hover {
+    @apply text-secondary;
+    text-decoration: underline;
+    text-decoration-skip-ink: auto;
   }
 
   .blog-content img {
-    @apply max-w-full h-auto rounded-md my-4;
+    @apply max-w-auto h-auto rounded-md my-4;
   }
 }
 
@@ -241,6 +251,6 @@
 
   /* Alert */
   .alert {
-    @apply bg-destructive text-destructive-foreground p-4 rounded-lg;
+    @apply bg-card text-muted-foreground p-4 rounded-lg shadow-lg;
   }
 }

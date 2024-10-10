@@ -23,16 +23,15 @@ const config: Config = {
         primary: {
           DEFAULT: "hsla(var(--primary))",
           foreground: "hsla(var(--primary-foreground))",
-          variant: "hsla(var(--primary-variant))",
         },
         secondary: {
           DEFAULT: "hsla(var(--secondary))",
           foreground: "hsla(var(--secondary-foreground))",
-          variant: "hsla(var(--secondary-variant))",
         },
         muted: {
           DEFAULT: "hsla(var(--muted))",
           foreground: "hsla(var(--muted-foreground))",
+          primary: "hsla(var(--muted-primary))",
         },
         accent: {
           DEFAULT: "hsla(var(--accent))",

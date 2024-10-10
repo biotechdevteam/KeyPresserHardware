@@ -31,7 +31,6 @@ const config: Config = {
         muted: {
           DEFAULT: "hsla(var(--muted))",
           foreground: "hsla(var(--muted-foreground))",
-          primary: "hsla(var(--muted-primary))",
         },
         accent: {
           DEFAULT: "hsla(var(--accent))",

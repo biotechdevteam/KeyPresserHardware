@@ -235,7 +235,7 @@
   }
 
   .blog-content img {
-    @apply max-w-auto h-auto rounded-md my-4;
+    @apply max-w-full h-auto rounded-md my-4;
   }
 }
 

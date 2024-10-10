@@ -4,37 +4,36 @@
 
 :root {
   /* website theme colors*/
-  --screamin-green: 105, 81%, 64%, 1;
-  --screamin-green-2: 114, 87%, 71%, 1;
-  --white: 160, 60%, 99%, 1;
-  --white-smoke: 0, 0%, 96%, 1;
-  --davys-gray: 240, 6%, 32%, 1;
-  --oxford-blue: 240, 61%, 10%, 1;
-  --black: 264, 100%, 3%, 1;
-  --mauveine: 300, 82%, 37%, 1;
-  --dark-magenta: 300, 91%, 30%, 1;
-  --off-red-rgb: 0, 98%, 52%, 1;
+  --screamin-green: hsla(114, 86%, 71%, 1);
+  --tea-green: hsla(105, 88%, 90%, 1);
+  --white: hsla(160, 60%, 99%, 1);
+  --white-smoke: hsla(0, 0%, 96%, 1);
+  --platinum: hsla(240, 4%, 86%, 1);
+  --davys-gray: hsla(240, 6%, 32%, 1);
+  --dark-purple: hsla(263, 100%, 5%, 1);
+  --oxford-blue: hsla(240, 61%, 10%, 1);
+  --mauveine: hsla(300, 82%, 37%, 1);
+  --off-red-rgb: hsla(0, 98%, 52%, 1);
 
   /* variables and usage */
   --background: var(--white-smoke);
-  --foreground: var(--black);
+  --foreground: var(--oxford-blue);
 
   --card: var(--white);
-  --card-foreground: var(--black);
+  --card-foreground: var(--oxford-blue);
 
   --popover: var(--white);
-  --popover-foreground: var(--black);
+  --popover-foreground: var(--oxford-blue);
 
   --primary: var(--screamin-green);
-  --primary-foreground: var(--black);
-  --primary-variant: var(--screamin-green-2);
+  --primary-foreground: var(--oxford-blue);
 
   --secondary: var(--mauveine);
   --secondary-foreground: var(--white);
-  --secondary-variant: var(--dark-magenta);
 
-  --muted: var(--davys-gray);
+  --muted: var(--platinum);
   --muted-foreground: var(--davys-gray);
+  --muted-primary: var(--tea-green);
 
   --accent: var(--mauveine);
   --accent-foreground: var(--white);
@@ -46,36 +45,35 @@
   --input: var(--davys-gray);
   --ring: var(--screamin-green);
 
-  --chart-1: var(--screamin-green-2);
+  --chart-1: var(--screamin-green);
   --chart-2: var(--mauveine);
   --chart-3: var(--oxford-blue);
-  --chart-4: var(--screamin-green);
-  --chart-5: var(--dark-magenta);
+  --chart-4: var(--davys-gray);
+  --chart-5: var(--off-red-rgb);
 
   --radius: 0.5rem;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: var(--oxford-blue);
+    --background: var(--dark-purple);
     --foreground: var(--white);
 
-    --card: var(--black);
+    --card: var(--oxford-blue);
     --card-foreground: var(--white);
 
-    --popover: var(--black);
+    --popover: var(--oxford-blue);
     --popover-foreground: var(--white);
 
     --primary: var(--screamin-green);
-    --primary-foreground: var(--black);
-    --primary-variant: var(--screamin-green-2);
+    --primary-foreground: var(--oxford-blue);
 
     --secondary: var(--mauveine);
     --secondary-foreground: var(--white);
-    --secondary-variant: var(--dark-magenta);
 
-    --muted: var(--oxford-blue);
-    --muted-foreground: var(--white-smoke);
+    --muted: var(--davys-gray);
+    --muted-foreground: var(--platinum);
+    --muted-primary: var(--tea-green);
 
     --accent: var(--mauveine);
     --accent-foreground: var(--white);
@@ -83,15 +81,15 @@
     --destructive: var(--off-red-rgb);
     --destructive-foreground: var(--white);
 
-    --border: var(--davys-gray);
-    --input: var(--davys-gray);
+    --border: var(--platinum);
+    --input: var(--platinum);
     --ring: var(--screamin-green);
 
-    --chart-1: var(--screamin-green-2);
+    --chart-1: var(--screamin-green);
     --chart-2: var(--mauveine);
-    --chart-3: var(--oxford-blue);
-    --chart-4: var(--screamin-green);
-    --chart-5: var(--dark-magenta);
+    --chart-3: var(--white);
+    --chart-4: var(--platinum);
+    --chart-5: var(--off-red-rgb);
 
     --radius: 0.5rem;
   }

@@ -20,6 +20,7 @@ import { FAQs } from "@/types/FAQSchema";
 import { Feedback } from "@/types/feedbackSchema";
 import { Event } from "@/types/eventsSchema";
 import { Member } from "@/types/memberSchema";
+import LandingTemp from "../landing-temp";
 
 // Landing Page component to fetch and display all data
 const LandingPage: React.FC = () => {
@@ -182,16 +183,17 @@ const LandingPage: React.FC = () => {
   // Render the LandingContainer with the prefetched data
   return (
     <div>
-      <LandingContainer
-{/*         aboutData={aboutData as About}
+      <LandingTemp />
+{/*       <LandingContainer
+        aboutData={aboutData as About}
         services={servicesData as Service[]}
         blogs={blogsData as Blog[]}
         faqs={faqsData as FAQs}
         feedbacks={feedbacksData as Feedback[]}
         events={eventsData as Event[]}
         members={membersData as Member[]}
-        projects={projectsData as Project[]} */}
-      />
+        projects={projectsData as Project[]}
+      /> */}
     </div>
   );
 };

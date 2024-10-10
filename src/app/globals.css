@@ -4,16 +4,16 @@
 
 :root {
   /* website theme colors*/
-  --screamin-green: hsla(114, 86%, 71%, 1);
-  --tea-green: hsla(105, 88%, 90%, 1);
-  --white: hsla(160, 60%, 99%, 1);
-  --white-smoke: hsla(0, 0%, 96%, 1);
-  --platinum: hsla(240, 4%, 86%, 1);
-  --davys-gray: hsla(240, 6%, 32%, 1);
-  --dark-purple: hsla(263, 100%, 5%, 1);
-  --oxford-blue: hsla(240, 61%, 10%, 1);
-  --mauveine: hsla(300, 82%, 37%, 1);
-  --off-red-rgb: hsla(0, 98%, 52%, 1);
+  --screamin-green: 114, 86%, 71%, 1;
+  --tea-green: 105, 88%, 90%, 1;
+  --white: 160, 60%, 99%, 1;
+  --white-smoke: 0, 0%, 96%, 1;
+  --platinum: 240, 4%, 86%, 1;
+  --davys-gray: 240, 6%, 32%, 1;
+  --dark-purple: 263, 100%, 5%, 1;
+  --oxford-blue: 240, 61%, 10%, 1;
+  --mauveine: 300, 82%, 37%, 1;
+  --off-red-rgb: 0, 98%, 52%, 1;
 
   /* variables and usage */
   --background: var(--white-smoke);

@@ -75,6 +75,61 @@ export const fetchMembers = async (): Promise<Member[]> => {
   }
 };
 
+// Fetch FAQ Data
+export const fetchFAQs = async (): Promise<FAQs> => {
+  try {
+    const response = await fetchData("/about/faqs", "GET");
+    return FAQsSchema.parse(response?.data);
+  } catch (error) {
+    console.error("Error during fetchFAQs:", error);
+    throw new Error("Failed to fetch FAQs.");
+  }
+};
+
+// Fetch Feedbacks Data
+export const fetchFeedbacks = async (): Promise<Feedback[]> => {
+  try {
+    const response = await fetchData("/feedback", "GET");
+    return response?.data;
+  } catch (error) {
+    console.error("Error during fetchFeedbacks:", error);
+    throw new Error("Failed to fetch feedbacks.");
+  }
+};
+
+// Fetch Projects Data
+export const fetchProjectsData = async (): Promise<Project[]> => {
+  try {
+    const response = await fetchData("/projects", "GET"); // Adjust the URL if necessary
+    return response?.data;
+  } catch (error) {
+    console.error("Error during fetchProjectsData:", error);
+    throw new Error("Failed to fetch projects.");
+  }
+};
+
+// Fetch Blogs Function
+export const fetchBlogs = async (): Promise<Blog[]> => {
+  try {
+    const response = await fetchData("/blog/posts", "GET");
+    return response?.data;
+  } catch (error) {
+    console.error("Error during fetchBlogs:", error);
+    throw new Error("Failed to fetch blogs.");
+  }
+};
+
+// Fetch Blogs Function
+export const fetchEvents = async (): Promise<Event[]> => {
+  try {
+    const response = await fetchData("/events", "GET");
+    return response?.data;
+  } catch (error) {
+    console.error("Error during fetchEvents:", error);
+    throw new Error("Failed to fetch events.");
+  }
+};
+
 // Sign Up Function
 export const signUpRequest = async (
   email: string,
@@ -137,61 +192,6 @@ export const applyRequest = async (
   }
 };
 
-// Fetch FAQ Data
-export const fetchFAQs = async (): Promise<FAQs> => {
-  try {
-    const response = await fetchData("/about/faqs", "GET");
-    return FAQsSchema.parse(response?.data);
-  } catch (error) {
-    console.error("Error during fetchFAQs:", error);
-    throw new Error("Failed to fetch FAQs.");
-  }
-};
-
-// Fetch Feedbacks Data
-export const fetchFeedbacks = async (): Promise<Feedback[]> => {
-  try {
-    const response = await fetchData("/feedback", "GET");
-    return response?.data;
-  } catch (error) {
-    console.error("Error during fetchFeedbacks:", error);
-    throw new Error("Failed to fetch feedbacks.");
-  }
-};
-
-// Fetch Projects Data
-export const fetchProjectsData = async (): Promise<Project[]> => {
-  try {
-    const response = await fetchData("/projects", "GET"); // Adjust the URL if necessary
-    return response?.data;
-  } catch (error) {
-    console.error("Error during fetchProjectsData:", error);
-    throw new Error("Failed to fetch projects.");
-  }
-};
-
-// Fetch Blogs Function
-export const fetchBlogs = async (): Promise<Blog[]> => {
-  try {
-    const response = await fetchData("/blog/posts", "GET");
-    return response?.data;
-  } catch (error) {
-    console.error("Error during fetchBlogs:", error);
-    throw new Error("Failed to fetch blogs.");
-  }
-};
-
-// Fetch Blogs Function
-export const fetchEvents = async (): Promise<Event[]> => {
-  try {
-    const response = await fetchData("/events", "GET");
-    return response?.data;
-  } catch (error) {
-    console.error("Error during fetchEvents:", error);
-    throw new Error("Failed to fetch events.");
-  }
-};
-
 // Book Service Function
 export const bookService = async (
   userId: string,
@@ -212,3 +212,23 @@ export const bookService = async (
     throw error;
   }
 };
+
+// Register for Event Function
+export const registerForEvent = async (
+  userId: string,
+  eventId: string,
+  notes: string
+) => {
+  try {
+    const response = await fetchData("/events/register", "POST", {
+      userId: userId,
+      eventId: eventId,
+      notes,
+    });
+    return response?.data;
+  } catch (error) {
+    console.error("Error during registerForEvent:", error);
+    throw error;
+  }
+};
+

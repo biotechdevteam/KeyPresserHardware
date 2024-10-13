@@ -29,7 +29,7 @@ export default async function LocaleLayout({
           <NextIntlClientProvider messages={messages}>
             <ClientLayout>
               <StoreProvider>
-                <main className="bg-background pt-20">{children}</main>
+                <main className="bg-background">{children}</main>
               </StoreProvider>
             </ClientLayout>
           </NextIntlClientProvider>

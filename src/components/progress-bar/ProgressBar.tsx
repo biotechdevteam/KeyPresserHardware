@@ -39,18 +39,7 @@ const ProgressBar: React.FC = () => {
             >
               {step.label}
             </p>
-          </div>
-
-          {/* Line between steps */}
-          {index < steps.length - 1 && (
-            <div className="absolute top-1/2 transform translate-y-1/2 left-full w-16 h-1 bg-gray-300">
-              <div
-                className={`h-full ${
-                  index < currentStep ? "bg-primary" : "bg-gray-300"
-                }`}
-              ></div>
-            </div>
-          )}
+          </div>          
         </div>
       ))}
     </div>

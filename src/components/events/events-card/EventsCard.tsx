@@ -85,7 +85,7 @@ const EventCard: React.FC<EventCardProps> = ({
                             "Unknown Speaker"}{" "}
                           - {speaker.speakerRole || "No Role Specified"}
                           <Link
-                            href={`/members/${speaker.memberId?.user_id?._id}`}
+                            href={`/members/${speaker.memberId._id}`}
                             className="text-sm text-secondary ml-2"
                           >
                             about this speaker

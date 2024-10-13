@@ -49,7 +49,7 @@ const ProjectPortfolioSection: React.FC<ProjectPortfolioSectionProps> = ({
         </h2>
 
         {/* Project List */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 place-items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 place-items-center">
           {projects.length > 0 ? (
             projects.map((project) => (
               <div

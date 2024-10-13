@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Service } from "@/types/ServiceSchema";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import Gallery from "../gallery-section/GallerySection";
@@ -9,6 +9,8 @@ import { Feedback } from "@/types/feedbackSchema";
 import ServiceCTA from "../service-cta/ServiceCTA";
 import DOMPurify from "dompurify";
 import ServiceHeader from "../service-header/ServiceHeader";
+import RegisterDialog from "@/components/register-dialog/RegisterDialog";
+import BookServiceForm from "../book-service/BookService";
 
 interface ServiceDetailsProps {
   service: Service;
@@ -19,9 +21,13 @@ const ServiceDetails: React.FC<ServiceDetailsProps> = ({
   service,
   feedbacks,
 }) => {
+  const [isBookingFormOpen, setIsBookingFormOpen] = useState(false);
+  const [isRegisterDialogOpen, setIsRegisterDialogOpen] = useState(false);
+
   const handleBookService = () => {
     // Booking action logic
     console.log("Booking Service");
+    setIsRegisterDialogOpen(false);
   };
 
   const handleLearnMore = () => {
@@ -29,13 +35,43 @@ const ServiceDetails: React.FC<ServiceDetailsProps> = ({
     console.log("Learning more about the service");
   };
 
+  // Open register dialog before booking
+  const handleOpenRegisterDialog = () => {
+    setIsRegisterDialogOpen(true); // Show register dialog when user tries to book
+  };
+
+  // After registration, open booking form
+  const handleRegisterComplete = () => {
+    setIsRegisterDialogOpen(false); // Close registration dialog
+    setIsBookingFormOpen(true); // Open booking form
+  };
+
   return (
     <div className="space-y-6">
-      
+      {/* Register Dialog for service booking */}
+      {isRegisterDialogOpen && (
+        <RegisterDialog
+          onComplete={handleRegisterComplete}
+          onCancel={() => setIsRegisterDialogOpen(false)}
+        />
+      )}
+
+      {/* Booking Form Modal */}
+      {isBookingFormOpen && (
+        <BookServiceForm
+          serviceId={service._id}
+          serviceTitle={service.title}
+          onComplete={() => setIsBookingFormOpen(false)}
+          onCancel={() => setIsBookingFormOpen(false)}
+        />
+      )}
+
       <ServiceHeader
         title={service.title}
         summary={service.summary}
-        backgroundImageUrl={service.portfolio_urls ? service.portfolio_urls[0] : ""}
+        backgroundImageUrl={
+          service.portfolio_urls ? service.portfolio_urls[0] : ""
+        }
       />
 
       {/* Service Title and Description */}
@@ -46,7 +82,9 @@ const ServiceDetails: React.FC<ServiceDetailsProps> = ({
         <CardContent>
           <div
             className="text-lg"
-            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(service.description) }}
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(service.description),
+            }}
           />
         </CardContent>
       </Card>
@@ -56,7 +94,7 @@ const ServiceDetails: React.FC<ServiceDetailsProps> = ({
         title="Interested in this service?"
         description="Check out our pricing plans and book this service today!"
         buttonText="Book Now"
-        onClick={handleBookService}
+        onClick={handleOpenRegisterDialog}
         secondaryText="Learn More"
         secondaryAction={handleLearnMore}
       />
@@ -88,16 +126,8 @@ const ServiceDetails: React.FC<ServiceDetailsProps> = ({
         title="Have you made your decision?"
         description="Click below to book this service or reach out to us for more information."
         buttonText="Book This Service"
-        onClick={handleBookService}
+        onClick={handleOpenRegisterDialog}
       />
-
-      {/* Call to Action after pricing plans */}
-      {/* <ServiceCTA
-        title="Ready to get started?"
-        description="Choose the best pricing plan and let's work together!"
-        buttonText="Get Started"
-        onClick={handleBookService}
-      /> */}
 
       {/* Testimonials Section */}
       <Testimonials

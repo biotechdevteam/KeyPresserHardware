@@ -21,12 +21,9 @@ interface ApplicationFormProps {
 }
 
 const specializationOptions = [
-  "Molecular Biology",
   "Biotechnology",
   "Bioinformatics",
-  "Chemical Engineering",
-  "Pharmaceutical Research",
-  "Genetic Engineering",
+  "Genetics",
   "Other",
 ];
 
@@ -52,6 +49,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
     referred_by_member_id: "",
   });
 
+  const [successMessage, setSuccessMessage] = useState(""); // State for success message
   const [showOtherField, setShowOtherField] = useState(false); // Track if "Other" is selected for specialization
 
   // Handle input changes
@@ -132,7 +130,12 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
     );
 
     if (success) {
-      onComplete();
+      setSuccessMessage(
+        "Your application has been submitted. Thank you for trust! Check your email."
+      );
+      setTimeout(() => {
+        onComplete();
+      }, 2000);
     }
   };
 
@@ -156,8 +159,10 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
       className="grid gap-6 grid-cols-1 md:grid-cols-2 w-full"
     >
       {/* Display Error */}
-      {error && <div className="col-span-2 text-red-500">{error}</div>}
-
+      {error && <div className="col-span-2 text-destructive">{error}</div>}
+      {successMessage && (
+        <div className="col-span-2 text-primary">{successMessage}</div>
+      )}
       {/* Motivation Letter */}
       <div className="col-span-2">
         <label htmlFor="motivation_letter" className="block mb-2 font-bold">
@@ -261,7 +266,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
       </div>
 
       {/* Submit and Cancel Buttons */}
-      <div className="col-span-2 flex flex-col md:flex-row md:justify-between space-y-4 md:space-y-0">
+      <div className="col-span-2 flex justify-between">
         {/* Cancel Button */}
         <Button
           type="button"

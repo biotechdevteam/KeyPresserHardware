@@ -17,7 +17,7 @@ export default async function LocaleLayout({
       <NavBar />
 
       {/* Main content */}
-      <main className="bg-background">{children}</main>
+      <main className="bg-background pt-20">{children}</main>
     </div>
   );
 }

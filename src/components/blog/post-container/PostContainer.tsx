@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Blog, NewComment } from "@/types/blogSchema";
 import PostTitleAndMetadata from "../post-meta/PostMeta";
 import PostContent from "../post-content/PostContent";
@@ -39,17 +39,19 @@ const PostContainer: React.FC<PostContainerProps> = ({
   // Function to be called after registration is completed
   const handleRegistrationComplete = () => {
     setShowRegisterDialog(false);
-    // Optionally, retry adding the comment after registration is complete
-    // If you saved the new comment details, you can re-trigger the comment creation logic here.
   };
 
   // Calculate likes, dislikes, and comments count
-  const likes =
-    post.reactions?.filter((reaction) => reaction.reactionType === "like")
-      .length || 0;
-  const dislikes =
-    post.reactions?.filter((reaction) => reaction.reactionType === "dislike")
-      .length || 0;
+  const likes = useMemo(
+    () => post.reactions?.filter((r) => r.reactionType === "like").length || 0,
+    [post.reactions]
+  );
+  const dislikes = useMemo(
+    () =>
+      post.reactions?.filter((r) => r.reactionType === "dislike").length || 0,
+    [post.reactions]
+  );
+
   const commentsCount = post.comments?.length || 0;
 
   // Determine if the current user has liked or disliked the post
@@ -201,10 +203,15 @@ const PostContainer: React.FC<PostContainerProps> = ({
         {/* Render Comments Section */}
         <section id="post-comments">
           <CommentsSection
-            comments={comments}
+            comments={comments.sort(
+              (a, b) =>
+                new Date(b.createdAt).getTime() -
+                new Date(a.createdAt).getTime()
+            )}
             postId={post._id}
             currentUserId={user?._id || ""}
             onAddComment={handleAddComment}
+            setShowRegisterDialog={setShowRegisterDialog}
           />
         </section>
 

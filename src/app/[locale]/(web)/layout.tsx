@@ -1,3 +1,4 @@
+import Footer from "@/components/footer/Container";
 import NavBar from "@/components/nav-bar/NavBar";
 import type { Metadata } from "next";
 
@@ -18,6 +19,9 @@ export default async function LocaleLayout({
 
       {/* Main content */}
       <main className="bg-background pt-20">{children}</main>
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 }

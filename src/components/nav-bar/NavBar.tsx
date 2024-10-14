@@ -100,7 +100,7 @@ const NavBar = () => {
                   ))}
                   <Separator className="my-4" />
                   {!isAuthenticated ? (
-                    <Link href="/login">
+                    <Link href="/auth/signin">
                       <p className="flex gap-4 text-md hover:text-primary">
                         <LogIn />
                         {t("login")}

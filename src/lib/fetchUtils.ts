@@ -254,14 +254,14 @@ export const createComment = async (
 // Enum for reaction types
 export enum ReactionType {
   Like = "like",
-  Dislike = "dislike"
+  Dislike = "dislike",
 }
 
 // React to Blog Post Function
 export const reactToBlogPost = async (
   postId: string,
   userId: string,
-  reactionType: ReactionType,  // Use the enum here
+  reactionType: ReactionType, // Use the enum here
   remove: boolean = false
 ) => {
   try {
@@ -282,7 +282,7 @@ export const reactToBlogPost = async (
 export const reactToComment = async (
   commentId: string,
   userId: string,
-  reactionType: ReactionType,  // Use the enum here
+  reactionType: ReactionType, // Use the enum here
   remove: boolean = false
 ) => {
   try {

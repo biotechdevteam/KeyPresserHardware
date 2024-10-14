@@ -129,7 +129,7 @@ if (error) {
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <Button onClick={() => router.push("/blog")} className="w-full">
-              Visit Blog
+              Visit Blogs
             </Button>
             <Button onClick={() => router.push("/about")} className="w-full">
               About Us

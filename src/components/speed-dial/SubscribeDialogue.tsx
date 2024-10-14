@@ -43,7 +43,7 @@ const SubscribeDialog: React.FC = () => {
         <Dialog>
           <DialogTrigger asChild>
             {showSubscribeButton ? (
-              <Button className="px-4 py-2 animate-beep">
+              <Button className="px-4 py-2 text-white bg-primary flex justify-center items-center gap-3">
                 <Bell width={30} height={40} />
                 Subscribe Now
               </Button>

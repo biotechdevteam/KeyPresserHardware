@@ -15,13 +15,13 @@ interface AuthorInformationProps {
 
 const AuthorInformation: React.FC<AuthorInformationProps> = ({ author }) => {
   return (
-    <div className="mx-auto mt-8 max-w-3xl">
+    <Card className="max-w-4xl mx-auto mt-6 p-6">
       {/* Title */}
       <h2 className="text-2xl font-bold mb-4 text-center sm:text-left">
         About Author
       </h2>
 
-      <Card className="p-6 shadow-lg border border-border">
+      <div className="p-6">
         <CardHeader className="grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-4 items-center">
           {/* Author Avatar */}
           <Avatar className="w-16 h-16 mx-auto sm:mx-0">
@@ -52,8 +52,8 @@ const AuthorInformation: React.FC<AuthorInformationProps> = ({ author }) => {
             </a>
           </div>
         </CardHeader>
-      </Card>
-    </div>
+      </div>
+    </Card>
   );
 };
 

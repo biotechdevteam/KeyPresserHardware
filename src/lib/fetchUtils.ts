@@ -232,3 +232,69 @@ export const registerForEvent = async (
   }
 };
 
+// Create Comment Function
+export const createComment = async (
+  postId: string,
+  userId: string,
+  commentText: string
+) => {
+  try {
+    const response = await fetchData("/blog/comments", "POST", {
+      postId,
+      userId,
+      commentText,
+    });
+    return response?.data;
+  } catch (error) {
+    console.error("Error during comment creation:", error);
+    throw error;
+  }
+};
+
+// Enum for reaction types
+export enum ReactionType {
+  Like = "like",
+  Dislike = "dislike"
+}
+
+// React to Blog Post Function
+export const reactToBlogPost = async (
+  postId: string,
+  userId: string,
+  reactionType: ReactionType,  // Use the enum here
+  remove: boolean = false
+) => {
+  try {
+    const response = await fetchData("/blog/posts/reactions", "POST", {
+      postId,
+      userId,
+      reactionType,
+      remove,
+    });
+    return response?.data;
+  } catch (error) {
+    console.error("Error during reaction to blog post:", error);
+    throw error;
+  }
+};
+
+// React to Comment Function
+export const reactToComment = async (
+  commentId: string,
+  userId: string,
+  reactionType: ReactionType,  // Use the enum here
+  remove: boolean = false
+) => {
+  try {
+    const response = await fetchData("/blog/comments/reactions", "POST", {
+      commentId,
+      userId,
+      reactionType,
+      remove,
+    });
+    return response?.data;
+  } catch (error) {
+    console.error("Error during reaction to comment:", error);
+    throw error;
+  }
+};

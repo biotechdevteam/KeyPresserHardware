@@ -18,7 +18,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ title, url }) => {
   const mailUrl = `mailto:?subject=${encodedTitle}&body=Check out this post: ${encodedUrl}`;
 
   return (
-    <div className="grid grid-cols-2 gap-4 md:grid-cols-4 mt-6">
+    <div className="grid grid-cols-2 gap-4 md:grid-cols-4 mt-6 max-w-4xl mx-auto shadow-lg p-6">
       {/* Facebook Button */}
       <Button variant="secondary">
         <a

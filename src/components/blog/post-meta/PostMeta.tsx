@@ -34,7 +34,7 @@ const PostTitleAndMetadata: React.FC<PostTitleAndMetadataProps> = ({
   const tags = generateTags(post.title, post.authorId.user_id.first_name);
 
   return (
-    <Card className="max-w-4xl mx-auto mt-6 shadow-lg border border-border p-6">
+    <Card className="max-w-4xl mx-auto mt-6">
       <CardHeader>
         {/* Title Section */}
         <CardTitle className="text-3xl font-bold mb-2">{post.title}</CardTitle>

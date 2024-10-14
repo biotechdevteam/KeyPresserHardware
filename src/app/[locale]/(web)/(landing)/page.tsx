@@ -20,7 +20,6 @@ import { FAQs } from "@/types/FAQSchema";
 import { Feedback } from "@/types/feedbackSchema";
 import { Event } from "@/types/eventsSchema";
 import { Member } from "@/types/memberSchema";
-import LandingTemp from "../../landing-temp";
 
 // Landing Page component to fetch and display all data
 const LandingPage: React.FC = () => {

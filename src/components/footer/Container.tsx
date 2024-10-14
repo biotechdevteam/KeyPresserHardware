@@ -80,12 +80,12 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="text-sm hover:underline">
-                  Blog
+                <Link href="/blogs" className="text-sm hover:underline">
+                  Blogs
                 </Link>
               </li>
               <li>
-                <Link href="/contact-us" className="text-sm hover:underline">
+                <Link href="/contact" className="text-sm hover:underline">
                   Contact Us
                 </Link>
               </li>

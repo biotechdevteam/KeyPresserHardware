@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon-48x48.png",
     shortcut: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
+    apple: "/apple-touch-icon.png", 
     other: [
       {
         rel: "icon",
@@ -25,6 +25,7 @@ export const metadata: Metadata = {
     ],
   },
   manifest: "/site.webmanifest",
+  // <meta name="apple-mobile-web-app-title" content="BT Verse" />
 };
 
 export default async function LocaleLayout({

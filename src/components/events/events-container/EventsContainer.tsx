@@ -3,11 +3,12 @@ import React, { useState } from "react";
 import EventCard from "@/components/events/events-card/EventsCard";
 import PastEventsCarousel from "@/components/events/past-events/PastEventsCarousel";
 import SearchContainer from "@/components/events/search-event/SearchContainer";
-import EventDetailsModal from "@/components/events/events-details/EventsDetails";
 import { Event } from "@/types/eventsSchema";
 import { Feedback } from "@/types/feedbackSchema";
 import { fetchEvents } from "@/lib/fetchUtils";
 import { useQuery } from "@tanstack/react-query";
+import RegisterDialog from "@/components/register-dialog/RegisterDialog";
+import EnrollEventForm from "../events-enroll/EnrollForm";
 
 interface EventsContainerProps {
   initialData: {
@@ -21,8 +22,21 @@ const EventsContainer: React.FC<EventsContainerProps> = ({ initialData }) => {
   const [expandedEvents, setExpandedEvents] = useState<Record<string, boolean>>(
     {}
   );
-  const [openEnrollModal, setOpenEnrollModal] = useState(false);
+  const [isRegisterDialogOpen, setIsRegisterDialogOpen] = useState(false);
+  const [isEnrollFormOpen, setIsEnrollFormOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+
+  // Open the register dialog before enrolling
+  const handleOpenRegisterDialog = (event: Event) => {
+    setSelectedEvent(event); // Set the selected event
+    setIsRegisterDialogOpen(true); // Open the registration dialog
+  };
+
+  // After registration, open enroll form
+  const handleRegisterComplete = () => {
+    setIsRegisterDialogOpen(false); // Close the registration dialog
+    setIsEnrollFormOpen(true); // Open the enrollment form
+  };
 
   // Use `useQuery` to fetch events, with initial data from props
   const { data: eventsData = initialData.events } = useQuery({
@@ -53,13 +67,26 @@ const EventsContainer: React.FC<EventsContainerProps> = ({ initialData }) => {
     setExpandedEvents((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  const handleEnrollClick = (event: Event) => {
-    setSelectedEvent(event);
-    setOpenEnrollModal(true);
-  };
-
   return (
     <div className="p-4">
+      {/* Register Dialog for event enrollment */}
+      {isRegisterDialogOpen && (
+        <RegisterDialog
+          onComplete={handleRegisterComplete}
+          onCancel={() => setIsRegisterDialogOpen(false)}
+        />
+      )}
+
+      {/* Enrollment Form Modal */}
+      {isEnrollFormOpen && selectedEvent && (
+        <EnrollEventForm
+          eventId={selectedEvent._id}
+          eventTitle={selectedEvent.title}
+          onComplete={() => setIsEnrollFormOpen(false)}
+          onCancel={() => setIsEnrollFormOpen(false)}
+        />
+      )}
+
       {/* Search and Filter */}
       <SearchContainer
         searchTerm={searchTerm}
@@ -78,7 +105,7 @@ const EventsContainer: React.FC<EventsContainerProps> = ({ initialData }) => {
               event={event}
               expanded={expandedEvents[event._id]}
               toggleEventDetails={toggleEventDetails}
-              handleEnrollClick={handleEnrollClick}
+              handleEnrollClick={() => handleOpenRegisterDialog(event)} // Pass event to register dialog
             />
           ))}
         </div>
@@ -95,15 +122,6 @@ const EventsContainer: React.FC<EventsContainerProps> = ({ initialData }) => {
           <div className="text-center">No past events</div>
         )}
       </div>
-
-      {/* Enroll Modal */}
-      {selectedEvent && (
-        <EventDetailsModal
-          open={openEnrollModal}
-          event={selectedEvent}
-          onClose={() => setOpenEnrollModal(false)}
-        />
-      )}
     </div>
   );
 };

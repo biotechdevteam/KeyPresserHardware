@@ -84,10 +84,10 @@ const LandingContainer: React.FC<{
         }
       />
       {/* Render Testimonial Section */}
-      <Testimonials
-        feedbacks={feedbacks}
-        title="What clients and members are saying"
-      />
+        <Testimonials
+          feedbacks={feedbacks}
+          title="What clients and members are saying"
+        />
       {/* Render Faqs Section */}
       <FAQContainer
         initialData={faqs.filter((faq) => faq.category === "General")}

@@ -17,17 +17,14 @@ interface ApplyLayoutProps {
 }
 
 const ApplyLayout: React.FC<ApplyLayoutProps> = ({ children }) => {
-  // State to control if persistence should be set up
   const [isClient, setIsClient] = useState(false);
 
-  // Only run persistence setup on the client-side
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setIsClient(true); // We are on the client-side
+      setIsClient(true);
     }
   }, []);
 
-  // Create the QueryClient once and persist it across renders
   const [queryClient] = useState(() => {
     const client = new QueryClient({
       defaultOptions: {
@@ -37,7 +34,6 @@ const ApplyLayout: React.FC<ApplyLayoutProps> = ({ children }) => {
       },
     });
 
-    // Set up cache persistence only on the client
     if (isClient) {
       const persister = createAsyncStoragePersister({
         storage: localforage,
@@ -46,7 +42,7 @@ const ApplyLayout: React.FC<ApplyLayoutProps> = ({ children }) => {
       persistQueryClient({
         queryClient: client,
         persister,
-        maxAge: 1000 * 60 * 60 * 24, // Only persist cache for 24 hours
+        maxAge: 1000 * 60 * 60 * 24,
       });
     }
 
@@ -56,20 +52,15 @@ const ApplyLayout: React.FC<ApplyLayoutProps> = ({ children }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <StepProvider>
-        {" "}
-        {/* Ensure StepProvider is applied here */}
-        <ApplyContent>{children}</ApplyContent>{" "}
-        {/* Moved content to separate component */}
+        <ApplyContent>{children}</ApplyContent>
       </StepProvider>
     </QueryClientProvider>
   );
 };
 
-// Separate out the content part that depends on `useStep`
 const ApplyContent: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const { currentStep } = useStep(); // Now useStep has the proper context
+  const { currentStep } = useStep();
 
-  // Choose background image based on the current step
   const getBackgroundImage = () => {
     switch (currentStep) {
       case 0:
@@ -83,7 +74,6 @@ const ApplyContent: React.FC<{ children: ReactNode }> = ({ children }) => {
     }
   };
 
-  // Set subtitle based on the current step
   const getSubtitle = () => {
     switch (currentStep) {
       case 0:
@@ -98,11 +88,11 @@ const ApplyContent: React.FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   return (
-    <div className={cn("min-h-screen overflow-hidden")}>
+    <div className={cn("min-h-screen")}>
       {/* Main Content */}
-      <div className="flex flex-1 relative">
+      <div className="grid grid-cols-1 md:grid-cols-2 min-h-screen">
         {/* Left Side - Background with Title Overlay */}
-        <div className="hidden md:block w-1/2 relative">
+        <div className="hidden md:block relative">
           <Image
             src={getBackgroundImage()}
             alt="Background Illustration"
@@ -110,28 +100,21 @@ const ApplyContent: React.FC<{ children: ReactNode }> = ({ children }) => {
             className="object-cover"
             quality={100}
           />
-          {/* Title on top of the image */}
-          <div className="absolute inset-0 flex flex-col items-center justify-around">
+          <div className="absolute inset-0 flex flex-col items-center justify-center space-y-4">
             <h1 className="text-4xl font-bold text-primary drop-shadow-lg">
               Apply to Join the Team
             </h1>
-            <h2 className="text-2xl font-semibold text-foreground drop-shadow-sm mt-2">
+            <h2 className="text-2xl font-semibold text-foreground drop-shadow-sm">
               {getSubtitle()}
             </h2>
           </div>
         </div>
 
         {/* Right Side - Progress Bar and Form Section */}
-        <div className="w-full h-screen md:w-1/2 bg-white p-10 flex flex-col justify-center items-center relative">
-          {/* Progress Bar at the Top */}
+        <div className="w-full min-h-screen max-h-screen bg-white p-5 md:p-15 flex flex-col justify-center">
           <ProgressBar />
 
-          {/* Form Section */}
-          <div className="relative w-full h-full mt-5">
-            <div className="w-full max-w-lg absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2">
-              {children}
-            </div>
-          </div>
+          <div className="mt-5 w-full max-w-lg mx-auto">{children}</div>
         </div>
       </div>
     </div>

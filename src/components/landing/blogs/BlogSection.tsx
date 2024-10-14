@@ -14,8 +14,8 @@ const BlogSection: React.FC<{ blogs: Blog[] }> = ({ blogs }) => {
   const router = useRouter();
 
   return (
-    <section className="my-12 px-6">
-      <h2 className="text-4xl font-bold text-primary text-center mb-8">Latest Blogs</h2>
+    <section className="my-12 px-6 grid place-items-center">
+      <h2 className="text-4xl font-bold text-primary mb-8">Latest Blogs</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {blogs.slice(0, 3).map((blog, index) => (

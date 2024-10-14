@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"; // Import the Button component 
 import { Separator } from "@/components/ui/separator"; // For separating sections
 import FollowUs from "../speed-dial/FollowUs"; // Assuming you have this component
 import Link from "next/link";
+import Subscribe from "./Subscribe";
 
 const Footer = () => {
   return (
@@ -123,6 +124,11 @@ const Footer = () => {
               </li>
             </ul>
           </CardContent>
+        </Card>
+
+        {/* Subscribe Section */}
+        <Card className="p-4">
+          <Subscribe />
         </Card>
 
         {/* Follow Us Section */}

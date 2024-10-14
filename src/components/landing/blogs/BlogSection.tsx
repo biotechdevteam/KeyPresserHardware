@@ -47,7 +47,7 @@ const BlogSection: React.FC<{ blogs: Blog[] }> = ({ blogs }) => {
               {/* Read More Button */}
               <Button
                 variant="secondary"
-                onClick={() => router.push(`/blogs/${blog._id}`)}
+                onClick={() => router.push(`/post/${blog._id}`)}
                 className="text-sm font-medium px-4 py-2"
               >
                 Read More

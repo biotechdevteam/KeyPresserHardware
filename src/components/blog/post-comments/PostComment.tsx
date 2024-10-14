@@ -45,9 +45,9 @@ const CommentsSection: React.FC<CommentsSectionProps> = ({
   };
 
   return (
-    <section className="mt-8">
+    <Card className="max-w-4xl mx-auto mt-6">
       {/* Comments List */}
-      <Card className="mb-6">
+      <div>
         <CardHeader>
           <CardTitle className="text-xl">Comments</CardTitle>
         </CardHeader>
@@ -116,7 +116,7 @@ const CommentsSection: React.FC<CommentsSectionProps> = ({
             <p>No comments yet. Be the first to comment!</p>
           )}
         </div>
-      </Card>
+      </div>
 
       {/* Add New Comment */}
       <Card>
@@ -138,7 +138,7 @@ const CommentsSection: React.FC<CommentsSectionProps> = ({
           </Button>
         </div>
       </Card>
-    </section>
+    </Card>
   );
 };
 

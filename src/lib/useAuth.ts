@@ -84,7 +84,7 @@ export const useAuth = () => {
       });
 
       // Redirect to a protected route
-      router.push("/");
+      return true;
     } catch (err) {
       const errorMessage = handleApiError(err);
       setError(errorMessage);

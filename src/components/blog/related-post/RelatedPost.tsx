@@ -16,7 +16,7 @@ interface RelatedPostsProps {
 
 const RelatedPosts: React.FC<RelatedPostsProps> = ({ relatedPosts }) => {
   return (
-    <section className="mt-8">
+    <section className="max-w-4xl mx-auto mt-6 shadow-lg p-6">
       <h2 className="text-2xl font-semibold mb-6">Related Posts</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {relatedPosts.map((post) => (

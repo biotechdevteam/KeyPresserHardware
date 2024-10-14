@@ -1,25 +1,42 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ThumbsUp, ThumbsDown, MessageSquare } from "lucide-react"; // Using icons for reactions
+import { ThumbsUp, ThumbsDown, MessageSquare } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { ReactionType } from "@/lib/fetchUtils";
 
 interface ReactionsSectionProps {
+  postId: string; // Add postId to pass it to the reaction handler
+  currentUserId: string; // Add currentUserId to verify the user
   initialLikes: number;
+  hasliked?: boolean;
+  hasdisliked?: boolean;
   initialDislikes: number;
   commentsCount?: number;
+  handleReact: (
+    postId: string,
+    userId: string,
+    reactionType: ReactionType
+  ) => void; // Reaction handler
 }
 
 const ReactionsSection: React.FC<ReactionsSectionProps> = ({
+  postId,
+  currentUserId,
   initialLikes,
+  hasdisliked,
+  hasliked,
   initialDislikes,
   commentsCount,
+  handleReact,
 }) => {
   const [likes, setLikes] = useState(initialLikes);
   const [dislikes, setDislikes] = useState(initialDislikes);
-  const [liked, setLiked] = useState(false);
-  const [disliked, setDisliked] = useState(false);
+  const [liked, setLiked] = useState(hasliked);
+  const [disliked, setDisliked] = useState(hasdisliked);
 
   // Handle Like action
   const handleLike = () => {
+    if (!currentUserId) return; // Ensure user is logged in
     if (liked) {
       setLikes(likes - 1);
     } else {
@@ -30,10 +47,12 @@ const ReactionsSection: React.FC<ReactionsSectionProps> = ({
       }
     }
     setLiked(!liked);
+    handleReact(postId, currentUserId, ReactionType.Like);
   };
 
   // Handle Dislike action
   const handleDislike = () => {
+    if (!currentUserId) return; // Ensure user is logged in
     if (disliked) {
       setDislikes(dislikes - 1);
     } else {
@@ -44,15 +63,16 @@ const ReactionsSection: React.FC<ReactionsSectionProps> = ({
       }
     }
     setDisliked(!disliked);
+    handleReact(postId, currentUserId, ReactionType.Dislike);
   };
 
   return (
-    <div className="flex items-center space-x-4 mt-6">
+    <Card className="max-w-4xl mx-auto mt-6 p-3 flex">
       {/* Like Button */}
       <Button
         variant={liked ? "default" : "outline"}
         className={`flex items-center space-x-2 ${
-          liked ? "bg-primary text-primary-foreground" : ""
+          hasliked || liked ? "bg-primary text-primary-foreground" : ""
         }`}
         onClick={handleLike}
       >
@@ -64,7 +84,7 @@ const ReactionsSection: React.FC<ReactionsSectionProps> = ({
       <Button
         variant={disliked ? "default" : "outline"}
         className={`flex items-center space-x-2 ${
-          disliked ? "bg-destructive text-destructive-foreground" : ""
+          hasdisliked || disliked ? "bg-destructive text-destructive-foreground" : ""
         }`}
         onClick={handleDislike}
       >
@@ -79,7 +99,7 @@ const ReactionsSection: React.FC<ReactionsSectionProps> = ({
           <span>{commentsCount} Comments</span>
         </Button>
       )}
-    </div>
+    </Card>
   );
 };
 

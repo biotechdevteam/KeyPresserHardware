@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 interface PostHeaderProps {
   title: string;
@@ -12,21 +13,17 @@ const PostHeader: React.FC<PostHeaderProps> = ({
   backgroundImageUrl,
 }) => {
   return (
-    <header
-      style={{
-        backgroundImage: `url(${backgroundImageUrl})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        height: "400px",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        color: "white",
-      }}
-    >
-      <div className="text-center">
-        <h1 className="text-4xl font-bold">{title}</h1>
-        <p className="mt-4 text-lg">{summary}</p>
+    <header className="max-w-4xl mx-auto mt-6 shadow-lg p-6 rounded-xl text-center">
+      <h1 className="text-4xl font-bold">{title}</h1>
+      <p className="mt-4 text-lg">{summary}</p>
+      <div className="relative mt-4" style={{ height: "300px" }}>
+        <Image
+          src={backgroundImageUrl}
+          alt={title}
+          layout="fill"
+          objectFit="cover"
+          className="rounded-lg"
+        />
       </div>
     </header>
   );

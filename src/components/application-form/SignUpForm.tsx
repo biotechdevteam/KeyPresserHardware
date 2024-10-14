@@ -10,7 +10,7 @@ interface SignUpFormProps {
 }
 
 const SignUpForm: React.FC<SignUpFormProps> = ({ onComplete, onCancel }) => {
-  const { signUp, loading, error, isAuthenticated, user } = useAuth();
+  const { signUp, signIn, loading, error, isAuthenticated, user } = useAuth();
 
   // Pre-fill form if the user is already authenticated
   const [formData, setFormData] = useState({
@@ -80,6 +80,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onComplete, onCancel }) => {
   };
 
   // Handle form submission
+  // Handle form submission
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent form from reloading the page
 
@@ -96,8 +97,27 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onComplete, onCancel }) => {
         "applicant"
       );
 
+      // Check if the email is already in use
+      if (error === "Email is already in use") {
+        console.log("Email already in use, attempting to sign in");
+        // Attempt to sign in the user with the same credentials
+        const signInSuccess = await signIn(formData.email, formData.password);
+
+        if (signInSuccess) {
+          onComplete(); // Move to the next step if signIn is successful
+        } else {
+          setFormErrors({
+            ...formErrors,
+            password: "This email has been used. Please try again.",
+          });
+        }
+        return; // Exit here to avoid further code execution
+      }
+
       if (success) {
         onComplete(); // Move to the next step only if signUp was successful
+      } else if (error) {
+        console.log("Signup failed:", error); // Log any other errors
       }
     } else {
       console.log("User is authenticated, moving to the next step");
@@ -125,7 +145,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onComplete, onCancel }) => {
       className="grid gap-6 grid-cols-1 md:grid-cols-2 w-full"
     >
       {/* Display Error */}
-      {error && <div className="col-span-2 text-red-500">{error}</div>}
+      {error && <div className="col-span-2 text-destructive">{error}</div>}
 
       {/* First Name Input */}
       <div className="col-span-2 md:col-span-1">
@@ -191,7 +211,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onComplete, onCancel }) => {
           disabled={loading}
           className="md:w-1/3 w-full bg-primary text-white"
         >
-          {loading ? "Registering..." : "Next"}
+          {loading ? "Verifying..." : "Next"}
         </Button>
       </div>
     </form>

@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Bell, BookmarkCheck, Info, MessageCircle, ThumbsUp } from "lucide-react";
+import { Bell, ThumbsUp } from "lucide-react";
 import Typewriter from "../type-writer/TypeWriter";
 
 const triggerPhrases = [
@@ -39,13 +39,13 @@ const SubscribeDialog: React.FC = () => {
   return (
     <div>
       {/* Button that opens the dialog, fixed at the bottom right */}
-      <div className="fixed top-[14vh] right-4">
+      <div className="fixed bottom-4 right-4">
         <Dialog>
           <DialogTrigger asChild>
             {showSubscribeButton ? (
-              <Button className="px-4 py-2 text-white bg-primary animate-beep">
+              <Button className="px-4 py-2 animate-beep">
                 <Bell width={30} height={40} />
-                Subscribe
+                Subscribe Now
               </Button>
             ) : (
               <p className="px-4 py-2 text-white bg-primary flex justify-center items-center gap-3">

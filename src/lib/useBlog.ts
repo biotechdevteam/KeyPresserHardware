@@ -37,6 +37,7 @@ export const useBlog = () => {
     reactionType: ReactionType, // Using enum as suggested
     remove: boolean = false
   ) => {
+    console.log("reacting to post")
     setLoading(true);
     setError(null);
     setSuccessMessage(null);
@@ -69,6 +70,7 @@ export const useBlog = () => {
     reactionType: ReactionType, // Using enum as suggested
     remove: boolean = false
   ) => {
+    console.log("reacting to comment")
     setLoading(true);
     setError(null);
     setSuccessMessage(null);

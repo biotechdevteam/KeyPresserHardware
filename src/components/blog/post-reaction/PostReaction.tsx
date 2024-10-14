@@ -5,7 +5,8 @@ import { Card } from "@/components/ui/card";
 import { ReactionType } from "@/lib/fetchUtils";
 
 interface ReactionsSectionProps {
-  postId: string; // Add postId to pass it to the reaction handler
+  postId?: string; // Optional postId
+  commentId?: string; // Optional commentId
   currentUserId: string; // Add currentUserId to verify the user
   initialLikes: number;
   hasliked?: boolean;
@@ -13,7 +14,7 @@ interface ReactionsSectionProps {
   initialDislikes: number;
   commentsCount?: number;
   handleReact: (
-    postId: string,
+    postIdOrCommentId: string,
     userId: string,
     reactionType: ReactionType
   ) => void; // Reaction handler
@@ -21,6 +22,7 @@ interface ReactionsSectionProps {
 
 const ReactionsSection: React.FC<ReactionsSectionProps> = ({
   postId,
+  commentId,
   currentUserId,
   initialLikes,
   hasdisliked,
@@ -34,36 +36,59 @@ const ReactionsSection: React.FC<ReactionsSectionProps> = ({
   const [liked, setLiked] = useState(hasliked);
   const [disliked, setDisliked] = useState(hasdisliked);
 
-  // Handle Like action
-  const handleLike = () => {
-    if (!currentUserId) return; // Ensure user is logged in
-    if (liked) {
-      setLikes(likes - 1);
-    } else {
-      setLikes(likes + 1);
-      if (disliked) {
-        setDisliked(false);
-        setDislikes(dislikes - 1); // Remove dislike if it's active
-      }
-    }
+  // Ensure that at least one of postId or commentId is provided
+  const reactId = postId || commentId;
+  if (!reactId) {
+    console.error("Either postId or commentId must be provided.");
+    return null;
+  }
+
+  // Handle Like action with optimistic update
+  const handleLike = async () => {
+    if (!currentUserId) return;
+
+    // Optimistic update
+    const newLikes = liked ? likes - 1 : likes + 1;
+    const newDislikes = disliked ? dislikes - 1 : dislikes;
+    setLikes(newLikes);
+    setDislikes(newDislikes);
     setLiked(!liked);
-    handleReact(postId, currentUserId, ReactionType.Like);
+    if (disliked) setDisliked(false);
+
+    try {
+      await handleReact(reactId, currentUserId, ReactionType.Like);
+    } catch (err) {
+      // Revert optimistic update on failure
+      setLikes(likes);
+      setDislikes(dislikes);
+      setLiked(liked);
+      setDisliked(disliked);
+      console.error("Failed to like the post/comment", err);
+    }
   };
 
-  // Handle Dislike action
-  const handleDislike = () => {
-    if (!currentUserId) return; // Ensure user is logged in
-    if (disliked) {
-      setDislikes(dislikes - 1);
-    } else {
-      setDislikes(dislikes + 1);
-      if (liked) {
-        setLiked(false);
-        setLikes(likes - 1); // Remove like if it's active
-      }
-    }
+  // Handle Dislike action with optimistic update
+  const handleDislike = async () => {
+    if (!currentUserId) return;
+
+    // Optimistic update
+    const newDislikes = disliked ? dislikes - 1 : dislikes + 1;
+    const newLikes = liked ? likes - 1 : likes; // Remove like if it was liked before
+    setDislikes(newDislikes);
+    setLikes(newLikes);
     setDisliked(!disliked);
-    handleReact(postId, currentUserId, ReactionType.Dislike);
+    if (liked) setLiked(false); // Remove like if disliked
+
+    try {
+      await handleReact(reactId, currentUserId, ReactionType.Dislike);
+    } catch (err) {
+      // Revert optimistic update on failure
+      setDislikes(dislikes);
+      setLikes(likes);
+      setDisliked(disliked);
+      setLiked(liked);
+      console.error("Failed to dislike the post/comment", err);
+    }
   };
 
   return (
@@ -72,7 +97,7 @@ const ReactionsSection: React.FC<ReactionsSectionProps> = ({
       <Button
         variant={liked ? "default" : "outline"}
         className={`flex items-center space-x-2 ${
-          hasliked || liked ? "bg-primary text-primary-foreground" : ""
+          liked ? "bg-primary text-primary-foreground" : ""
         }`}
         onClick={handleLike}
       >
@@ -84,7 +109,7 @@ const ReactionsSection: React.FC<ReactionsSectionProps> = ({
       <Button
         variant={disliked ? "default" : "outline"}
         className={`flex items-center space-x-2 ${
-          hasdisliked || disliked ? "bg-destructive text-destructive-foreground" : ""
+          disliked ? "bg-destructive text-destructive-foreground" : ""
         }`}
         onClick={handleDislike}
       >
@@ -93,7 +118,7 @@ const ReactionsSection: React.FC<ReactionsSectionProps> = ({
       </Button>
 
       {/* Comments Button */}
-      {commentsCount && (
+      {commentsCount !== undefined && (
         <Button variant="ghost" className="flex items-center space-x-2">
           <MessageSquare className="w-5 h-5" />
           <span>{commentsCount} Comments</span>

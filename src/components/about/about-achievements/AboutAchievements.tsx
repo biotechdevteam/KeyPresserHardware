@@ -37,7 +37,7 @@ const AchievementCard: React.FC<{
 
   return (
     <Card
-      className={`flex items-start p-5 shadow-lg rounded-lg 
+      className={`flex items-start p-2 shadow-lg rounded-lg 
         ${isVisible ? "animate-spinCard" : "opacity-0"} 
         hover:scale-105 hover:shadow-2xl`}
       style={{

@@ -47,7 +47,7 @@ const PostPage: React.FC<PageProps> = ({ params }) => {
   const relatedPosts = blogsData.filter((p: Blog) => p._id !== params.id);
 
   return (
-    <div>
+    <div className="p-6">
       {/* Pass the filtered post data and relatedPosts to PostContainer */}
       <PostContainer post={post} relatedPosts={relatedPosts} />
     </div>

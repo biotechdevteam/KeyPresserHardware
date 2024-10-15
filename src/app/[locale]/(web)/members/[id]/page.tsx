@@ -4,6 +4,7 @@ import { fetchMembers } from "@/lib/fetchUtils"; // Fetch member details
 import Loader from "@/components/loader/Loader";
 import MemberContainer from "@/components/member/member-container/MemberContainer";
 import { Member } from "@/types/memberSchema";
+import MemberHeader from "@/components/member/member-header/MemberHeader";
 
 // This function fetches member data based on the ID from the params
 async function getMemberData(id: string) {
@@ -46,8 +47,14 @@ const MemberPage: React.FC<{ params: { id: string } }> = async ({ params }) => {
 
   // Render the MemberContainer with the found member data
   return (
-    <div>
-      <MemberContainer member={member} />
+    <div className="min-h-screen flex flex-col items-center justify-start py-12 px-4 bg-background">
+      {/* Profile Header */}
+      <MemberHeader member={member} />
+      <div className="w-full max-w-4xl grid grid-cols-1 gap-6">
+        <div>
+          <MemberContainer member={member} />
+        </div>
+      </div>
     </div>
   );
 };

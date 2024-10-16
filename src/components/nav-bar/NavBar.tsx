@@ -40,8 +40,9 @@ import {
 import { Separator } from "../ui/separator";
 import { useMediaQuery } from "usehooks-ts";
 import Image from "next/image";
-import Logo from "@/assets/images/logo.png";
+import Logo from "../../../public/images/logo.png";
 import { useAuth } from "@/lib/useAuth";
+import { About } from "@/types/aboutSchema";
 
 // array of pages
 const pages = [
@@ -52,26 +53,26 @@ const pages = [
   { title: "events", link: "/events", icon: <CalendarFold /> },
   { title: "blog", link: "/blogs", icon: <Newspaper /> },
   { title: "contact", link: "/contact", icon: <BookUser /> },
-  { title: "faqs", link: "/faqs", icon: <BookUser /> },
 ];
 
-const NavBar = () => {
+const NavBar: React.FC<{aboutData: About}> = ({aboutData}) => {
   const t = useTranslations("NavBar");
   const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
   const { isAuthenticated, user, signOut } = useAuth(); // Use the useAuth hook
+  const logo = aboutData?.logo_url || Logo;
 
   return (
-    <nav className="border-b border-gray-200 fixed top-0 left-0 right-0 z-50 bg-card h-[72px]">
-      <div className="flex justify-between m-4 md:pr-8 xl:pr-16">
+    <nav className="absolute top-0 left-0 right-0 z-50 bg-transparent h-auto">
+      <div className="flex justify-between m-4 md:px-8 xl:px-16">
         {/* Logo */}
         <div className="flex-shrink-0 text-center">
           <Link href="/">
             <Image
-              src={Logo}
+              src={logo}
               width={40}
               height={40}
               priority={true}
-              alt="Biotech Universe"
+              alt={aboutData?.name}
               className="rounded"
             />
           </Link>
@@ -88,41 +89,45 @@ const NavBar = () => {
                 <SheetContent>
                   <SheetHeader>
                     <SheetTitle>Menu</SheetTitle>
+                    <Separator className="my-4" />
                   </SheetHeader>
-                  <Separator className="my-4" />
-                  {pages.map((page) => (
-                    <Link href={page.link} key={page.title}>
-                      <p className="flex gap-4 text-md hover:text-primary">
-                        {page.icon}
-                        {t(page.title)}
-                      </p>
-                    </Link>
-                  ))}
-                  <Separator className="my-4" />
-                  {!isAuthenticated ? (
-                    <Link href="/auth/signin">
-                      <p className="flex gap-4 text-md hover:text-primary">
-                        <LogIn />
-                        {t("login")}
-                      </p>
-                    </Link>
-                  ) : (
-                    <>
-                      <Link href="/profile">
-                        <p className="flex gap-4 text-md hover:text-primary">
-                          <User />
-                          {t("profile")}
+                  <div className="py-8">
+                    {pages.map((page) => (
+                      <Link href={page.link} key={page.title}>
+                        <p className="flex gap-4 text-md hover:text-primary hover:no-underline">
+                          {page.icon}
+                          {t(page.title)}
                         </p>
                       </Link>
-                      <Link href="#" onClick={signOut}>
-                        <p className="flex gap-4 text-md hover:text-primary">
-                          <LogOut />
-                          {t("logout")}
+                    ))}
+                    <Separator className="my-4" />
+                    {!isAuthenticated ? (
+                      <Link href="/auth/signin">
+                        <p className="flex gap-4 text-md hover:text-primary hover:no-underline">
+                          <LogIn />
+                          {t("login")}
                         </p>
                       </Link>
-                    </>
-                  )}
-                  <SheetFooter></SheetFooter>
+                    ) : (
+                      <>
+                        <Link href="/profile">
+                          <p className="flex gap-4 text-md hover:text-primary hover:no-underline">
+                            <User />
+                            {t("profile")}
+                          </p>
+                        </Link>
+                        <Link href="#" onClick={signOut}>
+                          <p className="flex gap-4 text-md hover:text-primary hover:no-underline">
+                            <LogOut />
+                            {t("logout")}
+                          </p>
+                        </Link>
+                      </>
+                    )}
+                  </div>
+                  <SheetFooter className="absolute bottom-8 left-0 right-0 text-xs text-center text-muted-foreground">
+                    {aboutData?.name}
+                  </SheetFooter>
                 </SheetContent>
               </Sheet>
             </div>
@@ -133,26 +138,44 @@ const NavBar = () => {
                 <NavigationMenuList>
                   {pages.map((page) => (
                     <NavigationMenuItem key={page.title}>
-                      <Link href={page.link} legacyBehavior passHref>
-                        <NavigationMenuLink
-                          className={navigationMenuTriggerStyle()}
-                        >
-                          {t(page.title)}
-                        </NavigationMenuLink>
-                      </Link>
+                      <NavigationMenuLink href={page.link}>
+                        {t(page.title)}
+                      </NavigationMenuLink>
                     </NavigationMenuItem>
                   ))}
                 </NavigationMenuList>
               </NavigationMenu>
 
               <div className="flex gap-4 sm:gap-1">
+                {/* Notifications Menu */}
+                {user && (
+                  <NavigationMenu>
+                    <NavigationMenuList>
+                      <NavigationMenuItem>
+                        <NavigationMenuTrigger>
+                          <Bell />
+                          <Badge>17</Badge>
+                        </NavigationMenuTrigger>
+                        <NavigationMenuContent className="flex flex-column gap-3 p-2">
+                          {/* Logic enters here */}
+                          <NavigationMenuLink href="" asChild>
+                            <em className="text-foreground">
+                              No new notifications.
+                            </em>
+                          </NavigationMenuLink>
+                        </NavigationMenuContent>
+                      </NavigationMenuItem>
+                    </NavigationMenuList>
+                  </NavigationMenu>
+                )}
+
                 {/* Profile Menu */}
                 <NavigationMenu>
                   <NavigationMenuList>
                     <NavigationMenuItem>
                       <NavigationMenuTrigger>
                         <Avatar>
-                          <AvatarImage src={user?.profile_photo_url || ""} />
+                          <AvatarImage src={user?.profile_photo_url} />
                           <AvatarFallback>
                             <CircleUser />
                           </AvatarFallback>
@@ -160,26 +183,17 @@ const NavBar = () => {
                       </NavigationMenuTrigger>
                       <NavigationMenuContent className="gap-3 p-2">
                         {!isAuthenticated ? (
-                          <NavigationMenuLink
-                            href="/auth/signin"
-                            className={navigationMenuTriggerStyle()}
-                          >
+                          <NavigationMenuLink href="/auth/signin">
                             <LogIn className="mr-2 h-4 w-4" />
                             {t("login")}
                           </NavigationMenuLink>
                         ) : (
                           <>
-                            <NavigationMenuLink
-                              href="/profile"
-                              className={navigationMenuTriggerStyle()}
-                            >
+                            <NavigationMenuLink href="/profile">
                               <User className="mr-2 h-4 w-4" />
                               {t("profile")}
                             </NavigationMenuLink>
-                            <NavigationMenuLink
-                              onClick={signOut}
-                              className={navigationMenuTriggerStyle()}
-                            >
+                            <NavigationMenuLink href="" onClick={signOut}>
                               <LogOut className="mr-2 h-4 w-4" />
                               {t("logout")}
                             </NavigationMenuLink>

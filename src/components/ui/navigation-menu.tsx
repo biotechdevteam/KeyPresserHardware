@@ -2,7 +2,7 @@ import * as React from "react";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu";
 import { cva } from "class-variance-authority";
-
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 const NavigationMenu = React.forwardRef<
@@ -41,7 +41,7 @@ NavigationMenuList.displayName = NavigationMenuPrimitive.List.displayName;
 const NavigationMenuItem = NavigationMenuPrimitive.Item;
 
 const navigationMenuTriggerStyle = cva(
-  "group inline-flex h-9 w-max items-center justify-center rounded-md bg-card text-foreground px-4 py-2 text-sm font-medium transition-colors hover:bg-background hover:font-bold hover:text- focus:bg-background focus:text-primary focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-primary data-[state=open]:bg-background"
+  "group inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent text-foreground px-4 py-2 text-sm font-medium transition-colors hover:bg-background hover:text-primary focus:bg-background focus:text-primary focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-primary data-[state=open]:bg-background"
 );
 
 const NavigationMenuTrigger = React.forwardRef<
@@ -77,7 +77,24 @@ const NavigationMenuContent = React.forwardRef<
 ));
 NavigationMenuContent.displayName = NavigationMenuPrimitive.Content.displayName;
 
-const NavigationMenuLink = NavigationMenuPrimitive.Link;
+const NavigationMenuLink = React.forwardRef<
+  React.ElementRef<typeof NavigationMenuPrimitive.Link>,
+  React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Link> & {
+    href: string;
+  }
+>(({ className, href, children, ...props }, ref) => (
+  <Link href={href} passHref legacyBehavior>
+    <NavigationMenuPrimitive.Link
+      ref={ref}
+      className={cn(navigationMenuTriggerStyle(), className)}
+      {...props}
+    >
+      {children}
+    </NavigationMenuPrimitive.Link>
+  </Link>
+));
+
+NavigationMenuLink.displayName = NavigationMenuPrimitive.Link.displayName;
 
 const NavigationMenuViewport = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Viewport>,

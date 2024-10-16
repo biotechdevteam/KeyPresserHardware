@@ -41,9 +41,18 @@ const FAQPage: React.FC = async () => {
 
   // Render the FAQContainer with the prefetched data
   return (
-    <div>
-      <FAQContainer initialData={faqData as FAQ[]} />
-    </div>
+    <section className="grid min-h-screen place-items-center p-8">
+      <div className="w-full max-w-4xl mx-auto">
+        <header className="mb-8 text-center">
+          <h1 className="text-4xl font-bold">FAQs</h1>
+          <p className="text-lg mt-4">
+            Find answers to frequently asked questions about our services and
+            projects.
+          </p>
+        </header>
+        <FAQContainer initialData={faqData as FAQ[]} />
+      </div>
+    </section>
   );
 };
 

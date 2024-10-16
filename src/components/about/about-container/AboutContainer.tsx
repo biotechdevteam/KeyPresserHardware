@@ -52,9 +52,9 @@ const AboutContainer: React.FC<{ initialData: About}> = ({ initialData }) => {
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-16 sm:p-8 lg:mt-8 width-auto">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:mt-8 width-auto">
       {/* Introduction */}
-      <div className="col-span-1 lg:col-span-2 p-3">
+      <div className="col-span-1 lg:col-span-2">
         <AboutIntro
           name={aboutData?.name || "Biotech Universe Group"}
           slogan={aboutData?.slogan || "Our Slogan"}
@@ -71,7 +71,7 @@ const AboutContainer: React.FC<{ initialData: About}> = ({ initialData }) => {
       </div>
 
       {/* CTA Section after About Intro */}
-      <div className="col-span-1 lg:col-span-2 p-5">
+      <div className="col-span-1 lg:col-span-2">
         <CTASection
           title="Join Us"
           description="Become a part of our mission!"

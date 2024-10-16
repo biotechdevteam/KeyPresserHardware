@@ -49,9 +49,15 @@ export default async function BlogsPage() {
 
   // Render the BlogsContainer if data is successfully fetched
   return (
-    <div>
-      {/* Pass the prefetched data as props to the BlogsContainer */}
-      <BlogsContainer initialData={{ blogs: blogsData as Blog[] }} />
-    </div>
+    <section className="grid min-h-screen p-8">
+      <div className="w-full max-w-4xl mx-auto">
+        <header className="mb-8 text-center">
+          <h1 className="text-4xl font-bold">Blogs and Updates</h1>
+          <p className="text-lg mt-4">Read our latest articles and insights.</p>
+        </header>
+        {/* Pass the prefetched data as props to the BlogsContainer */}
+        <BlogsContainer initialData={{ blogs: blogsData as Blog[] }} />
+      </div>
+    </section>
   );
 }

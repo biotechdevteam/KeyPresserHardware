@@ -69,13 +69,19 @@ const ServicesPage: React.FC = async () => {
 
   // Render the ServicesContainer with the prefetched data
   return (
-    <div>
-      <ServicesContainer
-        initialData={{
-          services: servicesData as Service[],
-          feedbacks: feedbacksData as Feedback[],
-        }}
-      />
+    <div className="grid min-h-screen">
+      <div className="w-full max-w-4xl mx-auto">
+        <header className="mb-8 text-center">
+          <h1 className="text-4xl font-bold">Our Services</h1>
+          <p className="text-lg mt-4">Discover the services we offer to our clients.</p>
+        </header>
+        <ServicesContainer
+          initialData={{
+            services: servicesData as Service[],
+            feedbacks: feedbacksData as Feedback[],
+          }}
+        />
+      </div>
     </div>
   );
 };

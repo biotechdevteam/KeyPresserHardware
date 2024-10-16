@@ -50,9 +50,9 @@ const FAQContainer: React.FC<{ initialData: any; general?: boolean }> = ({
   }, {});
 
   return (
-    <div className="p-6 md:p-8 lg:p-12 flex flex-col justify-content-center items-center">
+    <div className="flex flex-col justify-content-center items-center">
       {/* Render each category and the corresponding FAQs in a card */}
-      <div className="max-w-3xl min-w-3xl space-y-8">
+      <div className="space-y-8">
         {groupedFAQs &&
           (general
             ? // If general prop is true, display only FAQs from the general category

@@ -68,7 +68,7 @@ const AboutTeam: React.FC<AboutTeamProps> = ({ leadershipTeam }) => {
 
   return (
     <div className="py-12 lg:px-24 text-center" ref={teamRef}>
-      <h2 className="text-xl font-bold">Our Leadership Team</h2>
+      <h2 className="text-xl font-bold">Our Board Members</h2>
       <Separator className="w-16 mx-auto mt-4 mb-12" />
 
       <div className="flex flex-col sm:flex-row gap-8">

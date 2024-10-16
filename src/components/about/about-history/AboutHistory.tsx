@@ -53,7 +53,7 @@ const HistoryTimeline: React.FC = () => {
   return (
     <Card
       ref={historyRef}
-      className={`py-12 px-6 lg:px-24 max-w-4xl mx-auto shadow-lg rounded-lg transition-opacity duration-500 ${
+      className={`py-12 transition-opacity duration-500 ${
         isVisible ? "animate-fadeIn" : "opacity-0"
       }`}
     >

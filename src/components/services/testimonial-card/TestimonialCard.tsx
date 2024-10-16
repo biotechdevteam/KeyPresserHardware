@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import { Quote } from "lucide-react";
 
 interface TestimonialCardProps {
   name: string;
@@ -17,21 +18,16 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
   rating,
 }) => {
   return (
-    <div className="bg-card p-6 rounded-lg text-center">
-      {/* Profile Image */}
-      <div className="mb-4">
-        <Image
-          src={imageUrl}
-          alt={name}
-          width={80}
-          height={80}
-          className="rounded-full mx-auto"
-        />
-      </div>
+    <div className="bg-card p-6 rounded-[0%_30%_0_30%] border border-primary text-center shadow-lg relative overflow-hidden">
+      {/* Quotation Mark Icon */}
+      <Quote
+        className="absolute top-4 left-1/2 text-primary font-bold transform -translate-x-1/2"
+        width={50}
+        height={50}
+      />
 
-      {/* Name and Role */}
-      <h3 className="text-lg font-semibold text-foreground">{name}</h3>
-      <p className="text-muted">{role}</p>
+      {/* Comment */}
+      <p className="italic font-medium mt-12 mb-4">"{comment}"</p>
 
       {/* Rating */}
       <div className="flex justify-center mt-2 mb-4">
@@ -39,7 +35,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
           <span
             key={index}
             className={`text-xl ${
-              index < rating ? "text-primary" : "text-muted"
+              index < rating ? "text-secondary" : "text-muted"
             }`}
           >
             ★
@@ -47,8 +43,23 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
         ))}
       </div>
 
-      {/* Comment */}
-      <p className="text-muted italic">"{comment}"</p>
+      {/* Profile Image */}
+      <div className="relative mb-4 w-20 h-20 mx-auto">
+        <div className="absolute inset-0 border-2 border-primary rounded-[0%_30%_0_30%]"></div>
+        <Image
+          src={imageUrl}
+          alt={name}
+          width={80}
+          height={80}
+          className="w-full h-full object-cover rounded-[0%_30%_0_30%]"
+        />
+      </div>
+
+      {/* Name */}
+      <h3 className="text-xl font-semibold text-primary">{name}</h3>
+
+      {/* Role */}
+      <p className="text-sm text-secondary">{role}</p>
     </div>
   );
 };

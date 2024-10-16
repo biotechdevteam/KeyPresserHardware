@@ -6,6 +6,7 @@ import ProjectDetails from "@/components/projects/project-details/ProjectDetails
 import { useRouter } from "next/router";
 import { notFound } from "next/navigation";
 import { Project } from "@/types/projectSchema";
+import ProjectHeader from "@/components/projects/project-header/ProjectHeader";
 
 // Helper function to fetch project data based on the project ID
 async function getProjectData(id: string) {
@@ -50,7 +51,12 @@ const ProjectPage: React.FC<{ params: { id: string } }> = async ({
 
   // Render the ProjectDetails component with the found project data
   return (
-    <div>
+    <div className="w-full mx-auto max-w-6xl p-6">
+      <ProjectHeader
+        title={project.title}
+        summary={project.summary}
+        backgroundImageUrl={project.projectImageUrl}
+      />
       <ProjectDetails project={project} />
     </div>
   );

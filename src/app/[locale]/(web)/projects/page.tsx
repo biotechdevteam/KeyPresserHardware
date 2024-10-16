@@ -42,9 +42,19 @@ const ProjectsPage: React.FC = async () => {
 
   // Render the ProjectsContainer with the fetched data
   return (
-    <div>
-      <ProjectsContainer initialData={projectsData as Project[]} />
-    </div>
+    <section className="grid min-h-screen p-8">
+      <div className="w-full max-w-4xl mx-auto">
+        <header className="mb-8 text-center">
+          <h1 className="text-4xl font-bold">Our Projects</h1>
+          <p className="text-lg mt-4">
+            Explore the various projects we are currently working on.
+          </p>
+        </header>
+        <div>
+          <ProjectsContainer initialData={projectsData as Project[]} />
+        </div>
+      </div>
+    </section>
   );
 };
 

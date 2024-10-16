@@ -61,7 +61,7 @@ export default function ServicePage({ params }: { params: { id: string } }) {
 
   // Render the ServiceDetails component
   return (
-    <div>
+    <div className="max-w-4xl grid place-items-center mx-auto">
       <ServiceDetails service={service as Service} feedbacks={filteredFeedbacks as Feedback[]} />
     </div>
   );

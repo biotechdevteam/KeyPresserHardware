@@ -1,10 +1,10 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import { fetchAboutData } from "@/lib/fetchUtils";
-import Loader from "@/components/loader/Loader";
-import AboutFooter from "@/components/about/about-footer/AboutFooter";
+import AboutContainer from "@/components/about/about-container/AboutContainer";
 import { About } from "@/types/aboutSchema";
-import { extractDomain } from "@/lib/helpers";
+import Loader from "@/components/loader/Loader";
+import AboutHeader from "@/components/about/about-header/AboutHeader";
 
 // This function runs on the server-side and fetches the about data.
 async function getAboutData() {
@@ -14,10 +14,10 @@ async function getAboutData() {
     isFetching: fetching,
     error,
     isError,
-  } = useQuery<About>({
+  } = useQuery({
     queryKey: ["about"],
     queryFn: fetchAboutData,
-    staleTime: Infinity,
+    staleTime: Infinity, // Prevent unnecessary refetching, keep data fresh
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
@@ -33,9 +33,9 @@ async function getAboutData() {
   };
 }
 
-// ContactPage component to fetch and display about data
-const ContactPage: React.FC = async () => {
-  // Get the about data
+// Page component
+export default async function AboutPage() {
+  // Get the prefetched data from the server
   const { aboutData, loading, fetching, isError, error } = await getAboutData();
 
   // Handle loading state
@@ -44,27 +44,16 @@ const ContactPage: React.FC = async () => {
   }
 
   // Handle error state
-  if (isError || !aboutData) {
-    return <div>Error loading contact page data...</div>;
+  if (isError) {
+    return ;
   }
 
-  const websiteURL = extractDomain();
-
+  // Render the AboutContainer if data is successfully fetched
   return (
-    <div>
-
-      {/* About Footer Section */}
-      <div className="col-span-1 lg:col-span-2">
-        <AboutFooter
-          contactPhone={aboutData.contact_phone}
-          socialLinks={aboutData.social_links}
-          contactEmail={aboutData.contact_email}
-          address={aboutData.address}
-          website={websiteURL}
-        />
-      </div>
+    <div className="p-6">
+      {/* Pass the prefetched data as props to the AboutContainer */}
+      <AboutHeader />
+      <AboutContainer initialData={aboutData as About} />
     </div>
   );
-};
-
-export default ContactPage;
+}

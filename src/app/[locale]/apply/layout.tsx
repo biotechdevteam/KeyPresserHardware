@@ -2,15 +2,15 @@
 import React, { ReactNode, useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import authBG1 from "@/assets/images/auth-bg-t.png"; // Ensure the path is correct
-import authBG2 from "@/assets/images/auth-bg-p.png"; // Ensure the path is correct
-import authBG3 from "@/assets/images/auth-bg.png"; // Ensure the path is correct
+import authBG1 from "../../../../public/images/auth-bg-t.png";
+import authBG2 from "../../../../public/images/auth-bg-p.png";
+import authBG3 from "../../../../public/images/auth-bg.png";
 import ProgressBar from "@/components/progress-bar/ProgressBar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
 import localforage from "localforage";
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
-import { StepProvider, useStep } from "@/contexts/ApplicationStepContext"; // Make sure this is imported correctly
+import { StepProvider, useStep } from "@/contexts/ApplicationStepContext";
 
 interface ApplyLayoutProps {
   children: ReactNode;

@@ -16,7 +16,7 @@ import AboutIntro from "@/components/about/about-intro/AboutIntro";
 import { Loader } from "lucide-react";
 import { useTransitionRouter } from "next-view-transitions";
 import SubscribeSection from "../subscribe/SubscribeSection";
-import AboutPic from "@/assets/images/about-header.jpg";
+import AboutPic from "../../../../public/images/about-header.jpg";
 import { About } from "@/types/aboutSchema";
 
 // Accept the pre-fetched initialData as a prop

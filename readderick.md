@@ -10,3 +10,6 @@
 You jealouse me
 no difference between me and derick
 we making progress 
+
+
+# You dey smooke?

@@ -43,7 +43,7 @@ const Hero: React.FC<HeroProps> = ({ aboutData }) => {
 
           {/* Sub-headline */}
           <p className="text-lg lg:text-2xl animate-fadeIn delay-200">
-            Empowering Biotechnology Innovations. Discover Our Latest Research
+            The World Of Empowering Biotechnology Innovations. Discover Our Latest Research
             and Solutions.
           </p>
 

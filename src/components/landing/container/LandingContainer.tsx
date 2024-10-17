@@ -54,23 +54,22 @@ const LandingContainer: React.FC<{
 }) => {
   return (
     <div className="landing-page-container">
-      {/* Render Hero Section */}
       <Hero aboutData={aboutData} />
-      {/* Render About Section */}
+
+      <ServicesSection services={services} />
+
       <AboutSection aboutData={aboutData} />
-      {/* Render Project Section */}
+
+      <AboutPartnerships partnerships={aboutData.partnerships || []} />
+
       <ProjectPortfolioSection
         projects={projects
           .filter((pro) => pro.status === "ongoing")
           .slice(0, 3)}
       />
-      {/*Render Service Section */}
-      <ServicesSection services={services} />
-      {/* Render Blog Section */}
-      <BlogSection blogs={blogs} />
-      {/* Render Membership Section */}
+
       <MembershipSection membershipTiers={membershipTiers} />
-      {/* Render Event Section */}
+
       <EventSection
         events={
           events
@@ -83,21 +82,20 @@ const LandingContainer: React.FC<{
             .slice(0, 2) // Get the first two upcoming events
         }
       />
-      {/* Render Testimonial Section */}
-        <Testimonials
-          feedbacks={feedbacks}
-          title="What clients and members are saying"
-        />
-      {/* Render Faqs Section */}
+
+      <BlogSection blogs={blogs} />
+
+      <Testimonials
+        feedbacks={feedbacks}
+        title="Reviews From Clients & Partners"
+      />
+
       <FAQContainer
         initialData={faqs.filter((faq) => faq.category === "General")}
         general
       />
-      {/* Render Partnersip Section */}
-      <AboutPartnerships partnerships={aboutData.partnerships || []} />
-      {/* Render Contact Section */}
+
       <ContactSection />
-      {/* Other sections will go here */}
     </div>
   );
 };

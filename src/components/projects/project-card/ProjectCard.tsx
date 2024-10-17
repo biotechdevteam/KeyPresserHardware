@@ -2,6 +2,11 @@ import React from "react";
 import { Project } from "@/types/projectSchema"; // Assuming you have a Project type definition
 import { Button } from "@/components/ui/button"; // shadcn button component
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // shadcn card components
+import Image from "next/image";
+import { Progress } from "@/components/ui/progress";
+import { Link } from "next-view-transitions";
+import { Badge } from "@/components/ui/badge";
+import { BookOpen } from "lucide-react";
 
 interface ProjectCardProps {
   project: Project;
@@ -9,51 +14,41 @@ interface ProjectCardProps {
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   return (
-    <Card className="max-w-sm w-full h-full shadow-md hover:shadow-lg transition-shadow duration-300 bg-card text-card-foreground overflow-hidden">
+    <Card className="max-w-sm w-full h-full shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
+      <div className="absolute top-2 right-2">
+        <Badge variant="outlineSecondary">{project.category}</Badge>
+      </div>
+
       {/* Thumbnail Image */}
       {project.projectImageUrl && (
-        <img
-          className="w-full h-40 object-cover"
+        <Image
           src={project.projectImageUrl}
           alt={project.title}
+          width={500}
+          height={100}
+          className="w-full h-40 object-cover"
         />
       )}
 
       <CardHeader>
-        {/* Title */}
-        <CardTitle className="text-lg font-semibold">{project.title}</CardTitle>
+        <CardTitle className="text-lg tracking-wide">{project.title}</CardTitle>
       </CardHeader>
 
       <CardContent>
-        {/* Brief Description */}
-        <p className="mt-2 mb-4 text-sm">
-          {project.summary}
-        </p>
-
-        {/* Category/Tags */}
-        <p className="text-xs uppercase tracking-wide text-muted-foreground">
-          {project.category}
-        </p>
+        {/* Summary */}
+        <p className="mb-8 text-sm">{project.summary}</p>
 
         {/* Progress Bar / Status Indicator */}
         {project.progress !== undefined && (
-          <div className="w-full bg-muted rounded-full h-2.5 mt-3">
-            <div
-              className="bg-primary h-2.5 rounded-full"
-              style={{ width: `${project.progress}%` }}
-            />
-          </div>
+          <Progress value={project.progress} showValue />
         )}
 
         {/* CTA Button */}
-        <Button asChild className="mt-4 w-full">
-          <a
-            href={`/projects/${project._id}`}
-            className="block w-full text-center"
-          >
-            Learn More
-          </a>
-        </Button>
+        <Link href={`/projects/${project._id}`}>
+          <Button className="mt-4 w-full">
+            Read More <BookOpen className="w-4 h-4 ml-2" />
+          </Button>
+        </Link>
       </CardContent>
     </Card>
   );

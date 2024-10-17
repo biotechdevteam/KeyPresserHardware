@@ -3,7 +3,7 @@ import NavBar from "@/components/nav-bar/NavBar";
 import type { Metadata } from "next";
 import { About } from "@/types/aboutSchema";
 import ScrollToTopButton from "@/components/ScrollToTop/ScrollToTopButton";
-import CookieConsent from "@/components/CookieConsent/CookieConsent";
+import CookieConsent from "@/components/Cookies/CookieConsent";
 
 // This function can be used to generate metadata dynamically
 export async function generateMetadata({

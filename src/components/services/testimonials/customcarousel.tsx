@@ -1,19 +1,25 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import React, { useState, useEffect, useRef } from "react";
 
 interface CustomCarouselProps {
   children: React.ReactNode;
-  itemsPerSlide: number;
+  autoSlideInterval?: number;
 }
 
 const CustomCarousel: React.FC<CustomCarouselProps> = ({
   children,
-  itemsPerSlide,
+  autoSlideInterval = 10000, // Default to 10 seconds
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
 
+  // Responsive Items per slide
+  const itemsPerSlide = useResponsiveItemsPerSlide();
   const childrenArray = React.Children.toArray(children);
   const totalSlides = Math.ceil(childrenArray.length / itemsPerSlide);
 
@@ -30,6 +36,15 @@ const CustomCarousel: React.FC<CustomCarouselProps> = ({
       prevIndex === totalSlides - 1 ? 0 : prevIndex + 1
     );
   };
+
+  // Handle auto sliding
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextSlide();
+    }, autoSlideInterval);
+
+    return () => clearInterval(interval);
+  }, [currentIndex, autoSlideInterval]);
 
   // Handle mouse/touch swipe start
   const handleSwipeStart = (e: React.TouchEvent | React.MouseEvent) => {
@@ -50,34 +65,30 @@ const CustomCarousel: React.FC<CustomCarouselProps> = ({
     }
   };
 
-  // Disable swipe if not dragging
+  // Handle mouse dragging
   useEffect(() => {
-    if (!isDragging) {
-      return;
-    }
+    if (!isDragging) return;
+
     const handleMouseMove = (e: MouseEvent) => {
-      if (!carouselRef.current) return;
       const x = e.clientX;
       const difference = startX - x;
       if (Math.abs(difference) > 50) {
         setIsDragging(false);
-        if (difference > 0) {
-          nextSlide();
-        } else {
-          prevSlide();
-        }
+        if (difference > 0) nextSlide();
+        else prevSlide();
       }
     };
+
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [isDragging, startX]);
 
   return (
-    <div className="relative w-full" ref={carouselRef}>
+    <div className="relative w-full overflow-hidden" ref={carouselRef}>
       <div
         className="flex transition-transform duration-300 ease-in-out"
         style={{
-          transform: `translateX(-${currentIndex * 100}%)`,
+          transform: `translateX(-${(currentIndex * 100) / itemsPerSlide}%)`,
         }}
         onMouseDown={handleSwipeStart}
         onMouseUp={handleSwipeEnd}
@@ -87,29 +98,56 @@ const CustomCarousel: React.FC<CustomCarouselProps> = ({
         {childrenArray.map((child, index) => (
           <div
             key={index}
-            className={`flex-shrink-0 w-full sm:w-1/2 lg:w-1/4 p-4 transform transition-transform duration-300 ease-in-out ${
-              index % 2 === 0 ? "translate-y-14" : "-translate-y-14"
-            }`}
+            className={`flex-shrink-0 w-full md:w-1/2 lg:w-1/3 p-4 transform transition-transform duration-300 ease-in-out`}
           >
             {child}
           </div>
         ))}
       </div>
+
       {/* Prev and Next buttons */}
-      <button
-        className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-200 p-2 rounded-full"
+      <Button
+        variant="default"
+        className="absolute top-1/2 left-0 transform -translate-y-1/2 p-4 h-auto rounded-full bg-muted-primary hover:bg-primary"
         onClick={prevSlide}
       >
-        Prev
-      </button>
-      <button
-        className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gray-200 p-2 rounded-full"
+        <ChevronLeftIcon className="w-5 h-5" />
+      </Button>
+      <Button
+        variant="default"
+        className="absolute top-1/2 right-0 transform -translate-y-1/2 p-4 h-auto rounded-full bg-muted-primary hover:bg-primary"
         onClick={nextSlide}
       >
-        Next
-      </button>
+        <ChevronRightIcon className="w-5 h-5" />
+      </Button>
     </div>
   );
+};
+
+// Hook to determine the number of items per slide based on screen size
+const useResponsiveItemsPerSlide = () => {
+  const [itemsPerSlide, setItemsPerSlide] = useState(1);
+
+  useEffect(() => {
+    const updateItemsPerSlide = () => {
+      const screenWidth = window.innerWidth;
+
+      if (screenWidth >= 1024) {
+        setItemsPerSlide(3); // Large screens
+      } else if (screenWidth >= 768) {
+        setItemsPerSlide(2); // Medium screens
+      } else {
+        setItemsPerSlide(1); // Small screens
+      }
+    };
+
+    updateItemsPerSlide();
+    window.addEventListener("resize", updateItemsPerSlide);
+
+    return () => window.removeEventListener("resize", updateItemsPerSlide);
+  }, []);
+
+  return itemsPerSlide;
 };
 
 export default CustomCarousel;

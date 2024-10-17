@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"; // Reuse the ShadCN Button comp
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // ShadCN Card components
 import { Separator } from "@/components/ui/separator"; // ShadCN Separator component
 import { Link } from "next-view-transitions";
+import { ExternalLinkIcon } from "lucide-react";
 
 // Define the MembershipTier type directly within this component
 interface MembershipTier {
@@ -53,7 +54,7 @@ const MembershipSection: React.FC<MembershipSectionProps> = ({
   return (
     <section
       ref={sectionRef} // Attach ref to section
-      className="py-16 bg-background text-foreground"
+      className="py-12 bg-card"
     >
       <div className="container mx-auto px-4 sm:px-8">
         <h2
@@ -61,38 +62,55 @@ const MembershipSection: React.FC<MembershipSectionProps> = ({
             isVisible ? "opacity-100" : "opacity-0"
           }`}
         >
-          Join BTVERSE
+          Join Us
         </h2>
         <p
-          className={`text-center mb-12 transition-opacity duration-700 ${
+          className={`text-center mb-4 transition-opacity duration-700 ${
             isVisible ? "opacity-100" : "opacity-0"
           }`}
         >
           Explore the benefits of joining our community. Choose the membership
           tier that best fits your needs and unlock exclusive perks.
         </p>
-        <Separator className="mb-8" /> {/* ShadCN Separator component */}
+
         {/* Membership Tiers */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 justify-center mx-auto p-4 lg:px-16">
           {membershipTiers.map((tier, index) => (
             <Card
               key={tier.id}
-              className={`p-6 rounded-lg shadow-lg transform transition-transform duration-700 ${
+              className={`p-4 rounded-lg shadow-lg transform transition-transform duration-700 ${
                 isVisible
                   ? "translate-y-0 opacity-100"
                   : "translate-y-10 opacity-0"
               }`}
             >
               <CardHeader>
-                <CardTitle className="text-xl font-semibold">
-                  {tier.name}
-                </CardTitle>
+                <CardTitle className="text-xl">{tier.name}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="mb-4">{tier.description}</p>
-                <ul className="mb-4 list-disc list-inside">
+                <ul className="mb-4 space-y-2 list-inside">
                   {tier.benefits.map((benefit, i) => (
-                    <li key={i}>{benefit}</li>
+                    <li
+                      key={i}
+                      className="flex items-start text-sm text-muted-foreground"
+                    >
+                      <svg
+                        className="w-5 h-5 text-primary mr-2 mt-[2px]"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      {benefit}
+                    </li>
                   ))}
                 </ul>
                 <Link href="/apply">
@@ -104,6 +122,7 @@ const MembershipSection: React.FC<MembershipSectionProps> = ({
             </Card>
           ))}
         </div>
+
         {/* Call to Action */}
         <div
           className={`mt-12 text-center transition-opacity duration-700 ${
@@ -111,8 +130,8 @@ const MembershipSection: React.FC<MembershipSectionProps> = ({
           }`}
         >
           <Link href="/apply">
-            <Button className="px-6 py-3 text-lg" variant="default">
-              Become a Member Now
+            <Button className="animate-pulse" variant="default">
+              Become a Member Now <ExternalLinkIcon className="w-4 h-4 ml-2" />
             </Button>
           </Link>
         </div>

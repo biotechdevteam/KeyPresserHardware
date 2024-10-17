@@ -113,8 +113,7 @@
   }
 
   a:hover {
-    @apply text-secondary;
-    text-decoration: underline;
+    @apply text-secondary underline  transition-colors;
     text-decoration-skip-ink: auto;
   }
 

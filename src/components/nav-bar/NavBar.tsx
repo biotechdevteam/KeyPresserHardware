@@ -62,8 +62,8 @@ const NavBar: React.FC<{aboutData: About}> = ({aboutData}) => {
   const logo = aboutData?.logo_url || Logo;
 
   return (
-    <nav className="absolute top-0 left-0 right-0 z-50 bg-transparent h-auto">
-      <div className="flex justify-between m-4 md:px-8 xl:px-16">
+    <nav className="absolute top-0 left-0 right-0 z-50 bg-card h-auto">
+      <div className="flex justify-between m-4 md:px-8 xl:pr-16">
         {/* Logo */}
         <div className="flex-shrink-0 text-center">
           <Link href="/">

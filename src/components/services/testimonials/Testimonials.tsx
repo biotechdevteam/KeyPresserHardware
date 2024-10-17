@@ -24,9 +24,9 @@ const Testimonials: React.FC<TestimonialsProps> = ({
   );
 
   return (
-    <div className="container mx-auto px-4 py-8 my-4">
-      <h2 className="text-3xl font-bold text-center mb-8">{title}</h2>
-      <CustomCarousel itemsPerSlide={4}>
+    <div className="container bg-card px-4 lg:px-16 py-12">
+      <h2 className="text-xl lg:text-2xl font-bold text-center mb-8">{title}</h2>
+      <CustomCarousel>
         {filteredFeedbacks.length > 0 ? (
           filteredFeedbacks.map((feedback) => (
             <TestimonialCard
@@ -34,15 +34,15 @@ const Testimonials: React.FC<TestimonialsProps> = ({
               name={`${feedback.userId?.first_name} ${feedback.userId?.last_name}`}
               role={feedback.userId?.user_type || "Client"}
               imageUrl={
-                feedback.userId?.profile_photo_url || "/default-avatar.png"
+                feedback.userId?.profile_photo_url || ""
               }
               comment={feedback.comment}
               rating={feedback.rating}
             />
           ))
         ) : (
-          <p className="col-span-full text-center text-muted">
-            No testimonials available for this category.
+          <p className="col-span-full text-center">
+            No testimonials available for this service.
           </p>
         )}
       </CustomCarousel>

@@ -6,10 +6,20 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { LinkedinIcon, GithubIcon, FacebookIcon } from "lucide-react";
+import {
+  LinkedinIcon,
+  GithubIcon,
+  FacebookIcon,
+  InstagramIcon,
+  TwitterIcon,
+  DribbbleIcon,
+} from "lucide-react";
 import { LeadershipTeam } from "@/types/aboutSchema";
 import { Separator } from "@/components/ui/separator";
 import { useTransitionRouter } from "next-view-transitions";
+import Image from "next/image";
+import PlaceholderImg from "../../../../public/images/Profile_placeholder.png";
+import Link from "next/link";
 
 interface AboutTeamProps {
   leadershipTeam: LeadershipTeam[];
@@ -18,19 +28,22 @@ interface AboutTeamProps {
 // Helper function to render the appropriate icon
 const getSocialIcon = (url: string) => {
   if (url.includes("linkedin.com")) {
-    return (
-      <LinkedinIcon className="w-5 h-5 text-primary hover:text-accent transition-colors" />
-    );
-  }
-  if (url.includes("github.com")) {
-    return (
-      <GithubIcon className="w-5 h-5 text-primary hover:text-accent transition-colors" />
-    );
+    return <LinkedinIcon className="w-5 h-5" />;
   }
   if (url.includes("facebook.com")) {
-    return (
-      <FacebookIcon className="w-5 h-5 text-primary hover:text-accent transition-colors" />
-    );
+    return <FacebookIcon className="w-5 h-5" />;
+  }
+  if (url.includes("instagram.com")) {
+    return <InstagramIcon className="w-5 h-5" />;
+  }
+  if (url.includes("twitter.com")) {
+    return <TwitterIcon className="w-5 h-5" />;
+  }
+  if (url.includes("github.com")) {
+    return <GithubIcon className="w-5 h-5" />;
+  }
+  if (url.includes("dribble.com")) {
+    return <DribbbleIcon className="w-5 h-5" />;
   }
   return null; // If no match, return null
 };
@@ -39,7 +52,7 @@ const AboutTeam: React.FC<AboutTeamProps> = ({ leadershipTeam }) => {
   const [isVisible, setIsVisible] = useState(false);
   const teamRef = useRef<HTMLDivElement | null>(null);
 
-  const router = useTransitionRouter() 
+  const router = useTransitionRouter();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -67,11 +80,11 @@ const AboutTeam: React.FC<AboutTeamProps> = ({ leadershipTeam }) => {
   }, []);
 
   return (
-    <div className="py-12 lg:px-24 text-center" ref={teamRef}>
-      <h2 className="text-xl font-bold">Our Board Members</h2>
-      <Separator className="w-16 mx-auto mt-4 mb-12" />
+    <div className="py-12 text-center" ref={teamRef}>
+      <h2 className="text-xl lg:text-2xl font-bold">Our Board Members</h2>
+      <Separator className="w-24 mx-auto mt-4 mb-12" />
 
-      <div className="flex flex-col sm:flex-row gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 justify-center items-center gap-8 lg:px-24">
         {leadershipTeam?.map((leader, index) => {
           const { member } = leader;
 
@@ -89,13 +102,12 @@ const AboutTeam: React.FC<AboutTeamProps> = ({ leadershipTeam }) => {
               onClick={() => router.push(`/members/${leader.member._id}`)} // Redirect to the member profile page
             >
               <CardHeader className="relative">
-                <img
-                  src={
-                    member.user_id.profile_photo_url ||
-                    `https://via.placeholder.com/150`
-                  }
+                <Image
+                  src={member?.user_id.profile_photo_url || PlaceholderImg.src}
+                  width={100}
+                  height={100}
                   alt={`${member.user_id.first_name} ${member.user_id.last_name}`}
-                  className="w-24 h-24 lg:w-32 lg:h-32 mx-auto object-cover rounded-full"
+                  className="mx-auto object-cover rounded-full"
                 />
               </CardHeader>
 
@@ -106,12 +118,12 @@ const AboutTeam: React.FC<AboutTeamProps> = ({ leadershipTeam }) => {
                 <p className="text-xs uppercase">
                   {member.specialization || null}
                 </p>
-                <p className="m-4 max-w-64">{member.bio || null}</p>
+                <p className="m-4">{member.bio || null}</p>
               </CardContent>
 
               <CardFooter className="flex justify-center space-x-4 p-4">
                 {member.social_links?.map((link, i) => (
-                  <a
+                  <Link
                     key={i}
                     href={link}
                     target="_blank"
@@ -119,7 +131,7 @@ const AboutTeam: React.FC<AboutTeamProps> = ({ leadershipTeam }) => {
                     className="transition-transform transform hover:scale-110"
                   >
                     {getSocialIcon(link)}
-                  </a>
+                  </Link>
                 ))}
               </CardFooter>
             </Card>

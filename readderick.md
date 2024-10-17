@@ -12,4 +12,4 @@ no difference between me and derick
 we making progress 
 
 
-# You dey smooke?
+# You dey smoke?

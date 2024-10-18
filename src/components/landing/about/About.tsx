@@ -19,30 +19,30 @@ const AboutSection: React.FC<AboutSectionProps> = ({ aboutData }) => {
     <section className="p-8">
       <div className="container mx-auto px-4 lg:px-8 text-center">
         <h2 className="text-xl lg:text-3xl font-bold animate-fadeInUp">
-          Who We Are
+          About Us
         </h2>
         <Separator className="w-16 mx-auto mb-8 animate-fadeInUp" />
 
-        {/* Welcome Video */}
-        <video className="w-auto rounded-lg mx-auto" controls preload="none">
-          <source
-            src="../../../../public/animations/Flowered-DNA.mp4"
-            type="video/mp4"
-          />
-          <track
-            src="/path/to/captions.vtt"
-            kind="subtitles"
-            srcLang="en"
-            label="English"
-          />
-          Your browser can not support this video.
-        </video>
-
-        {/* Overview */}
+        {/* Welcome Video & story */}
         <div className="my-8 flex flex-col gap-8">
           {aboutData?.history && <p>{aboutData?.history}</p>}
-          <HistoryTimeline />
+          <video className="w-auto rounded-lg mx-auto" controls preload="none">
+            <source
+              src="../../../../public/animations/Flowered-DNA.mp4"
+              type="video/mp4"
+            />
+            <track
+              src="/path/to/captions.vtt"
+              kind="subtitles"
+              srcLang="en"
+              label="English"
+            />
+            Your browser can not support this video.
+          </video>
         </div>
+
+        {/* Overview */}
+        <HistoryTimeline />
 
         {/* Team Highlights */}
         <div>
@@ -52,8 +52,8 @@ const AboutSection: React.FC<AboutSectionProps> = ({ aboutData }) => {
         {/* Call to Action */}
         <div className="mt-8 text-center">
           <Link href="/about">
-            <Button className="animate-pulse">
-              Know More <ArrowRight className="w-4 h-4 ml-2" />
+            <Button className="animate-beep">
+              Know More About Us <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </Link>
         </div>

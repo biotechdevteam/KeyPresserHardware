@@ -130,7 +130,7 @@ const MembershipSection: React.FC<MembershipSectionProps> = ({
           }`}
         >
           <Link href="/apply">
-            <Button className="animate-pulse" variant="default">
+            <Button className="animate-beep" variant="default">
               Become a Member Now <ExternalLinkIcon className="w-4 h-4 ml-2" />
             </Button>
           </Link>

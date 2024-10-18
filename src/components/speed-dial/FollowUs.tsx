@@ -1,11 +1,10 @@
 "use client";
 import React from "react";
 import {
-  Facebook,
-  Instagram,
-  Linkedin,
-  Twitter,
-  Github,
+  LinkedinIcon,
+  FacebookIcon,
+  InstagramIcon,
+  TwitterIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
@@ -13,6 +12,24 @@ import { fetchAboutData } from "@/lib/fetchUtils"; // Import the fetch function
 import Loader from "@/components/loader/Loader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // Import Card components
 import { useTransitionRouter } from "next-view-transitions";
+import Link from "next/link";
+
+// Helper function to render the appropriate icon
+const getSocialIcon = (url: string) => {
+  if (url.includes("linkedin.com")) {
+    return <LinkedinIcon className="w-6 h-6" />;
+  }
+  if (url.includes("facebook.com")) {
+    return <FacebookIcon className="w-6 h-6" />;
+  }
+  if (url.includes("instagram.com")) {
+    return <InstagramIcon className="w-6 h-6" />;
+  }
+  if (url.includes("twitter.com")) {
+    return <TwitterIcon className="w-6 h-6" />;
+  }
+  return null; // If no match, return null
+};
 
 const FollowUs = () => {
   const router = useTransitionRouter();
@@ -38,55 +55,43 @@ const FollowUs = () => {
         <p className="text-destructive mb-4">
           Something went wrong. Please try again later.
         </p>
-        <Button onClick={() => router.refresh()}>Refresh</Button>
+        <Button onClick={() => router.refresh()}>Reload Page</Button>
       </div>
     );
   }
 
+  // Ensure social_links is an array before mapping
+  const socialLinks = Array.isArray(aboutData?.social_links)
+    ? aboutData.social_links
+    : [];
+
   return (
-    <div className="">
-      <Card className="w-full p-6">
-        <CardHeader>
-          <CardTitle className="text-2xl font-semibold text-center mb-4">
-            Follow Us On
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex space-x-6 justify-center">
-            <a
-              href={aboutData?.social_links?.facebook}
-              className="text-muted-foreground hover:text-primary"
-            >
-              <Facebook className="h-6 w-6" />
-            </a>
-            <a
-              href={aboutData?.social_links?.twitter}
-              className="text-muted-foreground hover:text-primary"
-            >
-              <Twitter className="h-6 w-6" />
-            </a>
-            <a
-              href={aboutData?.social_links?.instagram}
-              className="text-muted-foreground hover:text-primary"
-            >
-              <Instagram className="h-6 w-6" />
-            </a>
-            <a
-              href={aboutData?.social_links?.linkedin}
-              className="text-muted-foreground hover:text-primary"
-            >
-              <Linkedin className="h-6 w-6" />
-            </a>
-            <a
-              href={aboutData?.social_links?.github}
-              className="text-muted-foreground hover:text-primary"
-            >
-              <Github className="h-6 w-6" />
-            </a>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+    <Card className="p-6">
+      <CardHeader>
+        <CardTitle className="text-2xl font-semibold text-center mb-4">
+          Follow Us On
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="flex space-x-6 justify-center">
+          {socialLinks.length > 0 ? (
+            socialLinks.map((link: string, i: number) => (
+              <Link
+                key={i}
+                href={link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-transform transform hover:scale-110"
+              >
+                {getSocialIcon(link)}
+              </Link>
+            ))
+          ) : (
+            <p>No social links available.</p>
+          )}
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 

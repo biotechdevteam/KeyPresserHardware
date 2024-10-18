@@ -40,7 +40,6 @@ const LandingContainer: React.FC<{
   faqs: FAQs;
   feedbacks: Feedback[];
   events: Event[];
-  members: any;
   projects: Project[];
 }> = ({
   aboutData,
@@ -49,14 +48,13 @@ const LandingContainer: React.FC<{
   blogs,
   faqs,
   feedbacks,
-  members,
   projects,
 }) => {
   return (
     <div className="landing-page-container">
       <Hero aboutData={aboutData} />
 
-      <ServicesSection services={services} />
+      <ServicesSection services={services} aboutData={aboutData} />
 
       <AboutSection aboutData={aboutData} />
 

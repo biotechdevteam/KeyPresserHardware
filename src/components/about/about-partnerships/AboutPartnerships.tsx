@@ -25,9 +25,15 @@ const AboutPartnerships: React.FC<AboutPartnershipsProps> = ({
 }) => {
   return (
     <div className="p-8 pb-16">
-      <h2 className="text-xl lg:text-2xl font-bold mb-8 text-center">
-        Our Partners & Sponsors
+      <h2 className="text-xl lg:text-2xl font-bold text-center">
+        Our Valued Partners & Sponsors
       </h2>
+      <p className="text-base mt-4 mb-8 px-4 lg:mx-64 text-center">
+        We are proud to collaborate with leading organizations and sponsors that
+        share our commitment to advancing biotechnology. Together, we drive
+        innovation, empower research, and create impactful solutions for a
+        sustainable future.
+      </p>
 
       {/* Limit the width of the grid to the width of the card */}
       <div className="overflow-x-clip">

@@ -44,14 +44,13 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
       </div>
 
       {/* Profile Image */}
-      <div className="relative mb-4 w-16 h-16 mx-auto">
-        <div className="absolute inset-0 border-2 border-primary rounded-[0%_30%_0_30%]"></div>
+      <div className="relative mb-4">
         <Image
           src={imageUrl}
           alt={name}
-          width={50}
-          height={50}
-          className="w-full h-full object-cover rounded-[0%_30%_0_30%]"
+          width={100}
+          height={100}
+          className="object-cover rounded-full mx-auto"
         />
       </div>
 

@@ -14,6 +14,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { About } from "@/types/aboutSchema";
 
 // Mapping of service categories to icons from lucide-react
 const categoryIcons: { [key: string]: React.ReactNode } = {
@@ -38,10 +39,11 @@ const categoryIcons: { [key: string]: React.ReactNode } = {
 };
 
 interface ServiceProps {
-  services: Service[]; // Define the type of services prop
+  services: Service[];
+  aboutData: About
 }
 
-const ServicesSection: React.FC<ServiceProps> = ({ services }) => {
+const ServicesSection: React.FC<ServiceProps> = ({ services, aboutData }) => {
   const router = useRouter();
   // Handle the category click event
   const onCategoryClick = () => {
@@ -60,11 +62,14 @@ const ServicesSection: React.FC<ServiceProps> = ({ services }) => {
 
   return (
     <section className="text-center py-16 p-8 w-auto">
-      <h2 className="text-xl lg:text-3xl font-bold">What We Do</h2>
+      <h2 className="text-xl lg:text-3xl font-bold">Our Expertise</h2>
       <Separator className="w-16 mx-auto" />
-      <p className="text-base p-4">
-        Explore our wide range of services tailored to meet your needs. We've
-        got you covered.
+      <p className="text-base py-8 px-4 lg:mx-64">
+        At {aboutData?.name}, we specialize in delivering innovative
+        biotechnology solutions that address today's challenges. From
+        cutting-edge research to industry-tailored applications, we offer a
+        range of services designed to push the boundaries of science and help
+        you achieve your goals.
       </p>
 
       {/* Categories Grid */}
@@ -77,9 +82,7 @@ const ServicesSection: React.FC<ServiceProps> = ({ services }) => {
               onClick={onCategoryClick}
             >
               {/* Category Icon */}
-              <CardHeader className="p-0">
-                {categoryIcons[category]}
-              </CardHeader>
+              <CardHeader className="p-0">{categoryIcons[category]}</CardHeader>
 
               {/* Category Title */}
               <CardContent className="mt-3">
@@ -96,10 +99,10 @@ const ServicesSection: React.FC<ServiceProps> = ({ services }) => {
       <div className="mt-10 text-center">
         <Button
           variant="default"
-          className="animate-pulse"
+          className="animate-beep"
           onClick={onCategoryClick}
         >
-          Explore Services <ArrowRight className="w-4 h-4 ml-2" />
+          Explore Our Services <ArrowRight className="w-4 h-4 ml-2" />
         </Button>
       </div>
     </section>

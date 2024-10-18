@@ -24,15 +24,19 @@ const AboutSection: React.FC<AboutSectionProps> = ({ aboutData }) => {
         <Separator className="w-16 mx-auto mb-8 animate-fadeInUp" />
 
         {/* Welcome Video */}
-        {/* <AspectRatio ratio={16/9} className="flex justify-center"> */}
-        <video className="w-auto rounded-lg mx-auto" controls>
+        <video className="w-auto rounded-lg mx-auto" controls preload="none">
           <source
             src="../../../../public/animations/Flowered-DNA.mp4"
             type="video/mp4"
           />
-          Your device can't play this video.
+          <track
+            src="/path/to/captions.vtt"
+            kind="subtitles"
+            srcLang="en"
+            label="English"
+          />
+          Your browser can not support this video.
         </video>
-        {/* </AspectRatio> */}
 
         {/* Overview */}
         <div className="my-8 flex flex-col gap-8">

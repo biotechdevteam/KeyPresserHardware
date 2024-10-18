@@ -9,8 +9,9 @@ import {
   CardTitle,
   CardContent,
   CardFooter,
-} from "@/components/ui/card"; // Import shadcn card components
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 
 const FAQContainer: React.FC<{ initialData: any; general?: boolean }> = ({
   initialData,
@@ -50,44 +51,48 @@ const FAQContainer: React.FC<{ initialData: any; general?: boolean }> = ({
   }, {});
 
   return (
-    <div className="flex flex-col justify-content-center items-center">
-      {/* Render each category and the corresponding FAQs in a card */}
-      <div className="space-y-8">
+    <div className="py-12">
+      <div className="space-y-8 px-4 lg:px-32 mx-auto">
         {groupedFAQs &&
           (general
             ? // If general prop is true, display only FAQs from the general category
               groupedFAQs["General"] && (
                 <div key="general">
-                  <h2 className="text-3xl font-bold text-center mb-8">
+                  <h2 className="text-xl lg:text-2xl font-bold text-center">
                     Frequently Asked Questions
                   </h2>
-                  <CardHeader>
-                    <CardTitle className="text-2xl md:text-3xl text-center font-semibold">
-                      General FAQs
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <FAQList faqs={groupedFAQs["General"]} />
-                  </CardContent>
-                  {/* CTA Button - Contact Us */}
-                  <CardFooter className="flex justify-center mt-12">
-                    <Button
-                      onClick={() => (window.location.href = "/contact")}
-                    >
-                      Contact Us if you have more questions
-                    </Button>
-                  </CardFooter>
+                  <Separator className="w-24 mx-auto mb-4" />
+
+                  <Card className="border-none shadow-none">
+                    <CardHeader>
+                      <CardTitle className="text-xl text-center">
+                        General FAQs
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="lg:px-64">
+                      <FAQList faqs={groupedFAQs["General"]} />
+                    </CardContent>
+                    {/* CTA Button - Contact Us */}
+                    <CardFooter className="flex justify-center mt-12">
+                      <Button
+                        className="animate-pulse"
+                        onClick={() => (window.location.href = "/contact")}
+                      >
+                        Contact Us For More Questions
+                      </Button>
+                    </CardFooter>
+                  </Card>
                 </div>
               )
             : // Otherwise, display all categories
               Object.keys(groupedFAQs).map((category) => (
-                <Card key={category} className="border rounded-lg shadow-lg">
+                <Card key={category} className="border-none shadow-none">
                   <CardHeader>
-                    <CardTitle className="text-2xl md:text-3xl text-center font-bold">
+                    <CardTitle className="text-xl text-center">
                       {category}
                     </CardTitle>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="lg:px-64">
                     <FAQList faqs={groupedFAQs[category]} />
                   </CardContent>
                 </Card>

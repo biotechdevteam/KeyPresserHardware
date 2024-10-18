@@ -2,6 +2,7 @@ import React from "react";
 import { Feedback } from "@/types/feedbackSchema";
 import TestimonialCard from "../testimonial-card/TestimonialCard";
 import CustomCarousel from "./customcarousel";
+import { Separator } from "@/components/ui/separator";
 
 interface TestimonialsProps {
   feedbacks: Feedback[];
@@ -24,8 +25,9 @@ const Testimonials: React.FC<TestimonialsProps> = ({
   );
 
   return (
-    <div className="container bg-card px-4 lg:px-16 py-12">
-      <h2 className="text-xl lg:text-2xl font-bold text-center mb-8">{title}</h2>
+    <div className="container px-4 lg:px-16 py-12">
+      <h2 className="text-xl lg:text-2xl font-bold text-center">{title}</h2>
+      <Separator className="w-32 mx-auto mb-8" />
       <CustomCarousel>
         {filteredFeedbacks.length > 0 ? (
           filteredFeedbacks.map((feedback) => (

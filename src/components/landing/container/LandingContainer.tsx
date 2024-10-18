@@ -85,17 +85,19 @@ const LandingContainer: React.FC<{
 
       <BlogSection blogs={blogs} />
 
-      <Testimonials
-        feedbacks={feedbacks}
-        title="Reviews From Clients & Partners"
-      />
+      <div className="bg-card">
+        <Testimonials
+          feedbacks={feedbacks}
+          title="Reviews From Clients & Partners"
+        />
 
-      <FAQContainer
-        initialData={faqs.filter((faq) => faq.category === "General")}
-        general
-      />
+        <FAQContainer
+          initialData={faqs.filter((faq) => faq.category === "General")}
+          general
+        />
 
-      <ContactSection />
+        <ContactSection />
+      </div>
     </div>
   );
 };

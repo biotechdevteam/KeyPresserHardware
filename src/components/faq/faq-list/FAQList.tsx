@@ -10,17 +10,9 @@ const FAQList: React.FC<{ faqs: any[] }> = ({ faqs }) => {
   return (
     <Accordion type="single" collapsible className="space-y-4">
       {faqs?.map((faq) => (
-        <AccordionItem
-          key={faq._id}
-          value={`faq-${faq._id}`}
-          className="border rounded-md"
-        >
-          <AccordionTrigger className="text-lg md:text-xl font-semibold transition-all">
-            {faq.question}
-          </AccordionTrigger>
-          <AccordionContent className="p-4 bg-gray-50">
-            <p className="md:text-lg">{faq.answer}</p>
-          </AccordionContent>
+        <AccordionItem key={faq._id} value={`faq-${faq._id}`}>
+          <AccordionTrigger>{faq.question}</AccordionTrigger>
+          <AccordionContent>{faq.answer}</AccordionContent>
         </AccordionItem>
       ))}
     </Accordion>

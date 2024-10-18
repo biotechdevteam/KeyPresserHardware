@@ -34,12 +34,12 @@ const ScrollToTopButton: React.FC = () => {
 
   return (
     <div
-      className={`fixed bottom-8 right-8 transition-all duration-500 ease-in-out transform ${
+      className={`fixed bottom-10 right-8 transition-all duration-500 ease-in-out transform ${
         isVisible ? "animate-fadeInUp" : "opacity-0 translate-y-10"
       }`}
     >
       {isVisible && (
-        <Button onClick={scrollToTop}>
+        <Button onClick={scrollToTop} className="p-6">
           <ChevronsUp /> Top
         </Button>
       )}

@@ -35,7 +35,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
           <span
             key={index}
             className={`text-xl ${
-              index < rating ? "text-secondary" : "text-muted"
+              index < rating ? "text-accent" : "text-muted"
             }`}
           >
             ★

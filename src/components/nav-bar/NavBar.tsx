@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { useTranslations } from "next-intl";
 import React from "react";
 import {
@@ -31,6 +31,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetFooter,
   SheetHeader,
@@ -43,6 +44,7 @@ import Image from "next/image";
 import Logo from "../../../public/images/logo.png";
 import { useAuth } from "@/lib/useAuth";
 import { About } from "@/types/aboutSchema";
+import { Button } from "../ui/button";
 
 // array of pages
 const pages = [
@@ -55,7 +57,7 @@ const pages = [
   { title: "contact", link: "/contact", icon: <BookUser /> },
 ];
 
-const NavBar: React.FC<{aboutData: About}> = ({aboutData}) => {
+const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   const t = useTranslations("NavBar");
   const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
   const { isAuthenticated, user, signOut } = useAuth(); // Use the useAuth hook
@@ -84,7 +86,7 @@ const NavBar: React.FC<{aboutData: About}> = ({aboutData}) => {
               {/* Mobile Menu */}
               <Sheet>
                 <SheetTrigger>
-                  <Menu />
+                  <Menu className="transition-transform transform hover:rotate-90 duration-500" />
                 </SheetTrigger>
                 <SheetContent>
                   <SheetHeader>
@@ -93,40 +95,60 @@ const NavBar: React.FC<{aboutData: About}> = ({aboutData}) => {
                   </SheetHeader>
                   <div className="py-8">
                     {pages.map((page) => (
-                      <Link href={page.link} key={page.title}>
-                        <p className="flex gap-4 text-md hover:text-primary hover:no-underline">
-                          {page.icon}
-                          {t(page.title)}
-                        </p>
-                      </Link>
+                      <SheetClose asChild key={page.title}>
+                        <Link href={page.link}>
+                          <Button
+                            variant="link"
+                            className="flex gap-4 text-md text-muted-foreground font-normal"
+                          >
+                            {page.icon}
+                            {t(page.title)}
+                          </Button>
+                        </Link>
+                      </SheetClose>
                     ))}
                     <Separator className="my-4" />
                     {!isAuthenticated ? (
-                      <Link href="/auth/signin">
-                        <p className="flex gap-4 text-md hover:text-primary hover:no-underline">
-                          <LogIn />
-                          {t("login")}
-                        </p>
-                      </Link>
+                      <SheetClose asChild>
+                        <Link href="/auth/signin">
+                          <Button
+                            variant="link"
+                            className="flex gap-4 text-md text-muted-foreground font-normal"
+                          >
+                            <LogIn />
+                            {t("login")}
+                          </Button>
+                        </Link>
+                      </SheetClose>
                     ) : (
                       <>
-                        <Link href="/profile">
-                          <p className="flex gap-4 text-md hover:text-primary hover:no-underline">
-                            <User />
-                            {t("profile")}
-                          </p>
-                        </Link>
-                        <Link href="#" onClick={signOut}>
-                          <p className="flex gap-4 text-md hover:text-primary hover:no-underline">
-                            <LogOut />
-                            {t("logout")}
-                          </p>
-                        </Link>
+                        <SheetClose asChild>
+                          <Link href="/profile">
+                            <Button
+                              variant="link"
+                              className="flex gap-4 text-md text-muted-foreground font-normal"
+                            >
+                              <User />
+                              {t("profile")}
+                            </Button>
+                          </Link>
+                        </SheetClose>
+                        <SheetClose asChild>
+                          <Link href="#" onClick={signOut}>
+                            <Button
+                              variant="link"
+                              className="flex gap-4 text-md text-muted-foreground font-normal"
+                            >
+                              <LogOut />
+                              {t("logout")}
+                            </Button>
+                          </Link>
+                        </SheetClose>
                       </>
                     )}
                   </div>
                   <SheetFooter className="absolute bottom-8 left-0 right-0 text-xs text-center text-muted-foreground">
-                    {aboutData?.name}
+                    &copy; {new Date().getFullYear()} {aboutData?.name}
                   </SheetFooter>
                 </SheetContent>
               </Sheet>

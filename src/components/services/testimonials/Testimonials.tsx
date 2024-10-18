@@ -2,7 +2,7 @@ import React from "react";
 import { Feedback } from "@/types/feedbackSchema";
 import TestimonialCard from "../testimonial-card/TestimonialCard";
 import CustomCarousel from "./customcarousel";
-import { Separator } from "@/components/ui/separator";
+import PlaceholderImg from "../../../../public/images/Profile_placeholder.png";
 
 interface TestimonialsProps {
   feedbacks: Feedback[];
@@ -26,8 +26,9 @@ const Testimonials: React.FC<TestimonialsProps> = ({
 
   return (
     <div className="container px-4 lg:px-16 py-12">
-      <h2 className="text-xl lg:text-2xl font-bold text-center">{title}</h2>
-      <Separator className="w-32 mx-auto mb-8" />
+      <h2 className="text-xl lg:text-2xl font-bold text-center mb-8">
+        {title}
+      </h2>
       <CustomCarousel>
         {filteredFeedbacks.length > 0 ? (
           filteredFeedbacks.map((feedback) => (
@@ -35,9 +36,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({
               key={feedback._id}
               name={`${feedback.userId?.first_name} ${feedback.userId?.last_name}`}
               role={feedback.userId?.user_type || "Client"}
-              imageUrl={
-                feedback.userId?.profile_photo_url || ""
-              }
+              imageUrl={feedback.userId?.profile_photo_url || PlaceholderImg.src}
               comment={feedback.comment}
               rating={feedback.rating}
             />

@@ -45,9 +45,14 @@ const EventSection: React.FC<{ events: Event[] }> = ({ events }) => {
     >
       <div className="container mx-auto">
         <h2 className="text-xl lg:text-3xl font-bold text-center">
-          Upcoming Events
+          Join Our Upcoming Events
         </h2>
-        <Separator className="w-16 mx-auto mb-8" />
+        <Separator className="w-16 mx-auto" />
+        <p className="text-base text-center py-8 px-4 lg:mx-64">
+          Stay updated with the latest conferences, workshops, and events hosted
+          by Biotech Universe. Connect with experts and innovators shaping the
+          future of biotechnology.
+        </p>
 
         {/* Event Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mx-auto justify-center p-4 lg:p-16">
@@ -86,10 +91,10 @@ const EventSection: React.FC<{ events: Event[] }> = ({ events }) => {
         {/* CTA Button */}
         <div className="flex justify-center mt-12">
           <Button
-            className="animate-pulse"
+            className="animate-beep"
             onClick={() => (window.location.href = "/events")} // Link to the events page
           >
-            View All Events <ArrowRight className="w-4 h-4 ml-2" />
+            See Full Event Calendar <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         </div>
       </div>

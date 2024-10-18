@@ -75,7 +75,7 @@ const FAQContainer: React.FC<{ initialData: any; general?: boolean }> = ({
                     {/* CTA Button - Contact Us */}
                     <CardFooter className="flex justify-center mt-12">
                       <Button
-                        className="animate-pulse"
+                        className="animate-beep"
                         onClick={() => (window.location.href = "/contact")}
                       >
                         Contact Us For More Questions

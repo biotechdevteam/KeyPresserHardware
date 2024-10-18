@@ -29,11 +29,11 @@ const CustomError: React.FC<CustomErrorProps> = ({ error, reset }) => {
         </CardHeader>
         <CardContent>
           <p className="text-center text-2xl mb-8">
-            Something went wrong. Please try again, or go back to the homepage.
+            Something went wrong. Please try again, or go back to the Home page.
           </p>
 
           {/* Error details, only shown in development for debugging */}
-          <pre className="bg-red-100 p-4 rounded-md text-red-600 mb-4">
+          <pre className="bg-destructive/50 p-4 rounded-md text-destructive mb-4 text-wrap">
             {process.env.NODE_ENV === "development" ? error.message : null}
           </pre>
 

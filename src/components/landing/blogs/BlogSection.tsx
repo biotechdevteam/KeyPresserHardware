@@ -12,21 +12,29 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
-import { BookOpen } from "lucide-react";
+import { ArrowRight, BookOpen } from "lucide-react";
 
 const BlogSection: React.FC<{ blogs: Blog[] }> = ({ blogs }) => {
   const router = useRouter();
 
   return (
     <section className="my-12 px-6 grid place-items-center">
-      <h2 className="text-xl lg:text-3xl font-bold">Latest News & Updates</h2>
-      <Separator className="w-24 mx-auto mb-8" />
+      <h2 className="text-xl lg:text-3xl font-bold text-center">
+        Latest News & Insights
+      </h2>
+      <Separator className="w-24 mx-auto" />
+      <p className="text-base text-center py-8 px-4 lg:mx-64">
+        Discover the latest insights, research findings, and industry updates
+        from the world of biotechnology. Stay informed with our curated articles
+        and expert opinions.
+      </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 justify-center mx-auto p-4 lg:px-16">
         {blogs.slice(0, 3).map((blog, index) => (
           <Card
             key={index}
-            className="shadow-lg rounded-lg hover:shadow-xl transition-shadow duration-300"
+            className="shadow-lg rounded-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+            onClick={() => router.push(`/post/${blog._id}`)}
           >
             <CardHeader className="p-0 overflow-hidden rounded-t-lg">
               <Image
@@ -44,16 +52,19 @@ const BlogSection: React.FC<{ blogs: Blog[] }> = ({ blogs }) => {
                 {blog.summary}
               </CardDescription>
             </CardContent>
-
-            <CardFooter className="p-4 flex justify-end">
-              <Button
-                onClick={() => router.push(`/post/${blog._id}`)}
-              >
-                Read More <BookOpen className="w-4 h-4 ml-2" />
-              </Button>
-            </CardFooter>
           </Card>
         ))}
+      </div>
+
+      {/* View More Button */}
+      <div className="mt-10 text-center">
+        <Button
+          variant="default"
+          className="animate-beep"
+          onClick={() => router.push("/blogs")}
+        >
+          More Insightful Articles <ArrowRight className="w-4 h-4 ml-2" />
+        </Button>
       </div>
     </section>
   );

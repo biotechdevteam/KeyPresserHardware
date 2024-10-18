@@ -47,9 +47,14 @@ const ProjectPortfolioSection: React.FC<ProjectPortfolioSectionProps> = ({
     >
       <div className="container mx-auto px-8">
         <h2 className="text-xl lg:text-3xl font-bold text-center">
-          Explore Our Works
+          Discover Our Projects
         </h2>
-        <Separator className="w-24 mx-auto mb-12" />
+        <Separator className="w-24 mx-auto" />
+        <p className="text-base py-8 px-4 lg:mx-64 text-center">
+          From groundbreaking research to impactful real-world applications, our
+          projects are at the forefront of biotechnology innovation. Explore our
+          portfolio to see how we're shaping the future.
+        </p>
 
         {/* Project List */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 py-8 px-4 lg:px-16 place-items-center mx-auto">
@@ -71,8 +76,8 @@ const ProjectPortfolioSection: React.FC<ProjectPortfolioSectionProps> = ({
 
         {/* Call to Action */}
         <div className="mt-8 text-center">
-          <Button variant="default" className="animate-pulse">
-            Explore Projects
+          <Button variant="default" className="animate-beep">
+            Explore More Projects
             <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         </div>

@@ -21,7 +21,7 @@ const Progress = React.forwardRef<
       {/* Conditionally render percentage text */}
       {showValue && (
         <div
-          className="absolute -top-5 text-primary-foreground text-xs font-medium transition-transform"
+          className="absolute -top-5 text-muted-foreground text-xs font-medium transition-transform"
           style={{ left: `${value}%`, transform: "translateX(-50%)" }}
         >
           {Math.round(value || 0)}%

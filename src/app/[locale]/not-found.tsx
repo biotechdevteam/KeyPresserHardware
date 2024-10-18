@@ -53,7 +53,7 @@ if (error) {
       <p className="text-destructive mb-4">
         Something went wrong. Please try again later.
       </p>
-      <Button onClick={() => router.refresh()}>Refresh</Button>
+      <Button onClick={() => router.refresh()}>Reload Page</Button>
     </div>
   );
 }

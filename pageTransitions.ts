@@ -83,3 +83,14 @@ const pageTransitions = {
 };
 
 export default pageTransitions;
+
+
+// How to use
+
+// onClick={(e) => {
+//   e.preventDefault()
+//   router.push('/', {
+//     // Edit here
+//     onTransitionReady: slideInOut,
+//   })
+// }}

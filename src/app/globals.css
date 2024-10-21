@@ -98,13 +98,12 @@
 @layer base {
   html {
     @apply border-border scroll-smooth;
-    font-family: Arial, Helvetica, verdana, sans-serif;
     scroll-behavior: smooth;
   }
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: Arial, Helvetica, verdana, sans-serif;
+    /* font-family: Arial, Helvetica, verdana, sans-serif; */
     line-height: 1.5;
   }
 

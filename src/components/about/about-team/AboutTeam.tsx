@@ -83,7 +83,7 @@ const AboutTeam: React.FC<AboutTeamProps> = ({ leadershipTeam }) => {
     <div className="py-12 text-center" ref={teamRef}>
       <h2 className="text-xl lg:text-2xl font-bold">Our Leadership Team</h2>
       <Separator className="w-24 mx-auto mt-4" />
-      <p className="text-base py-8 px-4 lg:mx-64">
+      <p className="text-base py-8 px-4">
         Our board members are seasoned professionals dedicated to driving
         innovation and excellence in biotechnology. With diverse expertise and a
         shared vision for the future, they lead Biotech Universe towards

@@ -18,21 +18,6 @@ import { Feedback } from "@/types/feedbackSchema";
 import Testimonials from "@/components/services/testimonials/Testimonials";
 import BlogSection from "../blogs/BlogSection";
 
-const membershipTiers = [
-  {
-    id: "1",
-    name: "Standard",
-    description:
-      "A unified membership for all members of the biotechnology space.",
-    benefits: [
-      "Equal access to all resources",
-      "Monthly community updates",
-      "Participation in exclusive biotech events",
-      "Access to the biotechnology research hub",
-    ],
-  },
-];
-
 const LandingContainer: React.FC<{
   aboutData: About;
   services: Service[];
@@ -65,8 +50,6 @@ const LandingContainer: React.FC<{
           .filter((pro) => pro.status === "ongoing")
           .slice(0, 3)}
       />
-
-      <MembershipSection membershipTiers={membershipTiers} />
 
       <EventSection
         events={

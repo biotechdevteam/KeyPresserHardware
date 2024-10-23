@@ -18,7 +18,7 @@ const CTASection: React.FC<CTASectionProps> = ({ title, description, action }) =
       <h2 className="text-2xl font-bold mb-2">{title}</h2>
       <p className="mb-4">{description}</p>
       <Button
-        className="animate-pulse"
+        className="animate-beep"
         size="lg"
         onClick={action}
       >

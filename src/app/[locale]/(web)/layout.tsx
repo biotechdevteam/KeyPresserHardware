@@ -75,7 +75,7 @@ export default async function LocaleLayout({
   return (
     <div>
       <NavBar aboutData={aboutData as About} />
-      <main>
+      <main className="mt-24">
         {children}
         <CookieConsent />
         <ScrollToTopButton />

@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import Loader from "@/components/loader/Loader";
 
 const FAQContainer: React.FC<{ initialData: any; general?: boolean }> = ({
   initialData,
@@ -29,7 +30,11 @@ const FAQContainer: React.FC<{ initialData: any; general?: boolean }> = ({
   });
 
   if (loading && !faqData) {
-    return <div className="text-center inset-0">Loading FAQs...</div>;
+    return (
+      <div className="text-center inset-0">
+        <Loader />
+      </div>
+    );
   }
 
   if (error) {
@@ -52,7 +57,7 @@ const FAQContainer: React.FC<{ initialData: any; general?: boolean }> = ({
 
   return (
     <div className="py-12">
-      <div className="space-y-8 px-4 lg:px-32 mx-auto">
+      <div className="space-y-8 px-4 mx-auto">
         {groupedFAQs &&
           (general
             ? // If general prop is true, display only FAQs from the general category

@@ -1,14 +1,13 @@
 "use client";
 
-import AboutPartnerships from "@/components/about/about-partnerships/AboutPartnerships";
+import AboutAchievements from "@/components/about/about-achievements/AboutAchievements";
 import Loader from "@/components/loader/Loader";
 import { fetchAboutData } from "@/lib/fetchUtils";
 import { About } from "@/types/aboutSchema";
 import { useQuery } from "@tanstack/react-query";
-import { useTransitionRouter } from "next-view-transitions";
 import React from "react";
 
-const PartnersSponsorsPage: React.FC<{ initialData: About }> = ({
+const AchievementsPage: React.FC<{ initialData: About }> = ({
   initialData,
 }) => {
   const {
@@ -26,8 +25,6 @@ const PartnersSponsorsPage: React.FC<{ initialData: About }> = ({
     refetchOnReconnect: false,
   });
 
-  const router = useTransitionRouter();
-
   if (loading && !aboutData) {
     return <Loader />;
   }
@@ -40,10 +37,10 @@ const PartnersSponsorsPage: React.FC<{ initialData: About }> = ({
     );
   }
   return (
-      <div className="col-span-1 lg:col-span-2 my-8">
-        <AboutPartnerships partnerships={aboutData.partnerships || []} />
-      </div>
+    <div className="col-span-1 lg:col-span-2 m-8">
+      <AboutAchievements achievements={aboutData.achievements || []} aboutData={aboutData} />
+    </div>
   );
 };
 
-export default PartnersSponsorsPage;
+export default AchievementsPage;

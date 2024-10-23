@@ -181,7 +181,7 @@ const LandingPage: React.FC = () => {
 
   // Render the LandingContainer with the prefetched data
   return (
-    <div>
+    <div className="-mt-24">
       <LandingContainer
         aboutData={aboutData as About}
         services={servicesData as Service[]}
@@ -189,7 +189,7 @@ const LandingPage: React.FC = () => {
         faqs={faqsData as FAQs}
         feedbacks={feedbacksData as Feedback[]}
         events={eventsData as Event[]}
-        members={membersData as Member[]}
+        // members={membersData as Member[]}
         projects={projectsData as Project[]}
       />
     </div>

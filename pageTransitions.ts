@@ -76,14 +76,7 @@ function slideFadeInOut() {
   );
 }
 
-const pageTransitions = {
-  fadeInOut,
-  slideInOut,
-  slideFadeInOut,
-};
-
-export default pageTransitions;
-
+export { fadeInOut, slideInOut, slideFadeInOut };
 
 // How to use
 

@@ -1,5 +1,5 @@
 "use client";
-import { Link } from "next-view-transitions";
+import { Link, useTransitionRouter } from "next-view-transitions";
 import { useTranslations } from "next-intl";
 import React from "react";
 import {
@@ -254,21 +254,12 @@ const navMenu: Pages[][] = [
   [{ title: "login", link: "/login" }],
 ];
 
-const pages = [
-  { title: "home", link: "/", icon: <Home /> },
-  { title: "about", link: "/about", icon: <Users /> },
-  { title: "services", link: "/services", icon: <HandPlatter /> },
-  { title: "projects", link: "/projects", icon: <LibraryBig /> },
-  { title: "events", link: "/events", icon: <CalendarFold /> },
-  { title: "blog", link: "/blogs", icon: <Newspaper /> },
-  { title: "contact", link: "/contact", icon: <BookUser /> },
-];
-
 const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   const t = useTranslations("NavBar");
   const logo = aboutData?.logo_url || Logo;
   const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
   const { isAuthenticated, user, signOut } = useAuth(); // Use the useAuth hook
+  const router = useTransitionRouter();
 
   const [openIndex, setOpenIndex] = React.useState<number | null>(null); // State to track which collapsible is open
   const handleOpenChange = (index: number) => {

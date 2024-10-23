@@ -17,10 +17,10 @@ const ComingSoon: React.FC = () => {
         <div className="relative w-16 h-16 rounded-full bg-primary"></div>
       </div>
       <div>
-        <p>We can notify you once the work is done</p>
         <Button size="lg" className="mt-8">
           Notify Me
         </Button>
+        <p className="mt-12">We can notify you once the work is done.</p>
       </div>
     </div>
   );

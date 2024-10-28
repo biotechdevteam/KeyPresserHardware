@@ -5,7 +5,7 @@ import { About } from "@/types/aboutSchema";
 import ScrollToTopButton from "@/components/ScrollToTop/ScrollToTopButton";
 import CookieConsent from "@/components/Cookies/CookieConsent";
 import Loader from "@/components/loader/Loader";
-import { fetchAboutData } from "@/lib/fetchUtils"; // Server-side fetch
+import { fetchAboutData } from "@/lib/utils/fetchUtils"; // Server-side fetch
 
 // This function runs on the server-side and fetches the about data.
 async function getAboutData() {

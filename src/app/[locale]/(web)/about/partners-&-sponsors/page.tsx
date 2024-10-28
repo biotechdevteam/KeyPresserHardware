@@ -2,7 +2,7 @@
 
 import AboutPartnerships from "@/components/about/about-partnerships/AboutPartnerships";
 import Loader from "@/components/loader/Loader";
-import { fetchAboutData } from "@/lib/fetchUtils";
+import { fetchAboutData } from "@/lib/utils/fetchUtils";
 import { About } from "@/types/aboutSchema";
 import { useQuery } from "@tanstack/react-query";
 import { useTransitionRouter } from "next-view-transitions";

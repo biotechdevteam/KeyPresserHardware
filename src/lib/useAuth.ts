@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { User } from "@/types/userSchema";
-import { applyRequest, signInRequest, signUpRequest } from "./fetchUtils";
+import { applyRequest, signInRequest, signUpRequest } from "./utils/fetchUtils";
 
 interface AuthState {
   isAuthenticated: boolean;

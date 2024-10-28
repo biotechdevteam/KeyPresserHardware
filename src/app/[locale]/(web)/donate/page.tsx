@@ -1,9 +1,12 @@
-import React from 'react'
+import Donation from "@/components/donation/Donation";
+import React from "react";
 
 const DonatePage = () => {
   return (
-    <div>DonatePage</div>
-  )
-}
+    <div>
+      <Donation />
+    </div>
+  );
+};
 
-export default DonatePage
+export default DonatePage;

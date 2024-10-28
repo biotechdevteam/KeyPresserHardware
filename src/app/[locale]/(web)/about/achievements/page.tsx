@@ -2,7 +2,7 @@
 
 import AboutAchievements from "@/components/about/about-achievements/AboutAchievements";
 import Loader from "@/components/loader/Loader";
-import { fetchAboutData } from "@/lib/fetchUtils";
+import { fetchAboutData } from "@/lib/utils/fetchUtils";
 import { About } from "@/types/aboutSchema";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";

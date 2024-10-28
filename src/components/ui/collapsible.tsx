@@ -3,7 +3,7 @@
 import * as React from "react";
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/utils";
 import { Link } from "next-view-transitions";
 
 const Collapsible = CollapsiblePrimitive.Root;

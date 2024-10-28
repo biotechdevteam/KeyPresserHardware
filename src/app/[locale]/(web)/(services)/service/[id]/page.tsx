@@ -4,7 +4,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { notFound } from "next/navigation";
 import ServiceDetails from "@/components/services/service-details/ServiceDetails";
-import { fetchFeedbacks, fetchServices } from "@/lib/fetchUtils";
+import { fetchFeedbacks, fetchServices } from "@/lib/utils/fetchUtils";
 import { Service } from "@/types/ServiceSchema";
 import { Feedback } from "@/types/feedbackSchema";
 

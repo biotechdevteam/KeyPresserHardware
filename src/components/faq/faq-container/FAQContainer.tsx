@@ -1,7 +1,7 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { fetchFAQs } from "@/lib/fetchUtils";
+import { fetchFAQs } from "@/lib/utils/fetchUtils";
 import FAQList from "../faq-list/FAQList";
 import {
   Card,

@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { fetchServices, fetchFeedbacks } from "@/lib/fetchUtils";
+import { fetchServices, fetchFeedbacks } from "@/lib/utils/fetchUtils";
 import ServicesContainer from "@/components/services/services-container/ServiceContainer";
 import Loader from "@/components/loader/Loader";
 import { Service } from "@/types/ServiceSchema";

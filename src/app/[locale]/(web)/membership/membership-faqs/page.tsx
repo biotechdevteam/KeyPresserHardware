@@ -2,7 +2,7 @@
 
 import FAQContainer from "@/components/faq/faq-container/FAQContainer";
 import Loader from "@/components/loader/Loader";
-import { fetchFAQs } from "@/lib/fetchUtils";
+import { fetchFAQs } from "@/lib/utils/fetchUtils";
 import { FAQs } from "@/types/FAQSchema";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";

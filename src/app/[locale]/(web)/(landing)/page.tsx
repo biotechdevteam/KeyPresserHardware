@@ -9,7 +9,7 @@ import {
   fetchEvents,
   fetchMembers,
   fetchProjectsData,
-} from "@/lib/fetchUtils";
+} from "@/lib/utils/fetchUtils";
 import LandingContainer from "@/components/landing/container/LandingContainer";
 import Loader from "@/components/loader/Loader";
 import { About } from "@/types/aboutSchema";

@@ -1,14 +1,9 @@
 "use client";
 import React, { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchProjectsData } from "@/lib/fetchUtils";
+import { fetchProjectsData } from "@/lib/utils/fetchUtils";
 import { Project } from "@/types/projectSchema";
 import ProjectFilters from "../project-filters/ProjectFilters";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@/components/ui/popover";
 import ProjectCard from "../project-card/ProjectCard";
 
 interface ProjectsContainerProps {

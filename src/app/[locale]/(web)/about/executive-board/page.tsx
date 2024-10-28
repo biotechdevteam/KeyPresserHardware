@@ -3,7 +3,7 @@
 import AboutTeam from "@/components/about/about-team/AboutTeam";
 import Loader from "@/components/loader/Loader";
 import { Separator } from "@/components/ui/separator";
-import { fetchAboutData } from "@/lib/fetchUtils";
+import { fetchAboutData } from "@/lib/utils/fetchUtils";
 import { About } from "@/types/aboutSchema";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";

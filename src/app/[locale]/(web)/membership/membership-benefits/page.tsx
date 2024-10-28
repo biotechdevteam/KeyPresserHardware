@@ -2,7 +2,7 @@
 
 import Loader from "@/components/loader/Loader";
 import MembershipBenefits from "@/components/membership/membership-benefits/MembershipBenefits";
-import { fetchAboutData } from "@/lib/fetchUtils";
+import { fetchAboutData } from "@/lib/utils/fetchUtils";
 import { About } from "@/types/aboutSchema";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";

@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { fetchProjectsData } from "@/lib/fetchUtils";
+import { fetchProjectsData } from "@/lib/utils/fetchUtils";
 import Loader from "@/components/loader/Loader";
 import ProjectsContainer from "@/components/projects/projects-container/ProjectsContainer";
 import { Project } from "@/types/projectSchema";

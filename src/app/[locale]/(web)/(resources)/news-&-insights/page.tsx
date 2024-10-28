@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchBlogs } from "@/lib/fetchUtils";
+import { fetchBlogs } from "@/lib/utils/fetchUtils";
 import BlogsContainer from "@/components/blog/blogs-container/BlogsContainer";
 import Loader from "@/components/loader/Loader";
 import { Blog } from "@/types/blogSchema";

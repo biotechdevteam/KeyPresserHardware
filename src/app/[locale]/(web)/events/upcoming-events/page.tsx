@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { fetchEvents, fetchFeedbacks } from "@/lib/fetchUtils";
+import { fetchEvents, fetchFeedbacks } from "@/lib/utils/fetchUtils";
 import EventsContainer from "@/components/events/events-container/EventsContainer";
 import Loader from "@/components/loader/Loader";
 import { Event } from "@/types/eventsSchema";

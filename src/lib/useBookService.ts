@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { bookService } from "./fetchUtils";
+import { bookService } from "./utils/fetchUtils";
 import { handleApiError } from "./apiErrorHandler";
 
 export const useBookService = () => {

@@ -15,7 +15,7 @@ import SubscribeDialog from "@/components/speed-dial/SubscribeDialogue";
 import RegisterDialog from "@/components/register-dialog/RegisterDialog";
 import { useBlog } from "@/lib/useBlog";
 import { useAuth } from "@/lib/useAuth";
-import { ReactionType } from "@/lib/fetchUtils";
+import { ReactionType } from "@/lib/utils/fetchUtils";
 
 interface PostContainerProps {
   post: Blog;

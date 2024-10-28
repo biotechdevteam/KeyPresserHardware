@@ -1,6 +1,6 @@
 "use client";
 import React, { ReactNode, useState, useEffect } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/utils";
 import Image from "next/image";
 import authBG1 from "../../../../public/images/auth-bg-t.png";
 import authBG2 from "../../../../public/images/auth-bg-p.png";

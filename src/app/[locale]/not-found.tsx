@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
-import { fetchAboutData } from "@/lib/fetchUtils"; // Import the fetch function
+import { fetchAboutData } from "@/lib/utils/fetchUtils"; // Import the fetch function
 import Loader from "@/components/loader/Loader";
 import { Separator } from "@radix-ui/react-separator"; // Import Separator
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // Import Card components

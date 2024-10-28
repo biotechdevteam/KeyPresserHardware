@@ -7,7 +7,7 @@ import React from "react";
 import { slideFadeInOut } from "../../../../../../pageTransitions";
 import { About } from "@/types/aboutSchema";
 import { useQuery } from "@tanstack/react-query";
-import { fetchAboutData } from "@/lib/fetchUtils";
+import { fetchAboutData } from "@/lib/utils/fetchUtils";
 import Loader from "@/components/loader/Loader";
 import AboutPic from "../../../../../../public/images/about-header.jpg";
 

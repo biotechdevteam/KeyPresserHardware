@@ -5,7 +5,7 @@ import React from "react";
 
 const MembersDirectoryPage = () => {
   return (
-    <div>
+    <div className="m-8">
       <ComingSoon />
     </div>
   );

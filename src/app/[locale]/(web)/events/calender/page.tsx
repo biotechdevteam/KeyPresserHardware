@@ -1,9 +1,12 @@
-import React from 'react'
+import ComingSoon from "@/app/[locale]/coming-soon";
+import React from "react";
 
 const CalenderPage = () => {
   return (
-    <div>CalenderPage</div>
-  )
-}
+    <div className="my-8">
+      <ComingSoon />
+    </div>
+  );
+};
 
-export default CalenderPage
+export default CalenderPage;

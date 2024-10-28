@@ -1,9 +1,14 @@
-import React from 'react'
+"use client";
+
+import EventExhibitions from "@/components/events/event-exhibitions/EventExhibitions";
+import React from "react";
 
 const ExhibitionsSponsorshipPage = () => {
   return (
-    <div>ExhibitionsSponsorshipPage</div>
-  )
-}
+    <div className="my-8">
+      <EventExhibitions />
+    </div>
+  );
+};
 
-export default ExhibitionsSponsorshipPage
+export default ExhibitionsSponsorshipPage;

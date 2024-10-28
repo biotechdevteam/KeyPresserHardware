@@ -14,10 +14,11 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Loader from "@/components/loader/Loader";
 
-const FAQContainer: React.FC<{ initialData: any; general?: boolean }> = ({
-  initialData,
-  general,
-}) => {
+const FAQContainer: React.FC<{
+  initialData: any;
+  general?: boolean;
+  membership?: boolean;
+}> = ({ initialData, general = false, membership = false }) => {
   const {
     data: faqData,
     isLoading: loading,
@@ -67,7 +68,6 @@ const FAQContainer: React.FC<{ initialData: any; general?: boolean }> = ({
                     Frequently Asked Questions
                   </h2>
                   <Separator className="w-24 mx-auto mb-4" />
-
                   <Card className="border-none shadow-none">
                     <CardHeader>
                       <CardTitle className="text-xl text-center">
@@ -76,6 +76,35 @@ const FAQContainer: React.FC<{ initialData: any; general?: boolean }> = ({
                     </CardHeader>
                     <CardContent className="lg:px-64">
                       <FAQList faqs={groupedFAQs["General"]} />
+                    </CardContent>
+                    {/* CTA Button - Contact Us */}
+                    <CardFooter className="flex justify-center mt-12">
+                      <Button
+                        className="animate-beep"
+                        onClick={() => (window.location.href = "/contact")}
+                      >
+                        Contact Us For More Questions
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                </div>
+              )
+            : // If membership prop is true, display only FAQs from the membership category
+            membership
+            ? groupedFAQs["Membership"] && (
+                <div key="membership">
+                  <h2 className="text-xl lg:text-2xl font-bold text-center">
+                    Frequently Asked Questions
+                  </h2>
+                  <Separator className="w-24 mx-auto mb-4" />
+                  <Card className="border-none shadow-none">
+                    <CardHeader>
+                      <CardTitle className="text-xl text-center">
+                        Membership FAQs
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="lg:px-64">
+                      <FAQList faqs={groupedFAQs["Membership"]} />
                     </CardContent>
                     {/* CTA Button - Contact Us */}
                     <CardFooter className="flex justify-center mt-12">

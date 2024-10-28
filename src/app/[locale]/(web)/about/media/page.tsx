@@ -6,14 +6,16 @@ import { fetchAboutData } from "@/lib/fetchUtils";
 import { About } from "@/types/aboutSchema";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
+import sampleVideo1 from "../../../../../../videos/Biologist.mp4";
+import sampleVideo2 from "../../../../../../videos/Flowered-DNA.mp4";
 
 const sampleVideos = [
   {
-    url: "https://www.example.com/video1.mp4",
+    url: {sampleVideo1},
     description: "Our first conference video."
   },
   {
-    url: "https://www.example.com/video2.mp4",
+    url: {sampleVideo2},
     description: "Highlights from our annual biotech workshop."
   }
 ];

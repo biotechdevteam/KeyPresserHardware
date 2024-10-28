@@ -41,7 +41,7 @@
   --destructive: var(--red);
   --destructive-foreground: var(--white);
 
-  --border: var(--davys-gray);
+  --border: var(--silver);
   --input: var(--background);
   --ring: var(--primary);
 
@@ -75,7 +75,7 @@
     --destructive: var(--red);
     --destructive-foreground: var(--foreground);
 
-    --border: var(--silver);
+    --border: var(--davys-gray);
     --input: var(--background);
     --ring: var(--primary);
 

@@ -1,12 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import EventCard from "@/components/events/events-card/EventsCard";
-import PastEventsCarousel from "@/components/events/past-events/PastEventsCarousel";
 import SearchContainer from "@/components/events/search-event/SearchContainer";
-import { Event } from "@/types/eventsSchema";
 import { Feedback } from "@/types/feedbackSchema";
-import { fetchEvents } from "@/lib/fetchUtils";
-import { useQuery } from "@tanstack/react-query";
+import { Event } from "@/types/eventsSchema";
 import RegisterDialog from "@/components/register-dialog/RegisterDialog";
 import EnrollEventForm from "../events-enroll/EnrollForm";
 
@@ -22,9 +19,18 @@ const EventsContainer: React.FC<EventsContainerProps> = ({ initialData }) => {
   const [expandedEvents, setExpandedEvents] = useState<Record<string, boolean>>(
     {}
   );
+
   const [isRegisterDialogOpen, setIsRegisterDialogOpen] = useState(false);
   const [isEnrollFormOpen, setIsEnrollFormOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+
+  const handleSearchChange = (term: string) => {
+    setSearchTerm(term);
+  };
+
+  const toggleEventDetails = (id: string) => {
+    setExpandedEvents((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
 
   // Open the register dialog before enrolling
   const handleOpenRegisterDialog = (event: Event) => {
@@ -38,34 +44,10 @@ const EventsContainer: React.FC<EventsContainerProps> = ({ initialData }) => {
     setIsEnrollFormOpen(true); // Open the enrollment form
   };
 
-  // Use `useQuery` to fetch events, with initial data from props
-  const { data: eventsData = initialData.events } = useQuery({
-    queryKey: ["events"],
-    queryFn: fetchEvents,
-    initialData: initialData.events,
-  });
-
-  // Get today's date
-  const today = new Date();
-
-  // Filter upcoming and past events
-  const upcomingEvents = eventsData.filter((event: Event) => {
-    const endDate = event.endTime; // TypeScript infers that endDate could be undefined
-    return endDate ? new Date(endDate) >= today : false; // Check if endDate is defined
-  });
-
-  const pastEvents = eventsData.filter((event: Event) => {
-    const endDate = event.endTime; // TypeScript infers that endDate could be undefined
-    return endDate ? new Date(endDate) < today : false; // Check if endDate is defined
-  });
-
-  const handleSearchChange = (term: string) => {
-    setSearchTerm(term);
-  };
-
-  const toggleEventDetails = (id: string) => {
-    setExpandedEvents((prev) => ({ ...prev, [id]: !prev[id] }));
-  };
+  // Filter events based on search term
+  const filteredEvents = initialData.events.filter((event) =>
+    event.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="p-4">
@@ -91,15 +73,13 @@ const EventsContainer: React.FC<EventsContainerProps> = ({ initialData }) => {
       <SearchContainer
         searchTerm={searchTerm}
         handleSearchChange={handleSearchChange}
-        filteredData={eventsData}
+        filteredData={filteredEvents}
       />
 
-      <h2 className="text-2xl text-center mb-4">Join Us In Our Events</h2>
-
-      {/* Upcoming Events Section */}
-      {upcomingEvents.length > 0 ? (
-        <div className="space-y-4">
-          {upcomingEvents.map((event) => (
+      {/* Render the filtered events */}
+      <div className="space-y-4">
+        {filteredEvents.length > 0 ? (
+          filteredEvents.map((event) => (
             <EventCard
               key={event._id}
               event={event}
@@ -107,19 +87,9 @@ const EventsContainer: React.FC<EventsContainerProps> = ({ initialData }) => {
               toggleEventDetails={toggleEventDetails}
               handleEnrollClick={() => handleOpenRegisterDialog(event)} // Pass event to register dialog
             />
-          ))}
-        </div>
-      ) : (
-        <div className="text-center">No upcoming events</div>
-      )}
-
-      {/* Past Events Carousel Section */}
-      <div className="mt-10">
-        <h3 className="text-xl text-center">Our Past Events</h3>
-        {pastEvents.length > 0 ? (
-          <PastEventsCarousel events={pastEvents} />
+          ))
         ) : (
-          <div className="text-center">No past events</div>
+          <div className="text-center">No events found</div>
         )}
       </div>
     </div>
@@ -127,3 +97,14 @@ const EventsContainer: React.FC<EventsContainerProps> = ({ initialData }) => {
 };
 
 export default EventsContainer;
+
+
+//   // Use `useQuery` to fetch events, with initial data from props
+//   const { data: eventsData = initialData.events } = useQuery({
+//     queryKey: ["events"],
+//     queryFn: fetchEvents,
+//     initialData: initialData.events,
+//   });
+
+
+//       <h2 className="text-2xl text-center mb-4">Join Us In Our Events</h2>

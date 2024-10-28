@@ -33,7 +33,7 @@ const NavCollapsible = ({
       className={cn("w-full flex flex-col items-center mx-auto", className)}
       {...props}
     >
-      <CollapsiblePrimitive.Trigger className="flex justify-center items-center p-4 w-full bg-transparent focus:bg-primary">
+      <CollapsiblePrimitive.Trigger className="flex justify-center items-center p-4 w-full bg-transparent">
         <span className="font-medium">{triggerText}</span>
         <ChevronDownIcon
           className={cn(

@@ -6,10 +6,10 @@
   /* website theme colors*/
   --white-smoke: #f5f5f5ff;
   --night: #0d0d0dff;
-  --davys-gray: #4f4f4fff;
+  --davys-gray: #1a1a1a;
   --rich-black: #0a0a1fff;
   --white: #fcfcfcff;
-  --silver: #bdbdbdff;
+  --silver: #ebebeb;
   --screamin-green: #82f575ff;
   --light-green: #b6f99fff;
   --mauveine: #aa1daaff;
@@ -41,7 +41,7 @@
   --destructive: var(--red);
   --destructive-foreground: var(--white);
 
-  --border: var(--silver);
+  --border: var(--muted-foreground);
   --input: var(--background);
   --ring: var(--primary);
 

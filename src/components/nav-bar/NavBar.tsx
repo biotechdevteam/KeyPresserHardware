@@ -3,7 +3,6 @@ import { Link, useTransitionRouter } from "next-view-transitions";
 import { useTranslations } from "next-intl";
 import React from "react";
 import {
-  navigationMenuTriggerStyle,
   NavigationMenu,
   NavigationMenuList,
   NavigationMenuItem,
@@ -19,6 +18,7 @@ import {
   ChevronDownIcon,
   CircleUser,
   HandPlatter,
+  Heart,
   Home,
   LibraryBig,
   LogIn,
@@ -49,6 +49,7 @@ import { useAuth } from "@/lib/useAuth";
 import { About } from "@/types/aboutSchema";
 import { Button } from "../ui/button";
 import { NavCollapsible, NavCollapsibleListItem } from "../ui/collapsible";
+import { slideInOut } from "../../../pageTransitions";
 
 // array of pages
 type Pages = {
@@ -251,7 +252,7 @@ const navMenu: Pages[][] = [
   ],
 
   // Login
-  [{ title: "login", link: "/login" }],
+  [{ title: "login", link: "/auth/signin" }],
 ];
 
 const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
@@ -260,6 +261,11 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
   const { isAuthenticated, user, signOut } = useAuth(); // Use the useAuth hook
   const router = useTransitionRouter();
+
+  const handleClick = (e: React.MouseEvent, url: string) => {
+    e.preventDefault(); // Prevent default link behavior
+    router.push(url, { onTransitionReady: slideInOut });
+  };
 
   const [openIndex, setOpenIndex] = React.useState<number | null>(null); // State to track which collapsible is open
   const handleOpenChange = (index: number) => {
@@ -280,15 +286,18 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
 
   return (
     <nav className="absolute top-0 left-0 right-0 z-50 bg-card h-auto">
-      <div className="flex justify-between lg:justify-evenly items-center m-4">
+      <div className="flex justify-between items-center m-4">
         {/* Logo */}
         <div className="flex-shrink-0 text-center">
-          <Link href={homePage.link}>
+          <Link
+            href={homePage.link}
+            onClick={(e) => handleClick(e, homePage.link)}
+          >
             <Image
               src={logo}
-              width={60}
-              height={60}
-              priority={true}
+              width={50}
+              height={50}
+              priority
               alt={aboutData?.name}
               className="rounded"
             />
@@ -309,7 +318,11 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                       </NavigationMenuTrigger>
                       <NavigationMenuContent>
                         {/* Logic enters here */}
-                        <NavigationMenuLink href="" asChild>
+                        <NavigationMenuLink
+                          href="#"
+                          asChild
+                          onClick={(e) => handleClick(e, "#")}
+                        >
                           <em className="text-foreground">
                             No new notifications.
                           </em>
@@ -322,13 +335,35 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
 
               {/* Mobile Menu */}
               <Sheet>
-                <SheetTrigger>
-                  <Menu className="transition-transform transform hover:rotate-90 duration-500" />
+                <SheetTrigger className="bg-transparent">
+                  <Menu className="transition-transform transform hover:rotate-90 duration-500 h-10 w-10 text-foreground" />
                 </SheetTrigger>
                 <SheetContent>
                   <SheetHeader>
-                    <SheetTitle>Menu</SheetTitle>
-                    <Separator className="my-4" />
+                    <SheetTitle className="flex justify-between items-end">
+                      Menu
+                      {/* Toggle Login or profile photo*/}
+                      {!isAuthenticated ? (
+                        <SheetClose asChild>
+                          <Link
+                            href={LoginPage.link}
+                            className="uppercase border border-border px-3 py-2 rounded text-xs font-semibold text-primary-foreground flex gap-2"
+                            onClick={(e) => handleClick(e, LoginPage.link)}
+                          >
+                            {LoginPage.title}
+                            <LogIn className="w-4 h-4" />
+                          </Link>
+                        </SheetClose>
+                      ) : (
+                        <Avatar>
+                          <AvatarImage src={user?.profile_photo_url} />
+                          <AvatarFallback>
+                            <CircleUser />
+                          </AvatarFallback>
+                        </Avatar>
+                      )}
+                    </SheetTitle>
+                    <Separator className="my-4 bg-primary-foreground" />
                   </SheetHeader>
 
                   <SheetBody>
@@ -340,7 +375,10 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                       <ul>
                         {aboutPages.map((page, index) => (
                           <SheetClose asChild key={page.title}>
-                            <NavCollapsibleListItem href={page.link}>
+                            <NavCollapsibleListItem
+                              href={page.link}
+                              onClick={(e) => handleClick(e, page.link)}
+                            >
                               {page.title}
                             </NavCollapsibleListItem>
                           </SheetClose>
@@ -356,7 +394,10 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                       <ul>
                         {membershipPages.map((page, index) => (
                           <SheetClose asChild key={page.title}>
-                            <NavCollapsibleListItem href={page.link}>
+                            <NavCollapsibleListItem
+                              href={page.link}
+                              onClick={(e) => handleClick(e, page.link)}
+                            >
                               {page.title}
                             </NavCollapsibleListItem>
                           </SheetClose>
@@ -372,7 +413,10 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                       <ul>
                         {eventsPages.map((page, index) => (
                           <SheetClose asChild key={page.title}>
-                            <NavCollapsibleListItem href={page.link}>
+                            <NavCollapsibleListItem
+                              href={page.link}
+                              onClick={(e) => handleClick(e, page.link)}
+                            >
                               {page.title}
                             </NavCollapsibleListItem>
                           </SheetClose>
@@ -388,7 +432,10 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                       <ul>
                         {resourcesPages.map((page, index) => (
                           <SheetClose asChild key={page.title}>
-                            <NavCollapsibleListItem href={page.link}>
+                            <NavCollapsibleListItem
+                              href={page.link}
+                              onClick={(e) => handleClick(e, page.link)}
+                            >
                               {page.title}
                             </NavCollapsibleListItem>
                           </SheetClose>
@@ -404,7 +451,10 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                       <ul>
                         {projectsPages.map((page, index) => (
                           <SheetClose asChild key={page.title}>
-                            <NavCollapsibleListItem href={page.link}>
+                            <NavCollapsibleListItem
+                              href={page.link}
+                              onClick={(e) => handleClick(e, page.link)}
+                            >
                               {page.title}
                             </NavCollapsibleListItem>
                           </SheetClose>
@@ -413,24 +463,17 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                     </NavCollapsible>
 
                     {/* Profile */}
-                    {!isAuthenticated ? (
-                      <SheetClose asChild>
-                        <Link
-                          href={LoginPage.link}
-                          className="uppercase border border-primary hover:bg-muted-primary px-3 py-2 rounded text-xs font-semibold text-primary-foreground flex gap-2 mt-2"
-                        >
-                          {LoginPage.title}
-                          <LogIn className="w-4 h-4" />
-                        </Link>
-                      </SheetClose>
-                    ) : (
-                      <div className="space-y-4">
+                    {isAuthenticated && (
+                      <div className="space-y-4 mt-4">
                         <SheetClose asChild>
                           <NavigationMenu>
                             <NavigationMenuList>
                               <NavigationMenuItem>
                                 <NavigationMenuLink
                                   href={profilePage.link}
+                                  onClick={(e) =>
+                                    handleClick(e, profilePage.link)
+                                  }
                                   className="capitalize font-semibold text-md flex gap-2"
                                 >
                                   {profilePage.title}
@@ -444,7 +487,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                           <Link
                             href="#"
                             onClick={signOut}
-                            className="uppercase border border-primary hover:bg-muted-primary px-3 py-2 rounded text-xs font-semibold text-primary-foreground flex gap-2"
+                            className="uppercase border border-border px-3 py-2 rounded text-xs font-semibold text-primary-foreground flex gap-2"
                           >
                             {t("logout")}
                             <LogOut className="w-4 h-4" />
@@ -474,6 +517,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                               key={page.title}
                               title={page.title}
                               href={page.link}
+                              onClick={(e) => handleClick(e, page.link)}
                             >
                               {page.description}
                             </ListItem>
@@ -495,6 +539,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                               key={page.title}
                               title={page.title}
                               href={page.link}
+                              onClick={(e) => handleClick(e, page.link)}
                             >
                               {page.description}
                             </ListItem>
@@ -516,6 +561,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                               key={page.title}
                               title={page.title}
                               href={page.link}
+                              onClick={(e) => handleClick(e, page.link)}
                             >
                               {page.description}
                             </ListItem>
@@ -537,6 +583,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                               key={page.title}
                               title={page.title}
                               href={page.link}
+                              onClick={(e) => handleClick(e, page.link)}
                             >
                               {page.description}
                             </ListItem>
@@ -558,6 +605,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                               key={page.title}
                               title={page.title}
                               href={page.link}
+                              onClick={(e) => handleClick(e, page.link)}
                             >
                               {page.description}
                             </ListItem>
@@ -576,7 +624,8 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                     <NavigationMenuItem>
                       <NavigationMenuLink
                         href={contactPage.link}
-                        className="uppercase border border-primary hover:bg-muted-primary"
+                        onClick={(e) => handleClick(e, contactPage.link)}
+                        className="uppercase border border-primary text-primary hover:bg-primary hover:text-primary-foreground"
                       >
                         {contactPage.title}
                       </NavigationMenuLink>
@@ -590,9 +639,11 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                     <NavigationMenuItem>
                       <NavigationMenuLink
                         href={donationPage.link}
-                        className="uppercase bg-primary hover:bg-muted-primary"
+                        onClick={(e) => handleClick(e, donationPage.link)}
+                        className="uppercase border border-primary bg-primary hover:text-primary text-primary-foreground hover:bg-transparent"
                       >
                         {donationPage.title}
+                        <Heart className="ml-2 w-4 h-4" />
                       </NavigationMenuLink>
                     </NavigationMenuItem>
                   </NavigationMenuList>
@@ -609,7 +660,11 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
                           {/* Logic enters here */}
-                          <NavigationMenuLink href="" asChild>
+                          <NavigationMenuLink
+                            href="#"
+                            asChild
+                            onClick={(e) => handleClick(e, "#")}
+                          >
                             <em className="text-foreground">
                               No new notifications.
                             </em>
@@ -627,10 +682,10 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                       <NavigationMenuItem>
                         <NavigationMenuLink
                           href={LoginPage.link}
-                          className="uppercase border border-primary hover:bg-muted-primary"
+                          className="uppercase border border-primary text-primary hover:bg-primary hover:text-primary-foreground"
                         >
-                          {/* <LogIn className="mr-2 h-4 w-4" /> */}
                           {LoginPage.title}
+                          <LogIn className="ml-2 h-4 w-4" />
                         </NavigationMenuLink>
                       </NavigationMenuItem>
                     ) : (

@@ -1,8 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { User } from "@/types/userSchema";
 import { applyRequest, signInRequest, signUpRequest } from "./utils/fetchUtils";
+import { useTransitionRouter } from "next-view-transitions";
+import { slideInOut } from "../../pageTransitions";
 
 interface AuthState {
   isAuthenticated: boolean;
@@ -24,7 +25,7 @@ export const useAuth = () => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
+  const router = useTransitionRouter();
 
   // Check authentication on component mount
   useEffect(() => {
@@ -181,7 +182,7 @@ export const useAuth = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setAuthState({ isAuthenticated: false, user: null });
-    router.push("/auth/signin"); // Redirect to sign-in page after sign-out
+    router.push("/auth/signin", { onTransitionReady: slideInOut }); // Redirect to sign-in page after sign-out
   };
 
   return { ...authState, signIn, signUp, signOut, apply, loading, error };

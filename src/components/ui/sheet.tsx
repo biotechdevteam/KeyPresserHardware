@@ -31,7 +31,7 @@ const SheetOverlay = React.forwardRef<
 SheetOverlay.displayName = SheetPrimitive.Overlay.displayName;
 
 const sheetVariants = cva(
-  "fixed z-50 gap-4 bg-muted-primary py-6 shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500 data-[state=open]:animate-in data-[state=closed]:animate-out overflow-y-auto",
+  "fixed z-50 gap-4 bg-primary py-6 shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500 data-[state=open]:animate-in data-[state=closed]:animate-out overflow-y-auto",
   {
     variants: {
       side: {
@@ -64,10 +64,6 @@ const SheetContent = React.forwardRef<
       className={cn(sheetVariants({ side }), className)}
       {...props}
     >
-      <SheetPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-primary">
-        <Cross2Icon className="transition-transform transform hover:-rotate-90 duration-500" />
-        <span className="sr-only">Close</span>
-      </SheetPrimitive.Close>
       {children}
     </SheetPrimitive.Content>
   </SheetPortal>
@@ -103,7 +99,7 @@ const SheetFooter = ({
   <div className="fixed bottom-0 w-full">
     <div
       className={cn(
-        "text-primary-foreground bg-muted-primary relative p-8 text-xs",
+        "text-primary-foreground bg-primary relative p-8 text-xs",
         className
       )}
       {...props}
@@ -118,7 +114,7 @@ const SheetTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SheetPrimitive.Title
     ref={ref}
-    className={cn("text-lg font-semibold text-primary-foreground", className)}
+    className={cn("text-2xl font-semibold text-primary-foreground", className)}
     {...props}
   />
 ));

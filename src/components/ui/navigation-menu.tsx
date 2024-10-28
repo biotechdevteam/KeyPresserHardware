@@ -51,7 +51,7 @@ const NavigationMenuTrigger = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <NavigationMenuPrimitive.Trigger
     ref={ref}
-    className={cn(navigationMenuTriggerStyle(), "group uppercase", className)}
+    className={cn(navigationMenuTriggerStyle(), "group uppercase text-foreground", className)}
     {...props}
   >
     {children}{" "}

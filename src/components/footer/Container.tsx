@@ -35,10 +35,10 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   };
 
   return (
-    <footer className="bg-primary py-12">
-      <div className="container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-4 mx-auto">
+    <footer className="bg-muted-primary py-12">
+      <div className="container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-4 mx-auto">
         {/* Logo Section */}
-        <div className="sm:col-span-2 lg:col-span-1 text-center lg:text-left mb-6 lg:mb-0">
+        <div className="sm:col-span-2 lg:col-span-1 mb-6 lg:mb-0 flex flex-col items-center">
           <Link href="/" aria-label="Homepage">
             <Image
               src={logo}
@@ -53,137 +53,139 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
           </p>
         </div>
 
-        {/* Quick Links Section */}
-        <div className=" text-center lg:text-left">
-          <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-          <ul className="space-y-2">
-            <li>
-              <Link
-                href="/"
-                className="text-base hover:underline text-primary-foreground"
-              >
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/about"
-                className="text-base hover:underline text-primary-foreground"
-              >
-                About Us
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/services"
-                className="text-base hover:underline text-primary-foreground"
-              >
-                Services
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/projects"
-                className="text-base hover:underline text-primary-foreground"
-              >
-                Projects
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/events"
-                className="text-base hover:underline text-primary-foreground"
-              >
-                Events
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/blogs"
-                className="text-base hover:underline text-primary-foreground"
-              >
-                Blogs
-              </Link>
-            </li>
-          </ul>
-        </div>
+        <div className="container grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-8 mx-auto sm:col-span-2 lg:col-span-1">
+          {/* Quick Links Section */}
+          <div className=" text-center lg:text-left">
+            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link
+                  href="/"
+                  className="text-base hover:underline text-primary-foreground"
+                >
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/about"
+                  className="text-base hover:underline text-primary-foreground"
+                >
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/services"
+                  className="text-base hover:underline text-primary-foreground"
+                >
+                  Services
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/projects"
+                  className="text-base hover:underline text-primary-foreground"
+                >
+                  Projects
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/events"
+                  className="text-base hover:underline text-primary-foreground"
+                >
+                  Events
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/blogs"
+                  className="text-base hover:underline text-primary-foreground"
+                >
+                  Blogs
+                </Link>
+              </li>
+            </ul>
+          </div>
 
-        {/* Explore Section */}
-        <div className=" text-center lg:text-left">
-          <h3 className="text-lg font-semibold mb-4">Explore</h3>
-          <ul className="space-y-2">
-            <li>
-              <Link
-                href="/partners"
-                className="text-base hover:underline text-primary-foreground"
-              >
-                Our Partners
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/testimonials"
-                className="text-base hover:underline text-primary-foreground"
-              >
-                Testimonials
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/faqs"
-                className="text-base hover:underline text-primary-foreground"
-              >
-                FAQs
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/contact"
-                className="text-base hover:underline text-primary-foreground"
-              >
-                Contact Us
-              </Link>
-            </li>
-          </ul>
-        </div>
+          {/* Explore Section */}
+          <div className=" text-center lg:text-left">
+            <h3 className="text-lg font-semibold mb-4">Explore</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link
+                  href="/partners"
+                  className="text-base hover:underline text-primary-foreground"
+                >
+                  Our Partners
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/testimonials"
+                  className="text-base hover:underline text-primary-foreground"
+                >
+                  Testimonials
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/faqs"
+                  className="text-base hover:underline text-primary-foreground"
+                >
+                  FAQs
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/contact"
+                  className="text-base hover:underline text-primary-foreground"
+                >
+                  Contact Us
+                </Link>
+              </li>
+            </ul>
+          </div>
 
-        {/* Legal Section */}
-        <div className=" text-center lg:text-left">
-          <h3 className="text-lg font-semibold mb-4">Legal Pages</h3>
-          <ul className="space-y-2">
-            <li>
-              <Link
-                href="/cookie-settings"
-                className="text-base hover:underline text-primary-foreground"
-              >
-                Cookie Settings
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/privacy-policy"
-                className="text-base hover:underline text-primary-foreground"
-              >
-                Privacy Policy
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/terms-and-conditions"
-                className="text-base hover:underline text-primary-foreground"
-              >
-                Terms & Conditions
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/disclaimer"
-                className="text-base hover:underline text-primary-foreground"
-              >
-                Disclaimer
-              </Link>
-            </li>
-          </ul>
+          {/* Legal Section */}
+          <div className=" text-center lg:text-left">
+            <h3 className="text-lg font-semibold mb-4">Legal Pages</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link
+                  href="/cookie-settings"
+                  className="text-base hover:underline text-primary-foreground"
+                >
+                  Cookie Settings
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/privacy-policy"
+                  className="text-base hover:underline text-primary-foreground"
+                >
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/terms-and-conditions"
+                  className="text-base hover:underline text-primary-foreground"
+                >
+                  Terms & Conditions
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/disclaimer"
+                  className="text-base hover:underline text-primary-foreground"
+                >
+                  Disclaimer
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
 
         {/* Subscribe Section */}

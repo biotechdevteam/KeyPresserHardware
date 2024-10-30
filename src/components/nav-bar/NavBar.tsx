@@ -253,6 +253,9 @@ const navMenu: Pages[][] = [
 
   // Login
   [{ title: "login", link: "/auth/signin" }],
+
+  // Services
+  [{ title: "services", link: "/services" }],
 ];
 
 const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
@@ -283,6 +286,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   let profilePage = navMenu[8][0];
   let adminPage = navMenu[8][1];
   let LoginPage = navMenu[9][0];
+  let servicesPage = navMenu[10][0];
 
   return (
     <nav className="absolute top-0 left-0 right-0 z-50 bg-card h-auto">
@@ -612,6 +616,20 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                           ))}
                         </ul>
                       </NavigationMenuContent>
+                    </NavigationMenuItem>
+                  </NavigationMenuList>
+                </NavigationMenu>
+
+                <NavigationMenu>
+                  <NavigationMenuList>
+                    <NavigationMenuItem>
+                      <NavigationMenuLink
+                        href={servicesPage.link}
+                        onClick={(e) => handleClick(e, servicesPage.link)}
+                        className="uppercase"
+                      >
+                        {servicesPage.title}
+                      </NavigationMenuLink>
                     </NavigationMenuItem>
                   </NavigationMenuList>
                 </NavigationMenu>

@@ -41,8 +41,6 @@ const LandingContainer: React.FC<{
 
       <ServicesSection services={services} aboutData={aboutData} />
 
-      <AboutSection aboutData={aboutData} />
-
       <AboutPartnerships partnerships={aboutData.partnerships || []} />
 
       <ProjectPortfolioSection
@@ -50,21 +48,6 @@ const LandingContainer: React.FC<{
           .filter((pro) => pro.status === "ongoing")
           .slice(0, 3)}
       />
-
-      <EventSection
-        events={
-          events
-            .filter((ev) => new Date(ev.endTime) > new Date()) // Filter out past events
-            .sort(
-              (a, b) =>
-                new Date(a.startTime).getTime() -
-                new Date(b.startTime).getTime()
-            ) // Sort by startTime (ascending)
-            .slice(0, 2) // Get the first two upcoming events
-        }
-      />
-
-      <BlogSection blogs={blogs} />
 
       <div className="bg-card">
         <Testimonials

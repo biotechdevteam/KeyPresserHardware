@@ -6,10 +6,8 @@
   /* website theme colors*/
   --white-smoke: #f5f5f5ff;
   --night: #0d0d0dff;
-  --davys-gray: #1a1a1a;
   --rich-black: #0a0a1fff;
   --white: #fcfcfcff;
-  --silver: #ebebeb;
   --screamin-green: #82f575ff;
   --light-green: #b6f99fff;
   --mauveine: #aa1daaff;
@@ -31,8 +29,8 @@
   --secondary: var(--mauveine);
   --secondary-foreground: var(--white);
 
-  --muted: var(--silver);
-  --muted-foreground: var(--davys-gray);
+  --muted: #ebebeb;
+  --muted-foreground: #4f4f4f;
   --muted-primary: var(--light-green);
 
   --accent: var(--light-green);
@@ -65,8 +63,8 @@
     --secondary: var(--mauveine);
     --secondary-foreground: var(--foreground);
 
-    --muted: var(--davys-gray);
-    --muted-foreground: var(--silver);
+    --muted: #1a1a1a;
+    --muted-foreground: #bdbdbd;
     --muted-primary: var(--light-green);
 
     --accent: var(--light-green);
@@ -75,7 +73,7 @@
     --destructive: var(--red);
     --destructive-foreground: var(--foreground);
 
-    --border: var(--davys-gray);
+    --border: var(--muted-foreground);
     --input: var(--background);
     --ring: var(--primary);
 

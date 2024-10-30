@@ -1,3 +1,4 @@
+import { Input } from "@/components/ui/input";
 import { Event } from "@/types/eventsSchema";
 
 interface SearchContainerProps {
@@ -9,12 +10,12 @@ interface SearchContainerProps {
   const SearchContainer: React.FC<SearchContainerProps> = ({ searchTerm, handleSearchChange, filteredData }) => {
     return (
       <div className="mb-4">
-        <input
+        <Input
           type="text"
           value={searchTerm}
           onChange={(e) => handleSearchChange(e.target.value)}
           placeholder="Search events..."
-          className="w-full p-2 border border-border rounded-md"
+          className="p-2 border border-border rounded-md"
         />
       </div>
     );

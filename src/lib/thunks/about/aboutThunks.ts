@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { About } from "@/types/aboutSchema";
-import { fetchData } from "@/lib/fetchUtils";
+import { fetchData } from "@/lib/utils/fetchUtils";
 import {
   setAboutData,
   setError,

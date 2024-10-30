@@ -13,7 +13,7 @@ import { NewComment, Comment } from "@/types/blogSchema";
 import ReactionsSection from "../post-reaction/PostReaction"; // Import the ReactionsSection
 import { useBlog } from "@/lib/useBlog";
 import { useAuth } from "@/lib/useAuth";
-import { ReactionType } from "@/lib/fetchUtils";
+import { ReactionType } from "@/lib/utils/fetchUtils";
 import {
   Collapsible,
   CollapsibleTrigger,

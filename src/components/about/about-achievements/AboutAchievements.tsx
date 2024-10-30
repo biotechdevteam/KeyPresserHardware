@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { CheckCircle, Users, Calendar, Projector, Star } from "lucide-react";
+import { About } from "@/types/aboutSchema";
+import { Separator } from "@/components/ui/separator";
 
 interface Achievement {
   title: string;
@@ -10,6 +12,7 @@ interface Achievement {
 
 interface AboutAchievementsProps {
   achievements: Achievement[];
+  aboutData: About;
 }
 
 const iconMap: Record<string, JSX.Element> = {
@@ -70,6 +73,7 @@ const AchievementCard: React.FC<{
 
 const AboutAchievements: React.FC<AboutAchievementsProps> = ({
   achievements,
+  aboutData,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const achievementRef = useRef<HTMLDivElement | null>(null);
@@ -100,10 +104,23 @@ const AboutAchievements: React.FC<AboutAchievementsProps> = ({
   }, []);
 
   return (
-    <Card className="lg:p-8 bg-background shadow-lg rounded-lg" ref={achievementRef}>
-      <CardHeader className="text-center mb-4">
+    <Card
+      className="lg:p-8 bg-transparent shadow-none border-none rounded-lg"
+      ref={achievementRef}
+    >
+      <CardHeader className="text-center mb-8">
         <h2 className="text-2xl font-bold">Achievements</h2>
+        <Separator className="w-16 mx-auto my-4" />
+        <p className="text-base px-4">
+          Over the years, {aboutData.name} has made significant strides in
+          advancing biotechnology in Cameroon and beyond. From groundbreaking
+          research to impactful collaborations, these milestones reflect our
+          commitment to innovation, excellence, and the promotion of scientific
+          knowledge. Explore some of our proudest achievements and see how we
+          continue to drive change in the biotechnology landscape.
+        </p>
       </CardHeader>
+
       <CardContent>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {achievements.map((achievement, index) => (

@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { fetchMembers } from "@/lib/fetchUtils"; // Fetch member details
+import { fetchMembers } from "@/lib/utils/fetchUtils"; // Fetch member details
 import Loader from "@/components/loader/Loader";
 import MemberContainer from "@/components/member/member-container/MemberContainer";
 import { Member } from "@/types/memberSchema";

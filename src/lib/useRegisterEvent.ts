@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { registerForEvent } from "./fetchUtils";
+import { registerForEvent } from "./utils/fetchUtils";
 import { handleApiError } from "./apiErrorHandler";
 
 export const useRegisterEvent = () => {

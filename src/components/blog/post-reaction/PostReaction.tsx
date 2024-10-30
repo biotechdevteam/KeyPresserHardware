@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ThumbsUp, ThumbsDown, MessageSquare } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { ReactionType } from "@/lib/fetchUtils";
+import { ReactionType } from "@/lib/utils/fetchUtils";
 
 interface ReactionsSectionProps {
   postId?: string; // Optional postId

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createComment, ReactionType, reactToBlogPost, reactToComment } from "./fetchUtils"; // Assuming you have these in fetchUtils
+import { createComment, ReactionType, reactToBlogPost, reactToComment } from "./utils/fetchUtils"; // Assuming you have these in fetchUtils
 import { handleApiError } from "./apiErrorHandler"; // Assuming handleApiError handles errors
 
 export const useBlog = () => {

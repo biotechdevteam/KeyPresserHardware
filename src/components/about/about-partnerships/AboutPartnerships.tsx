@@ -1,6 +1,4 @@
 import React from "react";
-import { Card } from "@/components/ui/card";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import {
   HoverCard,
   HoverCardTrigger,
@@ -28,7 +26,7 @@ const AboutPartnerships: React.FC<AboutPartnershipsProps> = ({
       <h2 className="text-xl lg:text-2xl font-bold text-center">
         Our Valued Partners & Sponsors
       </h2>
-      <p className="text-base mt-4 mb-8 px-4 lg:mx-64 text-center">
+      <p className="text-base mt-4 mb-8 px-4 text-center">
         We are proud to collaborate with leading organizations and sponsors that
         share our commitment to advancing biotechnology. Together, we drive
         innovation, empower research, and create impactful solutions for a
@@ -37,12 +35,14 @@ const AboutPartnerships: React.FC<AboutPartnershipsProps> = ({
 
       {/* Limit the width of the grid to the width of the card */}
       <div className="overflow-x-clip">
-        <div className="grid grid-flow-col auto-cols-[minmax(200px,1fr)] gap-8 animate-slide">
+        {/* Don't delete this comment! It might be needed tomorrow */}
+        {/* <div className="grid grid-flow-col auto-cols-[minmax(200px,1fr)] gap-8 animate-slide"> */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 p-8">
           {partnerships.concat(partnerships).map((partnership, index) => (
             <HoverCard key={index}>
               <HoverCardTrigger asChild>
-                <a
-                  href={partnership.website}
+                <Link
+                  href={partnership?.website || ""}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group block transform transition-transform duration-300 hover:scale-105"
@@ -55,7 +55,7 @@ const AboutPartnerships: React.FC<AboutPartnershipsProps> = ({
                     width={300}
                     height={300}
                   />
-                </a>
+                </Link>
               </HoverCardTrigger>
 
               {/* Ensure HoverCardContent doesn't get cut off */}

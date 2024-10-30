@@ -13,9 +13,9 @@ interface HeroProps {
 }
 
 const Hero: React.FC<HeroProps> = ({ aboutData }) => {
-
   return (
     <div className="relative overflow-hidden min-h-[36rem] bg-card pt-8">
+
       {/* Hero Content */}
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 items-center gap-8 min-h-full p-16 lg:px-16 sm:px-8">
         {/* Right Side: GIF Image on mobile first */}
@@ -32,17 +32,15 @@ const Hero: React.FC<HeroProps> = ({ aboutData }) => {
         <div className="space-y-6 text-center lg:text-left order-2 lg:order-1">
           {/* Headline */}
           <div className="text-3xl lg:text-6xl font-bold space-y-2">
-            <h1 className="animate-fadeInUp">
-              {aboutData.slogan}
-            </h1>
+            <h1 className="animate-fadeInUp">{aboutData.slogan}</h1>
           </div>
 
           {/* Sub-headline */}
           <p className="text-base lg:text-2xl animate-fadeIn delay-200">
-            We are pioneers in biotechnology, driving
-            innovative research and solutions that solve today's challenges and
-            shape the future. From cutting-edge research to practical solutions,
-            we help you harness the power of science to improve lives.
+            We are pioneers in biotechnology, driving innovative research and
+            solutions that solve today's challenges and shape the future. From
+            cutting-edge research to practical solutions, we help you harness
+            the power of science to improve lives.
           </p>
 
           {/* CTA Button */}

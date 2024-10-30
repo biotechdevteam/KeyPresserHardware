@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchBlogs } from "@/lib/fetchUtils";
+import { fetchBlogs } from "@/lib/utils/fetchUtils";
 import { Blog } from "@/types/blogSchema";
 import { useTransitionRouter } from "next-view-transitions";
 import PostCard from "../post-card/PostCard";

@@ -4,7 +4,7 @@ import * as React from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/utils";
 
 const Accordion = AccordionPrimitive.Root;
 
@@ -15,7 +15,7 @@ const AccordionItem = React.forwardRef<
   <AccordionPrimitive.Item
     ref={ref}
     className={cn(
-      "border border-muted transition-all duration-300 hover:shadow-md rounded-lg overflow-hidden",
+      "border-b border-muted transition-all duration-300 hover:shadow-md rounded-lg overflow-hidden",
       className
     )}
     {...props}

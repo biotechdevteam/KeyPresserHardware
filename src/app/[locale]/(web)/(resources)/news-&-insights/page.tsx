@@ -1,6 +1,7 @@
 "use client";
+import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchBlogs } from "@/lib/fetchUtils";
+import { fetchBlogs } from "@/lib/utils/fetchUtils";
 import BlogsContainer from "@/components/blog/blogs-container/BlogsContainer";
 import Loader from "@/components/loader/Loader";
 import { Blog } from "@/types/blogSchema";
@@ -32,8 +33,7 @@ async function getBlogsData() {
   };
 }
 
-// Page component for Blogs
-export default async function BlogsPage() {
+const ArticlesPage: React.FC = async () => {
   // Get the prefetched data from the server
   const { blogsData, loading, fetching, isError, error } = await getBlogsData();
 
@@ -47,17 +47,22 @@ export default async function BlogsPage() {
     return <div>Error loading blogs: {error?.message}</div>;
   }
 
-  // Render the BlogsContainer if data is successfully fetched
   return (
-    <section className="grid min-h-screen p-8">
-      <div className="w-full max-w-4xl mx-auto">
-        <header className="mb-8 text-center">
-          <h1 className="text-4xl font-bold">Blogs and Updates</h1>
-          <p className="text-lg mt-4">Read our latest articles and insights.</p>
-        </header>
-        {/* Pass the prefetched data as props to the BlogsContainer */}
-        <BlogsContainer initialData={{ blogs: blogsData as Blog[] }} />
-      </div>
-    </section>
+    <div>
+      <section className="grid min-h-screen p-8 my-8">
+        <div className="w-full max-w-4xl mx-auto">
+          <header className="mb-8 text-center">
+            <h1 className="text-4xl font-bold">News and Insights</h1>
+            <p className="text-lg mt-4">
+              Read our latest articles and insights.
+            </p>
+          </header>
+          {/* Pass the prefetched data as props to the BlogsContainer */}
+          <BlogsContainer initialData={{ blogs: blogsData as Blog[] }} />
+        </div>
+      </section>
+    </div>
   );
-}
+};
+
+export default ArticlesPage;

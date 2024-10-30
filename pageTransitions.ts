@@ -76,10 +76,14 @@ function slideFadeInOut() {
   );
 }
 
-const pageTransitions = {
-  fadeInOut,
-  slideInOut,
-  slideFadeInOut,
-};
+export { fadeInOut, slideInOut, slideFadeInOut };
 
-export default pageTransitions;
+// How to use
+
+// onClick={(e) => {
+//   e.preventDefault()
+//   router.push('/', {
+//     // Edit here
+//     onTransitionReady: slideInOut,
+//   })
+// }}

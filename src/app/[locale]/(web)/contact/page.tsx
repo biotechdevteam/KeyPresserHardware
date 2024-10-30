@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { fetchAboutData } from "@/lib/fetchUtils";
+import { fetchAboutData } from "@/lib/utils/fetchUtils";
 import Loader from "@/components/loader/Loader";
 import AboutFooter from "@/components/about/about-footer/AboutFooter";
 import { About } from "@/types/aboutSchema";

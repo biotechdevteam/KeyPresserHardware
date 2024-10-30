@@ -8,6 +8,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Link } from "next-view-transitions";
+import Image from "next/image";
 
 interface EventCardProps {
   event: Event;
@@ -32,9 +33,11 @@ const EventCard: React.FC<EventCardProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-full p-4">
         {/* Image and Timing Section */}
         <div className="md:col-span-1 relative">
-          <img
+          <Image
             src={event.eventImageUrl}
             alt={event.title}
+            width={500}
+            height={300}
             className="w-full h-full object-cover rounded-lg"
           />
 
@@ -81,15 +84,15 @@ const EventCard: React.FC<EventCardProps> = ({
                     <ul className="list-disc ml-5 mt-2">
                       {event.speakers.map((speaker, index) => (
                         <li key={index}>
+                        <Link
+                          href={`/members/${speaker.memberId._id}`}
+                          className="text-sm text-secondary ml-2"
+                        >
                           {speaker.memberId?.user_id?.first_name ||
-                            "Unknown Speaker"}{" "}
+                            "Unknown Speaker"}
+                        </Link>
+                          {" "}
                           - {speaker.speakerRole || "No Role Specified"}
-                          <Link
-                            href={`/members/${speaker.memberId._id}`}
-                            className="text-sm text-secondary ml-2"
-                          >
-                            about this speaker
-                          </Link>
                         </li>
                       ))}
                     </ul>

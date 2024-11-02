@@ -18,7 +18,7 @@ const AchievementsPage: React.FC<{ initialData: About }> = ({
   } = useQuery({
     queryKey: ["about"],
     queryFn: fetchAboutData,
-    initialData, // Use pre-fetched data as initial value
+    initialData: initialData as About, // Use pre-fetched data as initial value
     staleTime: Infinity, // Prevent unnecessary refetching, keep data fresh
     refetchOnMount: false,
     refetchOnWindowFocus: false,

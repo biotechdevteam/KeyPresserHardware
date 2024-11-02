@@ -65,7 +65,7 @@ export const metadata: Metadata = {
     icon: "/favicon-48x48.png",
     shortcut: "/favicon.ico",
   },
-  keywords: [ "Biotecnolo", "btverse" ]
+  keywords: [ "biotecnology", "btverse" ]
 };
 ```
 

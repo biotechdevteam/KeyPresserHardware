@@ -43,8 +43,8 @@ const MissionVisionPage: React.FC = () => {
       {/* Mission, Vision */}
       <div className="col-span-1 lg:col-span-2">
         <AboutDetails
-          mission={aboutData?.mission_statement ""}
-          vision={aboutData?.vision_statement ""}
+          mission={aboutData?.mission_statement || ""}
+          vision={aboutData?.vision_statement || ""}
         />
       </div>
 

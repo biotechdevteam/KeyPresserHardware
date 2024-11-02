@@ -10,18 +10,15 @@ import { useTransitionRouter } from "next-view-transitions";
 import React from "react";
 import { slideFadeInOut } from "../../../../../../pageTransitions";
 
-const MissionVisionPage: React.FC<{ initialData: About }> = ({
-  initialData,
-}) => {
+const MissionVisionPage: React.FC = () => {
   const {
     data: aboutData,
     isLoading: loading,
     error,
     isError,
-  } = useQuery({
+  } = useQuery<About>({
     queryKey: ["about"],
     queryFn: fetchAboutData,
-    initialData, // Use pre-fetched data as initial value
     staleTime: Infinity, // Prevent unnecessary refetching, keep data fresh
     refetchOnMount: false,
     refetchOnWindowFocus: false,
@@ -46,8 +43,8 @@ const MissionVisionPage: React.FC<{ initialData: About }> = ({
       {/* Mission, Vision */}
       <div className="col-span-1 lg:col-span-2">
         <AboutDetails
-          mission={aboutData.mission_statement}
-          vision={aboutData.vision_statement}
+          mission={aboutData?.mission_statement ""}
+          vision={aboutData?.vision_statement ""}
         />
       </div>
 

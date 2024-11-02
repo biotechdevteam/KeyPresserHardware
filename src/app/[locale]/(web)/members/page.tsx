@@ -8,16 +8,15 @@ import { About } from "@/types/aboutSchema";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
-const MembersPage: React.FC<{ initialData: About }> = ({ initialData }) => {
+const MembersPage: React.FC = () => {
   const {
     data: aboutData,
     isLoading: loading,
     error,
     isError,
-  } = useQuery({
+  } = useQuery<About>({
     queryKey: ["about"],
     queryFn: fetchAboutData,
-    initialData, // Use pre-fetched data as initial value
     staleTime: Infinity, // Prevent unnecessary refetching, keep data fresh
     refetchOnMount: false,
     refetchOnWindowFocus: false,
@@ -46,7 +45,7 @@ const MembersPage: React.FC<{ initialData: About }> = ({ initialData }) => {
         brings unique skills and experience, working together to shape the
         future of the industry and foster innovation.
       </p>
-      <AboutTeam leadershipTeam={aboutData.leadership_team} />
+      <AboutTeam leadershipTeam={aboutData?.leadership_team || []} />
     </div>
   );
 };

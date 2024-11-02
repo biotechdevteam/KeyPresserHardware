@@ -15,10 +15,10 @@ const AchievementsPage: React.FC<{ initialData: About }> = ({
     isLoading: loading,
     error,
     isError,
-  } = useQuery<About>({
+  } = useQuery({
     queryKey: ["about"],
     queryFn: fetchAboutData,
-    initialData: initialData as About, // Use pre-fetched data as initial value
+    initialData, // Use pre-fetched data as initial value
     staleTime: Infinity, // Prevent unnecessary refetching, keep data fresh
     refetchOnMount: false,
     refetchOnWindowFocus: false,

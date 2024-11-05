@@ -18,21 +18,6 @@ import { Feedback } from "@/types/feedbackSchema";
 import Testimonials from "@/components/services/testimonials/Testimonials";
 import BlogSection from "../blogs/BlogSection";
 
-const membershipTiers = [
-  {
-    id: "1",
-    name: "Standard",
-    description:
-      "A unified membership for all members of the biotechnology space.",
-    benefits: [
-      "Equal access to all resources",
-      "Monthly community updates",
-      "Participation in exclusive biotech events",
-      "Access to the biotechnology research hub",
-    ],
-  },
-];
-
 const LandingContainer: React.FC<{
   aboutData: About;
   services: Service[];
@@ -40,7 +25,6 @@ const LandingContainer: React.FC<{
   faqs: FAQs;
   feedbacks: Feedback[];
   events: Event[];
-  members: any;
   projects: Project[];
 }> = ({
   aboutData,
@@ -49,55 +33,35 @@ const LandingContainer: React.FC<{
   blogs,
   faqs,
   feedbacks,
-  members,
   projects,
 }) => {
   return (
     <div className="landing-page-container">
-      {/* Render Hero Section */}
       <Hero aboutData={aboutData} />
-      {/* Render About Section */}
-      <AboutSection aboutData={aboutData} />
-      {/* Render Project Section */}
+
+      <ServicesSection services={services} aboutData={aboutData} />
+
+      <AboutPartnerships partnerships={aboutData.partnerships || []} />
+
       <ProjectPortfolioSection
         projects={projects
           .filter((pro) => pro.status === "ongoing")
           .slice(0, 3)}
       />
-      {/*Render Service Section */}
-      <ServicesSection services={services} />
-      {/* Render Blog Section */}
-      <BlogSection blogs={blogs} />
-      {/* Render Membership Section */}
-      <MembershipSection membershipTiers={membershipTiers} />
-      {/* Render Event Section */}
-      <EventSection
-        events={
-          events
-            .filter((ev) => new Date(ev.endTime) > new Date()) // Filter out past events
-            .sort(
-              (a, b) =>
-                new Date(a.startTime).getTime() -
-                new Date(b.startTime).getTime()
-            ) // Sort by startTime (ascending)
-            .slice(0, 2) // Get the first two upcoming events
-        }
-      />
-      {/* Render Testimonial Section */}
+
+      <div className="bg-card">
         <Testimonials
           feedbacks={feedbacks}
-          title="What clients and members are saying"
+          title="Reviews From Clients & Partners"
         />
-      {/* Render Faqs Section */}
-      <FAQContainer
-        initialData={faqs.filter((faq) => faq.category === "General")}
-        general
-      />
-      {/* Render Partnersip Section */}
-      <AboutPartnerships partnerships={aboutData.partnerships || []} />
-      {/* Render Contact Section */}
-      <ContactSection />
-      {/* Other sections will go here */}
+
+        <FAQContainer
+          initialData={faqs.filter((faq) => faq.category === "General")}
+          general
+        />
+
+        <ContactSection />
+      </div>
     </div>
   );
 };

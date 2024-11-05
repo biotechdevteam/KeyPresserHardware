@@ -1,12 +1,11 @@
 import React from "react";
-import { Card } from "@/components/ui/card";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import {
   HoverCard,
   HoverCardTrigger,
   HoverCardContent,
 } from "@/components/ui/hover-card";
 import Image from "next/image";
+import Link from "next/link";
 
 interface Partnership {
   partner: string;
@@ -23,18 +22,27 @@ const AboutPartnerships: React.FC<AboutPartnershipsProps> = ({
   partnerships,
 }) => {
   return (
-    <div className="lg:p-8 bg-background">
-      <h2 className="text-xl font-bold mb-8 text-center">
-        Our Partners & Sponsors
+    <div className="p-8 pb-16">
+      <h2 className="text-xl lg:text-2xl font-bold text-center">
+        Our Valued Partners & Sponsors
       </h2>
+      <p className="text-base mt-4 mb-8 px-4 text-center">
+        We are proud to collaborate with leading organizations and sponsors that
+        share our commitment to advancing biotechnology. Together, we drive
+        innovation, empower research, and create impactful solutions for a
+        sustainable future.
+      </p>
+
       {/* Limit the width of the grid to the width of the card */}
-      <div className="overflow-hidden md:overflow-visible">
-        <div className="grid grid-flow-col auto-cols-[minmax(200px,1fr)] gap-8 animate-slide">
+      <div className="overflow-x-clip">
+        {/* Don't delete this comment! It might be needed tomorrow */}
+        {/* <div className="grid grid-flow-col auto-cols-[minmax(200px,1fr)] gap-8 animate-slide"> */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 p-8">
           {partnerships.concat(partnerships).map((partnership, index) => (
             <HoverCard key={index}>
               <HoverCardTrigger asChild>
-                <a
-                  href={partnership.website}
+                <Link
+                  href={partnership?.website || ""}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group block transform transition-transform duration-300 hover:scale-105"
@@ -47,27 +55,26 @@ const AboutPartnerships: React.FC<AboutPartnershipsProps> = ({
                     width={300}
                     height={300}
                   />
-                </a>
+                </Link>
               </HoverCardTrigger>
+
               {/* Ensure HoverCardContent doesn't get cut off */}
               <HoverCardContent className="w-64 p-4 bg-card shadow-lg rounded-lg z-50 max-w-xs">
                 <h3 className="text-xl font-semibold text-primary">
                   {partnership.partner}
                 </h3>
                 {partnership.description && (
-                  <p className="text-sm mt-2">
-                    {partnership.description}
-                  </p>
+                  <p className="text-sm mt-2">{partnership.description}</p>
                 )}
                 {partnership.website && (
-                  <a
+                  <Link
                     href={partnership.website}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-accent hover:underline mt-4 block"
                   >
                     Visit Website
-                  </a>
+                  </Link>
                 )}
               </HoverCardContent>
             </HoverCard>

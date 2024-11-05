@@ -1,5 +1,5 @@
 import Image from "next/image";
-import logo from "@/assets/images/logo.png";
+import logo from "../../../public/images/logo.png";
 
 // Loader Component
 const Loader: React.FC = () => {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
@@ -9,9 +9,43 @@ import {
   contactFormSchema,
   ContactFormValues,
 } from "@/types/contactFormSchema";
+import { SendIcon } from "lucide-react";
 
 const ContactForm: React.FC = () => {
   const t = useTranslations("contactform");
+  const sectionRef = useRef<HTMLDivElement | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+          } else {
+            setIsVisible(false);
+          }
+        });
+      },
+      {
+        root: null, // Observe relative to the viewport
+        threshold: 0.1, // Trigger when 10% of the section is visible
+      }
+    );
+
+    const section = sectionRef.current;
+
+    if (section) {
+      observer.observe(section);
+    }
+
+    // Cleanup observer on component unmount
+    return () => {
+      if (section) {
+        observer.unobserve(section);
+      }
+    };
+  }, []);
 
   const {
     register,
@@ -26,116 +60,96 @@ const ContactForm: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto p-8 shadow-xl bg-opacity rounded-lg max-w-3xl">
-
+    <div
+      ref={sectionRef}
+      className="container mx-auto p-8 border-muted bg-card rounded-lg max-w-3xl transition-all duration-700"
+    >
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+        className="grid grid-cols-1 lg:grid-cols-2 gap-6"
       >
         {/* First Name Field */}
         <div className="transition-transform duration-300 hover:scale-105">
-          <label
-            htmlFor="firstName"
-            className="block mb-2 text-sm font-medium"
-          >
-            {t("firstNameLabel")}
-          </label>
           <Input
             id="firstName"
             {...register("firstName")}
+            label={t("firstNameLabel")}
             placeholder={t("firstNamePlaceholder")}
-            className="w-full rounded-lg border-border focus:border-primary focus:ring-primary transition-colors"
           />
           {errors.firstName && (
-            <p className="text-sm text-destructive">{t("firstNameError")}</p>
+            <p className="text-destructive text-xs border-destructive focus-visible:ring-destructive">
+              {t("firstNameError")}
+            </p>
           )}
         </div>
 
         {/* Last Name Field */}
         <div className="transition-transform duration-300 hover:scale-105">
-          <label
-            htmlFor="lastName"
-            className="block mb-2 text-sm font-medium"
-          >
-            {t("lastNameLabel")}
-          </label>
           <Input
             id="lastName"
             {...register("lastName")}
+            label={t("lastNameLabel")}
             placeholder={t("lastNamePlaceholder")}
-            className="w-full rounded-lg border-border focus:border-primary focus:ring-primary transition-colors"
           />
           {errors.lastName && (
-            <p className="text-sm text-destructive">{t("lastNameError")}</p>
+            <p className="text-destructive text-xs border-destructive focus-visible:ring-destructive">
+              {t("lastNameError")}
+            </p>
           )}
         </div>
 
         {/* Email Field */}
         <div className="transition-transform duration-300 hover:scale-105">
-          <label
-            htmlFor="email"
-            className="block mb-2 text-sm font-medium"
-          >
-            {t("emailLabel")}
-          </label>
           <Input
             id="email"
             type="email"
             {...register("email")}
+            label={t("emailLabel")}
             placeholder={t("emailPlaceholder")}
-            className="w-full rounded-lg border-border focus:border-primary focus:ring-primary transition-colors"
           />
           {errors.email && (
-            <p className="text-sm text-destructive">{t("emailError")}</p>
+            <p className="text-destructive text-xs border-destructive focus-visible:ring-destructive">
+              {t("emailError")}
+            </p>
           )}
         </div>
 
         {/* Phone Field */}
         <div className="transition-transform duration-300 hover:scale-105 ">
-          <label
-            htmlFor="phone"
-            className="block mb-2 text-sm font-medium"
-          >
-            {t("phoneLabel")}
-          </label>
           <Input
             id="phone"
             {...register("phone")}
+            label={t("phoneLabel")}
             placeholder={t("phonePlaceholder")}
-            className="w-full rounded-lg border-border focus:border-primary focus:ring-primary transition-colors"
           />
           {errors.phone && (
-            <p className="text-sm text-destructive">{t("phoneError")}</p>
+            <p className="text-destructive text-xs border-destructive focus-visible:ring-destructive">
+              {t("phoneError")}
+            </p>
           )}
         </div>
 
         {/* Message Field */}
         <div className="sm:col-span-2 transition-transform duration-300 hover:scale-105">
-          <label
-            htmlFor="message"
-            className="block mb-2 text-sm font-medium"
-          >
+          <label htmlFor="message" className="block mb-2 text-sm font-medium">
             {t("messageLabel")}
           </label>
           <Textarea
             id="message"
             {...register("message")}
             placeholder={t("messagePlaceholder")}
-            className="w-full rounded-lg border-border focus:border-primary focus:ring-primary transition-colors"
           />
           {errors.message && (
-            <p className="text-sm text-destructive">{t("messageError")}</p>
+            <p className="text-destructive text-xs border-destructive focus-visible:ring-destructive">
+              {t("messageError")}
+            </p>
           )}
         </div>
 
         {/* Submit Button */}
         <div className="sm:col-span-2 flex justify-center">
-          <Button
-            type="submit"
-            className="w-auto px-6 py-3"
-            variant="secondary"
-          >
-            {t("sendMessageButton")}
+          <Button type="submit">
+            {t("sendMessageButton")} <SendIcon className="w-4 h-4 ml-2" />
           </Button>
         </div>
       </form>

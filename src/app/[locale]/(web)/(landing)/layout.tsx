@@ -6,9 +6,7 @@ const LandingLayout: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   return (
     <section>
-      <header></header>
       <main>{children}</main>
-      <footer></footer>
     </section>
   );
 };

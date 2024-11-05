@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Service } from "@/types/ServiceSchema";
-import { fetchFeedbacks, fetchServices } from "@/lib/fetchUtils";
+import { fetchFeedbacks, fetchServices } from "@/lib/utils/fetchUtils";
 import ServiceOverview from "../service-overview/ServiceOverview";
 import FilteredServices from "../filtered-services/FilteredServices";
 import { Feedback } from "@/types/feedbackSchema";

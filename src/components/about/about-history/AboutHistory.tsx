@@ -32,7 +32,7 @@ const HistoryTimeline: React.FC = () => {
           if (entry.isIntersecting) {
             setIsVisible(true);
           } else {
-            setIsVisible(false)
+            setIsVisible(false);
           }
         });
       },
@@ -53,18 +53,18 @@ const HistoryTimeline: React.FC = () => {
   return (
     <Card
       ref={historyRef}
-      className={`py-12 transition-opacity duration-500 ${
+      className={`p-6 lg:p-12 max-w-5xl mx-auto transition-opacity duration-500 ${
         isVisible ? "animate-fadeIn" : "opacity-0"
       }`}
     >
-      <h2 className="text-2xl font-bold mb-12 text-center">
-        Our History
-      </h2>
+      <h2 className="text-xl lg:text-2xl font-bold text-center">Recent Activities</h2>
+      <Separator className="w-24 mx-auto mb-12" />
+
       <div className="grid gap-12">
         {history.map((item, index) => (
           <div
             key={index}
-            className={`grid grid-cols-1 md:grid-cols-2 gap-6 items-center ${
+            className={`grid grid-cols-1 md:grid-cols-2 gap-4 items-center ${
               index % 2 === 1 ? "md:grid-cols-2-reverse" : ""
             }`}
           >
@@ -73,18 +73,14 @@ const HistoryTimeline: React.FC = () => {
               <img
                 src={item.iconUrl}
                 alt={`${item.year} Icon`}
-                className="w-full h-auto max-w-xs rounded-lg shadow-lg transition-transform duration-500 ease-in-out transform hover:scale-105"
+                className="w-40 rounded-lg shadow-lg transition-transform duration-500 ease-in-out transform hover:scale-105"
               />
             </div>
 
             {/* Content Section */}
             <div className="text-center md:text-left">
-              <h3 className="text-xl font-semibold">
-                {item.year}
-              </h3>
-              <p className="text-md">
-                {item.description}
-              </p>
+              <h3 className="text-xl font-semibold">{item.year}</h3>
+              <p className="text-md">{item.description}</p>
             </div>
           </div>
         ))}

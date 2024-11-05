@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/utils";
 import React from "react";
 
 interface CTASectionProps {
@@ -18,7 +18,7 @@ const CTASection: React.FC<CTASectionProps> = ({ title, description, action }) =
       <h2 className="text-2xl font-bold mb-2">{title}</h2>
       <p className="mb-4">{description}</p>
       <Button
-        className="animate-pulse"
+        className="animate-beep"
         size="lg"
         onClick={action}
       >

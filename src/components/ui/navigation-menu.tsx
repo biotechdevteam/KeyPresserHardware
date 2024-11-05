@@ -3,7 +3,8 @@ import { ChevronDownIcon } from "@radix-ui/react-icons";
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu";
 import { cva } from "class-variance-authority";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/utils";
+import { Link } from "next-view-transitions";
 
 const NavigationMenu = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Root>,
@@ -30,7 +31,7 @@ const NavigationMenuList = React.forwardRef<
   <NavigationMenuPrimitive.List
     ref={ref}
     className={cn(
-      "group flex flex-1 list-none items-center justify-center space-x-1",
+      "group flex flex-1 list-none items-center justify-center space-x-1 xl:space-x-4",
       className
     )}
     {...props}
@@ -41,7 +42,7 @@ NavigationMenuList.displayName = NavigationMenuPrimitive.List.displayName;
 const NavigationMenuItem = NavigationMenuPrimitive.Item;
 
 const navigationMenuTriggerStyle = cva(
-  "group inline-flex h-9 w-max items-center justify-center rounded-md bg-card text-foreground px-4 py-2 text-sm font-medium transition-colors hover:bg-background hover:font-bold hover:text- focus:bg-background focus:text-primary focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-primary data-[state=open]:bg-background"
+  "group inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-muted focus:bg-muted focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-muted data-[state=open]:bg-muted"
 );
 
 const NavigationMenuTrigger = React.forwardRef<
@@ -50,7 +51,7 @@ const NavigationMenuTrigger = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <NavigationMenuPrimitive.Trigger
     ref={ref}
-    className={cn(navigationMenuTriggerStyle(), "group", className)}
+    className={cn(navigationMenuTriggerStyle(), "group uppercase text-foreground", className)}
     {...props}
   >
     {children}{" "}
@@ -69,7 +70,7 @@ const NavigationMenuContent = React.forwardRef<
   <NavigationMenuPrimitive.Content
     ref={ref}
     className={cn(
-      "left-0 top-0 w-full data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52 md:absolute md:w-auto ",
+      "flex flex-column gap-4 p-2 left-0 top-0 data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52 md:absolute md:w-auto ",
       className
     )}
     {...props}
@@ -77,7 +78,59 @@ const NavigationMenuContent = React.forwardRef<
 ));
 NavigationMenuContent.displayName = NavigationMenuPrimitive.Content.displayName;
 
-const NavigationMenuLink = NavigationMenuPrimitive.Link;
+const NavigationMenuLink = React.forwardRef<
+  React.ElementRef<typeof NavigationMenuPrimitive.Link>,
+  React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Link> & {
+    href: string;
+  }
+>(({ className, href, children, ...props }, ref) => (
+  <Link href={href} passHref legacyBehavior>
+    <NavigationMenuPrimitive.Link
+      ref={ref}
+      className={cn(
+        navigationMenuTriggerStyle(),
+        "text-foreground hover:text-foreground focus:text-foreground hover:no-underline focus:no-underline",
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </NavigationMenuPrimitive.Link>
+  </Link>
+));
+
+NavigationMenuLink.displayName = NavigationMenuPrimitive.Link.displayName;
+
+const ListItem = React.forwardRef<
+  React.ElementRef<typeof NavigationMenuLink>,
+  React.ComponentPropsWithoutRef<typeof NavigationMenuLink> & {
+    href: string;
+    title: string;
+  }
+>(({ className, href, title, children, ...props }, ref) => {
+  return (
+    <li>
+      <NavigationMenuLink
+        href={href}
+        className={cn(
+          navigationMenuTriggerStyle(),
+          "block select-none space-y-1 rounded-md p-3 h-fit leading-none no-underline outline-none",
+          className
+        )}
+        ref={ref}
+        {...props}
+      >
+        <div className="text-xs font-semibold mb-1 text-foreground uppercase leading-none">
+          {title}
+        </div>
+        <p className="line-clamp-2 font-normal text-sm leading-snug text-muted-foreground max-w-xs">
+          {children}
+        </p>
+      </NavigationMenuLink>
+    </li>
+  );
+});
+ListItem.displayName = "ListItem";
 
 const NavigationMenuViewport = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Viewport>,
@@ -123,6 +176,7 @@ export {
   NavigationMenuContent,
   NavigationMenuTrigger,
   NavigationMenuLink,
+  ListItem,
   NavigationMenuIndicator,
   NavigationMenuViewport,
 };

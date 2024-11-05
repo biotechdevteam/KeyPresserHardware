@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchData } from "@/lib/fetchUtils";
+import { fetchData } from "@/lib/utils/fetchUtils";
 import { setMembersData, setError, setLoading } from "@/lib/features/users/memberSlice";
 
 // Thunk for fetching all members

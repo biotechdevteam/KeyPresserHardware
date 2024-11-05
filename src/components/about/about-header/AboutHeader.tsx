@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslations } from "next-intl";
-import AboutPic from "@/assets/images/about-header.jpg"; // Image for AboutHeader
+import AboutPic from "../../../../public/images/about-header.jpg"; // Image for AboutHeader
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import Image from "next/image";
 

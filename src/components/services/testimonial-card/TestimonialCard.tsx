@@ -18,7 +18,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
   rating,
 }) => {
   return (
-    <div className="bg-card p-6 rounded-[0%_30%_0_30%] border border-primary text-center shadow-lg relative overflow-hidden">
+    <div className="relative bg-card p-6 rounded-[0%_30%_0_30%] border border-primary text-center shadow-lg overflow-hidden">
       {/* Quotation Mark Icon */}
       <Quote
         className="absolute top-4 left-1/2 text-primary font-bold transform -translate-x-1/2"
@@ -27,15 +27,15 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
       />
 
       {/* Comment */}
-      <p className="italic font-medium mt-12 mb-4">"{comment}"</p>
+      <p className="italic font-medium mt-12 text-sm">"{comment}"</p>
 
       {/* Rating */}
-      <div className="flex justify-center mt-2 mb-4">
+      <div className="flex justify-center mb-4">
         {Array.from({ length: 5 }).map((_, index) => (
           <span
             key={index}
             className={`text-xl ${
-              index < rating ? "text-secondary" : "text-muted"
+              index < rating ? "text-accent" : "text-muted"
             }`}
           >
             ★
@@ -44,22 +44,21 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
       </div>
 
       {/* Profile Image */}
-      <div className="relative mb-4 w-20 h-20 mx-auto">
-        <div className="absolute inset-0 border-2 border-primary rounded-[0%_30%_0_30%]"></div>
+      <div className="relative mb-4">
         <Image
           src={imageUrl}
           alt={name}
-          width={80}
-          height={80}
-          className="w-full h-full object-cover rounded-[0%_30%_0_30%]"
+          width={100}
+          height={100}
+          className="object-cover rounded-full mx-auto"
         />
       </div>
 
       {/* Name */}
-      <h3 className="text-xl font-semibold text-primary">{name}</h3>
+      <h3 className="text-lg font-semibold">{name}</h3>
 
       {/* Role */}
-      <p className="text-sm text-secondary">{role}</p>
+      <p className="text-xs">{role}</p>
     </div>
   );
 };

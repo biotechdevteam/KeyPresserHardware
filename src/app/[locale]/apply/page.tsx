@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import ApplicationForm from "@/components/application-form/ApplicationForm";
 import SignUpForm from "@/components/application-form/SignUpForm";
 import { useQuery } from "@tanstack/react-query";
-import { fetchAboutData, fetchMembers } from "@/lib/fetchUtils"; // Fetch both about data and members
+import { fetchAboutData, fetchMembers } from "@/lib/utils/fetchUtils"; // Fetch both about data and members
 import TermsCard from "@/components/about/terms-modal/TermsCard";
 import { useStep } from "@/contexts/ApplicationStepContext";
 

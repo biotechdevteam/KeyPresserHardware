@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { fetchFAQs } from "@/lib/fetchUtils";
+import { fetchFAQs } from "@/lib/utils/fetchUtils";
 import FAQContainer from "@/components/faq/faq-container/FAQContainer";
 import Loader from "@/components/loader/Loader";
 import { FAQ } from "@/types/FAQSchema";

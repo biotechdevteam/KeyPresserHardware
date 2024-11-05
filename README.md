@@ -81,6 +81,4 @@ export const metadata: Metadata = {
 4. Test all routes to ensure correct rendering and layout sharing.
 
 By completing these tasks, we'll optimize the project's performance, maintainability, and SEO, ensuring a better user experience.
-
-
 ```

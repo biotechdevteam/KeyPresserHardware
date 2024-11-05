@@ -1,14 +1,13 @@
 import axiosInstance from "@/lib/axiosInstance";
 import { About } from "@/types/aboutSchema";
-import { Blog, blogSchema } from "@/types/blogSchema";
+import { Blog } from "@/types/blogSchema";
 import { Event } from "@/types/eventsSchema";
 import { FAQs, FAQsSchema } from "@/types/FAQSchema";
-import FeedbackSchema, { Feedback } from "@/types/feedbackSchema";
+import { Feedback } from "@/types/feedbackSchema";
 import { Member } from "@/types/memberSchema";
 import { Project } from "@/types/projectSchema";
 import { Service } from "@/types/ServiceSchema";
 import { AxiosError } from "axios";
-import { z } from "zod";
 
 export const fetchData = async (
   url: string,

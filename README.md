@@ -82,4 +82,5 @@ export const metadata: Metadata = {
 
 By completing these tasks, we'll optimize the project's performance, maintainability, and SEO, ensuring a better user experience.
 
+
 ```

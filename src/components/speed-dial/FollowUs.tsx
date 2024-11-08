@@ -17,16 +17,16 @@ import Link from "next/link";
 // Helper function to render the appropriate icon
 const getSocialIcon = (url: string) => {
   if (url.includes("linkedin.com")) {
-    return <LinkedinIcon className="w-6 h-6" />;
+    return <LinkedinIcon className="w-5 h-5" />;
   }
   if (url.includes("facebook.com")) {
-    return <FacebookIcon className="w-6 h-6" />;
+    return <FacebookIcon className="w-5 h-5" />;
   }
   if (url.includes("instagram.com")) {
-    return <InstagramIcon className="w-6 h-6" />;
+    return <InstagramIcon className="w-5 h-5" />;
   }
   if (url.includes("twitter.com")) {
-    return <TwitterIcon className="w-6 h-6" />;
+    return <TwitterIcon className="w-5 h-5" />;
   }
   return null; // If no match, return null
 };
@@ -50,14 +50,7 @@ const FollowUs = () => {
   }
 
   if (error) {
-    return (
-      <div className="flex flex-col items-center">
-        <p className="text-destructive mb-4">
-          Something went wrong. Please try again later.
-        </p>
-        <Button onClick={() => router.refresh()}>Reload Page</Button>
-      </div>
-    );
+    return <p>Can't fetch links.</p>;
   }
 
   // Ensure social_links is an array before mapping
@@ -66,14 +59,12 @@ const FollowUs = () => {
     : [];
 
   return (
-    <Card className="p-6">
+    <Card className="bg-transparent border-none shadow-none mx-auto">
       <CardHeader>
-        <CardTitle className="text-2xl font-semibold text-center mb-4">
-          Follow Us On
-        </CardTitle>
+        <CardTitle className="text-center">Follow Us On</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex space-x-6 justify-center">
+        <div className="flex space-x-4 justify-center">
           {socialLinks.length > 0 ? (
             socialLinks.map((link: string, i: number) => (
               <Link
@@ -87,7 +78,7 @@ const FollowUs = () => {
               </Link>
             ))
           ) : (
-            <p>No social links available.</p>
+            <p>No social media links available.</p>
           )}
         </div>
       </CardContent>

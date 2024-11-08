@@ -2,20 +2,11 @@
 import React, { useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import FollowUs from "../speed-dial/FollowUs";
-import { Link } from "next-view-transitions";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Link, useTransitionRouter } from "next-view-transitions";
 import Image from "next/image";
 import { About } from "@/types/aboutSchema";
 import Logo from "../../../public/images/logo.png";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
+import { slideInOut } from "../../../pageTransitions";
 
 const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   const [email, setEmail] = useState("");
@@ -23,6 +14,12 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   const [error, setError] = useState("");
 
   const logo = aboutData?.logo_url || Logo.src;
+  const router = useTransitionRouter();
+
+  const handleClick = (e: React.MouseEvent, url: string) => {
+    e.preventDefault(); // Prevent default link behavior
+    router.push(url, { onTransitionReady: slideInOut });
+  };
 
   const handleSubscribe = () => {
     if (!email) {
@@ -35,10 +32,10 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   };
 
   return (
-    <footer className="bg-muted-primary py-12">
-      <div className="container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-4 mx-auto">
+    <footer className="absolute bottom-0 left-0 right-0 z-100 bg-muted-primary py-12">
+      <div className="container grid grid-cols-1 lg:grid-cols-3 gap-4 px-4 mx-auto">
         {/* Logo Section */}
-        <div className="sm:col-span-2 lg:col-span-1 mb-6 lg:mb-0 flex flex-col items-center">
+        <div className="sm:col-span-2 lg:col-span-1 flex flex-col items-center">
           <Link href="/" aria-label="Homepage">
             <Image
               src={logo}
@@ -60,15 +57,8 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/"
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/about"
+                  href="/story"
+                  onClick={(e) => handleClick(e, "/story")}
                   className="text-base hover:underline text-primary-foreground"
                 >
                   About Us
@@ -76,34 +66,47 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
               </li>
               <li>
                 <Link
+                  href="/ongoing-projects"
+                  onClick={(e) => handleClick(e, "/ongoing-projects")}
+                  className="text-base hover:underline text-primary-foreground"
+                >
+                  Our Projects
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/upcoming-events"
+                  onClick={(e) => handleClick(e, "//upcoming-events")}
+                  className="text-base hover:underline text-primary-foreground"
+                >
+                  Our Events
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/news-&-insights"
+                  onClick={(e) => handleClick(e, "/news-&-insights")}
+                  className="text-base hover:underline text-primary-foreground"
+                >
+                  News & Insights
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/services"
+                  onClick={(e) => handleClick(e, "/services")}
                   className="text-base hover:underline text-primary-foreground"
                 >
-                  Services
+                  Our Services
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/projects"
+                  href="/faqs"
+                  onClick={(e) => handleClick(e, "/faqs")}
                   className="text-base hover:underline text-primary-foreground"
                 >
-                  Projects
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/events"
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  Events
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/blogs"
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  Blogs
+                  FAQs
                 </Link>
               </li>
             </ul>
@@ -115,34 +118,38 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/partners"
+                  href="/partners-&-sponsors"
+                  onClick={(e) => handleClick(e, "/partners-&-sponsors")}
                   className="text-base hover:underline text-primary-foreground"
                 >
-                  Our Partners
+                  Our Partners & Sponsors
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/testimonials"
+                  href="/mission-&-vision"
+                  onClick={(e) => handleClick(e, "/mission-&-vision")}
                   className="text-base hover:underline text-primary-foreground"
                 >
-                  Testimonials
+                  Our Mission & Vision
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/faqs"
+                  href="/achievements"
+                  onClick={(e) => handleClick(e, "/achievements")}
                   className="text-base hover:underline text-primary-foreground"
                 >
-                  FAQs
+                  Our Achievements
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/contact"
+                  href="/exhibitions-&-sponsorship"
+                  onClick={(e) => handleClick(e, "/exhibitions-&-sponsorship")}
                   className="text-base hover:underline text-primary-foreground"
                 >
-                  Contact Us
+                  Our Exhibitions & Sponsorship
                 </Link>
               </li>
             </ul>
@@ -155,6 +162,7 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
               <li>
                 <Link
                   href="/cookie-settings"
+                  onClick={(e) => handleClick(e, "/cookie-settings")}
                   className="text-base hover:underline text-primary-foreground"
                 >
                   Cookie Settings
@@ -163,6 +171,7 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
               <li>
                 <Link
                   href="/privacy-policy"
+                  onClick={(e) => handleClick(e, "/privacy-policy")}
                   className="text-base hover:underline text-primary-foreground"
                 >
                   Privacy Policy
@@ -170,7 +179,8 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
               </li>
               <li>
                 <Link
-                  href="/terms-and-conditions"
+                  href="/terms-&-conditions"
+                  onClick={(e) => handleClick(e, "/terms-&-conditions")}
                   className="text-base hover:underline text-primary-foreground"
                 >
                   Terms & Conditions
@@ -178,7 +188,17 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
               </li>
               <li>
                 <Link
+                  href="/refund-policy"
+                  onClick={(e) => handleClick(e, "/refund-policy")}
+                  className="text-base hover:underline text-primary-foreground"
+                >
+                  Refund Policy
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/disclaimer"
+                  onClick={(e) => handleClick(e, "/disclaimer")}
                   className="text-base hover:underline text-primary-foreground"
                 >
                   Disclaimer
@@ -188,48 +208,7 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
           </div>
         </div>
 
-        {/* Subscribe Section */}
-        <Card className="text-center">
-          <CardHeader>
-            <CardTitle className="text-xl font-semibold">
-              Subscribe To Our Newsletter
-            </CardTitle>
-            <CardDescription>
-              Join our mailing list to receive the latest updates and special
-              offers from {aboutData?.name}.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div>
-              <div className="max-w-xs mx-auto">
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                    setError("");
-                  }}
-                />
-                {error && <p className="text-destructive text-sm">{error}</p>}
-              </div>
-            </div>
-          </CardContent>
-          <CardFooter className="-mt-4">
-            {isSubscribed ? (
-              <p className="text-primary-foreground">
-                Thank you for subscribing!
-              </p>
-            ) : (
-              <Button onClick={handleSubscribe} size="lg" className="w-full">
-                Subscribe
-              </Button>
-            )}
-          </CardFooter>
-        </Card>
-
-        {/* Follow Us Section */}
+        {/* Social Media Links Section */}
         <FollowUs />
       </div>
 

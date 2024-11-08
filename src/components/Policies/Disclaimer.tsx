@@ -1,97 +1,121 @@
-"use client";
-
 import React from "react";
+import { Separator } from "../ui/separator";
+import { About } from "@/types/aboutSchema";
+import Link from "next/link";
 
-const Disclaimer: React.FC = () => {
+const Disclaimer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
+  const lastUpdated = "8th November 2024";
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-4">Disclaimer</h1>
-      <p className="mb-4">
-        <strong>Last updated:</strong> [Insert Date]
-      </p>
+    <div className="min-h-screen px-8 lg:px-16 py-12">
+      <div className="container mx-auto max-w-4xl">
+        <section className="mb-6">
+          <h1 className="text-3xl font-bold mb-4 text-center">Disclaimer</h1>
+          <Separator className="mx-auto w-16 mb-8" />
+          <h3 className="text-sm mb-2">
+            Last updated:{" "}
+            <span className="italic font-semibold">{lastUpdated}</span>
+          </h3>
+        </section>
 
-      <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">General Information</h2>
-        <p className="mb-4">
-          The information provided by <strong>[Your Company Name]</strong> (“we,” “us,” or
-          “our”) on <strong>[your website URL]</strong> (the “Site”) and our mobile application
-          is for general informational purposes only. All information on the Site
-          and our mobile application is provided in good faith; however, we make
-          no representation or warranty of any kind, express or implied,
-          regarding the accuracy, adequacy, validity, reliability, availability,
-          or completeness of any information on the Site or our mobile
-          application.
-        </p>
-      </section>
+        <section className="mb-6">
+          <h2 className="text-xl font-semibold mb-2">General Information</h2>
+          <p className="text-muted-foreground">
+            The information provided by {aboutData.name} on{" "}
+            <Link
+              href="https://www.biotecuniverse.org"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              https://www.biotecuniverse.org
+            </Link>{" "}
+            is intended for general informational and educational purposes only.
+            While we strive to keep the information accurate and up-to-date, we
+            make no warranties, express or implied, about the completeness,
+            accuracy, reliability, suitability, or availability of the
+            information on the website. Any reliance you place on such
+            information is therefore strictly at your own risk.
+          </p>
+        </section>
 
-      <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">External Links Disclaimer</h2>
-        <p className="mb-4">
-          The Site and our mobile application may contain (or you may be sent
-          through the Site or our mobile application) links to other websites or
-          content belonging to or originating from third parties or links to
-          websites and features. Such external links are not investigated,
-          monitored, or checked for accuracy, adequacy, validity, reliability,
-          availability, or completeness by us. We do not warrant, endorse,
-          guarantee, or assume responsibility for the accuracy or reliability of
-          any information offered by third-party websites linked through the
-          site or any website or feature linked in any banner or other
-          advertising.
-        </p>
-      </section>
+        <section className="mb-6">
+          <h2 className="text-xl font-semibold mb-2">
+            External Links Disclaimer
+          </h2>
+          <p className="text-muted-foreground">
+            Our website may contain links to external sites or resources for
+            informational purposes. These links are provided for your
+            convenience; however, {aboutData.name} does not control or guarantee
+            the accuracy, relevance, timeliness, or completeness of information
+            on these external websites. The inclusion of such links does not
+            imply endorsement or recommendation. Users are advised to review the
+            terms of use and privacy policies of any linked third-party sites.
+          </p>
+        </section>
 
-      <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">Professional Disclaimer</h2>
-        <p className="mb-4">
-          The Site cannot and does not contain professional advice. The
-          information is provided for general informational and educational
-          purposes only and is not a substitute for professional advice.
-          Accordingly, before taking any actions based on such information, we
-          encourage you to consult with the appropriate professionals. We do not
-          provide any kind of{" "}
-          <strong>[insert type of service, e.g., legal, medical, financial]</strong> advice. The
-          use or reliance of any information contained on the Site or our mobile
-          application is solely at your own risk.
-        </p>
-      </section>
+        <section className="mb-6">
+          <h2 className="text-xl font-semibold mb-2">
+            Professional Disclaimer
+          </h2>
+          <p className="text-muted-foreground">
+            The content on this website does not constitute professional advice,
+            including but not limited to medical, scientific, or financial
+            advice. For specific professional concerns, always consult with a
+            qualified expert in the relevant field. Information shared on this
+            site is not intended to substitute for professional consultation or
+            services.
+          </p>
+        </section>
 
-      <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">Affiliate Disclaimer</h2>
-        <p className="mb-4">
-          The Site may contain links to affiliate websites, and we receive an
-          affiliate commission for any purchases made by you on the affiliate
-          website using such links. Our affiliates include{" "}
-          <strong>[insert affiliate names, e.g., Amazon Associates]</strong>. We are not responsible
-          for the actions of third parties linked through the Site and encourage
-          you to review their terms of service and privacy policies.
-        </p>
-      </section>
+        <section className="mb-6">
+          <h2 className="text-xl font-semibold mb-2">
+            Testimonials Disclaimer
+          </h2>
+          <p className="text-muted-foreground">
+            Testimonials or user experiences featured on this website reflect
+            the opinions of individual users and are shared for informational
+            purposes only. These opinions and experiences may not necessarily
+            represent all users, and results may vary. Biotech Universe does not
+            guarantee similar outcomes for all users.
+          </p>
+        </section>
 
-      <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">Testimonials Disclaimer</h2>
-        <p className="mb-4">
-          The Site may contain testimonials by users of our products and/or
-          services. These testimonials reflect the real-life experiences and
-          opinions of such users. However, the experiences are personal to those
-          particular users and may not necessarily be representative of all
-          users of our products and/or services. We do not claim, and you should
-          not assume, that all users will have the same experiences. Your
-          individual results may vary.
-        </p>
-      </section>
+        <section className="mb-6">
+          <h2 className="text-xl font-semibold mb-2">
+            Limitation of Liability
+          </h2>
+          <p className="text-muted-foreground">
+            Biotech Universe shall not be liable for any loss or damage,
+            including without limitation indirect or consequential loss or
+            damage, arising from the use of this website or the reliance on
+            information available on it. This includes but is not limited to
+            decisions made based on our content, links to external websites, or
+            other resources featured on our site.
+          </p>
+        </section>
 
-      <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">Limitation of Liability</h2>
-        <p className="mb-4">
-          In no event shall we be liable for any direct, indirect, incidental,
-          consequential, or punitive damages arising out of your use of the
-          Site, the mobile application, or any of the linked resources. We shall
-          not be held responsible for any loss or damage resulting from the
-          reliance on any information on the Site or any of the linked
-          resources. Your use of the Site and your reliance on any information
-          provided on the Site is solely at your own risk.
-        </p>
-      </section>
+        <section className="mb-6">
+          <h2 className="text-xl font-semibold mb-2">Contact Us</h2>
+          <p className="text-muted-foreground">
+            If you have any questions about this disclaimer or our website,
+            please contact us at:
+          </p>
+          <ul className="mt-2 text-muted-foreground">
+            <li>
+              Email:{" "}
+              <Link href={`mailto:${aboutData.contact_email}`}>
+                {aboutData.contact_email}
+              </Link>
+            </li>
+            <li>
+              Phone:{" "}
+              <Link href={`tel:${aboutData.contact_phone}`}>
+                {aboutData.contact_phone}
+              </Link>
+            </li>
+          </ul>
+        </section>
+      </div>
     </div>
   );
 };

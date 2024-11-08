@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { Separator } from "@/components/ui/separator";
 import FollowUs from "../speed-dial/FollowUs";
 import { Link, useTransitionRouter } from "next-view-transitions";
@@ -9,10 +9,6 @@ import Logo from "../../../public/images/logo.png";
 import { slideInOut } from "../../../pageTransitions";
 
 const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
-  const [email, setEmail] = useState("");
-  const [isSubscribed, setIsSubscribed] = useState(false);
-  const [error, setError] = useState("");
-
   const logo = aboutData?.logo_url || Logo.src;
   const router = useTransitionRouter();
 
@@ -21,18 +17,8 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
     router.push(url, { onTransitionReady: slideInOut });
   };
 
-  const handleSubscribe = () => {
-    if (!email) {
-      setError("Please enter a valid email.");
-    } else {
-      setIsSubscribed(true);
-      setError("");
-      // Add subscription logic here
-    }
-  };
-
   return (
-    <footer className="absolute bottom-0 left-0 right-0 z-100 bg-muted-primary py-12">
+    <div className="bg-muted-primary py-12">
       <div className="container grid grid-cols-1 lg:grid-cols-3 gap-4 px-4 mx-auto">
         {/* Logo Section */}
         <div className="sm:col-span-2 lg:col-span-1 flex flex-col items-center">
@@ -179,15 +165,6 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
               </li>
               <li>
                 <Link
-                  href="/terms-&-conditions"
-                  onClick={(e) => handleClick(e, "/terms-&-conditions")}
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  Terms & Conditions
-                </Link>
-              </li>
-              <li>
-                <Link
                   href="/refund-policy"
                   onClick={(e) => handleClick(e, "/refund-policy")}
                   className="text-base hover:underline text-primary-foreground"
@@ -220,7 +197,7 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
           reserved.
         </p>
       </div>
-    </footer>
+    </div>
   );
 };
 

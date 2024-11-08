@@ -73,14 +73,20 @@ export default async function LocaleLayout({
   }
 
   return (
-    <div>
-      <NavBar aboutData={aboutData as About} />
-      <main className="mt-24">
+    <div className="flex flex-col min-h-screen">
+      <header>
+        <NavBar aboutData={aboutData as About} />
+      </header>
+
+      <main className="flex-grow mt-24">
         {children}
         <CookieConsent />
         <ScrollToTopButton />
       </main>
-      <Footer aboutData={aboutData as About} />
+
+      <footer>
+        <Footer aboutData={aboutData as About} />
+      </footer>
     </div>
   );
 }

@@ -13,21 +13,12 @@ import {
 } from "@/components/ui/navigation-menu";
 import {
   Bell,
-  BookUser,
-  CalendarFold,
-  ChevronDownIcon,
   CircleUser,
-  HandPlatter,
   Heart,
-  Home,
-  LibraryBig,
   LogIn,
   LogOut,
   Menu,
-  Newspaper,
-  SlidersHorizontal,
   User,
-  Users,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -47,7 +38,6 @@ import Image from "next/image";
 import Logo from "../../../public/images/logo.png";
 import { useAuth } from "@/lib/useAuth";
 import { About } from "@/types/aboutSchema";
-import { Button } from "../ui/button";
 import { NavCollapsible, NavCollapsibleListItem } from "../ui/collapsible";
 import { slideInOut } from "../../../pageTransitions";
 

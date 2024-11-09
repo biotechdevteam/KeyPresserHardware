@@ -1,19 +1,27 @@
 "use client";
 import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 import { User } from "@/types/userSchema";
-import { applyRequest, signInRequest, signUpRequest } from "./utils/fetchUtils";
+import {
+  applyRequest,
+  signInRequest,
+  signUpRequest,
+  fetchData,
+} from "./utils/fetchUtils";
 import { useTransitionRouter } from "next-view-transitions";
 import { slideInOut } from "../../pageTransitions";
+import { Member } from "@/types/memberSchema";
 
 interface AuthState {
   isAuthenticated: boolean;
   user: null | User;
+  profile: null | Member;
 }
 
 interface ApiErrorResponse {
   statusCode: number;
   error: string;
-  messages: string[]; // This will handle validation errors or other message arrays from the backend
+  messages: string[];
   method: string;
   path: string;
 }
@@ -22,50 +30,43 @@ export const useAuth = () => {
   const [authState, setAuthState] = useState<AuthState>({
     isAuthenticated: false,
     user: null,
+    profile: null, // Initialize profile to null
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useTransitionRouter();
 
-  // Check authentication on component mount
   useEffect(() => {
-    const access_token = localStorage.getItem("token");
+    const access_token = Cookies.get("token");
 
     if (access_token) {
-      const user = JSON.parse(localStorage.getItem("user") || "{}");
-
+      const user = Cookies.get("user");
       setAuthState({
         isAuthenticated: true,
-        user: user ? user : null,
+        user: user ? JSON.parse(user) : null,
+        profile: null, // Set profile to null initially
       });
     } else {
       setAuthState({
         isAuthenticated: false,
         user: null,
+        profile: null,
       });
     }
   }, []);
 
-  // Improved handleApiError function
   const handleApiError = (errorResponse: any) => {
     console.log("error during request", errorResponse);
     if (errorResponse.response && errorResponse.response.data) {
       const errorData: ApiErrorResponse = errorResponse.response.data;
-
-      // If the error has messages, return them joined as a string
       if (errorData.messages && errorData.messages.length > 0) {
         return errorData.messages.join(", ");
       }
-
-      // If there are no messages, return the error field or a default message
       return errorData.error || "An error occurred. Please try again.";
     }
-
-    // Fallback for when there's no response data
     return "An unexpected error occurred. Please try again.";
   };
 
-  // Sign-in logic
   const signIn = async (email: string, password: string) => {
     setLoading(true);
     setError(null);
@@ -74,17 +75,15 @@ export const useAuth = () => {
       const data = await signInRequest(email, password);
       const { access_token, user } = data;
 
-      // Save the token and user data in localStorage
-      localStorage.setItem("token", access_token);
-      localStorage.setItem("user", JSON.stringify(user));
+      Cookies.set("token", access_token, { expires: 7 });
+      Cookies.set("user", JSON.stringify(user), { expires: 7 });
 
-      // Update the auth state
       setAuthState({
         isAuthenticated: true,
         user,
+        profile: null, // Profile will be fetched separately
       });
 
-      // Redirect to a protected route
       return true;
     } catch (err) {
       const errorMessage = handleApiError(err);
@@ -94,7 +93,6 @@ export const useAuth = () => {
     }
   };
 
-  // Sign-up logic
   const signUp = async (
     email: string,
     password: string,
@@ -117,18 +115,15 @@ export const useAuth = () => {
       );
       const { access_token, user } = data;
 
-      // Save the token and user data in localStorage
-      localStorage.setItem("token", access_token);
-      localStorage.setItem("user", JSON.stringify(user));
+      Cookies.set("token", access_token, { expires: 7 });
+      Cookies.set("user", JSON.stringify(user), { expires: 7 });
 
-      // Update the auth state
       setAuthState({
         isAuthenticated: true,
         user,
+        profile: null,
       });
 
-      // Redirect to a protected route
-      //router.push("/dashboard");
       return true;
     } catch (err) {
       const errorMessage = handleApiError(err);
@@ -139,7 +134,33 @@ export const useAuth = () => {
     }
   };
 
-  // Apply function
+  const getMemberProfile = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      // Ensure user is authenticated and has an ID
+      if (!authState.user || !authState.user._id) {
+        throw new Error("User is not authenticated.");
+      }
+
+      const userId = authState.user._id;
+      const response = await fetchData(`/auth/members/${userId}`, "GET");
+      const profileData: Member = response?.data;
+
+      // Update the profile in auth state
+      setAuthState((prevState) => ({
+        ...prevState,
+        profile: profileData,
+      }));
+    } catch (err) {
+      const errorMessage = handleApiError(err);
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const apply = async (
     motivationLetter: string,
     specializationArea: string,
@@ -150,14 +171,12 @@ export const useAuth = () => {
     setError(null);
 
     try {
-      // Ensure the user is authenticated and we have their ID
       if (!authState.user || !authState.user._id) {
         throw new Error("User is not authenticated.");
       }
 
       const userId = authState.user._id;
 
-      // Call the apply request
       await applyRequest(
         userId,
         motivationLetter,
@@ -166,7 +185,6 @@ export const useAuth = () => {
         referredByMemberId
       );
 
-      // If application was successful, you can handle further steps, e.g., redirecting
       return true;
     } catch (err) {
       const errorMessage = handleApiError(err);
@@ -177,13 +195,21 @@ export const useAuth = () => {
     }
   };
 
-  // Sign-out logic
   const signOut = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    setAuthState({ isAuthenticated: false, user: null });
-    router.push("/auth/signin", { onTransitionReady: slideInOut }); // Redirect to sign-in page after sign-out
+    Cookies.remove("token");
+    Cookies.remove("user");
+    setAuthState({ isAuthenticated: false, user: null, profile: null });
+    router.push("/auth/signin", { onTransitionReady: slideInOut });
   };
 
-  return { ...authState, signIn, signUp, signOut, apply, loading, error };
+  return {
+    ...authState,
+    signIn,
+    signUp,
+    signOut,
+    apply,
+    getMemberProfile,
+    loading,
+    error,
+  };
 };

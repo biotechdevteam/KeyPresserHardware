@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { forgotPasswordSchema } from "@/types/forgotPasswordSchema";
+import { forgotPasswordSchema } from "@/types/forgotPasswordSchema"; // Mr. Derick you can delete this file since its not necessary (^_^)
 import Link from "next/link";
 
 const ForgotPassword = () => {
@@ -30,7 +30,7 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center p-12 space-y-6">
+    <div className="flex flex-col items-center justify-center  min-h-screen space-y-6 -mt-24 p-8">
       <h2 className="text-2xl font-semibold mt-4">Forgot Password</h2>
       <p className="text-center">
         To reset your password, please select one of the options below. You can

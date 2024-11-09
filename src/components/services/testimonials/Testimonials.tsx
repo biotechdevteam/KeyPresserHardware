@@ -25,7 +25,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({
   );
 
   return (
-    <div className="container px-4 lg:px-16 py-12">
+    <div className="container px-4 lg:px-16 py-12 mx-auto">
       <h2 className="text-xl lg:text-2xl font-bold text-center mb-8">
         {title}
       </h2>

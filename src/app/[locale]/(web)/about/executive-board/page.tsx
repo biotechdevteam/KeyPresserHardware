@@ -29,7 +29,7 @@ const ExecutiveBoardPage: React.FC = () => {
 
   if (error || isError) {
     return (
-      <div className="text-destructive text-center inset-0">
+      <div className="text-destructive text-center">
         Error: {error.message}
       </div>
     );

@@ -14,10 +14,9 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 focus:bg-destructive/90",
         outline:
-          "bg-transparent text-accent-foreground shadow-sm hover:bg-accent focus:bg-accent",
+          "bg-transparent text-muted-foreground hover:text-accent-foreground shadow-sm hover:bg-accent focus:bg-accent",
         secondary:
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/90 focus:bg-secondary/90",
-        link: "bg-transparent text-primary underline-offset-4 hover:underline hover:text-secondary focus:no-underline focus:text-secondary",
       },
       size: {
         default: "h-9 px-4 py-2",

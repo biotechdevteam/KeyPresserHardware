@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import HistoryTimeline from "../about-history/AboutHistory";
 import AboutFooter from "../about-footer/AboutFooter";
-import TermsModal from "../terms-modal/TermsModal";
+import TermsModal from "../terms/TermsModal";
 import { extractDomain } from "@/lib/helpers";
 import { fetchAboutData } from "@/lib/utils/fetchUtils";
 import { Loader } from "lucide-react";

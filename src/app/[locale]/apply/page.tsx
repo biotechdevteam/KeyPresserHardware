@@ -4,18 +4,24 @@ import { useRouter } from "next/navigation";
 import ApplicationForm from "@/components/application-form/ApplicationForm";
 import SignUpForm from "@/components/application-form/SignUpForm";
 import { useQuery } from "@tanstack/react-query";
-import { fetchAboutData, fetchMembers } from "@/lib/utils/fetchUtils"; // Fetch both about data and members
-import TermsCard from "@/components/about/terms-modal/TermsCard";
+import { fetchAboutData, fetchMembers } from "@/lib/utils/fetchUtils";
 import { useStep } from "@/contexts/ApplicationStepContext";
+import Terms from "@/components/application-form/Terms";
+import Loader from "@/components/loader/Loader";
+import { About } from "@/types/aboutSchema";
 
-const ApplyPage: React.FC = () => {
-  const { currentStep, setCurrentStep } = useStep(); // Default to step 0 (Terms and Conditions)
+export default function ApplyPage() {
+  const { currentStep, setCurrentStep } = useStep();
   const router = useRouter();
 
   // Fetch about data using react-query
   const { data: aboutData, isLoading: aboutLoading } = useQuery({
     queryKey: ["about"],
     queryFn: fetchAboutData,
+    staleTime: Infinity, // Prevent unnecessary refetching, keep data fresh
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
   // Fetch members data using react-query
@@ -25,33 +31,31 @@ const ApplyPage: React.FC = () => {
   });
 
   const handleTermsAccepted = () => {
-    setCurrentStep(1); // Move to Step 1: Sign Up after accepting Terms
+    setCurrentStep(1);
   };
 
   const handleSignUpComplete = () => {
-    setCurrentStep(2); // Move to Step 2: Applicant Information
+    setCurrentStep(2);
   };
 
   const handleApplicationComplete = () => {
-    router.push("/"); // Redirect to home page or confirmation page after submitting the application
+    router.push("/profile");
   };
 
   const handleCancel = () => {
-    router.push("/"); // Redirect to home page on cancel
+    router.push("/");
   };
 
-  // Show a loading state while the data is being fetched
+  // Handle loading state
   if (aboutLoading || membersLoading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   return (
-    <main className="container mx-auto p-6 bg-card rounded-lg shadow-md text-foreground">
-      {/* Show Terms and Conditions Modal first */}
+    <main className="container mx-auto p-6 text-foreground">
       {currentStep === 0 ? (
-        <TermsCard
-          privacyPolicy={aboutData?.privacy_policy || "Loading..."}
-          termsAndConditions={aboutData?.terms_and_conditions || "Loading..."}
+        <Terms
+          aboutData={aboutData as About}
           onAccept={handleTermsAccepted}
           onCancel={handleCancel}
         />
@@ -66,6 +70,4 @@ const ApplyPage: React.FC = () => {
       )}
     </main>
   );
-};
-
-export default ApplyPage;
+}

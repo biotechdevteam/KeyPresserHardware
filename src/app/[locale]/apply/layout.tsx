@@ -1,6 +1,5 @@
 "use client";
 import React, { ReactNode, useState, useEffect } from "react";
-import { cn } from "@/lib/utils/utils";
 import Image from "next/image";
 import authBG1 from "../../../../public/images/auth-bg-t.png";
 import authBG2 from "../../../../public/images/auth-bg-p.png";
@@ -77,45 +76,43 @@ const ApplyContent: React.FC<{ children: ReactNode }> = ({ children }) => {
   const getSubtitle = () => {
     switch (currentStep) {
       case 0:
-        return "Step 1: Review Our Terms and Policies";
+        return "Step 1: Read Our Membership Agreement";
       case 1:
-        return "Step 2: Provide Personal Information";
+        return "Step 2: Provide Your Personal Info";
       case 2:
-        return "Step 3: Finalize Application";
+        return "Step 3: Write Your Motivation";
+      case 3:
+        return "Step 4: Finalize The Application";
       default:
-        return "";
+        return null;
     }
   };
 
   return (
-    <div className={cn("min-h-screen")}>
-      {/* Main Content */}
-      <div className="grid grid-cols-1 md:grid-cols-2 min-h-screen">
-        {/* Left Side - Background with Title Overlay */}
-        <div className="hidden md:block relative">
-          <Image
-            src={getBackgroundImage()}
-            alt="Background Illustration"
-            fill
-            className="object-cover"
-            quality={100}
-          />
-          <div className="absolute inset-0 flex flex-col items-center justify-center space-y-4">
-            <h1 className="text-4xl font-bold text-primary drop-shadow-lg">
-              Apply to Join the Team
-            </h1>
-            <h2 className="text-2xl font-semibold text-foreground drop-shadow-sm">
-              {getSubtitle()}
-            </h2>
-          </div>
+    <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
+      {/* Left Side - Background with Title Overlay */}
+      <div className="hidden lg:block relative max-h-screen">
+        <Image
+          src={getBackgroundImage()}
+          alt="Background Illustration"
+          fill
+          className="object-cover"
+          quality={100}
+        />
+        <div className="absolute inset-0 flex flex-col items-center justify-center space-y-4">
+          <h1 className="text-4xl font-bold text-primary drop-shadow-lg">
+            Apply to Join the Team
+          </h1>
+          <h2 className="text-2xl font-semibold text-foreground drop-shadow-sm">
+            {getSubtitle()}
+          </h2>
         </div>
+      </div>
 
-        {/* Right Side - Progress Bar and Form Section */}
-        <div className="w-full min-h-screen max-h-screen bg-white p-5 md:p-15 flex flex-col justify-center">
-          <ProgressBar />
-
-          <div className="mt-5 w-full max-w-lg mx-auto">{children}</div>
-        </div>
+      {/* Right Side - Progress Bar and Form Section */}
+      <div className="bg-card py-12 px-4 flex flex-col justify-center">
+        <ProgressBar />
+        <div>{children}</div>
       </div>
     </div>
   );

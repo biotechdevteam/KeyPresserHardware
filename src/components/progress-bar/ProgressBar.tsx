@@ -1,17 +1,23 @@
 import React from "react";
-import { UserIcon, FileTextIcon, CheckCircleIcon } from "lucide-react";
+import {
+  UserIcon,
+  FileTextIcon,
+  CheckCircleIcon,
+  Handshake,
+} from "lucide-react";
 import { useStep } from "@/contexts/ApplicationStepContext";
 
 const steps = [
-  { label: "Review Policies", icon: CheckCircleIcon },
-  { label: "Personal Information", icon: UserIcon },
-  { label: "Applicant Details", icon: FileTextIcon },
+  { label: "Agreement", icon: Handshake },
+  { label: "Personal Info", icon: UserIcon },
+  { label: "Motivation", icon: FileTextIcon },
+  { label: "Finale", icon: CheckCircleIcon },
 ];
 
 const ProgressBar: React.FC = () => {
-  const { currentStep } = useStep()
+  const { currentStep } = useStep();
   return (
-    <div className="w-full grid grid-cols-3 gap-4 mb-8">
+    <div className="w-full grid grid-cols-4 gap-4 mb-2">
       {steps.map((step, index) => (
         <div
           key={index}
@@ -21,25 +27,25 @@ const ProgressBar: React.FC = () => {
           <div
             className={`w-10 h-10 flex items-center justify-center rounded-full ${
               index <= currentStep
-                ? "bg-primary text-white"
-                : "bg-gray-300 text-gray-500"
+                ? "bg-primary text-card"
+                : "bg-muted text-muted-foreground"
             }`}
           >
             <step.icon size={24} />
           </div>
 
           {/* Step Label */}
-          <div className="text-center mt-2">
+          <div className="text-center">
             <p
               className={`text-sm ${
                 index <= currentStep
                   ? "text-primary font-bold"
-                  : "text-gray-400"
+                  : "text-border"
               }`}
             >
               {step.label}
             </p>
-          </div>          
+          </div>
         </div>
       ))}
     </div>

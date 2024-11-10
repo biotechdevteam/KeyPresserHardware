@@ -4,6 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/lib/useAuth";
 import useImgbb from "@/lib/useImgBB"; // Import the custom useImgbb hook
+import MultipleSelect from "../ui/multiple-select";
+
+const options = [
+  { id: 1, label: "React" },
+  { id: 2, label: "Next.js" },
+  { id: 3, label: "Tailwind CSS" },
+  { id: 4, label: "TypeScript" },
+  { id: 5, label: "GraphQL" },
+];
 
 interface SignUpFormProps {
   onComplete: () => void;
@@ -11,6 +20,7 @@ interface SignUpFormProps {
 }
 
 const SignUpForm: React.FC<SignUpFormProps> = ({ onComplete, onCancel }) => {
+  const [selectedOptions, setSelectedOptions] = useState([]);
   const {
     signUp,
     signIn,
@@ -204,6 +214,16 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onComplete, onCancel }) => {
           />
         </div>
       )}
+
+      <div className="p-6">
+        <h1 className="text-2xl font-bold mb-4">Select your skills</h1>
+        <MultipleSelect
+          options={options}
+          selectedOptions={selectedOptions}
+          setSelectedOptions={setSelectedOptions}
+          placeholder="Start typing..."
+        />
+      </div>
 
       {/* Profile Photo Input */}
       <div className="col-span-2">

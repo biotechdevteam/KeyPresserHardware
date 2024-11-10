@@ -9,8 +9,8 @@ const UserSchema = z.object({
   last_name: z.string(),
   user_type: z.enum(["member", "client", "admin", "applicant"]), // Enum to specify user type
   profile_photo_url: z.string().url().optional(),
-  created_at: z.string().optional(),
-  updated_at: z.string().optional(),
+  created_at: z.date().optional(),
+  updated_at: z.date().optional(),
 });
 
 export type User = z.infer<typeof UserSchema>;

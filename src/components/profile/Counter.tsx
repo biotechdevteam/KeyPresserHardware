@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useAuth } from "@/lib/useAuth";
+import useAuth from "@/lib/useAuth";
 import counterUp from "@/lib/counterUp";
 import {
   User,

@@ -13,7 +13,7 @@ import {
 import ItemsDashboard from "./ItemsDashboard";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/lib/useAuth";
+import useAuth from "@/lib/useAuth";
 
 interface SidebarItem {
   name: string;
@@ -37,7 +37,7 @@ const SidebarDashboard = () => {
   const handleSignOut = () => {
     signOut();
     setShowModal(false);
-    router.push("/login");
+    router.push("/");
   };
   const closeModal = () => setShowModal(false);
 
@@ -48,23 +48,23 @@ const SidebarDashboard = () => {
         items: [
           {
             name: "Dashboard",
-            path: "/membership/members-directory/",
+            path: "/profile/",
             icon: <Home size={18} />,
           },
           {
             name: "My Profile",
-            path: "/membership/members-directory",
+            path: "/profile/profile",
             icon: <User size={18} />,
           },
           {
             name: "Messages",
-            path: "/membership/members-directory",
+            path: "/profile",
             icon: <MessageSquare size={18} />,
             tag: 12,
           },
           {
             name: "Settings",
-            path: "/membership/members-directory",
+            path: "/profile/settings",
             icon: <Settings size={18} />,
           },
         ],
@@ -91,12 +91,12 @@ const SidebarDashboard = () => {
             items: [
               {
                 name: "Users",
-                path: "/membership/members-directory",
+                path: "/profile",
                 icon: <Bookmark size={18} />,
               },
               {
                 name: "Reviews",
-                path: "/membership/members-directory",
+                path: "/profile",
                 icon: <Star size={18} />,
               },
             ],
@@ -110,12 +110,12 @@ const SidebarDashboard = () => {
             items: [
               {
                 name: "Bookmarks",
-                path: "/membership/members-directory",
+                path: "/profile",
                 icon: <Bookmark size={18} />,
               },
               {
                 name: "Reviews",
-                path: "/membership/members-directory",
+                path: "/profile",
                 icon: <Star size={18} />,
               },
             ],
@@ -129,7 +129,7 @@ const SidebarDashboard = () => {
             items: [
               {
                 name: "Applications",
-                path: "/membership/members-directory",
+                path: "/profile",
                 icon: <Bookmark size={18} />,
               },
             ],
@@ -143,12 +143,12 @@ const SidebarDashboard = () => {
             items: [
               {
                 name: "Projects",
-                path: "/membership/members-directory",
+                path: "/profile",
                 icon: <Monitor size={18} />,
               },
               {
                 name: "Order History",
-                path: "/membership/members-directory",
+                path: "/profile",
                 icon: <ShoppingBag size={18} />,
               },
             ],

@@ -67,10 +67,6 @@ export default async function LocaleLayout({
     return <Loader />;
   }
 
-  // Handle error state
-  if (isError) {
-    return <div>Error loading data</div>;
-  }
 
   return (
     <div className="flex flex-col min-h-screen">

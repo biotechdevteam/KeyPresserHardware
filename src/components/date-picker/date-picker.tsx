@@ -15,7 +15,7 @@ import {
 interface DatePickerProps {
   value: Date | null;
   onValueChange: (date: Date | null) => void;
-  placeholder?: string; // Add placeholder prop
+  placeholder?: string;
 }
 
 export function DatePickerDemo({
@@ -23,16 +23,22 @@ export function DatePickerDemo({
   onValueChange,
   placeholder = "Pick a date",
 }: DatePickerProps) {
-  // Default placeholder
   const [date, setDate] = React.useState<Date | null>(value);
+  const calendarRef = React.useRef<HTMLDivElement>(null);
 
   const handleDateChange = (selectedDate: Date | undefined) => {
     setDate(selectedDate || null);
     onValueChange(selectedDate || null);
   };
 
+  const handleOpen = () => {
+    setTimeout(() => {
+      calendarRef.current?.focus();
+    }, 10);
+  };
+
   return (
-    <Popover>
+    <Popover onOpenChange={handleOpen}>
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
@@ -42,17 +48,17 @@ export function DatePickerDemo({
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "PPP") : <span>{placeholder}</span>}{" "}
-          {/* Use placeholder when no date is selected */}
+          {date ? format(date, "PPP") : <span>{placeholder}</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
-        <Calendar
-          mode="single"
-          selected={date || undefined}
-          onSelect={handleDateChange}
-          initialFocus
-        />
+        <div ref={calendarRef} tabIndex={-1}>
+          <Calendar
+            mode="single"
+            selected={date || undefined}
+            onSelect={handleDateChange}
+          />
+        </div>
       </PopoverContent>
     </Popover>
   );

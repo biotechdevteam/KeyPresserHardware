@@ -36,10 +36,10 @@ import { Separator } from "../ui/separator";
 import { useMediaQuery } from "usehooks-ts";
 import Image from "next/image";
 import Logo from "../../../public/images/logo.png";
-import { useAuth } from "@/lib/useAuth";
 import { About } from "@/types/aboutSchema";
 import { NavCollapsible, NavCollapsibleListItem } from "../ui/collapsible";
 import { slideInOut } from "../../../pageTransitions";
+import useAuth from "@/lib/useAuth";
 
 // array of pages
 type Pages = {
@@ -237,7 +237,7 @@ const navMenu: Pages[][] = [
 
   // Profile
   [
-    { title: "profile", link: "/profile/:id" }, // *
+    { title: "profile", link: "/profile" }, // *
     { title: "dashboard", link: "/dashboard-admin" }, // *
   ],
 

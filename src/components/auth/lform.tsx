@@ -2,7 +2,7 @@
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useAuth } from "@/lib/useAuth";
+import useAuth from "@/lib/useAuth";
 
 const SignInForm = ({ onClose }: { onClose: () => void }) => {
   const { signIn, error, loading } = useAuth();

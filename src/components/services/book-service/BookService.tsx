@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/lib/useAuth"; // Import useAuth to get the user
+import useAuth from "@/lib/useAuth"; // Import useAuth to get the user
 import { useBookService } from "@/lib/useBookService";
 
 interface BookServiceFormProps {

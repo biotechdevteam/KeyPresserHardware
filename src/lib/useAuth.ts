@@ -1,215 +1,275 @@
-"use client";
-import { useEffect, useState } from "react";
+import { create } from "zustand";
+import { persist, PersistStorage } from "zustand/middleware";
 import Cookies from "js-cookie";
 import { User } from "@/types/userSchema";
+import { Member } from "@/types/memberSchema";
 import {
   applyRequest,
   signInRequest,
   signUpRequest,
   fetchData,
-} from "./utils/fetchUtils";
-import { useTransitionRouter } from "next-view-transitions";
+} from "../lib/utils/fetchUtils";
 import { slideInOut } from "../../pageTransitions";
-import { Member } from "@/types/memberSchema";
+import { useRouter } from "next/navigation";
 
 interface AuthState {
   isAuthenticated: boolean;
-  user: null | User;
-  profile: null | Member;
+  user: User | null;
+  profile: Member | null;
+  loading: boolean;
+  error: string | null;
 }
 
-interface ApiErrorResponse {
-  statusCode: number;
-  error: string;
-  messages: string[];
-  method: string;
-  path: string;
-}
-
-export const useAuth = () => {
-  const [authState, setAuthState] = useState<AuthState>({
-    isAuthenticated: false,
-    user: null,
-    profile: null, // Initialize profile to null
-  });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const router = useTransitionRouter();
-
-  useEffect(() => {
-    const access_token = Cookies.get("token");
-
-    if (access_token) {
-      const user = Cookies.get("user");
-      setAuthState({
-        isAuthenticated: true,
-        user: user ? JSON.parse(user) : null,
-        profile: null, // Set profile to null initially
-      });
-    } else {
-      setAuthState({
-        isAuthenticated: false,
-        user: null,
-        profile: null,
-      });
-    }
-  }, []);
-
-  const handleApiError = (errorResponse: any) => {
-    console.log("error during request", errorResponse);
-    if (errorResponse.response && errorResponse.response.data) {
-      const errorData: ApiErrorResponse = errorResponse.response.data;
-      if (errorData.messages && errorData.messages.length > 0) {
-        return errorData.messages.join(", ");
-      }
-      return errorData.error || "An error occurred. Please try again.";
-    }
-    return "An unexpected error occurred. Please try again.";
-  };
-
-  const signIn = async (email: string, password: string) => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const data = await signInRequest(email, password);
-      const { access_token, user } = data;
-
-      Cookies.set("token", access_token, { expires: 7 });
-      Cookies.set("user", JSON.stringify(user), { expires: 7 });
-
-      setAuthState({
-        isAuthenticated: true,
-        user,
-        profile: null, // Profile will be fetched separately
-      });
-
-      return true;
-    } catch (err) {
-      const errorMessage = handleApiError(err);
-      setError(errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const signUp = async (
+interface AuthActions {
+  signIn: (email: string, password: string) => Promise<boolean>;
+  signUp: (
     email: string,
     password: string,
     firstName: string,
     lastName: string,
     userType: string,
     profilePhotoUrl?: string
-  ) => {
-    setLoading(true);
-    setError(null);
+  ) => Promise<boolean>;
+  getMemberProfile: () => Promise<void>;
+  apply: (
+    motivationLetter: string,
+    specializationArea: string,
+    resumeUrl: string,
+    referredByMemberId?: string
+  ) => Promise<boolean>;
+  signOut: () => void;
+  createProfile: (
+    bio: string,
+    skills: string[],
+    interests: string[],
+    specialization: string,
+    address: string,
+    socialLinks: string[],
+    resumeUrl: string
+  ) => Promise<boolean>;
+  updateProfile: (
+    memberId: string,
+    bio: string,
+    skills: string[],
+    interests: string[],
+    specialization: string,
+    address: string,
+    socialLinks: string[],
+    resumeUrl: string
+  ) => Promise<boolean>;
+}
 
-    try {
-      const data = await signUpRequest(
+type AuthStore = AuthState & AuthActions;
+
+// Custom localStorage wrapper
+const zustandLocalStorage: PersistStorage<AuthStore> = {
+  getItem: (name) => {
+    const storedValue = localStorage.getItem(name);
+    return storedValue ? JSON.parse(storedValue) : null;
+  },
+  setItem: (name, value) => {
+    localStorage.setItem(name, JSON.stringify(value));
+  },
+  removeItem: (name) => {
+    localStorage.removeItem(name);
+  },
+};
+
+const useAuth = create<AuthStore>()(
+  persist(
+    (set, get) => ({
+      isAuthenticated: false,
+      user: null,
+      profile: null,
+      loading: false,
+      error: null,
+
+      signIn: async (email, password) => {
+        set({ loading: true, error: null });
+        try {
+          const data = await signInRequest(email, password);
+          const { access_token, user } = data;
+
+          Cookies.set("token", access_token, { expires: 7 });
+          set({ isAuthenticated: true, user, profile: null });
+
+          return true;
+        } catch (err: any) {
+          const errorMessage = handleApiError(err);
+          set({ error: errorMessage });
+          return false;
+        } finally {
+          set({ loading: false });
+        }
+      },
+
+      signUp: async (
         email,
         password,
         firstName,
         lastName,
         userType,
         profilePhotoUrl
-      );
-      const { access_token, user } = data;
+      ) => {
+        set({ loading: true, error: null });
+        try {
+          const data = await signUpRequest(
+            email,
+            password,
+            firstName,
+            lastName,
+            userType,
+            profilePhotoUrl
+          );
+          const { access_token, user } = data;
 
-      Cookies.set("token", access_token, { expires: 7 });
-      Cookies.set("user", JSON.stringify(user), { expires: 7 });
+          Cookies.set("token", access_token, { expires: 7 });
+          set({ isAuthenticated: true, user, profile: null });
 
-      setAuthState({
-        isAuthenticated: true,
-        user,
-        profile: null,
-      });
+          return true;
+        } catch (err: any) {
+          const errorMessage = handleApiError(err);
+          set({ error: errorMessage });
+          return false;
+        } finally {
+          set({ loading: false });
+        }
+      },
 
-      return true;
-    } catch (err) {
-      const errorMessage = handleApiError(err);
-      setError(errorMessage);
-      return false;
-    } finally {
-      setLoading(false);
-    }
-  };
+      getMemberProfile: async () => {
+        set({ loading: true, error: null });
+        try {
+          const user = get().user;
+          if (!user || !user._id) throw new Error("User is not authenticated.");
 
-  const getMemberProfile = async () => {
-    setLoading(true);
-    setError(null);
+          const response = await fetchData(`/auth/member/${user._id}`, "GET");
+          const profileData: Member = response.data;
+          set({ profile: profileData });
+        } catch (err: any) {
+          const errorMessage = handleApiError(err);
+          set({ error: errorMessage });
+        } finally {
+          set({ loading: false });
+        }
+      },
 
-    try {
-      // Ensure user is authenticated and has an ID
-      if (!authState.user || !authState.user._id) {
-        throw new Error("User is not authenticated.");
-      }
-
-      const userId = authState.user._id;
-      const response = await fetchData(`/auth/members/${userId}`, "GET");
-      const profileData: Member = response?.data;
-
-      // Update the profile in auth state
-      setAuthState((prevState) => ({
-        ...prevState,
-        profile: profileData,
-      }));
-    } catch (err) {
-      const errorMessage = handleApiError(err);
-      setError(errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const apply = async (
-    motivationLetter: string,
-    specializationArea: string,
-    resumeUrl: string,
-    referredByMemberId?: string
-  ) => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      if (!authState.user || !authState.user._id) {
-        throw new Error("User is not authenticated.");
-      }
-
-      const userId = authState.user._id;
-
-      await applyRequest(
-        userId,
+      apply: async (
         motivationLetter,
         specializationArea,
         resumeUrl,
         referredByMemberId
-      );
+      ) => {
+        set({ loading: true, error: null });
+        try {
+          const user = get().user;
+          if (!user || !user._id) throw new Error("User is not authenticated.");
 
-      return true;
-    } catch (err) {
-      const errorMessage = handleApiError(err);
-      setError(errorMessage);
-      return false;
-    } finally {
-      setLoading(false);
+          await applyRequest(
+            user._id,
+            motivationLetter,
+            specializationArea,
+            resumeUrl,
+            referredByMemberId
+          );
+          return true;
+        } catch (err: any) {
+          const errorMessage = handleApiError(err);
+          set({ error: errorMessage });
+          return false;
+        } finally {
+          set({ loading: false });
+        }
+      },
+
+      signOut: () => {
+        Cookies.remove("token");
+        set({ isAuthenticated: false, user: null, profile: null });
+        const router = useRouter();
+        router.push("/auth/signin");
+      },
+
+      // Method to create a new profile
+      createProfile: async (
+        bio,
+        skills,
+        interests,
+        specialization,
+        address,
+        socialLinks,
+        resumeUrl
+      ) => {
+        set({ loading: true, error: null });
+        try {
+          const user = get().user;
+          if (!user || !user._id) throw new Error("User is not authenticated.");
+
+          await fetchData("/auth/register-member", "POST", {
+            user_id: user._id,
+            bio,
+            skills,
+            interests,
+            specialization,
+            address,
+            social_links: socialLinks,
+            resume_url: resumeUrl,
+          });
+          return true;
+        } catch (err: any) {
+          const errorMessage = handleApiError(err);
+          set({ error: errorMessage });
+          return false;
+        } finally {
+          set({ loading: false });
+        }
+      },
+
+      // Method to update an existing profile
+      updateProfile: async (
+        memberId,
+        bio,
+        skills,
+        specialization,
+        address,
+        socialLinks,
+        resumeUrl
+      ) => {
+        set({ loading: true, error: null });
+        try {
+          await fetchData("/auth/update-profile", "PUT", {
+            member_id: memberId,
+            bio,
+            skills,
+            specialization,
+            address,
+            social_links: socialLinks,
+            resume_url: resumeUrl,
+          });
+          return true;
+        } catch (err: any) {
+          const errorMessage = handleApiError(err);
+          set({ error: errorMessage });
+          return false;
+        } finally {
+          set({ loading: false });
+        }
+      },
+    }),
+    {
+      name: "auth-storage",
+      storage: zustandLocalStorage,
     }
-  };
+  )
+);
 
-  const signOut = () => {
-    Cookies.remove("token");
-    Cookies.remove("user");
-    setAuthState({ isAuthenticated: false, user: null, profile: null });
-    router.push("/auth/signin", { onTransitionReady: slideInOut });
-  };
+function handleApiError(errorResponse: any): string {
+  if (errorResponse.response && errorResponse.response.data) {
+    const errorData = errorResponse.response.data;
+    if (errorData.messages && errorData.messages.length > 0) {
+      return errorData.messages.join(", ");
+    }
+    return errorData.error || "An error occurred. Please try again.";
+  }
+  return "An unexpected error occurred. Please try again.";
+}
 
-  return {
-    ...authState,
-    signIn,
-    signUp,
-    signOut,
-    apply,
-    getMemberProfile,
-    loading,
-    error,
-  };
-};
+export default useAuth;

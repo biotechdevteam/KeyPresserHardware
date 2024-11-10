@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useAuth } from "@/lib/useAuth";
+import useAuth from "@/lib/useAuth";
 import AuthModal from "@/components/auth/modal";
-import HeroDashboard from "@/components/member-directory/Hero";
-import SidebarDashboard from "@/components/member-directory/Sidebar";
-import CounterDashboard from "@/components/member-directory/Counter";
-import HeadingDashboard from "@/components/member-directory/Header";
+import HeroDashboard from "@/components/profile/Hero";
+import SidebarDashboard from "@/components/profile/Sidebar";
+import CounterDashboard from "@/components/profile/Counter";
+import HeadingDashboard from "@/components/profile/Header";
 
 const MembersDirectoryPage = () => {
   const { isAuthenticated, user } = useAuth();

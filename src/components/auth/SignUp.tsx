@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { signupSchema } from "@/types/signupSchema";
-import { useAuth } from "@/lib/useAuth";
+import useAuth from "@/lib/useAuth";
 
 const SignUp = () => {
   const { signUp, error, loading } = useAuth(); // useAuth hook for authentication logic

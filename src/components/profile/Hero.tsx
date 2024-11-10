@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { BookOpen, Award, Star, StarHalf, ArrowRight } from "lucide-react";
-import { useAuth } from "@/lib/useAuth";
+import useAuth from "@/lib/useAuth";
 
 const HeroDashboard = () => {
   const { user } = useAuth();

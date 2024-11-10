@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useAuth } from "@/lib/useAuth";
+import useAuth from "@/lib/useAuth";
 import { Application } from "@/types/ApplicationSchema";
 import { Member } from "@/types/memberSchema";
 import {

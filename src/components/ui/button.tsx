@@ -17,6 +17,8 @@ const buttonVariants = cva(
           "bg-transparent text-muted-foreground hover:text-accent-foreground shadow-sm hover:bg-accent focus:bg-accent",
         secondary:
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/90 focus:bg-secondary/90",
+        ghost:
+          "bg-transparent text-muted-foreground hover:bg-muted hover:text-accent-foreground focus:bg-muted",
       },
       size: {
         default: "h-9 px-4 py-2",

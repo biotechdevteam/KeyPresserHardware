@@ -29,7 +29,7 @@ const SignIn: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
+    <div className="flex flex-col items-center justify-center min-h-screen -mt-24 p-4">
       <div className="w-full max-w-md border border-border bg-card shadow-lg rounded-lg p-6 space-y-4">
         <div className="flex flex-col items-center">
           <Image

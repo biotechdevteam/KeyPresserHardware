@@ -14,6 +14,10 @@ import {
   Briefcase,
   ShoppingCart,
   DollarSign,
+  HelpCircle,
+  UserCheck,
+  Eye,
+  HeartHandshake,
 } from "lucide-react";
 import { Card } from "@/components/ui/card"; // Import the Card component
 
@@ -35,29 +39,62 @@ const CounterDashboard = () => {
 
     if (user?.user_type === "admin") {
       roleCounts = [
-        { name: "Total Users", data: 500, Icon: User, symbol: "+" },
-        { name: "Pending Approvals", data: 20, Icon: Clipboard, symbol: "+" },
-        { name: "Courses", data: 150, Icon: BookOpen, symbol: "+" },
+        { name: "Total Users", data: 1200, Icon: User, symbol: "+" },
+        { name: "Pending Approvals", data: 15, Icon: Clipboard },
+        { name: "Active Projects", data: 25, Icon: Briefcase },
+        { name: "Upcoming Events", data: 5, Icon: Calendar },
+        {
+          name: "Total Services Booked",
+          data: 200,
+          Icon: ShoppingCart,
+          symbol: "+",
+        },
+        { name: "Blog Articles Published", data: 60, Icon: BookOpen },
+        { name: "New Messages", data: 30, Icon: Mail, symbol: "+" },
+        {
+          name: "Revenue Generated",
+          data: 5000,
+          Icon: DollarSign,
+          symbol: "$",
+        },
       ];
     } else if (user?.user_type === "member") {
       roleCounts = [
-        { name: "Enrolled Courses", data: 5, Icon: BookOpen },
-        { name: "Wishlist", data: 10, Icon: Heart },
-        { name: "Completed Quizzes", data: 12, Icon: CheckCircle },
+        { name: "Courses Managed", data: 8, Icon: BookOpen },
+        { name: "Projects Contributed", data: 12, Icon: FileText },
+        { name: "Services Provided", data: 18, Icon: Briefcase },
+        { name: "Bookings Received", data: 22, Icon: Calendar, symbol: "+" },
+        { name: "Upcoming Events as Speaker", data: 3, Icon: Calendar },
+        { name: "Wishlist Items", data: 10, Icon: Heart },
+        { name: "Feedback Received", data: 15, Icon: CheckCircle },
+        { name: "Articles Written", data: 5, Icon: BookOpen },
+        { name: "Profile Views", data: 150, Icon: Eye, symbol: "+" },
       ];
     } else if (user?.user_type === "applicant") {
       roleCounts = [
-        { name: "Submitted Applications", data: 3, Icon: FileText },
-        { name: "Messages", data: 7, Icon: Mail, symbol: "+" },
-        { name: "Upcoming Interviews", data: 2, Icon: Calendar },
+        { name: "Submitted Applications", data: 6, Icon: FileText },
+        { name: "Upcoming Interviews", data: 3, Icon: Calendar },
+        { name: "Messages Received", data: 12, Icon: Mail },
+        { name: "Services Booked", data: 4, Icon: ShoppingCart },
+        { name: "Projects Interested In", data: 5, Icon: Heart },
+        { name: "Events Interested In", data: 5, Icon: HeartHandshake },
+        { name: "Profile Updates", data: 2, Icon: UserCheck },
       ];
     } else if (user?.user_type === "client") {
       roleCounts = [
+        { name: "Services Booked", data: 4, Icon: ShoppingCart },
         { name: "Ongoing Projects", data: 4, Icon: Briefcase },
-        { name: "Completed Orders", data: 10, Icon: ShoppingCart, symbol: "+" },
-        { name: "Pending Invoices", data: 2, Icon: DollarSign, symbol: "+" },
+        { name: "Enrolled Courses", data: 8, Icon: BookOpen },
+        { name: "Completed Orders", data: 15, Icon: ShoppingCart, symbol: "+" },
+        { name: "Pending Invoices", data: 3, Icon: DollarSign },
+        { name: "Events Scheduled", data: 6, Icon: Calendar },
+        { name: "Messages from Team", data: 9, Icon: Mail },
+        { name: "Feedback Requests", data: 2, Icon: CheckCircle },
+        { name: "Blog Posts Read", data: 20, Icon: BookOpen },
+        { name: "Support Tickets", data: 1, Icon: HelpCircle },
       ];
     }
+
 
     setCounts(roleCounts);
   }, [user]);
@@ -85,10 +122,8 @@ const CounterDashboard = () => {
             <div>
               <h3
                 className="text-3xl font-bolder text-foreground"
-                data-countup-number={count.data} // Set the data attribute for counterUp
+                data-countup-number={count.data} 
               >
-                {count.data} +
-                {count.symbol && <span>{count.symbol}</span>}
               </h3>
               <p className="text-lg font-medium text-foreground">{count.name}</p>
             </div>

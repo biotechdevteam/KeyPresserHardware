@@ -80,7 +80,7 @@ const MultipleSelect = ({
         as="div"
         value={selectedOptions}
         onChange={
-          (selected) => handleSelect(selected as Option) // Cast to handle individual option selection
+          (selected) => handleSelect(selected as unknown as Option) // Cast to handle individual option selection
         }
         multiple
       >

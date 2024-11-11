@@ -136,8 +136,7 @@ export const signUpRequest = async (
   password: string,
   firstName: string,
   lastName: string,
-  userType: string,
-  profilePhotoUrl?: string
+  userType: string
 ) => {
   try {
     const response = await fetchData("/auth/signup", "POST", {
@@ -146,7 +145,6 @@ export const signUpRequest = async (
       first_name: firstName,
       last_name: lastName,
       user_type: userType,
-      profile_photo_url: profilePhotoUrl,
     });
     return response?.data;
   } catch (error) {
@@ -172,6 +170,7 @@ export const signInRequest = async (email: string, password: string) => {
 // Apply Function
 export const applyRequest = async (
   userId: string,
+  profilePhotoUrl: string,
   motivationLetter: string,
   specializationArea: string,
   resumeUrl: string,
@@ -180,7 +179,8 @@ export const applyRequest = async (
   try {
     const response = await fetchData("/auth/apply", "POST", {
       user_id: userId,
-      motivation_letter: motivationLetter,
+      profile_photo_url: profilePhotoUrl,
+      _url: motivationLetter,
       specialization_area: specializationArea,
       resume_url: resumeUrl,
       referred_by_member_id: referredByMemberId,

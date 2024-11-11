@@ -9,7 +9,6 @@ import {
   signUpRequest,
   fetchData,
 } from "../lib/utils/fetchUtils";
-import { slideInOut } from "../../pageTransitions";
 import { useRouter } from "next/navigation";
 
 interface AuthState {
@@ -27,14 +26,14 @@ interface AuthActions {
     password: string,
     firstName: string,
     lastName: string,
-    userType: string,
-    profilePhotoUrl?: string
+    userType: string
   ) => Promise<boolean>;
   getMemberProfile: () => Promise<void>;
   apply: (
-    motivationLetter: string,
     specializationArea: string,
     resumeUrl: string,
+    motivationLetter: string,
+    profilePhotoUrl: string,
     referredByMemberId?: string
   ) => Promise<boolean>;
   signOut: () => void;
@@ -103,14 +102,7 @@ const useAuth = create<AuthStore>()(
         }
       },
 
-      signUp: async (
-        email,
-        password,
-        firstName,
-        lastName,
-        userType,
-        profilePhotoUrl
-      ) => {
+      signUp: async (email, password, firstName, lastName, userType) => {
         set({ loading: true, error: null });
         try {
           const data = await signUpRequest(
@@ -118,8 +110,7 @@ const useAuth = create<AuthStore>()(
             password,
             firstName,
             lastName,
-            userType,
-            profilePhotoUrl
+            userType
           );
           const { access_token, user } = data;
 
@@ -154,6 +145,7 @@ const useAuth = create<AuthStore>()(
       },
 
       apply: async (
+        profilePhotoUrl,
         motivationLetter,
         specializationArea,
         resumeUrl,
@@ -166,6 +158,7 @@ const useAuth = create<AuthStore>()(
 
           await applyRequest(
             user._id,
+            profilePhotoUrl,
             motivationLetter,
             specializationArea,
             resumeUrl,

@@ -13,12 +13,22 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
+import MultipleSelect from "../ui/multiple-select";
+import useImgbb from "@/lib/useImgBB";
 
 interface ApplicationFormProps {
   onComplete: () => void;
   onCancel?: () => void;
   members: Member[];
 }
+
+const options = [
+  { id: 1, label: "React" },
+  { id: 2, label: "Next.js" },
+  { id: 3, label: "Tailwind CSS" },
+  { id: 4, label: "TypeScript" },
+  { id: 5, label: "GraphQL" },
+];
 
 const specializationOptions = [
   "Biotechnology",
@@ -33,9 +43,16 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
   members,
 }) => {
   const { user, error, loading, apply } = useAuth();
+  const {
+    imageUrl,
+    loading: imgLoading,
+    error: imgError,
+    uploadImage,
+  } = useImgbb(); // Use the imgbb hook
 
   // State for form data
   const [formData, setFormData] = useState({
+    profilePhotoUrl: imageUrl || "",
     motivation_letter: "",
     specialization_area: "",
     resume_url: "",
@@ -43,6 +60,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
   });
 
   const [formErrors, setFormErrors] = useState({
+    profilePhotoUrl: "",
     motivation_letter: "",
     specialization_area: "",
     resume_url: "",
@@ -51,6 +69,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
 
   const [successMessage, setSuccessMessage] = useState(""); // State for success message
   const [showOtherField, setShowOtherField] = useState(false); // Track if "Other" is selected for specialization
+  const [selectedOptions, setSelectedOptions] = useState([]);
 
   // Handle input changes
   const handleChange = (
@@ -61,6 +80,14 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
       ...formData,
       [name]: value,
     });
+  };
+
+  // Handle image file input change
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      uploadImage(file); // Upload image via the useImgbb hook
+    }
   };
 
   // Handle specialization selection
@@ -86,28 +113,31 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
   const validateForm = () => {
     let valid = true;
     const errors = {
+      profilePhotoUrl: "",
       motivation_letter: "",
       specialization_area: "",
       resume_url: "",
       referred_by_member_id: "",
     };
 
+    if (!formData.profilePhotoUrl.trim()) {
+      errors.profilePhotoUrl = "Your photo is required.";
+      valid = false;
+    }
     if (!formData.motivation_letter.trim()) {
-      errors.motivation_letter = "Motivation letter is required.";
+      errors.motivation_letter = "Your motivation letter is required.";
       valid = false;
-    } else if (formData.motivation_letter.length < 10) {
+    } else if (formData.motivation_letter.length < 500) {
       errors.motivation_letter =
-        "Motivation letter must be at least 10 characters.";
+        "Motivation letter must be at least 500 characters.";
       valid = false;
     }
-
     if (!formData.specialization_area.trim()) {
-      errors.specialization_area = "Specialization area is required.";
+      errors.specialization_area = "Field of specialization is required.";
       valid = false;
     }
-
     if (!formData.resume_url.trim()) {
-      errors.resume_url = "Resume URL is required.";
+      errors.resume_url = "Your resume is required.";
       valid = false;
     }
 
@@ -126,7 +156,8 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
       formData.motivation_letter,
       formData.specialization_area,
       formData.resume_url,
-      formData.referred_by_member_id || undefined
+      imageUrl,
+      formData.referred_by_member_id || undefined,
     );
 
     if (success) {
@@ -145,6 +176,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
       onCancel(); // Call the onCancel handler if provided
     } else {
       setFormData({
+        profilePhotoUrl: "",
         motivation_letter: "",
         specialization_area: "",
         resume_url: "",
@@ -160,9 +192,29 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
     >
       {/* Display Error */}
       {error && <div className="col-span-2 text-destructive">{error}</div>}
+      {imgError && (
+        <div className="col-span-2 text-destructive">{imgError}</div>
+      )}
       {successMessage && (
         <div className="col-span-2 text-primary">{successMessage}</div>
       )}
+
+      {/* Profile Photo Input */}
+      <div className="col-span-2">
+        <label className="block text-sm font-medium">Profile Photo</label>
+        <input type="file" accept="image/*" onChange={handleImageChange} />
+        {imgLoading && <p>Uploading image...</p>}
+        {imageUrl && (
+          <div>
+            <img
+              src={imageUrl}
+              alt="Profile Preview"
+              className="h-20 w-20 object-cover mt-2"
+            />
+          </div>
+        )}
+      </div>
+
       {/* Motivation Letter */}
       <div className="col-span-2">
         <label htmlFor="motivation_letter" className="block mb-2 font-bold">
@@ -203,6 +255,16 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
               {option}
             </Button>
           ))}
+        </div>
+
+        <div className="p-6">
+          <h1 className="text-2xl font-bold mb-4">Select your skills</h1>
+          <MultipleSelect
+            options={options}
+            selectedOptions={selectedOptions}
+            setSelectedOptions={setSelectedOptions}
+            placeholder="Start typing..."
+          />
         </div>
 
         {showOtherField && (
@@ -272,6 +334,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
           type="button"
           variant="outline"
           onClick={handleCancel}
+          disabled={imgLoading}
           className="md:w-1/3 w-full"
         >
           Cancel
@@ -279,7 +342,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
 
         {/* Submit Button */}
         <Button type="submit" className="md:w-1/3 w-full bg-primary text-white">
-          Submit
+          {imgLoading ? "Uploading Docs..." : "Submit"}
         </Button>
       </div>
     </form>

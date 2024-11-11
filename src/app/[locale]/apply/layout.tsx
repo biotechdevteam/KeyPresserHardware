@@ -93,28 +93,29 @@ const ApplyContent: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
-      {/* Left Side - Background with Title Overlay */}
-      <div className="hidden lg:flex relative max-h-screen w-full bg-cover bg-center p-8">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/70 to-background opacity-90 z-0" />
-        <div className="relative z-10 flex flex-col items-center justify-center space-y-6 text-center p-8">
-          <h1 className="text-4xl lg:text-5xl font-bold text-primary-light text-muted-foreground drop-shadow-lg">
+      {/* Left Side */}
+      <div className="hidden lg:flex flex-col max-h-screen w-full bg-cover px-8 py-12 space-y-4">
+        <div className="relative z-10 flex flex-col items-center justify-center space-y-4 text-center">
+          <h1 className="text-4xl lg:text-5xl font-bold text-primary">
             Apply to Join the Team
           </h1>
-          <h2 className="text-xl lg:text-2xl font-medium text-secondary drop-shadow-md">
+          <h2 className="text-xl lg:text-2xl font-medium text-foreground">
             {getSubtitle()}
           </h2>
         </div>
 
-        {/* Background Image */}
-        <Image
-          src={getBackgroundImage()}
-          alt="Background Illustration"
-          layout="fill"
-          objectFit="cover"
-          className="object-cover opacity-90"
-          quality={100}
-          priority // Optional for faster loading
-        />
+        {/* Bottom Image Section */}
+        <div className="relative mx-auto w-3/4 ">
+          <Image
+            src={getBackgroundImage()}
+            alt="Background Illustration"
+            layout="responsive"
+            width={100}
+            height={100}
+            objectFit="cover"
+            priority // Optional for faster loading
+          />
+        </div>
       </div>
 
       {/* Right Side - Progress Bar and Form Section */}

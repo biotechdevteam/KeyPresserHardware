@@ -44,7 +44,7 @@ const SignIn: React.FC<{ aboutData: About }> = ({ aboutData }) => {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {(authError || formError) && (
-            <div className="text-red-500 text-sm">{authError || formError}</div>
+            <div className="text-destructive text-sm">{authError || formError}</div>
           )}
 
           <Input
@@ -73,7 +73,7 @@ const SignIn: React.FC<{ aboutData: About }> = ({ aboutData }) => {
           <Link href="/auth/forgot-password" className="text-sm">
             Forgot Password?
           </Link>
-          <Link href="/auth/signup" className="text-sm">
+          <Link href="/membership-tiers" className="text-sm">
             Don’t have an account yet? Sign Up
           </Link>
         </div>

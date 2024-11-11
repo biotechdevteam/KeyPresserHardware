@@ -1,11 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import useAuth from "@/lib/useAuth";
-import { Application } from "@/types/ApplicationSchema";
-import { Member } from "@/types/memberSchema";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectTrigger,
@@ -13,33 +10,35 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
-import MultipleSelect from "../ui/multiple-select";
+import useAuth from "@/lib/useAuth";
 import useImgbb from "@/lib/useImgBB";
+import useGoogleDrive from "@/lib/useGoogleDrive";
+import { Member } from "@/types/memberSchema";
+import "react-quill/dist/quill.snow.css";
+import ReactQuill from "react-quill";
+import Image from "next/image";
 
 interface ApplicationFormProps {
   onComplete: () => void;
-  onCancel?: () => void;
+  onBack?: () => void;
   members: Member[];
 }
 
-const options = [
-  { id: 1, label: "React" },
-  { id: 2, label: "Next.js" },
-  { id: 3, label: "Tailwind CSS" },
-  { id: 4, label: "TypeScript" },
-  { id: 5, label: "GraphQL" },
-];
-
 const specializationOptions = [
   "Biotechnology",
-  "Bioinformatics",
-  "Genetics",
+  "Graphic Designing",
+  "Biomedical Engineering",
+  "Molecular Biology",
+  "Data Science",
+  "Artificial Intelligence",
+  "Biochemistry",
+  "Environmental Biotechnology",
   "Other",
 ];
 
 const ApplicationForm: React.FC<ApplicationFormProps> = ({
   onComplete,
-  onCancel,
+  onBack,
   members,
 }) => {
   const { user, error, loading, apply } = useAuth();
@@ -48,75 +47,80 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
     loading: imgLoading,
     error: imgError,
     uploadImage,
-  } = useImgbb(); // Use the imgbb hook
+  } = useImgbb();
+  const {
+    uploadFile,
+    fileUrl,
+    loading: fileLoading,
+    error: fileError,
+  } = useGoogleDrive();
 
-  // State for form data
   const [formData, setFormData] = useState({
     profilePhotoUrl: imageUrl || "",
     motivation_letter: "",
     specialization_area: "",
-    resume_url: "",
+    resume_file: null as File | null,
     referred_by_member_id: "",
   });
-
   const [formErrors, setFormErrors] = useState({
     profilePhotoUrl: "",
     motivation_letter: "",
     specialization_area: "",
-    resume_url: "",
+    resume_file: "",
     referred_by_member_id: "",
   });
+  const [successMessage, setSuccessMessage] = useState("");
+  const [showOtherField, setShowOtherField] = useState(false);
 
-  const [successMessage, setSuccessMessage] = useState(""); // State for success message
-  const [showOtherField, setShowOtherField] = useState(false); // Track if "Other" is selected for specialization
-  const [selectedOptions, setSelectedOptions] = useState([]);
+  useEffect(() => {
+    if (imageUrl) {
+      setFormData((prev) => ({ ...prev, profilePhotoUrl: imageUrl }));
+    }
+    if (fileUrl) {
+      setFormData((prev) => ({ ...prev, resume_url: fileUrl }));
+    }
+  }, [imageUrl, fileUrl]);
 
-  // Handle input changes
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData({ ...formData, [name]: value });
   };
 
-  // Handle image file input change
+  const handleMotivationChange = (value: string) => {
+    setFormData({ ...formData, motivation_letter: value });
+  };
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      uploadImage(file); // Upload image via the useImgbb hook
-    }
+    if (file) uploadImage(file);
   };
 
-  // Handle specialization selection
+  const handleResumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) setFormData({ ...formData, resume_file: file });
+  };
+
   const handleSpecializationSelect = (specialization: string) => {
-    if (specialization === "Other") {
-      setShowOtherField(true);
-      setFormData({ ...formData, specialization_area: "" });
-    } else {
-      setShowOtherField(false);
-      setFormData({ ...formData, specialization_area: specialization });
-    }
-  };
-
-  // Handle changes in the dropdown
-  const handleDropdownChange = (value: string) => {
+    setShowOtherField(specialization === "Other");
     setFormData({
       ...formData,
-      referred_by_member_id: value,
+      specialization_area: specialization === "Other" ? "" : specialization,
     });
   };
 
-  // Simple validation logic
+  const handleDropdownChange = (value: string) => {
+    setFormData({ ...formData, referred_by_member_id: value });
+  };
+
   const validateForm = () => {
     let valid = true;
     const errors = {
       profilePhotoUrl: "",
       motivation_letter: "",
       specialization_area: "",
-      resume_url: "",
+      resume_file: "",
       referred_by_member_id: "",
     };
 
@@ -127,17 +131,13 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
     if (!formData.motivation_letter.trim()) {
       errors.motivation_letter = "Your motivation letter is required.";
       valid = false;
-    } else if (formData.motivation_letter.length < 500) {
-      errors.motivation_letter =
-        "Motivation letter must be at least 500 characters.";
-      valid = false;
     }
     if (!formData.specialization_area.trim()) {
       errors.specialization_area = "Field of specialization is required.";
       valid = false;
     }
-    if (!formData.resume_url.trim()) {
-      errors.resume_url = "Your resume is required.";
+    if (!formData.resume_file) {
+      errors.resume_file = "Your resume is required.";
       valid = false;
     }
 
@@ -145,111 +145,139 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
     return valid;
   };
 
-  // Handle form submission
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Validate the form before submitting
     if (!validateForm()) return;
+
+    if (formData.resume_file) {
+      await uploadFile(formData.resume_file);
+    }
 
     const success = await apply(
       formData.motivation_letter,
       formData.specialization_area,
-      formData.resume_url,
+      fileUrl,
       imageUrl,
-      formData.referred_by_member_id || undefined,
+      formData.referred_by_member_id || undefined
     );
 
     if (success) {
       setSuccessMessage(
-        "Your application has been submitted. Thank you for trust! Check your email."
+        "Your application has been submitted. Thank you! Check your email."
       );
-      setTimeout(() => {
-        onComplete();
-      }, 2000);
-    }
-  };
-
-  // Handle cancel action
-  const handleCancel = () => {
-    if (onCancel) {
-      onCancel(); // Call the onCancel handler if provided
-    } else {
-      setFormData({
-        profilePhotoUrl: "",
-        motivation_letter: "",
-        specialization_area: "",
-        resume_url: "",
-        referred_by_member_id: "",
-      }); // Reset form data if no custom cancel handler is provided
+      setTimeout(onComplete, 2000);
     }
   };
 
   return (
     <form
       onSubmit={onSubmit}
-      className="grid gap-6 grid-cols-1 md:grid-cols-2 w-full"
+      className="grid gap-12 grid-cols-1 md:grid-cols-2 w-full p-4"
     >
-      {/* Display Error */}
-      {error && <div className="col-span-2 text-destructive">{error}</div>}
+      <div className="col-span-2 text-center">
+        <h2 className="text-2xl font-semibold">Membership Application</h2>
+        <p className="text-muted-foreground">
+          Complete this form to apply for membership with us.
+        </p>
+      </div>
+
+      {error && (
+        <div className="col-span-2 text-destructive text-sm">{error}</div>
+      )}
       {imgError && (
-        <div className="col-span-2 text-destructive">{imgError}</div>
+        <div className="col-span-2 text-destructive text-sm">{imgError}</div>
+      )}
+      {fileError && (
+        <div className="col-span-2 text-destructive text-sm">{fileError}</div>
       )}
       {successMessage && (
-        <div className="col-span-2 text-primary">{successMessage}</div>
+        <div className="col-span-2 text-primary text-sm">{successMessage}</div>
       )}
 
-      {/* Profile Photo Input */}
-      <div className="col-span-2">
-        <label className="block text-sm font-medium">Profile Photo</label>
-        <input type="file" accept="image/*" onChange={handleImageChange} />
-        {imgLoading && <p>Uploading image...</p>}
-        {imageUrl && (
-          <div>
-            <img
-              src={imageUrl}
-              alt="Profile Preview"
-              className="h-20 w-20 object-cover mt-2"
-            />
-          </div>
-        )}
+      <div className="col-span-2 flex flex-col">
+        {/* Profile Photo Upload */}
+        <Label>Your Photo</Label>
+        <div className="relative mt-2">
+          <Input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="sr-only"
+            id="profile-photo"
+          />
+          <Label htmlFor="profile-photo" type="file">
+            <span>Click to upload an image</span>
+          </Label>
+          {imgLoading && (
+            <p className="text-xs text-border">Uploading image...</p>
+          )}
+          {imageUrl && (
+            <div className="mt-4 relative">
+              <Image
+                src={imageUrl}
+                alt="Profile Preview"
+                width={10}
+                height={10}
+                className="h-20 w-20 object-cover rounded-full border border-muted shadow-md"
+              />
+              <p className="text-xs">Image Preview</p>
+            </div>
+          )}
+          {!formErrors.profilePhotoUrl && (
+            <p className="text-xs text-center">
+              This will be displayed on your profile.
+            </p>
+          )}
+          {formErrors.profilePhotoUrl && (
+            <p className="text-destructive">{formErrors.profilePhotoUrl}</p>
+          )}
+        </div>
+
+        {/* Resume Upload */}
+        <Label className="mt-6">Resume</Label>
+        <div className="relative mt-2">
+          <Input
+            type="file"
+            accept="application/pdf"
+            onChange={handleResumeChange}
+            className="sr-only"
+            id="resume-upload"
+          />
+          <Label htmlFor="resume-upload" type="file">
+            <span>Click to upload your resume (PDF)</span>
+          </Label>
+          {fileLoading && (
+            <p className="text-xs text-muted">Uploading resume...</p>
+          )}
+          {fileUrl && (
+            <div className="mt-4 text-sm text-muted-foreground">
+              <span className="block text-primary">
+                Resume Uploaded Successfully
+              </span>
+            </div>
+          )}
+          {formErrors.resume_file && (
+            <p className="text-destructive">{formErrors.resume_file}</p>
+          )}
+        </div>
       </div>
 
-      {/* Motivation Letter */}
       <div className="col-span-2">
-        <label htmlFor="motivation_letter" className="block mb-2 font-bold">
-          Motivation Letter
-        </label>
-        <Textarea
-          id="motivation_letter"
-          name="motivation_letter"
-          value={formData.motivation_letter}
-          onChange={handleChange}
-          className="w-full"
-        />
-        {formErrors.motivation_letter && (
-          <p className="text-red-500 mt-1">{formErrors.motivation_letter}</p>
-        )}
-      </div>
-
-      {/* Specialization Area */}
-      <div className="col-span-2">
-        <label htmlFor="specialization_area" className="block mb-2 font-bold">
-          I am specialized in...
-        </label>
-        <div className="flex flex-wrap gap-4">
+        <Label className="font-semibold">Your Area of Specialization:</Label>
+        <div className="flex flex-wrap gap-4 mt-3">
           {specializationOptions.map((option) => (
             <Button
               key={option}
               type="button"
+              size="sm"
               variant={
                 formData.specialization_area === option ? "default" : "outline"
               }
               onClick={() => handleSpecializationSelect(option)}
               className={
                 formData.specialization_area === option
-                  ? "bg-primary text-white"
-                  : ""
+                  ? "bg-primary border-transparent"
+                  : "bg-card  border-border"
               }
             >
               {option}
@@ -257,67 +285,52 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
           ))}
         </div>
 
-        <div className="p-6">
-          <h1 className="text-2xl font-bold mb-4">Select your skills</h1>
-          <MultipleSelect
-            options={options}
-            selectedOptions={selectedOptions}
-            setSelectedOptions={setSelectedOptions}
-            placeholder="Start typing..."
-          />
-        </div>
-
+        {/* Additional Input for "Other" Specialization */}
         {showOtherField && (
-          <div className="mt-4">
-            <Input
-              placeholder="Enter your specialization"
-              name="specialization_area"
-              value={formData.specialization_area}
-              onChange={handleChange}
-              className="w-full"
-            />
-          </div>
+          <Input
+            placeholder="Please specify your specialization"
+            name="specialization_area"
+            value={formData.specialization_area}
+            onChange={handleChange}
+            className="mt-4 px-4 py-2 border border-border rounded-lg"
+          />
         )}
 
+        {/* Error Message for Specialization */}
         {formErrors.specialization_area && (
-          <p className="text-red-500 mt-1">{formErrors.specialization_area}</p>
+          <p className="text-destructive text-sm">
+            {formErrors.specialization_area}
+          </p>
         )}
       </div>
 
-      {/* Resume URL */}
-      <div className="col-span-2">
-        <label htmlFor="resume_url" className="block mb-2 font-bold">
-          Resume URL
-        </label>
-        <Input
-          id="resume_url"
-          name="resume_url"
-          value={formData.resume_url}
-          onChange={handleChange}
-          className="w-full"
+      <div className="col-span-2 mb-8">
+        <Label className="font-semibold">Your Motivation Letter</Label>
+        <ReactQuill
+          value={formData.motivation_letter}
+          onChange={handleMotivationChange}
+          style={{
+            height: "250px",
+            border: "1px solid border",
+            padding: "8px",
+          }}
+          placeholder="Write your motivation letter here..."
         />
-        {formErrors.resume_url && (
-          <p className="text-red-500 mt-1">{formErrors.resume_url}</p>
+        {formErrors.motivation_letter && (
+          <p className="text-destructive">{formErrors.motivation_letter}</p>
         )}
       </div>
 
-      {/* Referred by Member - ShadCN Select Dropdown */}
       <div className="col-span-2">
-        <label htmlFor="referred_by_member" className="block mb-2 font-bold">
-          Were you referred by a member of our team?
-        </label>
+        <Label>Referred by a Member?</Label>
         <Select
           value={formData.referred_by_member_id}
           onValueChange={handleDropdownChange}
         >
-          <SelectTrigger className="w-full px-4 py-2 rounded-lg shadow-lg">
-            <SelectValue placeholder="Select a team member" />
+          <SelectTrigger className="w-full px-4 py-2 rounded-lg shadow-lg mt-2">
+            <SelectValue placeholder="Select member..." />
           </SelectTrigger>
           <SelectContent>
-            {/* Disable the default "Select a referring member" */}
-            <SelectItem value="none" disabled>
-              Select a team member
-            </SelectItem>
             {members.map((member) => (
               <SelectItem key={member._id} value={member._id}>
                 {member.user_id.first_name} {member.user_id.last_name}
@@ -327,22 +340,14 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
         </Select>
       </div>
 
-      {/* Submit and Cancel Buttons */}
-      <div className="col-span-2 flex justify-between">
-        {/* Cancel Button */}
-        <Button
-          type="button"
-          variant="outline"
-          onClick={handleCancel}
-          disabled={imgLoading}
-          className="md:w-1/3 w-full"
-        >
-          Cancel
-        </Button>
-
-        {/* Submit Button */}
-        <Button type="submit" className="md:w-1/3 w-full bg-primary text-white">
-          {imgLoading ? "Uploading Docs..." : "Submit"}
+      <div className="col-span-2 flex justify-between mt-4">
+        {onBack && (
+          <Button type="button" variant="outline" onClick={onBack}>
+            Back
+          </Button>
+        )}
+        <Button type="submit" disabled={loading || imgLoading || fileLoading}>
+          {loading ? "Submitting Application..." : "Next"}
         </Button>
       </div>
     </form>

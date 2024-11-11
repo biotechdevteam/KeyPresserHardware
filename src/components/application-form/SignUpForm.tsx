@@ -7,10 +7,10 @@ import { Label } from "../ui/label";
 
 interface SignUpFormProps {
   onComplete: () => void;
-  onCancel?: () => void; // Optional cancel handler
+  onBack?: () => void; // Optional cancel handler
 }
 
-const SignUpForm: React.FC<SignUpFormProps> = ({ onComplete, onCancel }) => {
+const SignUpForm: React.FC<SignUpFormProps> = ({ onComplete, onBack }) => {
   const {
     signUp,
     loading: authLoading,
@@ -115,9 +115,9 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onComplete, onCancel }) => {
     }
   };
 
-  const handleCancel = () => {
-    if (onCancel) {
-      onCancel();
+  const handleBack = () => {
+    if (onBack) {
+      onBack();
     } else {
       setFormData({
         first_name: "",
@@ -150,7 +150,9 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onComplete, onCancel }) => {
             error={formErrors.first_name || undefined}
             placeholder="Enter your first name"
           />
-          <p className="text-xs">This will be displayed on your profile.</p>
+          {!formErrors.first_name && (
+            <p className="text-xs">This will be displayed on your profile.</p>
+          )}
         </div>
 
         <div>
@@ -174,9 +176,11 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onComplete, onCancel }) => {
             disabled={isAuthenticated}
             placeholder="e.g., example@email.com"
           />
-          <p className="text-xs text-muted-foreground">
-            We'll send a confirmation email to this address.
-          </p>
+          {!formErrors.email && (
+            <p className="text-xs">
+              We'll send a confirmation email to this address.
+            </p>
+          )}
         </div>
 
         {!isAuthenticated && (
@@ -191,9 +195,9 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onComplete, onCancel }) => {
                 error={formErrors.password || undefined}
                 placeholder="Enter a secure password"
               />
-              <p className="text-xs text-muted-foreground">
-                Must be at least 6 characters.
-              </p>
+              {!formErrors.password && (
+                <p className="text-xs">Must be at least 6 characters.</p>
+              )}
             </div>
 
             <div>
@@ -212,8 +216,8 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onComplete, onCancel }) => {
       </div>
 
       <div className="flex items-center justify-between mt-6">
-        <Button type="button" variant="outline" onClick={handleCancel}>
-          Cancel
+        <Button type="button" variant="outline" onClick={handleBack}>
+          Back
         </Button>
 
         <Button type="submit" disabled={authLoading}>

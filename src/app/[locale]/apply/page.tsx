@@ -9,44 +9,35 @@ import { useStep } from "@/contexts/ApplicationStepContext";
 import Terms from "@/components/application-form/Terms";
 import Loader from "@/components/loader/Loader";
 import { About } from "@/types/aboutSchema";
+import { Button } from "@/components/ui/button";
 
 export default function ApplyPage() {
   const { currentStep, setCurrentStep } = useStep();
   const router = useRouter();
 
-  // Fetch about data using react-query
+  // Fetch about and members data using react-query
   const { data: aboutData, isLoading: aboutLoading } = useQuery({
     queryKey: ["about"],
     queryFn: fetchAboutData,
-    staleTime: Infinity, // Prevent unnecessary refetching, keep data fresh
+    staleTime: Infinity,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
-
-  // Fetch members data using react-query
   const { data: membersData, isLoading: membersLoading } = useQuery({
     queryKey: ["members"],
     queryFn: fetchMembers,
   });
 
-  const handleTermsAccepted = () => {
-    setCurrentStep(1);
-  };
+  const handleCancel = () => router.push("/");
+  const handleTermsAccepted = () => setCurrentStep(1);
+  const handleBackToTerms = () => setCurrentStep(0);
+  const handleSignUpComplete = () => setCurrentStep(2);
+  const handleBackToSignUp = () => setCurrentStep(1);
+  const handleApplicationComplete = () => setCurrentStep(3);
+  const handleBackToApplication = () => setCurrentStep(2);
+  const handleFinalComplete = () => router.push("/profile");
 
-  const handleSignUpComplete = () => {
-    setCurrentStep(2);
-  };
-
-  const handleApplicationComplete = () => {
-    router.push("/profile");
-  };
-
-  const handleCancel = () => {
-    router.push("/");
-  };
-
-  // Handle loading state
   if (aboutLoading || membersLoading) {
     return <Loader />;
   }
@@ -60,13 +51,34 @@ export default function ApplyPage() {
           onCancel={handleCancel}
         />
       ) : currentStep === 1 ? (
-        <SignUpForm onComplete={handleSignUpComplete} onCancel={handleCancel} />
-      ) : (
+        <SignUpForm
+          onComplete={handleSignUpComplete}
+          onBack={handleBackToTerms}
+        />
+      ) : currentStep === 2 ? (
         <ApplicationForm
           onComplete={handleApplicationComplete}
-          onCancel={handleCancel}
+          onBack={handleBackToSignUp}
           members={membersData || []}
         />
+      ) : (
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold text-primary mb-4">
+            Application Successful!
+          </h2>
+          <p className="text-base mb-8">
+            Thank you for completing your application. Your information has been
+            submitted, and our team will review your application shortly. You’ll
+            receive an email confirmation soon. In the meantime, you can access
+            your profile for further updates.
+          </p>
+          <div className="flex justify-center space-x-4 mt-8">
+            <Button variant="outline" onClick={handleBackToApplication}>
+              Back
+            </Button>
+            <Button onClick={handleFinalComplete}>Finish</Button>
+          </div>
+        </div>
       )}
     </main>
   );

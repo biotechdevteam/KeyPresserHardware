@@ -169,3 +169,25 @@ const MultipleSelect = ({
 };
 
 export default MultipleSelect;
+
+// Usage
+
+// const options = [
+//   { id: 1, label: "React" },
+//   { id: 2, label: "Next.js" },
+//   { id: 3, label: "Tailwind CSS" },
+//   { id: 4, label: "TypeScript" },
+//   { id: 5, label: "GraphQL" },
+// ];
+
+// const [selectedOptions, setSelectedOptions] = useState([]);
+
+// <div className="p-6">
+// <h1 className="text-2xl font-bold mb-4">Select your skills</h1>
+// <MultipleSelect
+//   options={options}
+//   selectedOptions={selectedOptions}
+//   setSelectedOptions={setSelectedOptions}
+//   placeholder="Start typing..."
+// />
+// </div>

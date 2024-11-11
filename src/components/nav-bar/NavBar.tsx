@@ -109,31 +109,31 @@ const navMenu: Pages[][] = [
     },
     {
       title: "membership qualifications",
-      link: "/membership/membership-qualifications",
+      link: "/membership-qualifications",
       description:
         "Information on the criteria required to become a member of the association.",
     },
     {
       title: "membership benefits",
-      link: "/membership/membership-benefits",
+      link: "/membership-benefits",
       description:
         "Explore the benefits and privileges that come with being a member.",
     },
     {
       title: "membership tiers",
-      link: "/membership/membership-tiers",
+      link: "/membership-tiers",
       description:
         "Learn about the different membership tiers and the benefits associated with each level.",
     },
     {
       title: "members directory",
-      link: "/membership/members-directory",
+      link: "/members-directory",
       description:
         "A comprehensive directory of members and their contact information.", // *
     },
     {
       title: "membership faqs",
-      link: "/membership/membership-faqs",
+      link: "/membership-faqs",
       description:
         "Answers to common questions about membership processes and benefits.",
     },
@@ -143,25 +143,25 @@ const navMenu: Pages[][] = [
   [
     {
       title: "calender",
-      link: "/events/calender",
+      link: "/calender",
       description:
         "Stay updated with a calendar of upcoming events, meetings, and important dates.",
     },
     {
       title: "upcoming events",
-      link: "/events/upcoming-events",
+      link: "/upcoming-events",
       description:
         "Find details on upcoming association-hosted events, workshops, and conferences.",
     },
     {
       title: "exhibitions & sponsorship",
-      link: "/events/exhibitions-&-sponsorship",
+      link: "/exhibitions-&-sponsorship",
       description:
         "Information on exhibitions and sponsorship opportunities within the association.",
     },
     {
       title: "past events",
-      link: "/events/past-events",
+      link: "/past-events",
       description:
         "Explore details and summaries of past events and their outcomes.",
     },
@@ -211,19 +211,19 @@ const navMenu: Pages[][] = [
   [
     {
       title: "ongoing projects",
-      link: "/projects/ongoing-projects",
+      link: "/ongoing-projects",
       description:
         "Learn about the association's ongoing projects and their current progress.",
     },
     {
       title: "upcoming projects",
-      link: "/projects/upcoming-projects",
+      link: "/upcoming-projects",
       description:
         "Details on future projects the association plans to launch.",
     },
     {
       title: "portfolio",
-      link: "/projects/portfolio",
+      link: "/portfolio",
       description:
         "View the association’s completed projects and their impacts.",
     },

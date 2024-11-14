@@ -31,9 +31,9 @@ interface AuthActions {
   getMemberProfile: () => Promise<void>;
   apply: (
     specializationArea: string,
-    resumeUrl: string,
     motivationLetter: string,
     profilePhotoUrl: string,
+    resumeUrl?: string,
     referredByMemberId?: string
   ) => Promise<boolean>;
   signOut: () => void;

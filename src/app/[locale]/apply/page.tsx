@@ -29,7 +29,7 @@ export default function ApplyPage() {
     queryFn: fetchMembers,
   });
 
-  const handleCancel = () => router.push("/");
+  const handleCancel = () => router.push("/membership-tier");
   const handleTermsAccepted = () => setCurrentStep(1);
   const handleBackToTerms = () => setCurrentStep(0);
   const handleSignUpComplete = () => setCurrentStep(2);

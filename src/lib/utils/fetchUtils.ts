@@ -173,14 +173,14 @@ export const applyRequest = async (
   profilePhotoUrl: string,
   motivationLetter: string,
   specializationArea: string,
-  resumeUrl: string,
+  resumeUrl?: string,
   referredByMemberId?: string
 ) => {
   try {
     const response = await fetchData("/auth/apply", "POST", {
       user_id: userId,
       profile_photo_url: profilePhotoUrl,
-      _url: motivationLetter,
+      motivation_letter: motivationLetter,
       specialization_area: specializationArea,
       resume_url: resumeUrl,
       referred_by_member_id: referredByMemberId,

@@ -25,10 +25,10 @@ const ProgressBar: React.FC = () => {
         >
           {/* Step Icon */}
           <div
-            className={`w-10 h-10 flex items-center justify-center rounded-full ${
+            className={`w-10 h-10 flex items-center justify-center rounded-full border ${
               index <= currentStep
-                ? "bg-primary text-card"
-                : "bg-muted text-muted-foreground"
+                ? "bg-primary border-none text-card"
+                : "bg-muted text-foreground"
             }`}
           >
             <step.icon size={24} />

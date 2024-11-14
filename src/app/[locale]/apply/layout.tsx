@@ -70,7 +70,7 @@ const ApplyContent: React.FC<{ children: ReactNode }> = ({ children }) => {
       case 2:
         return authBG3.src;
       case 3:
-        return authBG3.src;
+        return authBG4.src;
       default:
         return authBG1.src;
     }

@@ -69,7 +69,6 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
     resume_file: "",
     referred_by_member_id: "",
   });
-  const [successMessage, setSuccessMessage] = useState("");
   const [showOtherField, setShowOtherField] = useState(false);
 
   useEffect(() => {
@@ -80,13 +79,6 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
       setFormData((prev) => ({ ...prev, resume_url: fileUrl }));
     }
   }, [imageUrl, fileUrl]);
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
 
   const handleMotivationChange = (value: string) => {
     setFormData({ ...formData, motivation_letter: value });
@@ -100,6 +92,13 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
   const handleResumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) setFormData({ ...formData, resume_file: file });
+  };
+
+  const handleSpecializationChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSpecializationSelect = (specialization: string) => {
@@ -136,10 +135,6 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
       errors.specialization_area = "Field of specialization is required.";
       valid = false;
     }
-    if (!formData.resume_file) {
-      errors.resume_file = "Your resume is required.";
-      valid = false;
-    }
 
     setFormErrors(errors);
     return valid;
@@ -149,9 +144,9 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
     e.preventDefault();
     if (!validateForm()) return;
 
-    if (formData.resume_file) {
-      await uploadFile(formData.resume_file);
-    }
+    // if (formData.resume_file) {
+    //   await uploadFile(formData.resume_file);
+    // }
 
     const success = await apply(
       formData.motivation_letter,
@@ -162,10 +157,23 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
     );
 
     if (success) {
-      setSuccessMessage(
-        "Your application has been submitted. Thank you! Check your email."
-      );
-      setTimeout(onComplete, 2000);
+      onComplete();
+    } else if (error) {
+      console.log("Failed to apply:", error);
+    }
+  };
+
+  const handleBack = () => {
+    if (onBack) {
+      onBack();
+    } else {
+      setFormData({
+        profilePhotoUrl: "",
+        motivation_letter: "",
+        specialization_area: "",
+        resume_file: null as File | null,
+        referred_by_member_id: "",
+      });
     }
   };
 
@@ -190,9 +198,6 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
       {fileError && (
         <div className="col-span-2 text-destructive text-sm">{fileError}</div>
       )}
-      {successMessage && (
-        <div className="col-span-2 text-primary text-sm">{successMessage}</div>
-      )}
 
       <div className="col-span-2 flex flex-col">
         {/* Profile Photo Upload */}
@@ -216,17 +221,15 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
               <Image
                 src={imageUrl}
                 alt="Profile Preview"
-                width={10}
-                height={10}
-                className="h-20 w-20 object-cover rounded-full border border-muted shadow-md"
+                width={50}
+                height={50}
+                className="rounded-sm border border-muted shadow-md"
               />
               <p className="text-xs">Image Preview</p>
             </div>
           )}
           {!formErrors.profilePhotoUrl && (
-            <p className="text-xs text-center">
-              This will be displayed on your profile.
-            </p>
+            <p className="text-xs">This will be displayed on your profile.</p>
           )}
           {formErrors.profilePhotoUrl && (
             <p className="text-destructive">{formErrors.profilePhotoUrl}</p>
@@ -291,7 +294,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
             placeholder="Please specify your specialization"
             name="specialization_area"
             value={formData.specialization_area}
-            onChange={handleChange}
+            onChange={handleSpecializationChange}
             className="mt-4 px-4 py-2 border border-border rounded-lg"
           />
         )}
@@ -341,11 +344,10 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
       </div>
 
       <div className="col-span-2 flex justify-between mt-4">
-        {onBack && (
-          <Button type="button" variant="outline" onClick={onBack}>
-            Back
-          </Button>
-        )}
+        <Button type="button" variant="outline" onClick={handleBack}>
+          Back
+        </Button>
+
         <Button type="submit" disabled={loading || imgLoading || fileLoading}>
           {loading ? "Submitting Application..." : "Next"}
         </Button>

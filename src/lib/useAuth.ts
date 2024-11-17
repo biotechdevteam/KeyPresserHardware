@@ -8,6 +8,8 @@ import {
   signInRequest,
   signUpRequest,
   fetchData,
+  forgotPasswordRequest,
+  resetPasswordRequest,
 } from "../lib/utils/fetchUtils";
 import { useRouter } from "next/navigation";
 
@@ -56,6 +58,11 @@ interface AuthActions {
     socialLinks: string[],
     resumeUrl: string
   ) => Promise<boolean>;
+  forgotPassword: (email: string) => Promise<boolean>;
+  resetPassword: (
+    token: string,
+    newPassword: string
+  ) => Promise<boolean>;
 }
 
 type AuthStore = AuthState & AuthActions;
@@ -82,6 +89,44 @@ const useAuth = create<AuthStore>()(
       profile: null,
       loading: false,
       error: null,
+
+      // Forgot Password Function
+      forgotPassword: async (email) => {
+        set({ loading: true, error: null });
+        try {
+          const message = await forgotPasswordRequest(email);
+          console.log("Forgot Password Response:", message);
+          return true;
+        } catch (err: any) {
+          const errorMessage = handleApiError(err);
+          set({ error: errorMessage });
+          return false;
+        } finally {
+          set({ loading: false });
+        }
+      },
+
+      // Reset Password Function
+      resetPassword: async (token, newPassword) => {
+        set({ loading: true, error: null });
+        try {
+          const { message, user } = await resetPasswordRequest(
+            token,
+            newPassword
+          );
+          console.log("Reset Password Response:", message);
+
+          // Update the store with the new user data if needed
+          set({ isAuthenticated: true, user });
+          return true;
+        } catch (err: any) {
+          const errorMessage = handleApiError(err);
+          set({ error: errorMessage });
+          return false;
+        } finally {
+          set({ loading: false });
+        }
+      },
 
       signIn: async (email, password) => {
         set({ loading: true, error: null });

@@ -57,7 +57,7 @@ const ResetPassword = ({ token }: ResetPasswordProps) => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-8 space-y-6 -mt-24">
-      <h2 className="text-2xl font-semibold">Reset Password token={token}</h2>
+      <h2 className="text-2xl font-semibold">Reset Password</h2>
       <form
         onSubmit={handleSubmit(handleResetPassword)}
         className="space-y-4 w-full max-w-md"

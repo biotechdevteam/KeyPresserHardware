@@ -28,7 +28,7 @@ const SignUp: React.FC<{ aboutData: About }> = ({ aboutData }) => {
       data.password,
       data.first_name,
       data.last_name,
-      "user"
+      "customer"
     );
   };
 

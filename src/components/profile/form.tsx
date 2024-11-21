@@ -8,7 +8,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import useAuth from "@/lib/useAuth";
 import { Facebook, Github, Instagram, Linkedin, Twitter } from "lucide-react";
+import { Member } from "@/types/memberSchema";
+import { Applicant } from "@/types/applicant";
 
+// Define schema for the member form
 const profileSchema = z.object({
   bio: z.string().min(5, "Bio must be at least 5 characters"),
   skills: z.array(z.string().min(1, "Skills are required")),
@@ -16,10 +19,7 @@ const profileSchema = z.object({
   specialization: z.string().min(3, "Specialization is required"),
   address: z.string().min(5, "Address is required"),
   socialLinks: z.array(z.string().url("Please enter a valid URL")).optional(),
-  resumeUrl: z
-    .string()
-    .min(1, "CV are required")
-    .url("Please enter a valid URL"),
+  resumeUrl: z.string().url("Please enter a valid URL"),
 });
 
 type ProfileFormSchema = z.infer<typeof profileSchema>;
@@ -65,20 +65,17 @@ const predefinedInterests = [
 ];
 
 const ProfileForm = () => {
-  const {
-    profile,
-    user,
-    getMemberProfile,
-    createProfile,
-    updateProfile,
-    loading,
-    error,
-  } = useAuth();
+  const { profile, getProfile, createProfile, updateProfile, loading, error } =
+    useAuth(); // Assume `profile` is a `Member` type
 
   const [skills, setSkills] = useState<string[]>([]);
   const [interests, setInterests] = useState<string[]>([]);
   const [successMessage, setSuccessMessage] = useState("");
   const [showOtherSpecialization, setShowOtherSpecialization] = useState(false);
+
+  const isMember = (profile: Member | Applicant): profile is Member => {
+    return "bio" in profile;
+  };
 
   const {
     register,
@@ -100,11 +97,11 @@ const ProfileForm = () => {
   });
 
   useEffect(() => {
-    if (user) getMemberProfile();
-  }, [user]);
+    getProfile();
+  }, []);
 
   useEffect(() => {
-    if (profile) {
+    if (profile && isMember(profile)) {
       setValue("bio", profile.bio || "");
       setSkills(profile.skills || []);
       setInterests(profile.interests || []);

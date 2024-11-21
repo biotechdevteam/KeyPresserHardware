@@ -10,14 +10,14 @@ import Loader from "@/components/loader/Loader";
 
 const ProfilePage = () => {
   // Use the useAuth hook to get profile data
-  const { profile, getMemberProfile, user, loading } = useAuth();
+  const { profile, getProfile, user, loading } = useAuth();
 
   // Fetch profile when the component mounts if the user is authenticated
   useEffect(() => {
-    if (user) {
-      getMemberProfile();
+    if (user && (user.user_type === "member" || user.user_type === "applicant")) {
+      getProfile();
     }
-  }, [user, getMemberProfile]);
+  }, [user, getProfile]);
 
   // Handle loading state
   if (loading) {
@@ -25,7 +25,7 @@ const ProfilePage = () => {
   }
 
   // Handle case where profile is not yet loaded
-  if (!profile) {
+  if (!profile || !user) {
     return <ComingSoon />;
   }
 
@@ -35,7 +35,7 @@ const ProfilePage = () => {
       label: "Personal Info",
       content: (
         <div className="m-8">
-          <Personal user={profile.user_id} />
+          <Personal user={user} />
         </div>
       ),
     },

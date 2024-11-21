@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
+import AuthGuard from "@/components/AuthGuard";
 import HeroDashboard from "@/components/profile/Hero";
 import SidebarDashboard from "@/components/profile/Sidebar";
 import ScrollToTopButton from "@/components/ScrollToTop/ScrollToTopButton";
-import AuthGuard from "@/components/AuthGuard";
 
 export default function ProfileLayout({
   children,
@@ -12,7 +12,7 @@ export default function ProfileLayout({
   children: React.ReactNode;
 }) {
   return (
-    <AuthGuard allowedRoles={["member", "applicant"]}>
+    <AuthGuard allowedRoles={["admin"]}>
       <div className="min-h-screen bg-background text-foreground">
         <main className="container mx-auto px-4 lg:px-8 py-6 flex-grow">
           <HeroDashboard />

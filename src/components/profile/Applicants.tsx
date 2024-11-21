@@ -23,6 +23,7 @@ const Applicants: React.FC<ApplicantsProps> = ({ applicants }) => {
   const handleReviewClick = (applicantId: string) => {
     router.push(`/admin/review/${applicantId}`);
   };
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {applicants.map((applicant) => (

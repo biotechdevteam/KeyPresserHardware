@@ -8,9 +8,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { About } from "@/types/aboutSchema";
 import Logo from "../../../public/images/logo.png";
+import { useRouter } from "next/navigation";
 
 const SignIn: React.FC<{ aboutData: About }> = ({ aboutData }) => {
-  const { signIn, error: authError, loading } = useAuth();
+  const { signIn, error: authError, loading, user } = useAuth();
   const [formError, setFormError] = useState<string | null>(null);
   const logo = aboutData?.logo_url || Logo;
 
@@ -20,11 +21,21 @@ const SignIn: React.FC<{ aboutData: About }> = ({ aboutData }) => {
     formState: { errors },
   } = useForm();
 
+  const router = useRouter()
+
   const onSubmit = async (data: any) => {
     setFormError(null);
     const success = await signIn(data.email, data.password);
     if (!success) {
       setFormError("Failed to sign in. Please try again.");
+    } 
+    if (success) {
+      if(user?.user_type === "member" || user?.user_type === "applicant"){
+        router.push("/profile")
+      }
+      if(user?.user_type === "admin"){
+        router.push("/profile")
+      }
     }
   };
 

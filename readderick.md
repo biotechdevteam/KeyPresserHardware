@@ -2,3 +2,4 @@
 - work on application process
 - profile management
 - vercel di worry, only deugging
+- added an aut guard for routing protected pages

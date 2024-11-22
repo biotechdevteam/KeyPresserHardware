@@ -11,7 +11,6 @@ import {
   forgotPasswordRequest,
   resetPasswordRequest,
 } from "../lib/utils/fetchUtils";
-import { useRouter } from "next/navigation";
 import { Applicant } from "@/types/applicant";
 
 interface AuthState {
@@ -236,8 +235,6 @@ const useAuth = create<AuthStore>()(
       signOut: () => {
         Cookies.remove("token");
         set({ isAuthenticated: false, user: null, profile: null });
-        const router = useRouter();
-        router.push("/auth/signin");
       },
 
       // Method to create a new profile

@@ -34,7 +34,7 @@ const SignIn: React.FC<{ aboutData: About }> = ({ aboutData }) => {
         router.push("/profile")
       }
       if(user?.user_type === "admin"){
-        router.push("/profile")
+        router.push("/admin")
       }
     }
   };

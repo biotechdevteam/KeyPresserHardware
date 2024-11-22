@@ -135,8 +135,7 @@ export const signUpRequest = async (
   password: string,
   firstName: string,
   lastName: string,
-  userType: string,
-  profilePhotoUrl?: string
+  userType: string
 ) => {
   try {
     const response = await fetchData("/auth/signup", "POST", {
@@ -145,7 +144,6 @@ export const signUpRequest = async (
       first_name: firstName,
       last_name: lastName,
       user_type: userType,
-      profile_photo_url: profilePhotoUrl,
     });
     return response?.data;
   } catch (error) {
@@ -168,17 +166,57 @@ export const signInRequest = async (email: string, password: string) => {
   }
 };
 
+// Forgot Password Request
+export const forgotPasswordRequest = async (email: string) => {
+  try {
+    const response = await fetchData("/auth/forgot-password", "POST", {
+      email,
+    });
+
+    // Assuming the response contains a message
+    return response?.data?.message;
+  } catch (error) {
+    console.error("Error during forgot password request:", error);
+    throw error;
+  }
+};
+
+// Reset Password Request
+export const resetPasswordRequest = async (
+  token: string,
+  newPassword: string
+) => {
+  try {
+    const response = await fetchData("/auth/reset-password", "POST", {
+      token,
+      new_password: newPassword,
+    });
+
+    // Assuming the response contains a message and user object
+    return {
+      message: response?.data?.message,
+      user: response?.data?.user,
+    };
+  } catch (error) {
+    console.error("Error during reset password request:", error);
+    throw error;
+  }
+};
+
+
 // Apply Function
 export const applyRequest = async (
   userId: string,
+  profilePhotoUrl: string,
   motivationLetter: string,
   specializationArea: string,
-  resumeUrl: string,
+  resumeUrl?: string,
   referredByMemberId?: string
 ) => {
   try {
     const response = await fetchData("/auth/apply", "POST", {
       user_id: userId,
+      profile_photo_url: profilePhotoUrl,
       motivation_letter: motivationLetter,
       specialization_area: specializationArea,
       resume_url: resumeUrl,

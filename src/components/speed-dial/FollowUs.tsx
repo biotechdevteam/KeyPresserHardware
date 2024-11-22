@@ -61,7 +61,7 @@ const FollowUs = () => {
   return (
     <Card className="bg-transparent border-none shadow-none mx-auto">
       <CardHeader>
-        <CardTitle className="text-center">Follow Us On</CardTitle>
+        <CardTitle className="text-center text-primary-foreground">Follow Us On</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex space-x-4 justify-center">
@@ -78,7 +78,7 @@ const FollowUs = () => {
               </Link>
             ))
           ) : (
-            <p>No social media links available.</p>
+            <p className="text-primary-foreground">No social media links available.</p>
           )}
         </div>
       </CardContent>

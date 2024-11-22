@@ -2,37 +2,29 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useAuth } from "@/lib/useAuth";
-import useImgbb from "@/lib/useImgBB"; // Import the custom useImgbb hook
+import useAuth from "@/lib/useAuth";
+import { Label } from "../ui/label";
 
 interface SignUpFormProps {
   onComplete: () => void;
-  onCancel?: () => void; // Optional cancel handler
+  onBack?: () => void; // Optional cancel handler
 }
 
-const SignUpForm: React.FC<SignUpFormProps> = ({ onComplete, onCancel }) => {
+const SignUpForm: React.FC<SignUpFormProps> = ({ onComplete, onBack }) => {
   const {
     signUp,
-    signIn,
     loading: authLoading,
     error,
     isAuthenticated,
     user,
   } = useAuth();
-  const {
-    imageUrl,
-    loading: imgLoading,
-    error: imgError,
-    uploadImage,
-  } = useImgbb(); // Use the imgbb hook
 
-  // Pre-fill form if the user is already authenticated
   const [formData, setFormData] = useState({
     first_name: user?.first_name || "",
     last_name: user?.last_name || "",
     email: user?.email || "",
-    password: "", // We don't pre-fill password for security reasons
-    profilePhotoUrl: imageUrl || "", // Add profilePhotoUrl to the form state
+    password: "",
+    confirmPassword: "",
   });
 
   const [formErrors, setFormErrors] = useState({
@@ -40,9 +32,9 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onComplete, onCancel }) => {
     last_name: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
-  // Update the form if the user data changes (in case of re-authentication)
   useEffect(() => {
     if (isAuthenticated && user) {
       setFormData({
@@ -50,12 +42,11 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onComplete, onCancel }) => {
         last_name: user.last_name,
         email: user.email,
         password: "",
-        profilePhotoUrl: imageUrl || "", // Update the image URL
+        confirmPassword: "",
       });
     }
-  }, [isAuthenticated, user, imageUrl]);
+  }, [isAuthenticated, user]);
 
-  // Handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
@@ -64,15 +55,6 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onComplete, onCancel }) => {
     });
   };
 
-  // Handle image file input change
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      uploadImage(file); // Upload image via the useImgbb hook
-    }
-  };
-
-  // Simple validation logic
   const validateForm = () => {
     let valid = true;
     const errors = {
@@ -80,6 +62,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onComplete, onCancel }) => {
       last_name: "",
       email: "",
       password: "",
+      confirmPassword: "",
     };
 
     if (!formData.first_name.trim()) {
@@ -94,20 +77,23 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onComplete, onCancel }) => {
       errors.email = "Please enter a valid email address.";
       valid = false;
     }
-    if (!isAuthenticated && formData.password.length < 6) {
-      errors.password = "Password must be at least 6 characters.";
-      valid = false;
+    if (!isAuthenticated) {
+      if (formData.password.length < 6) {
+        errors.password = "Password must be at least 6 characters.";
+        valid = false;
+      }
+      if (formData.password !== formData.confirmPassword) {
+        errors.confirmPassword = "Passwords do not match.";
+        valid = false;
+      }
     }
 
     setFormErrors(errors);
     return valid;
   };
 
-  // Handle form submission
   const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent form from reloading the page
-
-    // Validate the form before proceeding
+    e.preventDefault();
     if (!validateForm()) return;
 
     if (!isAuthenticated) {
@@ -116,132 +102,126 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onComplete, onCancel }) => {
         formData.password,
         formData.first_name,
         formData.last_name,
-        "applicant",
-        imageUrl // Pass the uploaded image URL to signUp
+        "applicant"
       );
 
       if (success) {
-        onComplete(); // Move to the next step if signUp was successful
+        onComplete();
       } else if (error) {
-        console.log("Signup failed:", error); // Log any other errors
+        console.log("Signup failed:", error);
       }
     } else {
-      console.log("User is authenticated, moving to the next step");
-      onComplete(); // Move to the next step without signing up
+      onComplete();
     }
   };
 
-  // Handle cancel action
-  const handleCancel = () => {
-    if (onCancel) {
-      onCancel(); // Call the onCancel handler if provided
+  const handleBack = () => {
+    if (onBack) {
+      onBack();
     } else {
       setFormData({
         first_name: "",
         last_name: "",
         email: "",
         password: "",
-        profilePhotoUrl: "",
-      }); // Reset form data if no custom cancel handler is provided
+        confirmPassword: "",
+      });
     }
   };
 
   return (
-    <form
-      onSubmit={onSubmit}
-      className="grid gap-6 grid-cols-1 md:grid-cols-2 w-full"
-    >
-      {/* Display Error */}
-      {error && <div className="col-span-2 text-destructive">{error}</div>}
-      {imgError && (
-        <div className="col-span-2 text-destructive">{imgError}</div>
-      )}
-
-      {/* First Name Input */}
-      <div className="col-span-2 md:col-span-1">
-        <Input
-          label="First Name"
-          name="first_name"
-          value={formData.first_name}
-          onChange={handleChange}
-          error={formErrors.first_name || undefined}
-        />
+    <form onSubmit={onSubmit} className="space-y-8 p-4 w-full max-w-lg mx-auto">
+      <div className="text-center mb-6">
+        <h2 className="text-xl font-semibold">Create Your Account</h2>
+        <p className="text-sm">
+          Join us today to access exclusive resources and opportunities.
+        </p>
       </div>
 
-      {/* Last Name Input */}
-      <div className="col-span-2 md:col-span-1">
-        <Input
-          label="Last Name"
-          name="last_name"
-          value={formData.last_name}
-          onChange={handleChange}
-          error={formErrors.last_name || undefined}
-        />
-      </div>
+      {error && <div className="text-destructive text-center">{error}</div>}
 
-      {/* Email Input */}
-      <div className="col-span-2">
-        <Input
-          label="Email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          error={formErrors.email || undefined}
-          disabled={isAuthenticated} // Disable email if user is authenticated
-        />
-      </div>
-
-      {/* Password Input - Hide if the user is authenticated */}
-      {!isAuthenticated && (
-        <div className="col-span-2">
+      <div className="space-y-4">
+        <div>
+          <Label>First Name</Label>
           <Input
-            label="Password"
-            type="password"
-            name="password"
-            value={formData.password}
+            name="first_name"
+            value={formData.first_name}
             onChange={handleChange}
-            error={formErrors.password || undefined}
+            error={formErrors.first_name || undefined}
+            placeholder="Enter your first name"
+          />
+          {!formErrors.first_name && (
+            <p className="text-xs">This will be displayed on your profile.</p>
+          )}
+        </div>
+
+        <div>
+          <Label>Last Name</Label>
+          <Input
+            name="last_name"
+            value={formData.last_name}
+            onChange={handleChange}
+            error={formErrors.last_name || undefined}
+            placeholder="Enter your last name"
           />
         </div>
-      )}
 
-      {/* Profile Photo Input */}
-      <div className="col-span-2">
-        <label className="block text-sm font-medium">Profile Photo</label>
-        <input type="file" accept="image/*" onChange={handleImageChange} />
-        {imgLoading && <p>Uploading image...</p>}
-        {imageUrl && (
-          <div>
-            <img
-              src={imageUrl}
-              alt="Profile Preview"
-              className="h-20 w-20 object-cover mt-2"
-            />
-          </div>
+        <div>
+          <Label>Email Address</Label>
+          <Input
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            error={formErrors.email || undefined}
+            disabled={isAuthenticated}
+            placeholder="e.g., example@email.com"
+          />
+          {!formErrors.email && (
+            <p className="text-xs">
+              We'll send a confirmation email to this address.
+            </p>
+          )}
+        </div>
+
+        {!isAuthenticated && (
+          <>
+            <div>
+              <Label>Password</Label>
+              <Input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                error={formErrors.password || undefined}
+                placeholder="Enter a secure password"
+              />
+              {!formErrors.password && (
+                <p className="text-xs">Must be at least 6 characters.</p>
+              )}
+            </div>
+
+            <div>
+              <Label>Confirm Password</Label>
+              <Input
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                error={formErrors.confirmPassword || undefined}
+                placeholder="Re-enter your password"
+              />
+            </div>
+          </>
         )}
       </div>
 
-      {/* Cancel and Next Buttons */}
-      <div className="col-span-2 flex flex-col md:flex-row md:justify-between space-y-4 md:space-y-0">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={handleCancel}
-          className="md:w-1/3 w-full"
-        >
-          Cancel
+      <div className="flex items-center justify-between mt-6">
+        <Button type="button" variant="outline" onClick={handleBack}>
+          Back
         </Button>
 
-        <Button
-          type="submit"
-          disabled={authLoading || imgLoading}
-          className="md:w-1/3 w-full bg-primary text-white"
-        >
-          {authLoading
-            ? "Verifying..."
-            : imgLoading
-            ? "Uploading Image..."
-            : "Next"}
+        <Button type="submit" disabled={authLoading}>
+          {authLoading ? "Creating Account..." : "Next"}
         </Button>
       </div>
     </form>

@@ -27,7 +27,7 @@ const CustomCheckbox: React.FC<CustomCheckboxProps> = ({
 
       {/* Checkbox label */}
       <label
-        className="text-sm font-medium text-muted-foreground"
+        className="text-sm font-medium text-muted-foreground cursor-pointer"
         onClick={() => onCheckedChange(!checked)}
       >
         {label}

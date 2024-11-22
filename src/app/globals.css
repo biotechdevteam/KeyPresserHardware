@@ -39,7 +39,7 @@
   --destructive: var(--red);
   --destructive-foreground: var(--white);
 
-  --border: var(--muted-foreground);
+  --border: #c5c5c5;
   --input: var(--background);
   --ring: var(--primary);
 
@@ -48,13 +48,13 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: var(--rich-black);
+    --background: var(--night);
     --foreground: var(--white);
 
-    --card: var(--night);
+    --card: var(--rich-black);
     --card-foreground: var(--foreground);
 
-    --popover: var(--night);
+    --popover: var(--rich-black);
     --popover-foreground: var(--foreground);
 
     --primary: var(--screamin-green);
@@ -73,7 +73,7 @@
     --destructive: var(--red);
     --destructive-foreground: var(--foreground);
 
-    --border: var(--muted-foreground);
+    --border: #5f5f5f;
     --input: var(--background);
     --ring: var(--primary);
 

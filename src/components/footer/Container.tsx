@@ -39,7 +39,7 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
         <div className="container grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-8 mx-auto sm:col-span-2 lg:col-span-1">
           {/* Quick Links Section */}
           <div className=" text-center lg:text-left">
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+            <h3 className="text-lg font-semibold mb-4 text-primary-foreground">Quick Links</h3>
             <ul className="space-y-2">
               <li>
                 <Link
@@ -100,7 +100,7 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
 
           {/* Explore Section */}
           <div className=" text-center lg:text-left">
-            <h3 className="text-lg font-semibold mb-4">Explore</h3>
+            <h3 className="text-lg font-semibold mb-4 text-primary-foreground">Explore</h3>
             <ul className="space-y-2">
               <li>
                 <Link
@@ -143,7 +143,7 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
 
           {/* Legal Section */}
           <div className=" text-center lg:text-left">
-            <h3 className="text-lg font-semibold mb-4">Legal Pages</h3>
+            <h3 className="text-lg font-semibold mb-4 text-primary-foreground">Legal Pages</h3>
             <ul className="space-y-2">
               <li>
                 <Link
@@ -190,9 +190,9 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
       </div>
 
       {/* Footer Bottom */}
-      <Separator className="m-6 w-auto" />
+      <Separator className="m-6 w-auto bg-primary-foreground" />
       <div className="container mx-auto text-center">
-        <p className="text-sm text-foreground italic">
+        <p className="text-sm text-primary-foreground italic">
           &copy; {new Date().getFullYear()} {aboutData?.name}. All rights
           reserved.
         </p>

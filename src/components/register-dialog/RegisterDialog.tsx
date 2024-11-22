@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useAuth } from "@/lib/useAuth";
+import useAuth from "@/lib/useAuth";
 import SignUpForm from "../application-form/SignUpForm";
 
 interface RegisterDialogProps {

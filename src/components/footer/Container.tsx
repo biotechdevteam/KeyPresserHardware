@@ -38,166 +38,169 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
 
         <div className="container grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-8 mx-auto sm:col-span-2 lg:col-span-1">
           {/* Quick Links Section */}
-          <div className=" text-center lg:text-left">
+          <div className="text-center lg:text-left">
             <h3 className="text-lg font-semibold mb-4 text-primary-foreground">
               Quick Links
             </h3>
             <ul className="space-y-2">
               <li>
-                <Link
-                  href="/story"
-                  legacyBehavior
-                  onClick={(e) => handleClick(e, "/story")}
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  About Us
+                <Link href="/story" legacyBehavior>
+                  <a
+                    onClick={(e) => handleClick(e, "/story")}
+                    className="text-base hover:underline text-primary-foreground"
+                  >
+                    About Us
+                  </a>
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/ongoing-projects"
-                  onClick={(e) => handleClick(e, "/ongoing-projects")}
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  Our Projects
+                <Link href="/ongoing-projects" legacyBehavior>
+                  <a
+                    onClick={(e) => handleClick(e, "/ongoing-projects")}
+                    className="text-base hover:underline text-primary-foreground"
+                  >
+                    Our Projects
+                  </a>
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/upcoming-events"
-                  legacyBehavior
-                  onClick={(e) => handleClick(e, "//upcoming-events")}
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  Our Events
+                <Link href="/upcoming-events" legacyBehavior>
+                  <a
+                    onClick={(e) => handleClick(e, "/upcoming-events")}
+                    className="text-base hover:underline text-primary-foreground"
+                  >
+                    Our Events
+                  </a>
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/news-&-insights"
-                  legacyBehavior
-                  onClick={(e) => handleClick(e, "/news-&-insights")}
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  News & Insights
+                <Link href="/news-&-insights" legacyBehavior>
+                  <a
+                    onClick={(e) => handleClick(e, "/news-&-insights")}
+                    className="text-base hover:underline text-primary-foreground"
+                  >
+                    News & Insights
+                  </a>
                 </Link>
               </li>
               <li>
-                <Link
-                  legacyBehavior
-                  href="/services"
-                  onClick={(e) => handleClick(e, "/services")}
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  Our Services
+                <Link href="/services" legacyBehavior>
+                  <a
+                    onClick={(e) => handleClick(e, "/services")}
+                    className="text-base hover:underline text-primary-foreground"
+                  >
+                    Our Services
+                  </a>
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/faqs"
-                  legacyBehavior
-                  onClick={(e) => handleClick(e, "/faqs")}
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  FAQs
+                <Link href="/faqs" legacyBehavior>
+                  <a
+                    onClick={(e) => handleClick(e, "/faqs")}
+                    className="text-base hover:underline text-primary-foreground"
+                  >
+                    FAQs
+                  </a>
                 </Link>
               </li>
             </ul>
           </div>
 
           {/* Explore Section */}
-          <div className=" text-center lg:text-left">
+          <div className="text-center lg:text-left">
             <h3 className="text-lg font-semibold mb-4 text-primary-foreground">
               Explore
             </h3>
             <ul className="space-y-2">
               <li>
-                <Link
-                  href="/partners-&-sponsors"
-                  legacyBehavior
-                  onClick={(e) => handleClick(e, "/partners-&-sponsors")}
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  Our Partners & Sponsors
+                <Link href="/partners-&-sponsors" legacyBehavior>
+                  <a
+                    onClick={(e) => handleClick(e, "/partners-&-sponsors")}
+                    className="text-base hover:underline text-primary-foreground"
+                  >
+                    Our Partners & Sponsors
+                  </a>
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/mission-&-vision"
-                  legacyBehavior
-                  onClick={(e) => handleClick(e, "/mission-&-vision")}
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  Our Mission & Vision
+                <Link href="/mission-&-vision" legacyBehavior>
+                  <a
+                    onClick={(e) => handleClick(e, "/mission-&-vision")}
+                    className="text-base hover:underline text-primary-foreground"
+                  >
+                    Our Mission & Vision
+                  </a>
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/achievements"
-                  legacyBehavior
-                  onClick={(e) => handleClick(e, "/achievements")}
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  Our Achievements
+                <Link href="/achievements" legacyBehavior>
+                  <a
+                    onClick={(e) => handleClick(e, "/achievements")}
+                    className="text-base hover:underline text-primary-foreground"
+                  >
+                    Our Achievements
+                  </a>
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/exhibitions-&-sponsorship"
-                  legacyBehavior
-                  onClick={(e) => handleClick(e, "/exhibitions-&-sponsorship")}
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  Our Exhibitions & Sponsorship
+                <Link href="/exhibitions-&-sponsorship" legacyBehavior>
+                  <a
+                    onClick={(e) =>
+                      handleClick(e, "/exhibitions-&-sponsorship")
+                    }
+                    className="text-base hover:underline text-primary-foreground"
+                  >
+                    Our Exhibitions & Sponsorship
+                  </a>
                 </Link>
               </li>
             </ul>
           </div>
 
           {/* Legal Section */}
-          <div className=" text-center lg:text-left">
+          <div className="text-center lg:text-left">
             <h3 className="text-lg font-semibold mb-4 text-primary-foreground">
               Legal Pages
             </h3>
             <ul className="space-y-2">
               <li>
-                <Link
-                  href="/cookie-settings"
-                  legacyBehavior
-                  onClick={(e) => handleClick(e, "/cookie-settings")}
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  Cookie Settings
+                <Link href="/cookie-settings" legacyBehavior>
+                  <a
+                    onClick={(e) => handleClick(e, "/cookie-settings")}
+                    className="text-base hover:underline text-primary-foreground"
+                  >
+                    Cookie Settings
+                  </a>
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/privacy-policy"
-                  legacyBehavior
-                  onClick={(e) => handleClick(e, "/privacy-policy")}
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  Privacy Policy
+                <Link href="/privacy-policy" legacyBehavior>
+                  <a
+                    onClick={(e) => handleClick(e, "/privacy-policy")}
+                    className="text-base hover:underline text-primary-foreground"
+                  >
+                    Privacy Policy
+                  </a>
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/refund-policy"
-                  legacyBehavior
-                  onClick={(e) => handleClick(e, "/refund-policy")}
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  Refund Policy
+                <Link href="/refund-policy" legacyBehavior>
+                  <a
+                    onClick={(e) => handleClick(e, "/refund-policy")}
+                    className="text-base hover:underline text-primary-foreground"
+                  >
+                    Refund Policy
+                  </a>
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/disclaimer"
-                  legacyBehavior
-                  onClick={(e) => handleClick(e, "/disclaimer")}
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  Disclaimer
+                <Link href="/disclaimer" legacyBehavior>
+                  <a
+                    onClick={(e) => handleClick(e, "/disclaimer")}
+                    className="text-base hover:underline text-primary-foreground"
+                  >
+                    Disclaimer
+                  </a>
                 </Link>
               </li>
             </ul>

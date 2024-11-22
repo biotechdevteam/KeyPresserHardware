@@ -486,8 +486,10 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                             legacyBehavior
                             className="uppercase border border-border px-3 py-2 rounded text-xs font-semibold text-primary-foreground flex gap-2"
                           >
-                            {t("logout")}
-                            <LogOut className="w-4 h-4" />
+                            <span className="flex gap-2 justify-center items-center">
+                              {t("logout")}
+                              <LogOut className="w-4 h-4" />
+                            </span>
                           </Link>
                         </SheetClose>
                       </div>

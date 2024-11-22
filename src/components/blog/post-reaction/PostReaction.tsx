@@ -119,7 +119,7 @@ const ReactionsSection: React.FC<ReactionsSectionProps> = ({
 
       {/* Comments Button */}
       {commentsCount !== undefined && (
-        <Button variant="ghost" className="flex items-center space-x-2">
+        <Button variant="secondary" className="flex items-center space-x-2">
           <MessageSquare className="w-5 h-5" />
           <span>{commentsCount} Comments</span>
         </Button>

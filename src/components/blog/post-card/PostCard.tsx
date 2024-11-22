@@ -75,7 +75,7 @@ const PostCard: React.FC<PostCardProps> = ({ blog, onClick }) => {
         {/* Add likes, dislikes, and comments badges */}
         <CardFooter className="mt-4 flex flex-col sm:flex-row w-full justify-between">
           <div className="flex space-x-4 mb-2 text-center">
-            <Button variant="ghost" size="sm" onClick={onClick}>
+            <Button variant="secondary" size="sm" onClick={onClick}>
               Read more
             </Button>
           </div>

@@ -47,7 +47,7 @@ const RegisterDialog: React.FC<RegisterDialogProps> = ({
             </DialogTitle>
           </DialogHeader>
 
-          <SignUpForm onComplete={handleFormComplete} onCancel={handleClose} />
+          <SignUpForm onComplete={handleFormComplete} onBack={handleClose} />
         </DialogContent>
       </div>
     </Dialog>

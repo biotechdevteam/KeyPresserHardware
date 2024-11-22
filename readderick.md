@@ -1,2 +1,3 @@
 - updated reset and forgot password
 - work on application process
+- profile management

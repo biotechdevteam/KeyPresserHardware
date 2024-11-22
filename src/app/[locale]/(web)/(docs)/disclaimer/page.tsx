@@ -1,6 +1,6 @@
 "use client";
 import Loader from "@/components/loader/Loader";
-import Disclaimer from "@/components/policies/Disclaimer";
+import Disclaimer from "@/components/Policies/Disclaimer";
 import { fetchAboutData } from "@/lib/utils/fetchUtils";
 import { About } from "@/types/aboutSchema";
 import { useQuery } from "@tanstack/react-query";

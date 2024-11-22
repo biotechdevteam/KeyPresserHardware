@@ -1,6 +1,6 @@
 "use client";
 import Loader from "@/components/loader/Loader";
-import RefundPolicy from "@/components/policies/RefundPolicy";
+import RefundPolicy from "@/components/Policies/RefundPolicy";
 import { fetchAboutData } from "@/lib/utils/fetchUtils";
 import { About } from "@/types/aboutSchema";
 import { useQuery } from "@tanstack/react-query";

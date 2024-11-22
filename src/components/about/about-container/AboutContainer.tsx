@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import HistoryTimeline from "../about-history/AboutHistory";
 import AboutFooter from "../about-footer/AboutFooter";
-import TermsModal from "../terms/TermsModal";
 import { extractDomain } from "@/lib/helpers";
 import { fetchAboutData } from "@/lib/utils/fetchUtils";
 import { Loader } from "lucide-react";
@@ -63,20 +62,6 @@ const AboutContainer: React.FC<{ initialData: About}> = ({ initialData }) => {
           contactEmail={aboutData.contact_email}
           address={aboutData.address}
           website={websiteURL}
-        />
-      </div>
-
-      {/* Terms Modal Section */}
-      <div className="col-span-1 lg:col-span-2">
-        <TermsModal
-          termsAndConditions={
-            aboutData.terms_and_conditions ||
-            "Terms & Conditions are not available at the moment."
-          }
-          privacyPolicy={
-            aboutData.privacy_policy ||
-            "Privacy Policy is not available at the moment."
-          }
         />
       </div>
     </div>

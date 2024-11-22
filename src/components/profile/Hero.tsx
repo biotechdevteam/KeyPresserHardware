@@ -84,12 +84,14 @@ const HeroDashboard = () => {
                   : "bg-accent text-accent-foreground border-accent hover:bg-accent-foreground hover:text-accent"
               }`}
             >
-              {isMember
-                ? "Create a New Request"
-                : isApplicant
-                ? "View Application"
-                : "Contact NGO"}
-              <ArrowRight className="ml-1" size={24} />
+              <span className="flex items-center gap-1">
+                {isMember
+                  ? "Create a New Request"
+                  : isApplicant
+                  ? "View Application"
+                  : "Contact NGO"}
+                <ArrowRight className="ml-1" size={24} />
+              </span>
             </Link>
           </div>
         </div>

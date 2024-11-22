@@ -285,6 +285,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
         <div className="flex-shrink-0 text-center">
           <Link
             href={homePage.link}
+            legacyBehavior
             onClick={(e) => handleClick(e, homePage.link)}
           >
             <Image
@@ -341,6 +342,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                         <SheetClose asChild>
                           <Link
                             href={LoginPage.link}
+                            legacyBehavior
                             className="uppercase border border-border px-3 py-2 rounded text-xs font-semibold text-primary-foreground flex gap-2"
                             onClick={(e) => handleClick(e, LoginPage.link)}
                           >
@@ -481,6 +483,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                           <Link
                             href="#"
                             onClick={signOut}
+                            legacyBehavior
                             className="uppercase border border-border px-3 py-2 rounded text-xs font-semibold text-primary-foreground flex gap-2"
                           >
                             {t("logout")}

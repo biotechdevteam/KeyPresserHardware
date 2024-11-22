@@ -69,6 +69,7 @@ const CookieConsent: React.FC = () => {
             onClick={() =>
               router.push("/cookie-settings", { onTransitionReady: slideInOut })
             }
+            legacyBehavior
           >
             Cookie Settings.
           </Link>{" "}
@@ -78,6 +79,7 @@ const CookieConsent: React.FC = () => {
             onClick={() =>
               router.push("/privacy-policy", { onTransitionReady: slideInOut })
             }
+            legacyBehavior
           >
             Privacy Policy.
           </Link>

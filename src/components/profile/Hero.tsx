@@ -70,6 +70,7 @@ const HeroDashboard = () => {
           {/* Action Button */}
           <div>
             <Link
+              legacyBehavior
               href={
                 isMember
                   ? `/members/create-request`

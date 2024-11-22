@@ -41,7 +41,7 @@ const FileSchema = z.object({
 const AboutSchema = z.object({
   name: z.string(),
   slogan: z.string().optional(),
-  logo_url: z.string().url().optional(),
+  logo_url: z.string().url(),
   cover_photo_url: z.string().url().optional(),
   mission_statement: z.string(),
   vision_statement: z.string(),

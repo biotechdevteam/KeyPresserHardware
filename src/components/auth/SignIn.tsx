@@ -7,13 +7,12 @@ import useAuth from "@/lib/useAuth";
 import Link from "next/link";
 import Image from "next/image";
 import { About } from "@/types/aboutSchema";
-import Logo from "../../../public/images/logo.png";
 import { useRouter } from "next/navigation";
 
 const SignIn: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   const { signIn, error: authError, loading, user } = useAuth();
   const [formError, setFormError] = useState<string | null>(null);
-  const logo = aboutData?.logo_url || Logo;
+  const logo = aboutData.logo_url;
 
   const {
     register,

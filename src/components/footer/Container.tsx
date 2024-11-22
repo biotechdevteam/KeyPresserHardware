@@ -39,11 +39,14 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
         <div className="container grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-8 mx-auto sm:col-span-2 lg:col-span-1">
           {/* Quick Links Section */}
           <div className=" text-center lg:text-left">
-            <h3 className="text-lg font-semibold mb-4 text-primary-foreground">Quick Links</h3>
+            <h3 className="text-lg font-semibold mb-4 text-primary-foreground">
+              Quick Links
+            </h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   href="/story"
+                  legacyBehavior
                   onClick={(e) => handleClick(e, "/story")}
                   className="text-base hover:underline text-primary-foreground"
                 >
@@ -62,6 +65,7 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
               <li>
                 <Link
                   href="/upcoming-events"
+                  legacyBehavior
                   onClick={(e) => handleClick(e, "//upcoming-events")}
                   className="text-base hover:underline text-primary-foreground"
                 >
@@ -71,6 +75,7 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
               <li>
                 <Link
                   href="/news-&-insights"
+                  legacyBehavior
                   onClick={(e) => handleClick(e, "/news-&-insights")}
                   className="text-base hover:underline text-primary-foreground"
                 >
@@ -79,6 +84,7 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
               </li>
               <li>
                 <Link
+                  legacyBehavior
                   href="/services"
                   onClick={(e) => handleClick(e, "/services")}
                   className="text-base hover:underline text-primary-foreground"
@@ -89,6 +95,7 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
               <li>
                 <Link
                   href="/faqs"
+                  legacyBehavior
                   onClick={(e) => handleClick(e, "/faqs")}
                   className="text-base hover:underline text-primary-foreground"
                 >
@@ -100,11 +107,14 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
 
           {/* Explore Section */}
           <div className=" text-center lg:text-left">
-            <h3 className="text-lg font-semibold mb-4 text-primary-foreground">Explore</h3>
+            <h3 className="text-lg font-semibold mb-4 text-primary-foreground">
+              Explore
+            </h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   href="/partners-&-sponsors"
+                  legacyBehavior
                   onClick={(e) => handleClick(e, "/partners-&-sponsors")}
                   className="text-base hover:underline text-primary-foreground"
                 >
@@ -114,6 +124,7 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
               <li>
                 <Link
                   href="/mission-&-vision"
+                  legacyBehavior
                   onClick={(e) => handleClick(e, "/mission-&-vision")}
                   className="text-base hover:underline text-primary-foreground"
                 >
@@ -123,6 +134,7 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
               <li>
                 <Link
                   href="/achievements"
+                  legacyBehavior
                   onClick={(e) => handleClick(e, "/achievements")}
                   className="text-base hover:underline text-primary-foreground"
                 >
@@ -132,6 +144,7 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
               <li>
                 <Link
                   href="/exhibitions-&-sponsorship"
+                  legacyBehavior
                   onClick={(e) => handleClick(e, "/exhibitions-&-sponsorship")}
                   className="text-base hover:underline text-primary-foreground"
                 >
@@ -143,11 +156,14 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
 
           {/* Legal Section */}
           <div className=" text-center lg:text-left">
-            <h3 className="text-lg font-semibold mb-4 text-primary-foreground">Legal Pages</h3>
+            <h3 className="text-lg font-semibold mb-4 text-primary-foreground">
+              Legal Pages
+            </h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   href="/cookie-settings"
+                  legacyBehavior
                   onClick={(e) => handleClick(e, "/cookie-settings")}
                   className="text-base hover:underline text-primary-foreground"
                 >
@@ -157,6 +173,7 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
               <li>
                 <Link
                   href="/privacy-policy"
+                  legacyBehavior
                   onClick={(e) => handleClick(e, "/privacy-policy")}
                   className="text-base hover:underline text-primary-foreground"
                 >
@@ -166,6 +183,7 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
               <li>
                 <Link
                   href="/refund-policy"
+                  legacyBehavior
                   onClick={(e) => handleClick(e, "/refund-policy")}
                   className="text-base hover:underline text-primary-foreground"
                 >
@@ -175,6 +193,7 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
               <li>
                 <Link
                   href="/disclaimer"
+                  legacyBehavior
                   onClick={(e) => handleClick(e, "/disclaimer")}
                   className="text-base hover:underline text-primary-foreground"
                 >

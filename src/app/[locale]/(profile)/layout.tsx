@@ -12,7 +12,7 @@ export default function ProfileLayout({
   children: React.ReactNode;
 }) {
   return (
-    <AuthGuard allowedRoles={["member", "applicant"]}>
+    <AuthGuard allowedRoles={["member", "applicant", "admin"]}>
       <div className="min-h-screen bg-background text-foreground">
         <main className="container mx-auto px-4 lg:px-8 py-6 flex-grow">
           <HeroDashboard />

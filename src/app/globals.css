@@ -234,6 +234,28 @@
   .blog-content img {
     @apply max-w-full h-auto rounded-md my-4;
   }
+
+  .rbc-calendar {
+    background-color: #fff;
+  }
+
+  .rbc-event {
+    background-color: #4f46e5;
+    color: #fff;
+    padding: 5px;
+    border-radius: 4px;
+  }
+
+  .rbc-toolbar button {
+    background-color: #e5e7eb;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    padding: 5px 10px;
+  }
+
+  .rbc-toolbar button:hover {
+    background-color: #d1d5db;
+  }
 }
 
 @layer components {

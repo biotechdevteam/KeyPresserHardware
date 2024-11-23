@@ -75,13 +75,13 @@ const ServicesPage: React.FC = async () => {
           <h1 className="text-4xl font-bold">Our Services</h1>
           <p className="text-lg mt-4">Discover the services we offer to our clients.</p>
         </header>
-        <ServicesContainer
-          initialData={{
-            services: servicesData as Service[],
-            feedbacks: feedbacksData as Feedback[],
-          }}
-        />
       </div>
+      <ServicesContainer
+        initialData={{
+          services: servicesData as Service[],
+          feedbacks: feedbacksData as Feedback[],
+        }}
+      />
     </div>
   );
 };

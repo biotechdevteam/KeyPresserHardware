@@ -79,6 +79,7 @@ export const metadata: Metadata = {
 2. Use route groups or a global layout structure.
 3. Create a shared layout in a common location (e.g., `/app` directory).
 4. Test all routes to ensure correct rendering and layout sharing.
+5. getting better
 
 By completing these tasks, we'll optimize the project's performance, maintainability, and SEO, ensuring a better user experience.
 ```

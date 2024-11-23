@@ -55,7 +55,7 @@ const Hero: React.FC<HeroProps> = ({ aboutData }) => {
             </Link>
 
             {/* Join Us Button */}
-            <Link href="/join-us">
+            <Link href="/apply">
               <Button
                 variant={"outline"}
                 className="px-6 py-6 text-xl font-semibold border border-2 border-primary text-primary rounded-lg shadow-lg transition-all transform hover:scale-105"

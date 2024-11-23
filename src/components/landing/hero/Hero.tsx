@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"; // shadcn button
 import { About } from "@/types/aboutSchema";
 import AnimeBg from "../../../../public/animations/biologist-animate.svg";
 import { Link } from "next-view-transitions";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Users } from "lucide-react";
 
 interface HeroProps {
   aboutData: About;
@@ -15,39 +15,52 @@ interface HeroProps {
 const Hero: React.FC<HeroProps> = ({ aboutData }) => {
   return (
     <div className="relative overflow-hidden min-h-[36rem] bg-card pt-8">
+      {/* Background Decoration */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-blue-50 via-white to-blue-100" />
 
       {/* Hero Content */}
-      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 items-center gap-8 min-h-full p-16 lg:px-16 sm:px-8">
-        {/* Right Side: GIF Image on mobile first */}
-        <div className="flex justify-center lg:justify-end lg:end-32 order-1 lg:order-2">
+      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 items-center gap-12 min-h-full px-8 lg:px-16 py-16">
+        {/* Right Side: Animation */}
+        <div className="flex justify-center lg:justify-end order-1 lg:order-2">
           <Image
             src={AnimeBg}
             alt="Biologist Animation"
-            className="object-contain animate-fadeIn"
+            className="object-contain w-3/4 lg:w-full animate-fadeIn"
             priority
           />
         </div>
 
-        {/* Left Side: Text and CTA */}
+        {/* Left Side: Text and Actions */}
         <div className="space-y-6 text-center lg:text-left order-2 lg:order-1">
           {/* Headline */}
-          <div className="text-3xl lg:text-6xl font-bold space-y-2">
+          <div className="text-4xl lg:text-6xl font-bold tracking-tight">
             <h1 className="animate-fadeInUp">{aboutData.slogan}</h1>
           </div>
 
           {/* Sub-headline */}
-          <p className="text-base lg:text-2xl animate-fadeIn delay-200">
+          <p className="text-lg lg:text-2xl text-muted-foreground animate-fadeIn delay-200">
             We are pioneers in biotechnology, driving innovative research and
-            solutions that solve today's challenges and shape the future. From
-            cutting-edge research to practical solutions, we help you harness
-            the power of science to improve lives.
+            solutions to solve today's challenges and shape tomorrow's future.
+            Join us in exploring the power of science to improve lives.
           </p>
 
-          {/* CTA Button */}
-          <div className="flex justify-center lg:justify-start mt-6">
-            <Link href="/projects">
-              <Button variant="default" className="animate-beep">
-                Explore Our Innovations <ArrowRight className="w-4 h-4 ml-2" />
+          {/* Call-to-Actions */}
+          <div className="flex flex-col sm:flex-row justify-center lg:justify-start items-center gap-4 mt-8">
+            {/* Explore Innovations Button */}
+            <Link href="/services">
+              <Button className="px-6 py-6 text-xl font-semibold hover:bg-transparent hover:border-primary hover:border hover:border-2 hover:border-primary transition-all transform hover:scale-105">
+                Explore Innovations{" "}
+                <ArrowRight className="w-5 h-5 ml-2 inline" />
+              </Button>
+            </Link>
+
+            {/* Join Us Button */}
+            <Link href="/join-us">
+              <Button
+                variant={"outline"}
+                className="px-6 py-6 text-xl font-semibold border border-2 border-primary text-primary rounded-lg shadow-lg transition-all transform hover:scale-105"
+              >
+                Join Us <Users className="w-5 h-5 ml-2 inline" />
               </Button>
             </Link>
           </div>

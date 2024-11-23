@@ -51,9 +51,7 @@ const ServicesContainer: React.FC<ServicesContainerProps> = ({
     setSelectedCategory(category);
   };
 
-  const testimonialsTitle = selectedCategory
-    ? `What Our Clients Say About ${selectedCategory} Solutions`
-    : "What Our Clients Say";
+  const testimonialsTitle = "What Our Clients Say";
 
   if (servicesLoading || feedbacksLoading) return <div>Loading...</div>;
   if (servicesError || feedbacksError) return <div>Error loading data...</div>;

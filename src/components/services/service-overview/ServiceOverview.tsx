@@ -1,29 +1,38 @@
 "use client";
 import React from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Cpu, FlaskConical, BookOpen } from "lucide-react";
+import { Cpu, BookOpen, Microscope, Layers } from "lucide-react";
 
 interface ServiceOverviewProps {
   onCategoryClick: (category: string | null) => void;
 }
 
-// Fixed category-to-icon mapping
+// Updated category-to-icon mapping with new categories
 const categories = [
   {
-    name: "technology",
+    name: "core_services",
+    display: "Trending",
+    icon: (
+      <Layers className="w-8 h-8 transition-colors duration-300 group-hover:text-foreground text-primary" />
+    ),
+  },
+  {
+    name: "it_and_design",
+    display: "Technology",
     icon: (
       <Cpu className="w-8 h-8 transition-colors duration-300 group-hover:text-foreground text-primary" />
     ),
   },
   {
-    name: "analysis",
+    name: "laboratory_and_scientific",
+    display: "Science",
     icon: (
-      <FlaskConical className="w-8 h-8 transition-colors duration-300 group-hover:text-foreground text-primary" />
+      <Microscope className="w-8 h-8 transition-colors duration-300 group-hover:text-foreground text-primary" />
     ),
   },
   {
-    name: "trainings",
+    name: "training_and_workshops",
+    display: "Workshops",
     icon: (
       <BookOpen className="w-8 h-8 transition-colors duration-300 group-hover:text-foreground text-primary" />
     ),
@@ -40,16 +49,16 @@ const ServiceOverview: React.FC<ServiceOverviewProps> = ({
           Explore Our Expertise
         </h2>
         <p className="text-base text-muted-foreground">
-          Discover our expertise in technology, advanced analysis, and
-          comprehensive training programs. We provide services tailored to
-          achieve your goals and exceed expectations.
+          Discover our expertise in core services, IT & design, laboratory &
+          scientific solutions, and hands-on training programs. We provide
+          services tailored to achieve your goals and exceed expectations.
         </p>
       </div>
 
       {/* Categories Grid */}
       <div className="overflow-hidden">
-        <div className="grid grid-flow-col gap-4 auto-cols-[minmax(125px,1fr)] whitespace-nowrap">
-          {categories.map(({ name, icon }) => (
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          {categories.map(({ name, display, icon }) => (
             <Card
               key={name}
               className="group cursor-pointer hover:scale-105 transition-transform duration-300 p-4 flex flex-col items-center justify-center bg-card text-center hover:bg-primary"
@@ -61,7 +70,7 @@ const ServiceOverview: React.FC<ServiceOverviewProps> = ({
               {/* Category Title */}
               <CardContent className="mt-3">
                 <h3 className="text-sm font-medium transition-colors duration-300 text-card-foreground group-hover:text-background">
-                  {name.charAt(0).toUpperCase() + name.slice(1)}
+                  {display}
                 </h3>
               </CardContent>
             </Card>

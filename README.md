@@ -1,4 +1,5 @@
 Still updating coloring
+finlly i say I'm done wit 
 
 # Pre-Deployment Checklist
 =====================================

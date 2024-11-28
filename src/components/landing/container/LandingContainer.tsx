@@ -39,7 +39,7 @@ const LandingContainer: React.FC<{
     <div className="landing-page-container">
       <Hero aboutData={aboutData} />
 
-      <ServicesSection services={services} aboutData={aboutData} />
+      <ServicesSection />
 
       <AboutPartnerships partnerships={aboutData.partnerships || []} />
 

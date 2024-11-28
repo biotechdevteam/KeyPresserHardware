@@ -48,8 +48,8 @@ const Hero: React.FC<HeroProps> = ({ aboutData }) => {
           <div className="flex flex-col sm:flex-row justify-center lg:justify-start items-center gap-4 mt-8">
             {/* Explore Innovations Button */}
             <Link href="/services">
-              <Button className="px-6 py-6 text-xl font-semibold hover:bg-transparent hover:border-primary hover:border hover:border-2 hover:border-primary transition-all transform hover:scale-105">
-                Explore Innovations{" "}
+              <Button className="px-6 py-6 text-xl transition-all transform hover:scale-105">
+                Explore{" "}
                 <ArrowRight className="w-5 h-5 ml-2 inline" />
               </Button>
             </Link>
@@ -57,8 +57,8 @@ const Hero: React.FC<HeroProps> = ({ aboutData }) => {
             {/* Join Us Button */}
             <Link href="/apply">
               <Button
-                variant={"outline"}
-                className="px-6 py-6 text-xl font-semibold border border-2 border-primary text-primary rounded-lg shadow-lg transition-all transform hover:scale-105"
+                variant={"secondary"}
+                className="px-6 py-6 text-xl transition-all transform hover:scale-105"
               >
                 Join Us <Users className="w-5 h-5 ml-2 inline" />
               </Button>

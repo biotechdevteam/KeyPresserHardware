@@ -458,6 +458,21 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                       </ul>
                     </NavCollapsible>
 
+                    <NavCollapsible
+                      triggerText="Projects"
+                      isOpen={openIndex === 4}
+                      onOpenChange={() => handleOpenChange(4)}
+                    >
+                      <SheetClose asChild key={servicesPage.title}>
+                        <NavCollapsibleListItem
+                          href={servicesPage.link}
+                          onClick={(e) => handleClick(e, servicesPage.link)}
+                        >
+                          {servicesPage.title}
+                        </NavCollapsibleListItem>
+                      </SheetClose>
+                    </NavCollapsible>
+
                     {/* Profile */}
                     {isAuthenticated && (
                       <div className="space-y-4 mt-4">

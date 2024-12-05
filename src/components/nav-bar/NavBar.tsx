@@ -454,9 +454,9 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                       </ul>
                     </NavCollapsible>
                     <NavCollapsible
-                      triggerText="Projects"
-                      isOpen={openIndex === 4}
-                      onOpenChange={() => handleOpenChange(4)}
+                      triggerText="Services"
+                      isOpen={openIndex === 5}
+                      onOpenChange={() => handleOpenChange(5)}
                     >
                       <SheetClose asChild key={servicesPage.title}>
                         <NavCollapsibleListItem

@@ -381,7 +381,6 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                         ))}
                       </ul>
                     </NavCollapsible>
-
                     <NavCollapsible
                       triggerText="Membership"
                       isOpen={openIndex === 1}
@@ -400,7 +399,6 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                         ))}
                       </ul>
                     </NavCollapsible>
-
                     <NavCollapsible
                       triggerText="Events"
                       isOpen={openIndex === 2}
@@ -419,7 +417,6 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                         ))}
                       </ul>
                     </NavCollapsible>
-
                     <NavCollapsible
                       triggerText="Resources"
                       isOpen={openIndex === 3}
@@ -438,7 +435,6 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                         ))}
                       </ul>
                     </NavCollapsible>
-
                     <NavCollapsible
                       triggerText="Projects"
                       isOpen={openIndex === 4}
@@ -457,11 +453,10 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                         ))}
                       </ul>
                     </NavCollapsible>
-
                     <NavCollapsible
-                      triggerText="Services"
-                      isOpen={openIndex === 5}
-                      onOpenChange={() => handleOpenChange(5)}
+                      triggerText="Projects"
+                      isOpen={openIndex === 4}
+                      onOpenChange={() => handleOpenChange(4)}
                     >
                       <SheetClose asChild key={servicesPage.title}>
                         <NavCollapsibleListItem
@@ -472,7 +467,6 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                         </NavCollapsibleListItem>
                       </SheetClose>
                     </NavCollapsible>
-
                     {/* Profile */}
                     {isAuthenticated && (
                       <div className="space-y-4 mt-4">

@@ -1,11 +1,11 @@
 "use client";
 import React, { useState } from "react";
-import EventCard from "@/components/events/events-card/EventsCard";
 import SearchContainer from "@/components/events/search-event/SearchContainer";
 import { Feedback } from "@/types/feedbackSchema";
 import { Event } from "@/types/eventsSchema";
 import RegisterDialog from "@/components/register-dialog/RegisterDialog";
 import EnrollEventForm from "../events-enroll/EnrollForm";
+import EventCard from "../events-card/EventsCard";
 
 interface EventsContainerProps {
   initialData: {
@@ -62,8 +62,8 @@ const EventsContainer: React.FC<EventsContainerProps> = ({ initialData }) => {
       {/* Enrollment Form Modal */}
       {isEnrollFormOpen && selectedEvent && (
         <EnrollEventForm
-          eventId={selectedEvent._id}
-          eventTitle={selectedEvent.title}
+          eventId={selectedEvent?._id}
+          eventTitle={selectedEvent?.title}
           onComplete={() => setIsEnrollFormOpen(false)}
           onCancel={() => setIsEnrollFormOpen(false)}
         />
@@ -97,14 +97,3 @@ const EventsContainer: React.FC<EventsContainerProps> = ({ initialData }) => {
 };
 
 export default EventsContainer;
-
-
-//   // Use `useQuery` to fetch events, with initial data from props
-//   const { data: eventsData = initialData.events } = useQuery({
-//     queryKey: ["events"],
-//     queryFn: fetchEvents,
-//     initialData: initialData.events,
-//   });
-
-
-//       <h2 className="text-2xl text-center mb-4">Join Us In Our Events</h2>

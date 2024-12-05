@@ -142,8 +142,8 @@ const navMenu: Pages[][] = [
   // Events
   [
     {
-      title: "calender",
-      link: "/calender",
+      title: "Events Calender",
+      link: "/events-calender",
       description:
         "Stay updated with a calendar of upcoming events, meetings, and important dates.",
     },
@@ -209,6 +209,12 @@ const navMenu: Pages[][] = [
 
   // Projects
   [
+    {
+      title: "Activities Calendar",
+      link: "/projects-calendar",
+      description:
+        "Stay updated with a calendar of Our Activities, milestones and opportunities.",
+    },
     {
       title: "ongoing projects",
       link: "/ongoing-projects",

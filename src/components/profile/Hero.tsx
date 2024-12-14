@@ -15,12 +15,13 @@ const HeroDashboard = () => {
         <div
           className={`${
             isMember
-              ? "bg-primary"
+              ? "bg-primary text-primary-foreground"
               : isApplicant
-              ? "bg-foreground"
-              : "bg-accent"
+              ? "bg-muted text-muted-foreground"
+              : "bg-accent text-accent-foreground"
           } p-5 md:p-10 rounded-lg flex justify-center md:justify-between items-center flex-wrap gap-2`}
         >
+          {/* Profile Section */}
           <div className="flex items-center flex-wrap justify-center sm:justify-start">
             <div className="mr-2 lg:mr-5">
               <Image
@@ -32,12 +33,12 @@ const HeroDashboard = () => {
               />
             </div>
             {isMember || isApplicant ? (
-              <div className="text-foreground font-bold text-center sm:text-start">
+              <div className="font-bold text-center sm:text-start">
                 <h5 className="text-xl leading-1.2 mb-1">Hello</h5>
                 <h2 className="text-2xl leading-1.24">{user?.first_name}</h2>
               </div>
             ) : (
-              <div className="text-foreground font-bold text-center sm:text-start">
+              <div className="font-bold text-center sm:text-start">
                 <h5 className="text-2xl leading-1.24 mb-1">
                   {user?.first_name}
                 </h5>
@@ -53,19 +54,20 @@ const HeroDashboard = () => {
             )}
           </div>
 
-          {/* This section only displays for members */}
+          {/* Star Rating Section for Members */}
           {isMember && (
             <div className="text-center">
-              <div className="text-primary flex items-center justify-center gap-1">
+              <div className="text-primary-foreground flex items-center justify-center gap-1">
                 {[...Array(4)].map((_, i) => (
                   <Star key={i} size={16} />
                 ))}
                 <StarHalf size={16} />
               </div>
-              <p className="text-foreground">4.0 (120 Reviews)</p>
+              <p className="text-primary-foreground">4.0 (120 Reviews)</p>
             </div>
           )}
 
+          {/* Action Button */}
           <div>
             <Link
               href={
@@ -73,13 +75,13 @@ const HeroDashboard = () => {
                   ? `/members/create-request`
                   : `/applicants/view-application`
               }
-              className={`text-sm border ${
+              className={`text-sm border px-6 py-2 rounded group text-nowrap flex gap-1 items-center ${
                 isMember
-                  ? "bg-primary text-foreground border-foreground hover:text-primary"
+                  ? "bg-primary text-primary-foreground border-primary hover:bg-primary-foreground hover:text-primary"
                   : isApplicant
-                  ? "bg-primary border-primary hover:text-primary"
-                  : "bg-secondary border-secondary hover:text-secondary"
-              } px-6 py-2 hover:bg-foreground rounded group text-nowrap flex gap-1 items-center`}
+                  ? "bg-muted text-muted-foreground border-muted hover:bg-muted-foreground hover:text-muted"
+                  : "bg-accent text-accent-foreground border-accent hover:bg-accent-foreground hover:text-accent"
+              }`}
             >
               {isMember
                 ? "Create a New Request"

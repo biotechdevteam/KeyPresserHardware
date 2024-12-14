@@ -17,12 +17,23 @@ import { Member } from "@/types/memberSchema";
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
 import Image from "next/image";
+import { Application, ApplicationSchema } from "@/types/ApplicationSchema";
+import Link from "next/link";
 
 interface ApplicationFormProps {
   onComplete: () => void;
   onBack?: () => void;
   members: Member[];
 }
+
+// Define a type for form errors
+type FormErrorType = {
+  profile_photo_url: string;
+  motivation_letter: string;
+  specialization_area: string;
+  resume_url: string;
+  referred_by_member_id: string;
+};
 
 const specializationOptions = [
   "Biotechnology",
@@ -49,31 +60,34 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
     uploadImage,
   } = useImgbb();
   const {
-    uploadFile,
-    fileUrl,
+    imageUrl: fileUrl,
     loading: fileLoading,
     error: fileError,
-  } = useGoogleDrive();
+    uploadImage: uploadFile,
+  } = useImgbb();
 
-  const [formData, setFormData] = useState({
-    profilePhotoUrl: imageUrl || "",
+  // Initialize formData with the Application type
+  const [formData, setFormData] = useState<Application>({
+    user_id: user?._id || "",
+    profile_photo_url: "",
     motivation_letter: "",
     specialization_area: "",
-    resume_file: null as File | null,
-    referred_by_member_id: "",
+    resume_url: "",
+    referred_by_member_id: undefined,
   });
-  const [formErrors, setFormErrors] = useState({
-    profilePhotoUrl: "",
+
+  const [formErrors, setFormErrors] = useState<FormErrorType>({
+    profile_photo_url: "",
     motivation_letter: "",
     specialization_area: "",
-    resume_file: "",
+    resume_url: "",
     referred_by_member_id: "",
   });
   const [showOtherField, setShowOtherField] = useState(false);
 
   useEffect(() => {
     if (imageUrl) {
-      setFormData((prev) => ({ ...prev, profilePhotoUrl: imageUrl }));
+      setFormData((prev) => ({ ...prev, profile_photo_url: imageUrl }));
     }
     if (fileUrl) {
       setFormData((prev) => ({ ...prev, resume_url: fileUrl }));
@@ -91,7 +105,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
 
   const handleResumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) setFormData({ ...formData, resume_file: file });
+    if (file) uploadFile(file);
   };
 
   const handleSpecializationChange = (
@@ -114,46 +128,55 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
   };
 
   const validateForm = () => {
-    let valid = true;
-    const errors = {
-      profilePhotoUrl: "",
+    const parsed = ApplicationSchema.safeParse({
+      user_id: user?._id || "",
+      profile_photo_url: formData.profile_photo_url,
+      motivation_letter: formData.motivation_letter,
+      referred_by_member_id: formData.referred_by_member_id || undefined,
+      specialization_area: formData.specialization_area,
+      resume_url: formData.resume_url || undefined,
+    });
+
+    if (!parsed.success) {
+      const errors: FormErrorType = {
+        profile_photo_url: "",
+        motivation_letter: "",
+        specialization_area: "",
+        resume_url: "",
+        referred_by_member_id: "",
+      };
+
+      parsed.error.errors.forEach((err) => {
+        const key = err.path[0] as keyof FormErrorType;
+        if (key) {
+          errors[key] = err.message;
+        }
+      });
+
+      setFormErrors(errors);
+      return false;
+    }
+
+    setFormErrors({
+      profile_photo_url: "",
       motivation_letter: "",
       specialization_area: "",
-      resume_file: "",
+      resume_url: "",
       referred_by_member_id: "",
-    };
-
-    if (!formData.profilePhotoUrl.trim()) {
-      errors.profilePhotoUrl = "Your photo is required.";
-      valid = false;
-    }
-    if (!formData.motivation_letter.trim()) {
-      errors.motivation_letter = "Your motivation letter is required.";
-      valid = false;
-    }
-    if (!formData.specialization_area.trim()) {
-      errors.specialization_area = "Field of specialization is required.";
-      valid = false;
-    }
-
-    setFormErrors(errors);
-    return valid;
+    });
+    return true;
   };
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
 
-    // if (formData.resume_file) {
-    //   await uploadFile(formData.resume_file);
-    // }
-
     const success = await apply(
+      imageUrl,
       formData.motivation_letter,
       formData.specialization_area,
       fileUrl,
-      imageUrl,
-      formData.referred_by_member_id || undefined
+      formData.referred_by_member_id
     );
 
     if (success) {
@@ -168,10 +191,11 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
       onBack();
     } else {
       setFormData({
-        profilePhotoUrl: "",
+        user_id: user?._id || "",
+        profile_photo_url: "",
         motivation_letter: "",
         specialization_area: "",
-        resume_file: null as File | null,
+        resume_url: "",
         referred_by_member_id: "",
       });
     }
@@ -228,11 +252,11 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
               <p className="text-xs">Image Preview</p>
             </div>
           )}
-          {!formErrors.profilePhotoUrl && (
+          {!formErrors.profile_photo_url && (
             <p className="text-xs">This will be displayed on your profile.</p>
           )}
-          {formErrors.profilePhotoUrl && (
-            <p className="text-destructive">{formErrors.profilePhotoUrl}</p>
+          {formErrors.profile_photo_url && (
+            <p className="text-destructive">{formErrors.profile_photo_url}</p>
           )}
         </div>
 
@@ -254,13 +278,20 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
           )}
           {fileUrl && (
             <div className="mt-4 text-sm text-muted-foreground">
-              <span className="block text-primary">
-                Resume Uploaded Successfully
-              </span>
+              {/* Preview Link */}
+              <Link
+                href={fileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block mt-2 underline"
+              >
+                View Uploaded Resume
+              </Link>
             </div>
           )}
-          {formErrors.resume_file && (
-            <p className="text-destructive">{formErrors.resume_file}</p>
+
+          {formErrors.resume_url && (
+            <p className="text-destructive">{formErrors.resume_url}</p>
           )}
         </div>
       </div>

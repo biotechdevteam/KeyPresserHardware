@@ -167,6 +167,44 @@ export const signInRequest = async (email: string, password: string) => {
   }
 };
 
+// Forgot Password Request
+export const forgotPasswordRequest = async (email: string) => {
+  try {
+    const response = await fetchData("/auth/forgot-password", "POST", {
+      email,
+    });
+
+    // Assuming the response contains a message
+    return response?.data?.message;
+  } catch (error) {
+    console.error("Error during forgot password request:", error);
+    throw error;
+  }
+};
+
+// Reset Password Request
+export const resetPasswordRequest = async (
+  token: string,
+  newPassword: string
+) => {
+  try {
+    const response = await fetchData("/auth/reset-password", "POST", {
+      token,
+      new_password: newPassword,
+    });
+
+    // Assuming the response contains a message and user object
+    return {
+      message: response?.data?.message,
+      user: response?.data?.user,
+    };
+  } catch (error) {
+    console.error("Error during reset password request:", error);
+    throw error;
+  }
+};
+
+
 // Apply Function
 export const applyRequest = async (
   userId: string,

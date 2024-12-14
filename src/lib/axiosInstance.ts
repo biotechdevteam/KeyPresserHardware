@@ -2,6 +2,7 @@ import axios from "axios";
 
 // Set baseURL from environment variable
 const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+//const baseURL = "http://localhost:5000/api";
 
 console.log("Base URL:", baseURL);
 

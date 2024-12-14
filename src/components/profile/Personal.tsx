@@ -28,7 +28,7 @@ const Personal: React.FC<PersonalProps> = ({ user }) => {
   });
 
   return (
-    <Card className="max-w-xl mx-auto p-6 shadow-lg rounded-lg bg-white">
+    <Card className="max-w-xl mx-auto p-6 shadow-lg rounded-lg">
       <CardHeader className="flex items-center gap-4">
         <Avatar>
           <AvatarImage
@@ -44,7 +44,7 @@ const Personal: React.FC<PersonalProps> = ({ user }) => {
           <CardTitle className="text-2xl font-semibold">
             {user.first_name} {user.last_name}
           </CardTitle>
-          <CardDescription className="text-gray-500">
+          <CardDescription className="text-muted">
             Joined on {joinedDate}
           </CardDescription>
         </div>
@@ -52,22 +52,29 @@ const Personal: React.FC<PersonalProps> = ({ user }) => {
       <CardContent className="mt-4 space-y-4">
         {/* Email */}
         <div className="flex items-center gap-2">
-          <Mail className="text-gray-600" />
+          <Mail  />
           <span>{user.email}</span>
         </div>
 
         {/* User Type */}
         <div className="flex items-center gap-2">
-          <UserIcon className="text-gray-600" />
-          <span>{user.user_type === "admin" ? "Administrator" : "User"}</span>
+          <UserIcon />
+          <span>
+            {user.user_type === "admin"
+              ? "Administrator"
+              : user.user_type === "member"
+              ? "Associate Member"
+              : user.user_type === "applicant"
+              ? "Pending Applicant"
+              : "Enthusiast"}
+          </span>
         </div>
 
         {/* Address */}
         <div className="flex items-center gap-2">
-          <MapPin className="text-gray-600" />
+          <MapPin />
           <span>Buea, SW Cameroon</span>
         </div>
-
       </CardContent>
     </Card>
   );

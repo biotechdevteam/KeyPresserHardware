@@ -8,13 +8,17 @@ import {
   signInRequest,
   signUpRequest,
   fetchData,
+  forgotPasswordRequest,
+  resetPasswordRequest,
 } from "../lib/utils/fetchUtils";
-import { useRouter } from "next/navigation";
+import { Applicant } from "@/types/applicant";
 
 interface AuthState {
   isAuthenticated: boolean;
   user: User | null;
-  profile: Member | null;
+  profile: Member | Applicant | null;
+  members: Member[];
+  applicants: Applicant[];
   loading: boolean;
   error: string | null;
 }
@@ -28,7 +32,7 @@ interface AuthActions {
     lastName: string,
     userType: string
   ) => Promise<boolean>;
-  getMemberProfile: () => Promise<void>;
+  getProfile: () => Promise<void>;
   apply: (
     specializationArea: string,
     motivationLetter: string,
@@ -56,6 +60,12 @@ interface AuthActions {
     socialLinks: string[],
     resumeUrl: string
   ) => Promise<boolean>;
+  forgotPassword: (email: string) => Promise<boolean>;
+  resetPassword: (token: string, newPassword: string) => Promise<boolean>;
+  getAllApplicants: () => Promise<void>;
+  getAllMembers: () => Promise<void>;
+  approveApplication: (applicantId: string) => Promise<boolean>;
+  rejectApplication: (applicantId: string) => Promise<boolean>;
 }
 
 type AuthStore = AuthState & AuthActions;
@@ -82,6 +92,46 @@ const useAuth = create<AuthStore>()(
       profile: null,
       loading: false,
       error: null,
+      members: [],
+      applicants: [],
+
+      // Forgot Password Function
+      forgotPassword: async (email) => {
+        set({ loading: true, error: null });
+        try {
+          const message = await forgotPasswordRequest(email);
+          console.log("Forgot Password Response:", message);
+          return true;
+        } catch (err: any) {
+          const errorMessage = handleApiError(err);
+          set({ error: errorMessage });
+          return false;
+        } finally {
+          set({ loading: false });
+        }
+      },
+
+      // Reset Password Function
+      resetPassword: async (token, newPassword) => {
+        set({ loading: true, error: null });
+        try {
+          const { message, user } = await resetPasswordRequest(
+            token,
+            newPassword
+          );
+          console.log("Reset Password Response:", message);
+
+          // Update the store with the new user data if needed
+          set({ isAuthenticated: true, user });
+          return true;
+        } catch (err: any) {
+          const errorMessage = handleApiError(err);
+          set({ error: errorMessage });
+          return false;
+        } finally {
+          set({ loading: false });
+        }
+      },
 
       signIn: async (email, password) => {
         set({ loading: true, error: null });
@@ -127,15 +177,23 @@ const useAuth = create<AuthStore>()(
         }
       },
 
-      getMemberProfile: async () => {
+      getProfile: async () => {
         set({ loading: true, error: null });
         try {
           const user = get().user;
           if (!user || !user._id) throw new Error("User is not authenticated.");
 
-          const response = await fetchData(`/auth/member/${user._id}`, "GET");
-          const profileData: Member = response.data;
-          set({ profile: profileData });
+          const response = await fetchData(
+            `/auth/${user.user_type}/${user._id}`,
+            "GET"
+          );
+          const profileData = response.data;
+          const profile =
+            user.user_type === "member"
+              ? (profileData as Member)
+              : (profileData as Applicant);
+
+          set({ profile });
         } catch (err: any) {
           const errorMessage = handleApiError(err);
           set({ error: errorMessage });
@@ -177,8 +235,6 @@ const useAuth = create<AuthStore>()(
       signOut: () => {
         Cookies.remove("token");
         set({ isAuthenticated: false, user: null, profile: null });
-        const router = useRouter();
-        router.push("/auth/signin");
       },
 
       // Method to create a new profile
@@ -237,6 +293,80 @@ const useAuth = create<AuthStore>()(
             social_links: socialLinks,
             resume_url: resumeUrl,
           });
+          return true;
+        } catch (err: any) {
+          const errorMessage = handleApiError(err);
+          set({ error: errorMessage });
+          return false;
+        } finally {
+          set({ loading: false });
+        }
+      },
+
+      // Fetch all applicants
+      getAllApplicants: async () => {
+        set({ loading: true, error: null });
+        try {
+          const response = await fetchData("/auth/applicants", "GET");
+          const applicants: Applicant[] = response.data;
+          set({ applicants });
+        } catch (err: any) {
+          const errorMessage = handleApiError(err);
+          set({ error: errorMessage });
+        } finally {
+          set({ loading: false });
+        }
+      },
+
+      // Fetch all members
+      getAllMembers: async () => {
+        set({ loading: true, error: null });
+        try {
+          const response = await fetchData("/auth/members", "GET");
+          const members: Member[] = response.data;
+          set({ members });
+        } catch (err: any) {
+          const errorMessage = handleApiError(err);
+          set({ error: errorMessage });
+        } finally {
+          set({ loading: false });
+        }
+      },
+
+      // Approve an application
+      approveApplication: async (applicantId) => {
+        set({ loading: true, error: null });
+        try {
+          await fetchData(`/auth/accept-application/${applicantId}`, "PUT");
+          // Optionally update the applicant's status locally
+          const updatedApplicants = get().applicants.map((applicant) =>
+            applicant._id === applicantId
+              ? { ...applicant, application_status: "approved" as "approved" }
+              : applicant
+          );
+          set({ applicants: updatedApplicants });
+          return true;
+        } catch (err: any) {
+          const errorMessage = handleApiError(err);
+          set({ error: errorMessage });
+          return false;
+        } finally {
+          set({ loading: false });
+        }
+      },
+
+      // Reject an application
+      rejectApplication: async (applicantId) => {
+        set({ loading: true, error: null });
+        try {
+          await fetchData(`/auth/reject-application/${applicantId}`, "PUT");
+          // Optionally update the applicant's status locally
+          const updatedApplicants = get().applicants.map((applicant) =>
+            applicant._id === applicantId
+              ? { ...applicant, application_status: "rejected" as "rejected" }
+              : applicant
+          );
+          set({ applicants: updatedApplicants });
           return true;
         } catch (err: any) {
           const errorMessage = handleApiError(err);

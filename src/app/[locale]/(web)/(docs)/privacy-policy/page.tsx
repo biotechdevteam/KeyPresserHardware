@@ -1,6 +1,6 @@
 "use client";
 import Loader from "@/components/loader/Loader";
-import PrivacyPolicy from "@/components/policies/PrivacyPolicy";
+import PrivacyPolicy from "@/components/Policies/PrivacyPolicy";
 import { fetchAboutData } from "@/lib/utils/fetchUtils";
 import { About } from "@/types/aboutSchema";
 import { useQuery } from "@tanstack/react-query";

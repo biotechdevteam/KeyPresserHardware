@@ -1,70 +1,110 @@
 "use client";
-import React, { useState } from "react";
-import { Calendar as BigCalendar, dateFnsLocalizer } from "react-big-calendar";
+
+import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { format, parse, startOfWeek, getDay } from "date-fns";
-import { enUS } from "date-fns/locale";
+import moment from "moment";
+import { useQuery } from "@tanstack/react-query";
+import { fetchEvents } from "@/lib/utils/fetchUtils";
+import Loader from "@/components/loader/Loader";
 import { Event } from "@/types/eventsSchema";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Badge } from "@/components/ui/badge";
+import { format } from "date-fns";
+import { useState } from "react";
+import Link from "next/link";
 
-// CalendarProps
-interface CalendarProps {
-  events: Event[];
-}
+const localizer = momentLocalizer(moment);
 
-// Set up the date localizer
-const locales = {
-  "en-US": enUS,
-};
-const localizer = dateFnsLocalizer({
-  format,
-  parse,
-  startOfWeek: () => startOfWeek(new Date(), { weekStartsOn: 1 }),
-  getDay,
-  locales,
-});
+const ActivitiesCalendarPage = () => {
+  const {
+    data: eventsData,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["events"],
+    queryFn: fetchEvents,
+  });
 
-const CalendarPage: React.FC<CalendarProps> = ({ events }) => {
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const handleEventSelect = (event: Event) => {
+  const handleEventClick = (event: Event) => {
     setSelectedEvent(event);
+    setIsDialogOpen(true);
   };
 
-  return (
-    <div className="p-8 mx-auto max-w-4xl">
-      <header className="text-center mb-8">
-        <h1 className="text-4xl font-bold">Events Calendar</h1>
-        <p className="text-lg mt-4">View and stay updated on our events and activities.</p>
-      </header>
+  const closeDialog = () => {
+    setIsDialogOpen(false);
+    setSelectedEvent(null);
+  };
 
-      <BigCalendar
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (isError) {
+    return <div className="text-center">Error loading calendar events...</div>;
+  }
+
+  // Map events to a format suitable for react-big-calendar
+  const mappedEvents = eventsData?.map((event: Event) => ({
+    title: event.title,
+    start: new Date(event.startTime),
+    end: new Date(event.endTime),
+    allDay: true,
+    rawEvent: event,
+  }));
+
+  return (
+    <div className="p-8">
+      <h1 className="text-4xl font-bold text-center mb-8">Activity Calendar</h1>
+      <Calendar
         localizer={localizer}
-        events={events.map((event) => ({
-          title: event.title,
-          start: new Date(event.startTime),
-          end: new Date(event.endTime),
-        }))}
+        events={mappedEvents}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: 600 }}
-        onSelectEvent={(event) => handleEventSelect(event as Event)} // Work needs to be done here!!!
+        onSelectEvent={(event) => handleEventClick(event.rawEvent)}
+        style={{ height: "75vh" }}
+        className="shadow-lg border rounded-lg"
+        views={["month", "week", "day", "agenda"]}
+        defaultView="month"
+        popup
       />
 
+      {/* Dialog for event details */}
       {selectedEvent && (
-        <div className="mt-8 p-4 border rounded-lg shadow-lg bg-card text-center">
-          <h3 className="text-2xl font-semibold">{selectedEvent.title}</h3>
-          <p className="mt-2">
-            {format(new Date(selectedEvent.startTime), "PPP p")} -{" "}
-            {format(new Date(selectedEvent.endTime), "p")}
-          </p>
-          <Button className="mt-4" onClick={() => setSelectedEvent(null)}>
-            Close
-          </Button>
-        </div>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>{selectedEvent.title}</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <p className="text-gray-700">{selectedEvent.description}</p>
+              <div className="flex items-center space-x-2">
+                <Badge variant="outline">Start:</Badge>
+                <span>{format(new Date(selectedEvent.startTime), "PPpp")}</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Badge variant="outline">End:</Badge>
+                <span>{format(new Date(selectedEvent.endTime), "PPpp")}</span>
+              </div>
+              <div className="text-center">
+                <Link href={`/event/${selectedEvent._id}`}>
+                  <Button>View Event Details</Button>
+                </Link>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       )}
     </div>
   );
 };
 
-export default CalendarPage;
+export default ActivitiesCalendarPage;

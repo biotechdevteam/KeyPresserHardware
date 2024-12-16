@@ -5,10 +5,10 @@ import HistoryTimeline from "../about-history/AboutHistory";
 import AboutFooter from "../about-footer/AboutFooter";
 import { extractDomain } from "@/lib/helpers";
 import { fetchAboutData } from "@/lib/utils/fetchUtils";
-import { Loader } from "lucide-react";
 import { useTransitionRouter } from "next-view-transitions";
 import SubscribeSection from "../subscribe/SubscribeSection";
 import { About } from "@/types/aboutSchema";
+import Loader from "@/components/loader/Loader";
 
 // Accept the pre-fetched initialData as a prop
 const AboutContainer: React.FC<{ initialData: About}> = ({ initialData }) => {

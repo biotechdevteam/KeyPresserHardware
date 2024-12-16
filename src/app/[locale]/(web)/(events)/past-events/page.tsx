@@ -1,9 +1,10 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import { fetchEvents, fetchFeedbacks } from "@/lib/utils/fetchUtils";
-import PastEventsCarousel from "@/components/events/past-events/PastEventsCarousel";
+import EventsContainer from "@/components/events/events-container/EventsContainer";
 import Loader from "@/components/loader/Loader";
 import { Event } from "@/types/eventsSchema";
+import { Feedback } from "@/types/feedbackSchema";
 
 // This function runs on the server-side and fetches both events and feedbacks data.
 async function getEventsAndFeedbacksData() {
@@ -36,9 +37,8 @@ async function getEventsAndFeedbacksData() {
     feedbacksError: feedbacksQuery.isError,
   };
 }
-
-// PastEventsPage component to fetch and display past events
-const PastEventsPage: React.FC = async () => {
+// UpcomingEventsPage component to fetch and display upcoming events
+const UpcomingEventsPage: React.FC = async () => {
   // Fetch events and feedbacks data
   const {
     eventsData,
@@ -69,8 +69,8 @@ const PastEventsPage: React.FC = async () => {
   // Get today's date
   const today = new Date();
 
-  // Filter past events
-  const pastEvents = (eventsData as Event[]).filter((event) => {
+  // Filter upcoming events
+  const upcomingEvents = (eventsData as Event[]).filter((event) => {
     const endDate = event.endTime;
     return endDate ? new Date(endDate) < today : false;
   });
@@ -81,17 +81,22 @@ const PastEventsPage: React.FC = async () => {
         <header className="mb-8 text-center">
           <h1 className="text-4xl font-bold">Past Events</h1>
           <p className="text-lg mt-4">
-            Take a look at our past events and activities.
+            Take a look at our events and activities.
           </p>
         </header>
-        {pastEvents.length > 0 ? (
-          <PastEventsCarousel events={pastEvents} />
+        {upcomingEvents.length > 0 ? (
+          <EventsContainer
+            initialData={{
+              events: upcomingEvents,
+              feedbacks: feedbacksData as Feedback[],
+            }}
+          />
         ) : (
-          <div className="text-center">No past events</div>
+          <div className="text-center">No upcoming events</div>
         )}
       </div>
     </section>
   );
 };
 
-export default PastEventsPage;
+export default UpcomingEventsPage;

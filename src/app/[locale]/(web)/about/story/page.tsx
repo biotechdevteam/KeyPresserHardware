@@ -11,16 +11,15 @@ import { fetchAboutData } from "@/lib/utils/fetchUtils";
 import Loader from "@/components/loader/Loader";
 import AboutPic from "../../../../../../public/images/about-header.jpg";
 
-const StoryPage: React.FC<{ initialData: About}> = ({ initialData }) => {
+const StoryPage: React.FC = () => {
   const {
     data: aboutData,
     isLoading: loading,
     error,
     isError,
-  } = useQuery({
+  } = useQuery<About>({
     queryKey: ["about"],
     queryFn: fetchAboutData,
-    initialData, // Use pre-fetched data as initial value
     staleTime: Infinity, // Prevent unnecessary refetching, keep data fresh
     refetchOnMount: false,
     refetchOnWindowFocus: false,
@@ -49,7 +48,7 @@ const StoryPage: React.FC<{ initialData: About}> = ({ initialData }) => {
           name={aboutData?.name || "Biotech Universe Group"}
           slogan={aboutData?.slogan || "Our Slogan"}
           coverPhotoUrl={
-            typeof aboutData.cover_photo_url === "string"
+            typeof aboutData?.cover_photo_url === "string"
               ? aboutData.cover_photo_url
               : AboutPic.src
           }

@@ -9,7 +9,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
 import localforage from "localforage";
-import { Loader } from "lucide-react"; // Your custom loader component
+import Loader from "@/components/loader/Loader";
 
 const ClientLayout: React.FC<{ children: React.ReactNode }> = ({
   children,

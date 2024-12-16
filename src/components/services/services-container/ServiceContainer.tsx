@@ -40,7 +40,7 @@ const ServicesContainer: React.FC<ServicesContainerProps> = ({
     initialData: initialData.feedbacks,
   });
 
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>("all");
   const router = useTransitionRouter();
 
   const handleServiceClick = (serviceId: string) => {
@@ -51,9 +51,7 @@ const ServicesContainer: React.FC<ServicesContainerProps> = ({
     setSelectedCategory(category);
   };
 
-  const testimonialsTitle = selectedCategory
-    ? `What Our Clients Say About ${selectedCategory} Solutions`
-    : "What Our Clients Say";
+  const testimonialsTitle = "What Our Clients Say";
 
   if (servicesLoading || feedbacksLoading) return <div>Loading...</div>;
   if (servicesError || feedbacksError) return <div>Error loading data...</div>;
@@ -62,7 +60,6 @@ const ServicesContainer: React.FC<ServicesContainerProps> = ({
     <section className="relative p-3 grid place-items-center">
       {/* Service Overview Section with categories */}
       <ServiceOverview
-        services={services}
         onCategoryClick={handleCategoryClick}
       />
 

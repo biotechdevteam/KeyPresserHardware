@@ -26,7 +26,6 @@ const EventCard: React.FC<EventCardProps> = ({
   const startTime = new Date(event.startTime);
   const endTime = new Date(event.endTime);
   const registrationDeadline = new Date(event.registrationDeadline);
-  const now = new Date();
 
   return (
     <Card className="h-full">
@@ -34,7 +33,7 @@ const EventCard: React.FC<EventCardProps> = ({
         {/* Image and Timing Section */}
         <div className="md:col-span-1 relative">
           <Image
-            src={event.eventImageUrl}
+            src={event.eventImageUrl || "https://via.placeholder.com/500x300"}
             alt={event.title}
             width={500}
             height={300}
@@ -84,14 +83,13 @@ const EventCard: React.FC<EventCardProps> = ({
                     <ul className="list-disc ml-5 mt-2">
                       {event.speakers.map((speaker, index) => (
                         <li key={index}>
-                        <Link
-                          href={`/members/${speaker.memberId._id}`}
-                          className="text-sm text-secondary ml-2"
-                        >
-                          {speaker.memberId?.user_id?.first_name ||
-                            "Unknown Speaker"}
-                        </Link>
-                          {" "}
+                          <Link
+                            href={`/members/${speaker.memberId._id}`}
+                            className="text-sm text-secondary ml-2"
+                          >
+                            {speaker.memberId?.user_id?.first_name ||
+                              "Unknown Speaker"}
+                          </Link>{" "}
                           - {speaker.speakerRole || "No Role Specified"}
                         </li>
                       ))}

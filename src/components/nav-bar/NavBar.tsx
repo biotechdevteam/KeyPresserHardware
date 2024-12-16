@@ -142,8 +142,8 @@ const navMenu: Pages[][] = [
   // Events
   [
     {
-      title: "calender",
-      link: "/calender",
+      title: "Events Calender",
+      link: "/events-calender",
       description:
         "Stay updated with a calendar of upcoming events, meetings, and important dates.",
     },
@@ -209,6 +209,12 @@ const navMenu: Pages[][] = [
 
   // Projects
   [
+    {
+      title: "Activities Calendar",
+      link: "/projects-calendar",
+      description:
+        "Stay updated with a calendar of Our Activities, milestones and opportunities.",
+    },
     {
       title: "ongoing projects",
       link: "/ongoing-projects",
@@ -285,6 +291,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
         <div className="flex-shrink-0 text-center">
           <Link
             href={homePage.link}
+            legacyBehavior
             onClick={(e) => handleClick(e, homePage.link)}
           >
             <Image
@@ -341,6 +348,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                         <SheetClose asChild>
                           <Link
                             href={LoginPage.link}
+                            legacyBehavior
                             className="uppercase border border-border px-3 py-2 rounded text-xs font-semibold text-primary-foreground flex gap-2"
                             onClick={(e) => handleClick(e, LoginPage.link)}
                           >
@@ -379,7 +387,6 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                         ))}
                       </ul>
                     </NavCollapsible>
-
                     <NavCollapsible
                       triggerText="Membership"
                       isOpen={openIndex === 1}
@@ -398,7 +405,6 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                         ))}
                       </ul>
                     </NavCollapsible>
-
                     <NavCollapsible
                       triggerText="Events"
                       isOpen={openIndex === 2}
@@ -417,7 +423,6 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                         ))}
                       </ul>
                     </NavCollapsible>
-
                     <NavCollapsible
                       triggerText="Resources"
                       isOpen={openIndex === 3}
@@ -436,7 +441,6 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                         ))}
                       </ul>
                     </NavCollapsible>
-
                     <NavCollapsible
                       triggerText="Projects"
                       isOpen={openIndex === 4}
@@ -455,7 +459,20 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                         ))}
                       </ul>
                     </NavCollapsible>
-
+                    <NavCollapsible
+                      triggerText="Services"
+                      isOpen={openIndex === 5}
+                      onOpenChange={() => handleOpenChange(5)}
+                    >
+                      <SheetClose asChild key={servicesPage.title}>
+                        <NavCollapsibleListItem
+                          href={servicesPage.link}
+                          onClick={(e) => handleClick(e, servicesPage.link)}
+                        >
+                          {servicesPage.title}
+                        </NavCollapsibleListItem>
+                      </SheetClose>
+                    </NavCollapsible>
                     {/* Profile */}
                     {isAuthenticated && (
                       <div className="space-y-4 mt-4">
@@ -481,10 +498,13 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                           <Link
                             href="#"
                             onClick={signOut}
+                            legacyBehavior
                             className="uppercase border border-border px-3 py-2 rounded text-xs font-semibold text-primary-foreground flex gap-2"
                           >
-                            {t("logout")}
-                            <LogOut className="w-4 h-4" />
+                            <span className="flex gap-2 justify-center items-center">
+                              {t("logout")}
+                              <LogOut className="w-4 h-4" />
+                            </span>
                           </Link>
                         </SheetClose>
                       </div>

@@ -13,14 +13,14 @@
   --lavender: #c084fc; /* Subtle lavender for accents */
   --red: #ef4444; /* Softer red for destructive actions */
 
-  /* variables and usage */
-  --background: var(--white-smoke);
-  --foreground: var(--night);
+  /* Variables and Usage */
+  --background: var(--soft-white);
+  --foreground: var(--dark-teal-green);
 
-  --card: var(--white);
+  --card: var(--soft-white);
   --card-foreground: var(--foreground);
 
-  --popover: var(--white);
+  --popover: var(--muted-green);
   --popover-foreground: var(--foreground);
 
   --primary: var(--emerald);
@@ -36,8 +36,8 @@
   --accent: var(--lavender);
   --accent-foreground: var(--foreground);
 
-  --destructive: var(--red);
-  --destructive-foreground: var(--white);
+  --destructive: var(--destructive-red);
+  --destructive-foreground: var(--soft-white);
 
   --border: #d1d5db; /* Subtle border for minimalism */
   --input: var(--background);
@@ -48,13 +48,14 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: var(--night);
-    --foreground: var(--white);
+    /* Dark Mode Colors */
+    --background: var(--dark-teal-green);
+    --foreground: var(--soft-white);
 
-    --card: var(--rich-black);
+    --card: var(--dark-muted);
     --card-foreground: var(--foreground);
 
-    --popover: var(--rich-black);
+    --popover: var(--dark-muted);
     --popover-foreground: var(--foreground);
 
     --primary: var(--emerald);
@@ -70,7 +71,7 @@
     --accent: var(--lavender);
     --accent-foreground: var(--night);
 
-    --destructive: var(--red);
+    --destructive: var(--destructive-red);
     --destructive-foreground: var(--foreground);
 
     --border: #374151; /* Subtle border for dark mode */
@@ -109,6 +110,7 @@
   h6 {
     @apply font-extrabold text-foreground;
     margin-bottom: 0.5rem;
+    color: var(--dark-teal-green);
   }
 
   p {
@@ -208,6 +210,28 @@
 
   .blog-content img {
     @apply max-w-full h-auto rounded-md my-4;
+  }
+
+  .rbc-calendar {
+    background-color: #fff;
+  }
+
+  .rbc-event {
+    background-color: #4f46e5;
+    color: #fff;
+    padding: 5px;
+    border-radius: 4px;
+  }
+
+  .rbc-toolbar button {
+    background-color: #e5e7eb;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    padding: 5px 10px;
+  }
+
+  .rbc-toolbar button:hover {
+    background-color: #d1d5db;
   }
 }
 

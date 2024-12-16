@@ -7,7 +7,6 @@ import {
   fetchFAQs,
   fetchFeedbacks,
   fetchEvents,
-  fetchMembers,
   fetchProjectsData,
 } from "@/lib/utils/fetchUtils";
 import LandingContainer from "@/components/landing/container/LandingContainer";
@@ -19,7 +18,6 @@ import { Blog } from "@/types/blogSchema";
 import { FAQs } from "@/types/FAQSchema";
 import { Feedback } from "@/types/feedbackSchema";
 import { Event } from "@/types/eventsSchema";
-import { Member } from "@/types/memberSchema";
 
 // Landing Page component to fetch and display all data
 const LandingPage: React.FC = () => {
@@ -113,21 +111,6 @@ const LandingPage: React.FC = () => {
     refetchOnReconnect: false,
   });
 
-  // Fetch members data
-  const {
-    data: membersData,
-    isLoading: membersLoading,
-    isFetching: membersFetching,
-    isError: membersError,
-  } = useQuery({
-    queryKey: ["members"],
-    queryFn: fetchMembers,
-    staleTime: Infinity,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
-
   // Fetch projects data
   const {
     data: projectsData,
@@ -157,8 +140,6 @@ const LandingPage: React.FC = () => {
     feedbacksFetching ||
     eventsLoading ||
     eventsFetching ||
-    membersLoading ||
-    membersFetching ||
     projectsLoading ||
     projectsFetching
   ) {
@@ -173,7 +154,6 @@ const LandingPage: React.FC = () => {
     faqsError ||
     feedbacksError ||
     eventsError ||
-    membersError ||
     projectsError
   ) {
     return <div>Error loading data...</div>;

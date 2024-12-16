@@ -108,7 +108,7 @@ const ForgotPassword = () => {
 
           <p className="text-center mt-4">
             Not sure?{" "}
-            <Link href="" onClick={() => setResetMethod(null)}>
+            <Link href="" onClick={() => setResetMethod(null)} legacyBehavior>
               Choose Another Method
             </Link>
           </p>

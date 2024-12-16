@@ -7,19 +7,16 @@ import { About } from "@/types/aboutSchema";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
-const AchievementsPage: React.FC<{ initialData: About }> = ({
-  initialData,
-}) => {
+const AchievementsPage: React.FC = () => {
   const {
     data: aboutData,
     isLoading: loading,
     error,
     isError,
-  } = useQuery({
+  } = useQuery<About>({
     queryKey: ["about"],
     queryFn: fetchAboutData,
-    initialData, // Use pre-fetched data as initial value
-    staleTime: Infinity, // Prevent unnecessary refetching, keep data fresh
+    staleTime: Infinity,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
@@ -36,9 +33,13 @@ const AchievementsPage: React.FC<{ initialData: About }> = ({
       </div>
     );
   }
+
   return (
     <div className="col-span-1 lg:col-span-2 m-8">
-      <AboutAchievements achievements={aboutData.achievements || []} aboutData={aboutData} />
+      <AboutAchievements
+        achievements={aboutData?.achievements || []}
+        aboutData={aboutData as About}
+      />
     </div>
   );
 };

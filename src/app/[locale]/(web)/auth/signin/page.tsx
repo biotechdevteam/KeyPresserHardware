@@ -1,40 +1,39 @@
 "use client";
 import SignIn from "@/components/auth/SignIn";
 import Loader from "@/components/loader/Loader";
+import useAuth from "@/lib/useAuth";
 import { fetchAboutData } from "@/lib/utils/fetchUtils";
 import { About } from "@/types/aboutSchema";
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 
-// This function runs on the server-side and fetches the about data.
-async function getAboutData() {
+// Function to fetch about data on the client side
+async function fetchAboutDataClient() {
+  const data = await fetchAboutData();
+  return data;
+}
+
+export default function SignInPage() {
+  // Fetch about data
   const {
-    data,
+    data: aboutData,
     isLoading: loading,
     isFetching: fetching,
-    error,
     isError,
+    error,
   } = useQuery({
     queryKey: ["about"],
     queryFn: fetchAboutData,
-    staleTime: Infinity, // Prevent unnecessary refetching, keep data fresh
+    staleTime: Infinity,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
 
-  // Return the prefetched data, loading, and error state
-  return {
-    aboutData: data,
-    loading,
-    fetching,
-    isError,
-    error,
-  };
-}
-export default async function SignInPage() {
-  // Get the prefetched data from the server
-  const { aboutData, loading, fetching, isError, error } = await getAboutData();
+  // Get user info from useAuth hook
+  const { user } = useAuth();
+  const router = useRouter();
 
   // Handle loading state
   if (loading || fetching) {
@@ -43,8 +42,22 @@ export default async function SignInPage() {
 
   // Handle error state
   if (isError) {
-    return { error };
+    return <div>Error: {error?.message}</div>;
   }
+
+  // Use useEffect to handle routing based on user type
+  useEffect(() => {
+    if (user) {
+      if (user?.user_type === "admin") {
+        router.push("/admin");
+      } else if (
+        user?.user_type === "member" ||
+        user?.user_type === "applicant"
+      ) {
+        router.push("/profile");
+      }
+    }
+  }, [user, router]);
 
   return (
     <div>

@@ -11,11 +11,11 @@ import sampleVideo2 from "../../../../../../videos/Flowered-DNA.mp4";
 
 const sampleVideos = [
   {
-    url: {sampleVideo1},
+    url: "../../../../../../videos/Biologist.mp4",
     description: "Our first conference video."
   },
   {
-    url: {sampleVideo2},
+    url: "../../../../../../videos/Flowered-DNA.mp4",
     description: "Highlights from our annual biotech workshop."
   }
 ];
@@ -46,16 +46,15 @@ const samplePressMentions = [
   }
 ];
 
-const MediaPage: React.FC<{ initialData: About }> = ({ initialData }) => {
+const MediaPage: React.FC = () => {
   const {
     data: aboutData,
     isLoading: loading,
     error,
     isError,
-  } = useQuery({
+  } = useQuery<About>({
     queryKey: ["about"],
     queryFn: fetchAboutData,
-    initialData, // Use pre-fetched data as initial value
     staleTime: Infinity, // Prevent unnecessary refetching, keep data fresh
     refetchOnMount: false,
     refetchOnWindowFocus: false,

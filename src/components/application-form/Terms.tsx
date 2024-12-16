@@ -1,8 +1,8 @@
-import MembershipAgreement from "@/components/policies/MembershipAgreement";
 import { Button } from "@/components/ui/button";
 import CustomCheckbox from "@/components/ui/mycustomcheckbox";
 import { About } from "@/types/aboutSchema";
 import React, { useState } from "react";
+import MembershipAgreement from "../Policies/MembershipAgreement";
 
 interface TermsProps {
   aboutData: About;

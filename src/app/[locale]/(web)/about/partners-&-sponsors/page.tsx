@@ -8,18 +8,15 @@ import { useQuery } from "@tanstack/react-query";
 import { useTransitionRouter } from "next-view-transitions";
 import React from "react";
 
-const PartnersSponsorsPage: React.FC<{ initialData: About }> = ({
-  initialData,
-}) => {
+const PartnersSponsorsPage: React.FC = () => {
   const {
     data: aboutData,
     isLoading: loading,
     error,
     isError,
-  } = useQuery({
+  } = useQuery<About>({
     queryKey: ["about"],
     queryFn: fetchAboutData,
-    initialData, // Use pre-fetched data as initial value
     staleTime: Infinity, // Prevent unnecessary refetching, keep data fresh
     refetchOnMount: false,
     refetchOnWindowFocus: false,
@@ -41,7 +38,7 @@ const PartnersSponsorsPage: React.FC<{ initialData: About }> = ({
   }
   return (
       <div className="col-span-1 lg:col-span-2 my-8">
-        <AboutPartnerships partnerships={aboutData.partnerships || []} />
+        <AboutPartnerships partnerships={aboutData?.partnerships || []} />
       </div>
   );
 };

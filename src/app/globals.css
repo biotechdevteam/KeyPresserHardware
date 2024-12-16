@@ -4,77 +4,68 @@
 
 :root {
   /* website theme colors*/
-  --white-smoke: #f4f4f5; /* Softer for minimalism */
-  --night: #18181b; /* Darker for better contrast */
-  --rich-black: #0f172a; /* Slightly blue-tinted black */
-  --white: #ffffff;
-  --emerald: #34d399; /* Refined green for primary highlights */
   --teal: #5eead4; /* Secondary supportive green */
   --lavender: #c084fc; /* Subtle lavender for accents */
-  --red: #ef4444; /* Softer red for destructive actions */
 
-  /* Variables and Usage */
-  --background: var(--soft-white);
-  --foreground: var(--dark-teal-green);
+  --background: #f4f4f5;
+  --foreground: #18181b;
 
-  --card: var(--soft-white);
+  --card: #CBF3D2;
   --card-foreground: var(--foreground);
 
-  --popover: var(--muted-green);
+  --popover: #CBF3D2;
   --popover-foreground: var(--foreground);
 
-  --primary: var(--emerald);
-  --primary-foreground: var(--foreground);
+  --primary: #1F5256;
+  --primary-foreground: white;
 
-  --secondary: var(--teal);
-  --secondary-foreground: var(--foreground);
+  --secondary: #330C2F;
+  --secondary-foreground: white;
 
-  --muted: #e5e7eb; /* Light gray for muted content */
-  --muted-foreground: #6b7280; /* Neutral gray for text */
-  --muted-primary: var(--teal);
+  --muted: #e5e7eb;
+  --muted-foreground: #6b7280;
 
-  --accent: var(--lavender);
+  --accent: #B7C0EE;
   --accent-foreground: var(--foreground);
 
-  --destructive: var(--destructive-red);
-  --destructive-foreground: var(--soft-white);
+  --destructive: #ef4444;
+  --destructive-foreground: white;
 
-  --border: #d1d5db; /* Subtle border for minimalism */
+  --border: #d1d5db;
   --input: var(--background);
   --ring: var(--primary);
 
-  --radius: 0.75rem; /* Slightly larger for a modern look */
+  --radius: 0.75rem;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     /* Dark Mode Colors */
-    --background: var(--dark-teal-green);
-    --foreground: var(--soft-white);
+    --background: #0f172a;
+    --foreground: white;
 
-    --card: var(--dark-muted);
+    --card: ;
     --card-foreground: var(--foreground);
 
-    --popover: var(--dark-muted);
+    --popover: ;
     --popover-foreground: var(--foreground);
 
-    --primary: var(--emerald);
-    --primary-foreground: var(--night);
+    --primary: #1F5256;
+    --primary-foreground: white;
 
-    --secondary: var(--teal);
-    --secondary-foreground: var(--foreground);
+    --secondary: #330C2F;
+    --secondary-foreground: white;
 
-    --muted: #1f2937; /* Dark gray for muted content */
-    --muted-foreground: #d1d5db; /* Light gray for text */
-    --muted-primary: var(--teal);
+    --muted: #1f2937;
+    --muted-foreground: #d1d5db;
 
-    --accent: var(--lavender);
-    --accent-foreground: var(--night);
+    --accent: ;
+    --accent-foreground: ;
 
-    --destructive: var(--destructive-red);
-    --destructive-foreground: var(--foreground);
+    --destructive: #ef4444;
+    --destructive-foreground: white;
 
-    --border: #374151; /* Subtle border for dark mode */
+    --border: #374151;
     --input: var(--background);
     --ring: var(--primary);
 
@@ -85,7 +76,7 @@
 @layer base {
   html {
     @apply border-border scroll-smooth;
-    font-family: "Inter", Arial, sans-serif; /* Clean and modern font */
+    font-family: "Inter", Arial, sans-serif;
   }
 
   body {

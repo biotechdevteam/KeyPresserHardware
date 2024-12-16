@@ -24,6 +24,7 @@
 
   --muted: #e5e7eb;
   --muted-foreground: #6b7280;
+  --muted-primary: #CBF3D2;
 
   --accent: #B7C0EE;
   --accent-foreground: var(--foreground);
@@ -58,6 +59,7 @@
 
     --muted: #1f2937;
     --muted-foreground: #d1d5db;
+    --muted-primary: #CBF3D2;
 
     --accent: ;
     --accent-foreground: ;

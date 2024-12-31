@@ -6,7 +6,7 @@ import Loader from "@/components/loader/Loader";
 import { Event } from "@/types/eventsSchema";
 import { Feedback } from "@/types/feedbackSchema";
 
-// PastEventsPage component to fetch and display upcoming events
+// PastEventsPage component to fetch and display past events
 const PastEventsPage: React.FC = () => {
   const { 
     data: eventsData, 
@@ -77,4 +77,4 @@ const PastEventsPage: React.FC = () => {
   );
 };
 
-export default UpcomingEventsPage;
+export default PastEventsPage;

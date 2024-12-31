@@ -6,8 +6,8 @@ import Loader from "@/components/loader/Loader";
 import { Event } from "@/types/eventsSchema";
 import { Feedback } from "@/types/feedbackSchema";
 
-// UpcomingEventsPage component to fetch and display upcoming events
-const UpcomingEventsPage: React.FC = () => {
+// PastEventsPage component to fetch and display upcoming events
+const PastEventsPage: React.FC = () => {
   const { 
     data: eventsData, 
     isLoading: eventsLoading, 

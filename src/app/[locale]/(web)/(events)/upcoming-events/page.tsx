@@ -6,9 +6,13 @@ import Loader from "@/components/loader/Loader";
 import { Event } from "@/types/eventsSchema";
 import { Feedback } from "@/types/feedbackSchema";
 
-// This function runs on the server-side and fetches both events and feedbacks data.
-async function getEventsAndFeedbacksData() {
-  const eventsQuery = useQuery({
+// UpcomingEventsPage component to fetch and display upcoming events
+const UpcomingEventsPage: React.FC = () => {
+  const { 
+    data: eventsData, 
+    isLoading: eventsLoading, 
+    isError: eventsError 
+  } = useQuery({
     queryKey: ["events"],
     queryFn: fetchEvents,
     staleTime: Infinity, // Prevent unnecessary refetching, keep data fresh
@@ -17,7 +21,11 @@ async function getEventsAndFeedbacksData() {
     refetchOnReconnect: false,
   });
 
-  const feedbacksQuery = useQuery({
+  const { 
+    data: feedbacksData, 
+    isLoading: feedbacksLoading, 
+    isError: feedbacksError 
+  } = useQuery({
     queryKey: ["feedbacks"],
     queryFn: fetchFeedbacks,
     staleTime: Infinity,
@@ -26,38 +34,8 @@ async function getEventsAndFeedbacksData() {
     refetchOnReconnect: false,
   });
 
-  return {
-    eventsData: eventsQuery.data,
-    eventsLoading: eventsQuery.isLoading,
-    eventsFetching: eventsQuery.isFetching,
-    eventsError: eventsQuery.isError,
-    feedbacksData: feedbacksQuery.data,
-    feedbacksLoading: feedbacksQuery.isLoading,
-    feedbacksFetching: feedbacksQuery.isFetching,
-    feedbacksError: feedbacksQuery.isError,
-  };
-}
-// UpcomingEventsPage component to fetch and display upcoming events
-const UpcomingEventsPage: React.FC = async () => {
-  // Fetch events and feedbacks data
-  const {
-    eventsData,
-    eventsLoading,
-    eventsFetching,
-    eventsError,
-    feedbacksData,
-    feedbacksLoading,
-    feedbacksFetching,
-    feedbacksError,
-  } = await getEventsAndFeedbacksData();
-
   // Handle loading states
-  if (
-    eventsLoading ||
-    eventsFetching ||
-    feedbacksLoading ||
-    feedbacksFetching
-  ) {
+  if (eventsLoading || feedbacksLoading) {
     return <Loader />;
   }
 

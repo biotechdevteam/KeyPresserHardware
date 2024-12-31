@@ -6,7 +6,7 @@ import { Link, useTransitionRouter } from "next-view-transitions";
 import Image from "next/image";
 import { About } from "@/types/aboutSchema";
 import Logo from "../../../public/images/logo.png";
-import { slideInOut } from "../../../pageTransitions";
+import { slideInOut } from "../../lib/utils/pageTransitions";
 
 const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   const logo = aboutData?.logo_url || Logo.src;
@@ -18,7 +18,7 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   };
 
   return (
-    <div className="bg-muted-primary py-12">
+    <div className="bg-secondary py-12">
       <div className="container grid grid-cols-1 lg:grid-cols-3 gap-4 px-4 mx-auto">
         {/* Logo Section */}
         <div className="sm:col-span-2 lg:col-span-1 flex flex-col items-center">

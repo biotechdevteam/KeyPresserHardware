@@ -4,7 +4,7 @@ import CTASection from "@/components/about/about-cta/CTASection";
 import AboutIntro from "@/components/about/about-intro/AboutIntro";
 import { useTransitionRouter } from "next-view-transitions";
 import React from "react";
-import { slideFadeInOut } from "../../../../../../pageTransitions";
+import { slideFadeInOut } from "../../../../../lib/utils/pageTransitions";
 import { About } from "@/types/aboutSchema";
 import { useQuery } from "@tanstack/react-query";
 import { fetchAboutData } from "@/lib/utils/fetchUtils";

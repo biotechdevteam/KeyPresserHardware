@@ -41,7 +41,7 @@ const LandingContainer: React.FC<{
 
       <ServicesSection />
 
-      <AboutPartnerships partnerships={aboutData.partnerships || []} />
+      {/* <AboutPartnerships partnerships={aboutData.partnerships || []} /> */}
 
       <ProjectPortfolioSection
         projects={projects
@@ -52,7 +52,7 @@ const LandingContainer: React.FC<{
       <div className="bg-card">
         <Testimonials
           feedbacks={feedbacks}
-          title="Reviews From Clients & Partners"
+          title="Customer reviews"
         />
 
         <FAQContainer

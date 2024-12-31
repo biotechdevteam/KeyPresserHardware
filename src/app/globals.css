@@ -4,129 +4,95 @@
 
 :root {
   /* website theme colors*/
+  --teal: #5eead4; /* Secondary supportive green */
+  --lavender: #c084fc; /* Subtle lavender for accents */
 
-  /* Green-themed colors*/
+  --background: #f4f4f5;
+  --foreground: #18181b;
 
-  --soft-white: #f5f5f5; /*Main BG*/
-  --muted-green: #e8efe9; /*Section BG Color*/
-  --light-blue: #e0eff6; /*Section BG Color*/
-
-  --dark-teal-green: #004d4d; /* Title Text color */
-  --dark-grayish-blue: #2e3c3c; /* Body Text color */
-  --light-teal-green: #007777; /* Link Text color */
-
-  --deep-teal-green: #006666; /* Primary color */
-  --rich-navy-blue: #004d4d; /* Secondary color */
-  --pastel-yellow: #fff4c2; /* Accent Yellow color */
-  --light-pastel-blue: #cbe4f9; /* Accent Blue color */
-  --soft-peach: #f9d8d6; /* Accent Peach color */
-  --destructive-red: #ff4c4c;
-
-  --light-muted: #b0d4e3;
-  --dark-muted: #4a6a80;
-
-  --light-border: #b2d8c5;
-  --dark-border: #4d7366;
-
-  --screamin-green: #82f575ff;
-  /*
-  --white-smoke: #f5f5f5ff;
-  --night: #0d0d0dff;
-  --rich-black: #0a0a1fff;
-  --white: #fcfcfcff;
-  --light-green: #b6f99fff;
-  --mauveine: #aa1daaff;
-  --red: #ff0a0aff;
-  */
-
-  /* Variables and Usage */
-  --background: var(--soft-white);
-  --foreground: var(--dark-teal-green);
-
-  --card: var(--soft-white);
+  --card: #ffffff;
   --card-foreground: var(--foreground);
 
-  --popover: var(--muted-green);
+  --popover: #ffffff;
   --popover-foreground: var(--foreground);
 
-  --primary: var(--deep-teal-green);
-  --primary-foreground: var(--screamin-green);
+  --primary: #1F5256;
+  --primary-foreground: white;
 
-  --secondary: var(--rich-navy-blue);
-  --secondary-foreground: var(--soft-white);
+  --secondary: #330C2F;
+  --secondary-foreground: white;
 
-  --muted: var(--light-muted);
-  --muted-foreground: var(--dark-grayish-blue);
-  --muted-primary: var(--light-teal-green);
+  --muted: #e5e7eb;
+  --muted-foreground: #6b7280;
+  --muted-primary: #CBF3D2;
 
-  --accent: var(--light-teal-green);
+  --accent: #B7C0EE;
   --accent-foreground: var(--foreground);
 
-  --destructive: var(--destructive-red);
-  --destructive-foreground: var(--soft-white);
+  --destructive: #ef4444;
+  --destructive-foreground: white;
 
-  --border: var(--light-border);
+  --border: #d1d5db;
   --input: var(--background);
   --ring: var(--primary);
 
-  --radius: 0.5rem;
+  --radius: 0.75rem;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     /* Dark Mode Colors */
-    --background: var(--dark-teal-green);
-    --foreground: var(--soft-white);
+    --background: #0f172a;
+    --foreground: white;
 
-    --card: var(--dark-muted);
+    --card: ;
     --card-foreground: var(--foreground);
 
-    --popover: var(--dark-muted);
+    --popover: ;
     --popover-foreground: var(--foreground);
 
-    --primary: var(--deep-teal-green);
-    --primary-foreground: var(--dark-teal-green);
+    --primary: #1F5256;
+    --primary-foreground: white;
 
-    --secondary: var(--rich-navy-blue);
-    --secondary-foreground: var(--foreground);
+    --secondary: #330C2F;
+    --secondary-foreground: white;
 
-    --muted: var(--dark-muted);
-    --muted-foreground: var(--light-blue);
-    --muted-primary: var(--light-teal-green);
+    --muted: #1f2937;
+    --muted-foreground: #d1d5db;
+    --muted-primary: #CBF3D2;
 
-    --accent: var(--light-pastel-blue);
-    --accent-foreground: var(--dark-teal-green);
+    --accent: ;
+    --accent-foreground: ;
 
-    --destructive: var(--destructive-red);
-    --destructive-foreground: var(--foreground);
+    --destructive: #ef4444;
+    --destructive-foreground: white;
 
-    --border: var(--light-border);
+    --border: #374151;
     --input: var(--background);
     --ring: var(--primary);
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
   }
 }
 
 @layer base {
   html {
     @apply border-border scroll-smooth;
-    scroll-behavior: smooth;
+    font-family: "Inter", Arial, sans-serif;
   }
 
   body {
     @apply bg-background text-foreground antialiased;
-    /* font-family: Arial, Helvetica, verdana, sans-serif; */
-    line-height: 1.5;
+    line-height: 1.6;
   }
 
   a {
-    color: var(--light-teal-green);
+    @apply text-secondary underline-offset-2;
+    text-decoration-skip-ink: auto;
   }
 
   a:hover {
-    @apply text-secondary underline  transition-colors;
-    text-decoration-skip-ink: auto;
+    @apply text-accent underline transition-colors;
   }
 
   h1,
@@ -135,26 +101,30 @@
   h4,
   h5,
   h6 {
-    @apply font-bold;
-    margin-top: 0;
+    @apply font-extrabold text-foreground;
     margin-bottom: 0.5rem;
     color: var(--dark-teal-green);
   }
 
   p {
     @apply text-muted-foreground;
-    margin-top: 0;
     margin-bottom: 1rem;
   }
 
   button {
-    @apply bg-primary text-primary-foreground rounded px-4 py-2 border-border;
-    transition: background-color 0.3s;
+    @apply bg-primary text-primary-foreground rounded px-6 py-2;
+    transition: background-color 0.3s ease-in-out;
     cursor: pointer;
   }
 
   button:hover {
-    @apply bg-muted-primary;
+    @apply bg-muted-primary text-primary-foreground;
+  }
+
+   /* Refined card styles */
+   .card {
+    @apply bg-card text-card-foreground p-6 rounded-lg shadow-md transition-all;
+    border: 1px solid var(--border);
   }
 
   /* Checkbox */

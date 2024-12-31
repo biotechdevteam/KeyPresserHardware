@@ -5,6 +5,7 @@ import { cva } from "class-variance-authority";
 
 import { cn } from "@/lib/utils/utils";
 import { Link } from "next-view-transitions";
+import { usePathname } from "next/navigation";
 
 const NavigationMenu = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Root>,
@@ -42,26 +43,39 @@ NavigationMenuList.displayName = NavigationMenuPrimitive.List.displayName;
 const NavigationMenuItem = NavigationMenuPrimitive.Item;
 
 const navigationMenuTriggerStyle = cva(
-  "group inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-muted focus:bg-muted focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-muted data-[state=open]:bg-muted"
+  "group inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-muted-primary focus:bg-muted-primary focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-muted-primary data-[state=open]:bg-muted-primary"
 );
 
 const NavigationMenuTrigger = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
-  <NavigationMenuPrimitive.Trigger
-    ref={ref}
-    className={cn(navigationMenuTriggerStyle(), "group uppercase text-foreground", className)}
-    {...props}
-  >
-    {children}{" "}
-    <ChevronDownIcon
-      className="relative top-[1px] ml-1 h-3 w-3 transition duration-300 group-data-[state=open]:rotate-180"
-      aria-hidden="true"
-    />
-  </NavigationMenuPrimitive.Trigger>
-));
+>(({ className, children, ...props }, ref) => {
+  const pathname = usePathname();
+  const isLandingPage = pathname === "/en/home" || pathname === "/fr/home";
+
+  return (
+    <NavigationMenuPrimitive.Trigger
+      ref={ref}
+      className={cn(
+        navigationMenuTriggerStyle(),
+        "group uppercase hover:text-foreground focus:text-foreground data-[state=open]:text-foreground",
+        isLandingPage ? "text-card" : "text-foreground",
+        className
+      )}
+      {...props}
+    >
+      {children}
+      <ChevronDownIcon
+        className="relative top-[1px] ml-1 h-3 w-3 transition duration-300 group-data-[state=open]:rotate-180"
+        aria-hidden="true"
+      />
+    </NavigationMenuPrimitive.Trigger>
+  );
+});
+
 NavigationMenuTrigger.displayName = NavigationMenuPrimitive.Trigger.displayName;
+
+export default NavigationMenuTrigger;
 
 const NavigationMenuContent = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Content>,
@@ -83,21 +97,27 @@ const NavigationMenuLink = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Link> & {
     href: string;
   }
->(({ className, href, children, ...props }, ref) => (
-  <Link href={href} passHref legacyBehavior>
-    <NavigationMenuPrimitive.Link
-      ref={ref}
-      className={cn(
-        navigationMenuTriggerStyle(),
-        "text-foreground hover:text-foreground focus:text-foreground hover:no-underline focus:no-underline",
-        className
-      )}
-      {...props}
-    >
-      {children}
-    </NavigationMenuPrimitive.Link>
-  </Link>
-));
+>(({ className, href, children, ...props }, ref) => {
+  const pathname = usePathname();
+  const isLandingPage = pathname === "/en/home" || pathname === "/fr/home";
+
+  return (
+    <Link href={href} passHref legacyBehavior>
+      <NavigationMenuPrimitive.Link
+        ref={ref}
+        className={cn(
+          navigationMenuTriggerStyle(),
+          "hover:text-foreground focus:text-foreground hover:no-underline focus:no-underline data-[active]:text-foreground",
+          isLandingPage ? "text-card" : "text-foreground",
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </NavigationMenuPrimitive.Link>
+    </Link>
+  );
+});
 
 NavigationMenuLink.displayName = NavigationMenuPrimitive.Link.displayName;
 

@@ -10,10 +10,10 @@
   --background: #f4f4f5;
   --foreground: #18181b;
 
-  --card: #CBF3D2;
+  --card: #ffffff;
   --card-foreground: var(--foreground);
 
-  --popover: #CBF3D2;
+  --popover: #ffffff;
   --popover-foreground: var(--foreground);
 
   --primary: #1F5256;
@@ -87,12 +87,12 @@
   }
 
   a {
-    @apply text-primary underline-offset-2;
+    @apply text-secondary underline-offset-2;
     text-decoration-skip-ink: auto;
   }
 
   a:hover {
-    @apply text-secondary underline transition-colors;
+    @apply text-accent underline transition-colors;
   }
 
   h1,

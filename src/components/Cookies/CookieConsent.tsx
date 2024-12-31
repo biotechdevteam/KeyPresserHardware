@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils/utils";
 import { XIcon } from "lucide-react";
 import { Link, useTransitionRouter } from "next-view-transitions";
-import { slideInOut } from "../../../pageTransitions";
+import { slideInOut } from "../../lib/utils/pageTransitions";
 
 const CookieConsent: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -45,7 +45,7 @@ const CookieConsent: React.FC = () => {
   return (
     <div
       className={cn(
-        "fixed bottom-0 left-0 right-0 bg-popover text-popover-foreground border p-4 lg:p-8 shadow-lg z-50 transition-transform duration-500 transform",
+        "fixed bottom-0 left-0 right-0 bg-popover text-popover-foreground border border-border p-4 lg:p-8 shadow-lg z-50 transition-transform duration-500 transform",
         isVisible ? "translate-y-0" : "translate-y-full"
       )}
     >
@@ -71,7 +71,7 @@ const CookieConsent: React.FC = () => {
             }
             legacyBehavior
           >
-            Cookie Settings.
+            <span>Cookie Settings.</span>
           </Link>{" "}
           For more information, see our{" "}
           <Link
@@ -81,7 +81,7 @@ const CookieConsent: React.FC = () => {
             }
             legacyBehavior
           >
-            Privacy Policy.
+            <span>Privacy Policy.</span>
           </Link>
         </p>
 

@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useTransitionRouter } from "next-view-transitions";
-import { slideInOut } from "../../../../pageTransitions";
+import { slideInOut } from "../../../lib/utils/pageTransitions";
 
 const EventExhibitions: React.FC = () => {
     const router = useTransitionRouter();

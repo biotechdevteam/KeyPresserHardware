@@ -8,7 +8,7 @@ import { About } from "@/types/aboutSchema";
 import { useQuery } from "@tanstack/react-query";
 import { useTransitionRouter } from "next-view-transitions";
 import React from "react";
-import { slideFadeInOut } from "../../../../../../pageTransitions";
+import { slideFadeInOut } from "../../../../../lib/utils/pageTransitions";
 
 const MissionVisionPage: React.FC = () => {
   const {

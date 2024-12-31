@@ -77,7 +77,7 @@ const ProjectPortfolioSection: React.FC<ProjectPortfolioSectionProps> = ({
         {/* Call to Action */}
         <div className="mt-8 text-center">
           <Button variant="default" className="animate-beep">
-            Explore More Projects
+            Discover More Projects
             <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         </div>

@@ -1,14 +1,16 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { fetchEvents, fetchFeedbacks } from "@/lib/utils/fetchUtils";
+import { fetchEvents } from "@/lib/utils/fetchUtils";
 import EventsContainer from "@/components/events/events-container/EventsContainer";
 import Loader from "@/components/loader/Loader";
 import { Event } from "@/types/eventsSchema";
-import { Feedback } from "@/types/feedbackSchema";
 
-// This function runs on the server-side and fetches both events and feedbacks data.
-async function getEventsAndFeedbacksData() {
-  const eventsQuery = useQuery({
+const UpcomingEventsPage: React.FC = () => {
+  const { 
+    data: eventsData, 
+    isLoading: eventsLoading, 
+    isError: eventsError 
+  } = useQuery({
     queryKey: ["events"],
     queryFn: fetchEvents,
     staleTime: Infinity, // Prevent unnecessary refetching, keep data fresh
@@ -17,52 +19,13 @@ async function getEventsAndFeedbacksData() {
     refetchOnReconnect: false,
   });
 
-  const feedbacksQuery = useQuery({
-    queryKey: ["feedbacks"],
-    queryFn: fetchFeedbacks,
-    staleTime: Infinity,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
-
-  return {
-    eventsData: eventsQuery.data,
-    eventsLoading: eventsQuery.isLoading,
-    eventsFetching: eventsQuery.isFetching,
-    eventsError: eventsQuery.isError,
-    feedbacksData: feedbacksQuery.data,
-    feedbacksLoading: feedbacksQuery.isLoading,
-    feedbacksFetching: feedbacksQuery.isFetching,
-    feedbacksError: feedbacksQuery.isError,
-  };
-}
-// UpcomingEventsPage component to fetch and display upcoming events
-const UpcomingEventsPage: React.FC = async () => {
-  // Fetch events and feedbacks data
-  const {
-    eventsData,
-    eventsLoading,
-    eventsFetching,
-    eventsError,
-    feedbacksData,
-    feedbacksLoading,
-    feedbacksFetching,
-    feedbacksError,
-  } = await getEventsAndFeedbacksData();
-
   // Handle loading states
-  if (
-    eventsLoading ||
-    eventsFetching ||
-    feedbacksLoading ||
-    feedbacksFetching
-  ) {
+  if (eventsLoading) {
     return <Loader />;
   }
 
   // Handle error states
-  if (eventsError || feedbacksError) {
+  if (eventsError) {
     return <div>Error loading events...</div>;
   }
 
@@ -72,7 +35,7 @@ const UpcomingEventsPage: React.FC = async () => {
   // Filter upcoming events
   const upcomingEvents = (eventsData as Event[]).filter((event) => {
     const endDate = event.endTime;
-    return endDate ? new Date(endDate) >= today : false;
+    return endDate ? new Date(endDate) >= today : false; 
   });
 
   return (
@@ -85,11 +48,10 @@ const UpcomingEventsPage: React.FC = async () => {
           </p>
         </header>
         {upcomingEvents.length > 0 ? (
-          <EventsContainer
-            initialData={{
-              events: upcomingEvents,
-              feedbacks: feedbacksData as Feedback[],
-            }}
+          <EventsContainer 
+            initialData={{ 
+              events: upcomingEvents 
+            }} 
           />
         ) : (
           <div className="text-center">No upcoming events</div>

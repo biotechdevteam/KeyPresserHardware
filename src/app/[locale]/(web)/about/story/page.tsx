@@ -9,7 +9,6 @@ import { About } from "@/types/aboutSchema";
 import { useQuery } from "@tanstack/react-query";
 import { fetchAboutData } from "@/lib/utils/fetchUtils";
 import Loader from "@/components/loader/Loader";
-import AboutPic from "../../../../../../public/images/about-header.jpg";
 
 const StoryPage: React.FC = () => {
   const {
@@ -50,7 +49,7 @@ const StoryPage: React.FC = () => {
           coverPhotoUrl={
             typeof aboutData?.cover_photo_url === "string"
               ? aboutData.cover_photo_url
-              : AboutPic.src
+              : ""
           }
           story={
             aboutData?.history ||

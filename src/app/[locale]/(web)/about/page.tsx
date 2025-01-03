@@ -5,7 +5,6 @@ import { fetchAboutData } from "@/lib/utils/fetchUtils";
 import AboutContainer from "@/components/about/about-container/AboutContainer";
 import { About } from "@/types/aboutSchema";
 import Loader from "@/components/loader/Loader";
-import AboutHeader from "@/components/about/about-header/AboutHeader";
 import { generateMetadata } from "@/lib/utils/generateMetadata";
 import Head from "next/head";
 
@@ -47,7 +46,6 @@ export default async function AboutPage() {
         <title>{metadata.title}</title>
         <meta name="description" content={metadata.description} />
       </Head>
-      <AboutHeader />
       <AboutContainer initialData={aboutData as About} />
     </div>
   );

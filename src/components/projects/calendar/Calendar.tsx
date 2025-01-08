@@ -4,8 +4,8 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import { useQuery } from "@tanstack/react-query";
-import { fetchProjectsData } from "@/lib/utils/fetchUtils"; // Adjust this path as necessary
-import Loader from "@/components/loader/Loader"; // Adjust this path as necessary
+import { fetchProjectsData } from "@/lib/utils/fetchUtils";
+import Loader from "@/components/loader/Loader";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -17,7 +17,8 @@ import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { useState } from "react";
 import Link from "next/link";
-import { Project } from "@/types/projectSchema"; // Ensure the type is correctly imported
+import { Project } from "@/types/projectSchema";
+import Error from "@/app/[locale]/error";
 
 const localizer = momentLocalizer(moment);
 
@@ -26,9 +27,14 @@ const ProjectsCalendarPage = () => {
     data: projectsData,
     isLoading,
     isError,
+    error,
   } = useQuery({
     queryKey: ["projects"],
     queryFn: fetchProjectsData,
+    staleTime: Infinity,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -49,9 +55,7 @@ const ProjectsCalendarPage = () => {
   }
 
   if (isError) {
-    return (
-      <div className="text-center">Error loading calendar projects...</div>
-    );
+    return <Error error={error} />;
   }
 
   // Map projects to a format suitable for react-big-calendar

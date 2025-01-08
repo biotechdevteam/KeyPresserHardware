@@ -11,7 +11,7 @@ const Loader: React.FC = () => {
         height={50}
         className="animate-pulse"
         src={logo.src}
-        alt="QuickPay-logo"
+        alt="QuickPlay-logo"
       />
 
       {/* Loading animation dots */}

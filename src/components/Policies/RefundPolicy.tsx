@@ -1,12 +1,41 @@
+"use client";
 import { About } from "@/types/aboutSchema";
 import React from "react";
 import { Separator } from "../ui/separator";
 import Link from "next/link";
+import Error from "@/app/[locale]/error";
+import Loader from "@/components/loader/Loader";
+import { fetchAboutData } from "@/lib/utils/fetchUtils";
+import { useQuery } from "@tanstack/react-query";
 
-const RefundPolicy: React.FC<{ aboutData: About }> = ({ aboutData }) => {
+const RefundPolicy: React.FC = () => {
   let dateUpdated = "8th November 2024";
   let refundRequest = 30;
   let refundReply = 7;
+
+  const {
+    data: aboutData,
+    isLoading: loading,
+    error,
+    isError,
+  } = useQuery<About>({
+    queryKey: ["about"],
+    queryFn: fetchAboutData,
+    staleTime: Infinity,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  });
+
+  // Handle loading state
+  if (loading) {
+    return <Loader />;
+  }
+
+  // Handle error state
+  if (isError) {
+    return <Error error={error} />;
+  }
 
   return (
     <div className="min-h-screen px-8 lg:px-16 py-12">
@@ -19,7 +48,7 @@ const RefundPolicy: React.FC<{ aboutData: About }> = ({ aboutData }) => {
             <span className="italic font-semibold">{dateUpdated}</span>
           </h3>
           <p>
-            At {aboutData.name}, we value your trust and strive to support your
+            At {aboutData?.name}, we value your trust and strive to support your
             professional growth through our services and programs. While
             membership fees contribute to our efforts, we understand there may
             be situations where a refund is necessary.
@@ -31,9 +60,10 @@ const RefundPolicy: React.FC<{ aboutData: About }> = ({ aboutData }) => {
             1. Membership Application Fee Refund
           </h2>
           <p>
-            If you are not satisfied with your decision to join {aboutData.name}
-            , you may request a refund of your membership application fee within{" "}
-            <strong>{refundRequest} days</strong> of your application date.
+            If you are not satisfied with your decision to join{" "}
+            {aboutData?.name}, you may request a refund of your membership
+            application fee within <strong>{refundRequest} days</strong> of your
+            application date.
           </p>
           <p className="mt-4">To be eligible for a refund:</p>
           <ul className="list-disc list-inside ml-6 text-muted-foreground">
@@ -79,8 +109,8 @@ const RefundPolicy: React.FC<{ aboutData: About }> = ({ aboutData }) => {
             <li>
               If you’ve completed these steps and still have not received your
               refund, please contact us at{" "}
-              <Link href={`mailto:${aboutData.contact_email}`}>
-                {aboutData.contact_email}
+              <Link href={`mailto:${aboutData?.contact_email}`}>
+                {aboutData?.contact_email}
               </Link>
               .
             </li>
@@ -96,14 +126,14 @@ const RefundPolicy: React.FC<{ aboutData: About }> = ({ aboutData }) => {
           <ul className="mt-2 text-muted-foreground">
             <li>
               Email:{" "}
-              <Link href={`mailto:${aboutData.contact_email}`}>
-                {aboutData.contact_email}
+              <Link href={`mailto:${aboutData?.contact_email}`}>
+                {aboutData?.contact_email}
               </Link>
             </li>
             <li>
               Phone:{" "}
-              <Link href={`tel:${aboutData.contact_phone}`}>
-                {aboutData.contact_phone}
+              <Link href={`tel:${aboutData?.contact_phone}`}>
+                {aboutData?.contact_phone}
               </Link>
             </li>
           </ul>

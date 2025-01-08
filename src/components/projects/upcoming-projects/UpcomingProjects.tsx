@@ -4,6 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchProjectsData } from "@/lib/utils/fetchUtils";
 import { filterProjectsByStatus } from "@/lib/utils/projectUtils";
 import ProjectCard from "../project-card/ProjectCard";
+import Loader from "@/components/loader/Loader";
+import Error from "@/app/[locale]/error";
 
 const UpcomingProjects: React.FC = () => {
   const {
@@ -13,14 +15,18 @@ const UpcomingProjects: React.FC = () => {
   } = useQuery({
     queryKey: ["projects"],
     queryFn: fetchProjectsData,
+    staleTime: Infinity,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
   const upcomingProjects = projectsData
     ? filterProjectsByStatus(projectsData, "upcoming")
     : [];
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error loading projects...</div>;
+    if (isLoading) return <Loader />;
+    if (isError) return <Error error="Error in loading projects." />;
 
   return (
     <div className="text-center">

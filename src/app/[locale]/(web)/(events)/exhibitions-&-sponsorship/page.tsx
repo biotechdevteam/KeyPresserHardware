@@ -4,11 +4,7 @@ import EventExhibitions from "@/components/events/event-exhibitions/EventExhibit
 import React from "react";
 
 const ExhibitionsSponsorshipPage = () => {
-  return (
-    <div className="my-8">
-      <EventExhibitions />
-    </div>
-  );
+  return <EventExhibitions />;
 };
 
 export default ExhibitionsSponsorshipPage;

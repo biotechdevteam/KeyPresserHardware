@@ -2,11 +2,7 @@ import CurrentProjects from "@/components/projects/current-projects/CurrentProje
 import React from "react";
 
 const OngoingProjectsPage = () => {
-  return (
-    <div className="my-8">
-      <CurrentProjects />
-    </div>
-  );
+  return <CurrentProjects />;
 };
 
 export default OngoingProjectsPage;

@@ -19,11 +19,7 @@ const membershipTiers = [
 ];
 
 const MembershipTiersPage = () => {
-  return (
-    <div>
-      <MembershipSection membershipTiers={membershipTiers} />
-    </div>
-  );
+  return <MembershipSection membershipTiers={membershipTiers} />;
 };
 
 export default MembershipTiersPage;

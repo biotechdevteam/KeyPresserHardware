@@ -1,5 +1,6 @@
 "use client";
 
+import Error from "@/app/[locale]/error";
 import Loader from "@/components/loader/Loader";
 import MembershipQualifications from "@/components/membership/membership-qualifications/MembershipQualifications";
 import { fetchAboutData } from "@/lib/utils/fetchUtils";
@@ -22,23 +23,15 @@ const MembershipQualificationsPage: React.FC = () => {
     refetchOnReconnect: false,
   });
 
-  if (loading && !aboutData) {
+  if (loading) {
     return <Loader />;
   }
 
-  if (error || isError) {
-    return (
-      <div className="text-destructive text-center inset-0">
-        Error: {error.message}
-      </div>
-    );
+  if (isError) {
+    return <Error error={error} />;
   }
 
-  return (
-    <div className="m-8">
-      <MembershipQualifications aboutData={aboutData as About} />
-    </div>
-  );
+  return <MembershipQualifications aboutData={aboutData as About} />;
 };
 
 export default MembershipQualificationsPage;

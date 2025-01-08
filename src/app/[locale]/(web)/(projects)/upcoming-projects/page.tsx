@@ -2,11 +2,7 @@ import UpcomingProjects from "@/components/projects/upcoming-projects/UpcomingPr
 import React from "react";
 
 const UpcomingProjectsPage = () => {
-  return (
-    <div className="my-8">
-      <UpcomingProjects />
-    </div>
-  );
+  return <UpcomingProjects />;
 };
 
 export default UpcomingProjectsPage;

@@ -1,14 +1,13 @@
 "use client";
 
+import Error from "@/app/[locale]/error";
 import FAQContainer from "@/components/faq/faq-container/FAQContainer";
 import Loader from "@/components/loader/Loader";
 import { fetchFAQs } from "@/lib/utils/fetchUtils";
-import { FAQs } from "@/types/FAQSchema";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
 const MembershipFAQsPage: React.FC = () => {
-  // Fetch the FAQs data using useQuery directly in the component
   const {
     data: faqData,
     isLoading: faqLoading,
@@ -30,11 +29,7 @@ const MembershipFAQsPage: React.FC = () => {
 
   // Show an error message if there was an error fetching data
   if (faqError) {
-    return (
-      <div className="text-destructive text-center inset-0">
-        Error: Failed to load FAQs.
-      </div>
-    );
+    return <Error error="Failed to load membership FAQs." />;
   }
 
   // Filter the FAQs based on the "Membership" category
@@ -42,11 +37,7 @@ const MembershipFAQsPage: React.FC = () => {
     (faq) => faq.category === "Membership"
   );
 
-  return (
-    <div className="my-8">
-      <FAQContainer initialData={membershipFAQs} membership />
-    </div>
-  );
+  return <FAQContainer initialData={membershipFAQs} membership />;
 };
 
 export default MembershipFAQsPage;

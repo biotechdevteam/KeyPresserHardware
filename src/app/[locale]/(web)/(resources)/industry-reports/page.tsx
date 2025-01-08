@@ -3,11 +3,7 @@ import IndustryReports from "@/components/resources/industry-reports/IndustryRep
 import React from "react";
 
 const IndustryReportsPage = () => {
-  return (
-    <div className="my-8">
-      <IndustryReports />
-    </div>
-  );
+  return <IndustryReports />;
 };
 
 export default IndustryReportsPage;

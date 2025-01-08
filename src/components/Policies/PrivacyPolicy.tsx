@@ -3,10 +3,38 @@ import { About } from "@/types/aboutSchema";
 import React from "react";
 import { Separator } from "../ui/separator";
 import { Link } from "next-view-transitions";
+import Error from "@/app/[locale]/error";
+import Loader from "@/components/loader/Loader";
+import { fetchAboutData } from "@/lib/utils/fetchUtils";
+import { useQuery } from "@tanstack/react-query";
 
-const PrivacyPolicy: React.FC<{ aboutData: About }> = ({ aboutData }) => {
+const PrivacyPolicy: React.FC = () => {
   let dateUpdated = "8th November 2024";
   let parentalGuide = 13;
+
+  const {
+    data: aboutData,
+    isLoading: loading,
+    error,
+    isError,
+  } = useQuery<About>({
+    queryKey: ["about"],
+    queryFn: fetchAboutData,
+    staleTime: Infinity,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  });
+
+  // Handle loading state
+  if (loading) {
+    return <Loader />;
+  }
+
+  // Handle error state
+  if (isError) {
+    return <Error error={error} />;
+  }
 
   return (
     <div className="min-h-screen px-8 lg:px-16 py-12">
@@ -21,7 +49,7 @@ const PrivacyPolicy: React.FC<{ aboutData: About }> = ({ aboutData }) => {
             <span className="italic font-semibold">{dateUpdated}</span>
           </h3>
           <p>
-            Welcome to {aboutData.name}. We are committed to protecting your
+            Welcome to {aboutData?.name}. We are committed to protecting your
             privacy and ensuring that your personal information is secure. This
             Privacy Policy outlines how we collect, use, disclose, and safeguard
             your data when you visit our website, use our services, or engage
@@ -188,8 +216,8 @@ const PrivacyPolicy: React.FC<{ aboutData: About }> = ({ aboutData }) => {
           </ul>
           <p className="mt-2">
             To exercise these rights, please contact us at{" "}
-            <Link href={`mailto:${aboutData.contact_email}`}>
-              {aboutData.contact_email}.
+            <Link href={`mailto:${aboutData?.contact_email}`}>
+              {aboutData?.contact_email}.
             </Link>{" "}
             We will respond to your request within the time frames required by
             applicable laws.
@@ -243,14 +271,14 @@ const PrivacyPolicy: React.FC<{ aboutData: About }> = ({ aboutData }) => {
           <ul className="mt-2 text-muted-foreground">
             <li>
               Email:{" "}
-              <Link href={`mailto:${aboutData.contact_email}`}>
-                {aboutData.contact_email}
+              <Link href={`mailto:${aboutData?.contact_email}`}>
+                {aboutData?.contact_email}
               </Link>
             </li>
             <li>
               Phone:{" "}
-              <Link href={`tel:${aboutData.contact_phone}`}>
-                {aboutData.contact_phone}
+              <Link href={`tel:${aboutData?.contact_phone}`}>
+                {aboutData?.contact_phone}
               </Link>
             </li>
           </ul>

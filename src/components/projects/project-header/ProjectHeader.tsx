@@ -1,8 +1,8 @@
 import React from "react";
 
 interface ProjectHeaderProps {
-  title: string;
-  summary: string;
+  title?: string;
+  summary?: string;
   backgroundImageUrl?: string;
 }
 

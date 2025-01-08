@@ -18,6 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { useState } from "react";
 import Link from "next/link";
+import Error from "@/app/[locale]/error";
 
 const localizer = momentLocalizer(moment);
 
@@ -26,9 +27,14 @@ const ActivitiesCalendarPage = () => {
     data: eventsData,
     isLoading,
     isError,
+    error,
   } = useQuery({
     queryKey: ["events"],
     queryFn: fetchEvents,
+    staleTime: Infinity,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
@@ -49,7 +55,7 @@ const ActivitiesCalendarPage = () => {
   }
 
   if (isError) {
-    return <div className="text-center">Error loading calendar events...</div>;
+    return <Error error={error} />;
   }
 
   // Map events to a format suitable for react-big-calendar

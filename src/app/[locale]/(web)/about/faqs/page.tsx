@@ -1,45 +1,7 @@
 "use client";
-import { useQuery } from "@tanstack/react-query";
-import { fetchFAQs } from "@/lib/utils/fetchUtils";
 import FAQContainer from "@/components/faq/faq-container/FAQContainer";
-import Loader from "@/components/loader/Loader";
-import { FAQ } from "@/types/FAQSchema";
 
-// This function runs on the server-side and fetches the FAQs data.
-async function getFAQData() {
-  const faqQuery = useQuery({
-    queryKey: ["faqs"],
-    queryFn: fetchFAQs,
-    staleTime: Infinity, // Prevent unnecessary refetching, keep data fresh
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
-
-  return {
-    faqData: faqQuery.data,
-    faqLoading: faqQuery.isLoading,
-    faqFetching: faqQuery.isFetching,
-    faqError: faqQuery.isError,
-  };
-}
-
-// FAQPage component to fetch and display FAQs data
-const FAQPage: React.FC = async () => {
-  // Fetch the FAQs data
-  const { faqData, faqLoading, faqFetching, faqError } = await getFAQData();
-
-  // Handle loading state
-  if (faqLoading || faqFetching) {
-    return <Loader />;
-  }
-
-  // Handle error state
-  if (faqError) {
-    return <div>{faqError}</div>;
-  }
-
-  // Render the FAQContainer with the prefetched data
+const FAQPage: React.FC = () => {
   return (
     <section className="grid min-h-screen place-items-center my-8">
       <div className="w-full mx-auto">
@@ -50,7 +12,7 @@ const FAQPage: React.FC = async () => {
             projects.
           </p>
         </header>
-        <FAQContainer initialData={faqData as FAQ[]} />
+        <FAQContainer />
       </div>
     </section>
   );

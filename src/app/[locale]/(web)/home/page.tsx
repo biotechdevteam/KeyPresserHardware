@@ -4,7 +4,6 @@ import {
   fetchAboutData,
   fetchServices,
   fetchBlogs,
-  fetchFAQs,
   fetchFeedbacks,
   fetchEvents,
   fetchProjectsData,
@@ -15,7 +14,6 @@ import { About } from "@/types/aboutSchema";
 import { Project } from "@/types/projectSchema";
 import { Service } from "@/types/ServiceSchema";
 import { Blog } from "@/types/blogSchema";
-import { FAQs } from "@/types/FAQSchema";
 import { Feedback } from "@/types/feedbackSchema";
 import { Event } from "@/types/eventsSchema";
 
@@ -60,21 +58,6 @@ const LandingPage: React.FC = () => {
   } = useQuery({
     queryKey: ["blogs"],
     queryFn: fetchBlogs,
-    staleTime: Infinity,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
-
-  // Fetch FAQs data
-  const {
-    data: faqsData,
-    isLoading: faqsLoading,
-    isFetching: faqsFetching,
-    isError: faqsError,
-  } = useQuery({
-    queryKey: ["faqs"],
-    queryFn: fetchFAQs,
     staleTime: Infinity,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
@@ -134,8 +117,6 @@ const LandingPage: React.FC = () => {
     servicesFetching ||
     blogsLoading ||
     blogsFetching ||
-    faqsLoading ||
-    faqsFetching ||
     feedbacksLoading ||
     feedbacksFetching ||
     eventsLoading ||
@@ -151,7 +132,6 @@ const LandingPage: React.FC = () => {
     aboutError ||
     servicesError ||
     blogsError ||
-    faqsError ||
     feedbacksError ||
     eventsError ||
     projectsError
@@ -166,7 +146,6 @@ const LandingPage: React.FC = () => {
         aboutData={aboutData as About}
         services={servicesData as Service[]}
         blogs={blogsData as Blog[]}
-        faqs={faqsData as FAQs}
         feedbacks={feedbacksData as Feedback[]}
         events={eventsData as Event[]}
         // members={membersData as Member[]}

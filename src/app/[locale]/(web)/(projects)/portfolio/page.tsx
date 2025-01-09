@@ -1,3 +1,4 @@
+"use client";
 import PastProjects from "@/components/projects/past-projects/PastProjects";
 import React from "react";
 

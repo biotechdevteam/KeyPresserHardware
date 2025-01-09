@@ -1,3 +1,4 @@
+"use client";
 import UpcomingProjects from "@/components/projects/upcoming-projects/UpcomingProjects";
 import React from "react";
 

@@ -1,4 +1,4 @@
-import ComingSoon from "@/app/[locale]/coming-soon";
+"use client";
 import ActivitiesCalendarPage from "@/components/events/calender/Calender";
 import React from "react";
 

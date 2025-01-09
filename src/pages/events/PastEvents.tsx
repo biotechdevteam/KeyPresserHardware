@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import { fetchEvents, fetchFeedbacks } from "@/lib/utils/fetchUtils";
 import { Event } from "@/types/eventsSchema";

@@ -12,7 +12,6 @@ import ContactSection from "../contact/Contact";
 import EventSection from "../event/EventSection";
 import { Event } from "@/types/eventsSchema";
 import AboutPartnerships from "@/components/about/about-partnerships/AboutPartnerships";
-import { FAQs } from "@/types/FAQSchema";
 import FAQContainer from "@/components/faq/faq-container/FAQContainer";
 import { Feedback } from "@/types/feedbackSchema";
 import Testimonials from "@/components/services/testimonials/Testimonials";
@@ -22,19 +21,10 @@ const LandingContainer: React.FC<{
   aboutData: About;
   services: Service[];
   blogs: any;
-  faqs: FAQs;
   feedbacks: Feedback[];
   events: Event[];
   projects: Project[];
-}> = ({
-  aboutData,
-  services,
-  events,
-  blogs,
-  faqs,
-  feedbacks,
-  projects,
-}) => {
+}> = ({ aboutData, services, events, blogs, feedbacks, projects }) => {
   return (
     <div className="landing-page-container">
       <Hero aboutData={aboutData} />
@@ -50,15 +40,9 @@ const LandingContainer: React.FC<{
       />
 
       <div className="bg-card">
-        <Testimonials
-          feedbacks={feedbacks}
-          title="Customer reviews"
-        />
+        <Testimonials feedbacks={feedbacks} title="Customer reviews" />
 
-        <FAQContainer
-          initialData={faqs.filter((faq) => faq.category === "General")}
-          general
-        />
+        <FAQContainer general />
 
         <ContactSection />
       </div>

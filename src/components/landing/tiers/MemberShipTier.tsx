@@ -1,9 +1,7 @@
 "use client";
-
 import React, { useRef, useEffect, useState } from "react";
-import { Button } from "@/components/ui/button"; // Reuse the ShadCN Button component
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // ShadCN Card components
-import { Separator } from "@/components/ui/separator"; // ShadCN Separator component
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "next-view-transitions";
 import { ExternalLinkIcon } from "lucide-react";
 
@@ -15,13 +13,22 @@ interface MembershipTier {
   benefits: string[];
 }
 
-interface MembershipSectionProps {
-  membershipTiers: MembershipTier[];
-}
+const membershipTiers: MembershipTier[] = [
+  {
+    id: "1",
+    name: "Standard",
+    description:
+      "A unified membership for all members of the biotechnology space.",
+    benefits: [
+      "Equal access to all resources",
+      "Monthly community updates",
+      "Participation in exclusive biotech events",
+      "Access to the biotechnology research hub",
+    ],
+  },
+];
 
-const MembershipSection: React.FC<MembershipSectionProps> = ({
-  membershipTiers,
-}) => {
+const MembershipSection: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement | null>(null); // Create a ref for the section
   const [isVisible, setIsVisible] = useState(false); // State to track visibility
 

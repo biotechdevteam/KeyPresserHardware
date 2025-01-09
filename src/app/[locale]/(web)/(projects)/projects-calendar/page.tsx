@@ -1,3 +1,4 @@
+"use client";
 import ProjectsCalendarPage from "@/components/projects/calendar/Calendar";
 import React from "react";
 

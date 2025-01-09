@@ -1,5 +1,4 @@
 "use client";
-import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { fetchFAQs } from "@/lib/utils/fetchUtils";
 import FAQList from "../faq-list/FAQList";
@@ -13,41 +12,72 @@ import {
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Loader from "@/components/loader/Loader";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
+import Error from "@/app/[locale]/error";
+import { FAQ } from "@/types/FAQSchema";
 
-const FAQContainer: React.FC<{
-  initialData: any;
+export const getStaticProps: GetStaticProps = async () => {
+  try {
+    // Fetch FAQs data
+    const faqData = await fetchFAQs();
+
+    // Return data as props with ISR enabled
+    return {
+      props: {
+        faqData,
+        isError: false,
+      },
+      revalidate: 60, // Revalidate data every 60 seconds
+    };
+  } catch (error) {
+    return {
+      props: {
+        faqData: [],
+        isError: true,
+        error: error,
+      },
+      revalidate: 60,
+    };
+  }
+};
+
+// Define the props interface
+interface FAQContainerProps
+  extends InferGetStaticPropsType<typeof getStaticProps> {
   general?: boolean;
   membership?: boolean;
-}> = ({ initialData, general = false, membership = false }) => {
-  const {
-    data: faqData,
-    isLoading: loading,
-    error,
-  } = useQuery({
-    queryKey: ["faqs"],
-    queryFn: fetchFAQs,
-    initialData, // Use pre-fetched data as initial value
-    staleTime: Infinity, // Prevent unnecessary refetching
-  });
+}
 
-  if (loading && !faqData) {
-    return (
-      <div className="text-center inset-0">
-        <Loader />
-      </div>
-    );
+const FAQContainer: React.FC<FAQContainerProps> = ({
+  faqData,
+  general = false,
+  membership = false,
+  isError,
+  error,
+}) => {
+  // Handle loading state (Client-side simulation)
+  const isLoading = faqData.length === 0 && !isError;
+  if (isLoading) {
+    return <Loader />;
   }
 
-  if (error) {
-    return (
-      <div className="text-destructive text-center inset-0">
-        Error: {error.message}
-      </div>
-    );
+  // Handle error state
+  if (isError) {
+    return <Error error={error} />;
+  }
+
+  // Initialize FAQs with a default value
+  let faqs = faqData;
+
+  // Filter FAQs based on category
+  if (general) {
+    faqs = faqData.filter((faq: FAQ) => faq.category === "General");
+  } else if (membership) {
+    faqs = faqData.filter((faq: FAQ) => faq.category === "Membership");
   }
 
   // Group FAQs by their category
-  const groupedFAQs = faqData?.reduce((acc: any, faq: any) => {
+  const groupedFAQs = faqs.reduce((acc: Record<string, FAQ[]>, faq: FAQ) => {
     const { category } = faq;
     if (!acc[category]) {
       acc[category] = [];
@@ -61,8 +91,7 @@ const FAQContainer: React.FC<{
       <div className="space-y-8 px-4 mx-auto">
         {groupedFAQs &&
           (general
-            ? // If general prop is true, display only FAQs from the general category
-              groupedFAQs["General"] && (
+            ? groupedFAQs["General"] && (
                 <div key="general">
                   <h2 className="text-xl lg:text-2xl font-bold text-center">
                     Frequently Asked Questions
@@ -77,7 +106,6 @@ const FAQContainer: React.FC<{
                     <CardContent className="lg:px-64">
                       <FAQList faqs={groupedFAQs["General"]} />
                     </CardContent>
-                    {/* CTA Button - Contact Us */}
                     <CardFooter className="flex justify-center mt-12">
                       <Button
                         className="animate-beep"
@@ -89,8 +117,7 @@ const FAQContainer: React.FC<{
                   </Card>
                 </div>
               )
-            : // If membership prop is true, display only FAQs from the membership category
-            membership
+            : membership
             ? groupedFAQs["Membership"] && (
                 <div key="membership">
                   <h2 className="text-xl lg:text-2xl font-bold text-center">
@@ -106,7 +133,6 @@ const FAQContainer: React.FC<{
                     <CardContent className="lg:px-64">
                       <FAQList faqs={groupedFAQs["Membership"]} />
                     </CardContent>
-                    {/* CTA Button - Contact Us */}
                     <CardFooter className="flex justify-center mt-12">
                       <Button
                         className="animate-beep"
@@ -118,8 +144,7 @@ const FAQContainer: React.FC<{
                   </Card>
                 </div>
               )
-            : // Otherwise, display all categories
-              Object.keys(groupedFAQs).map((category) => (
+            : Object.keys(groupedFAQs).map((category) => (
                 <Card key={category} className="border-none shadow-none">
                   <CardHeader>
                     <CardTitle className="text-xl text-center">

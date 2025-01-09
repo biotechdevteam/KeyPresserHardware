@@ -1,32 +1,51 @@
 "use client";
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
 import { fetchProjectsData } from "@/lib/utils/fetchUtils";
 import { filterProjectsByStatus } from "@/lib/utils/projectUtils";
 import ProjectCard from "../project-card/ProjectCard";
 import Loader from "@/components/loader/Loader";
 import Error from "@/app/[locale]/error";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
 
-const UpcomingProjects: React.FC = () => {
-  const {
-    data: projectsData,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["projects"],
-    queryFn: fetchProjectsData,
-    staleTime: Infinity,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
+export const getStaticProps: GetStaticProps = async () => {
+  try {
+    // Fetch projects data
+    const projectsData = await fetchProjectsData();
+
+    // Return data as props with ISR enabled
+    return {
+      props: {
+        projectsData,
+        isError: false,
+      },
+      revalidate: 60, // Revalidate data every 60 seconds
+    };
+  } catch (error) {
+    return {
+      props: {
+        projectsData: [],
+        isError: true,
+        error: error,
+      },
+      revalidate: 60,
+    };
+  }
+};
+
+const UpcomingProjects = ({
+  projectsData,
+  isError,
+  error,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
+  // Handle loading state (Client-side simulation)
+  const isLoading = projectsData.length === 0 && !isError;
 
   const upcomingProjects = projectsData
     ? filterProjectsByStatus(projectsData, "upcoming")
     : [];
 
-    if (isLoading) return <Loader />;
-    if (isError) return <Error error="Error in loading projects." />;
+  if (isLoading) return <Loader />;
+  if (isError) return <Error error={error} />;
 
   return (
     <div className="text-center">

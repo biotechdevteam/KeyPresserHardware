@@ -1,9 +1,7 @@
 "use client";
-
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
-import { useQuery } from "@tanstack/react-query";
 import { fetchProjectsData } from "@/lib/utils/fetchUtils";
 import Loader from "@/components/loader/Loader";
 import { Button } from "@/components/ui/button";
@@ -19,44 +17,53 @@ import { useState } from "react";
 import Link from "next/link";
 import { Project } from "@/types/projectSchema";
 import Error from "@/app/[locale]/error";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
+
+export const getStaticProps: GetStaticProps = async () => {
+  try {
+    // Fetch projects data
+    const projectsData = await fetchProjectsData();
+
+    // Return data as props with ISR enabled
+    return {
+      props: {
+        projectsData,
+        isError: false,
+      },
+      revalidate: 60, // Revalidate data every 60 seconds
+    };
+  } catch (error) {
+    return {
+      props: {
+        projectsData: [],
+        isError: true,
+        error: error,
+      },
+      revalidate: 60,
+    };
+  }
+};
 
 const localizer = momentLocalizer(moment);
 
-const ProjectsCalendarPage = () => {
-  const {
-    data: projectsData,
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ["projects"],
-    queryFn: fetchProjectsData,
-    staleTime: Infinity,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
-
+const ProjectsCalendarPage = ({
+  projectsData,
+  isError,
+  error,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
+  // Handle loading state (Client-side simulation)
+  const isLoading = projectsData.length === 0 && !isError;
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const handleProjectClick = (project: Project) => {
+  const handleProjectClick = (project: any) => {
     setSelectedProject(project);
     setIsDialogOpen(true);
   };
-
   const closeDialog = () => {
     setIsDialogOpen(false);
     setSelectedProject(null);
   };
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  if (isError) {
-    return <Error error={error} />;
-  }
 
   // Map projects to a format suitable for react-big-calendar
   const mappedProjects =
@@ -67,18 +74,24 @@ const ProjectsCalendarPage = () => {
         ? new Date(project.endDate)
         : new Date(project.startDate),
       allDay: true,
-      rawProject: project,
     })) || [];
+
+  if (isLoading) {
+    return <Loader />;
+  }
+  if (isError) {
+    return <Error error={error} />;
+  }
 
   return (
     <div className="p-8">
-      <h1 className="text-4xl font-bold text-center mb-8">Project Calendar</h1>
+      <h1 className="text-4xl font-bold text-center mb-8">Projects Calendar</h1>
       <Calendar
         localizer={localizer}
         events={mappedProjects}
         startAccessor="start"
         endAccessor="end"
-        onSelectEvent={(event) => handleProjectClick(event.rawProject)}
+        onSelectEvent={(event) => handleProjectClick(event)}
         style={{ height: "75vh" }}
         className="shadow-lg border rounded-lg"
         views={["month", "week", "day", "agenda"]}
@@ -94,7 +107,7 @@ const ProjectsCalendarPage = () => {
               <DialogTitle>{selectedProject.title}</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
-              <p className="text-gray-700">{selectedProject.description}</p>
+              <p>{selectedProject.description}</p>
               <div className="flex items-center space-x-2">
                 <Badge variant="outline">Start:</Badge>
                 <span>
@@ -119,7 +132,7 @@ const ProjectsCalendarPage = () => {
               </div>
               <div className="text-center">
                 <Link href={`/projects/${selectedProject._id}`}>
-                  <Button>View Project Details</Button>
+                  <Button>Read More</Button>
                 </Link>
               </div>
             </div>

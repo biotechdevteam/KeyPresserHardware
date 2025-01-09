@@ -1,3 +1,4 @@
+"use client";
 import CurrentProjects from "@/components/projects/current-projects/CurrentProjects";
 import React from "react";
 

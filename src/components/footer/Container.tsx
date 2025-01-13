@@ -4,13 +4,48 @@ import { Separator } from "@/components/ui/separator";
 import FollowUs from "../speed-dial/FollowUs";
 import { Link, useTransitionRouter } from "next-view-transitions";
 import Image from "next/image";
-import { About } from "@/types/aboutSchema";
 import Logo from "../../../public/images/logo.png";
 import { slideInOut } from "../../lib/utils/pageTransitions";
+import Error from "@/app/[locale]/error";
+import Loader from "@/components/loader/Loader";
+import { fetchAboutData } from "@/lib/utils/fetchUtils";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
 
-const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
+export const getStaticProps: GetStaticProps = async () => {
+  try {
+    // Fetch about data
+    const aboutData = await fetchAboutData();
+
+    // Return data as props (no ISR)
+    return {
+      props: {
+        aboutData,
+        isError: false,
+        error: null,
+      },
+    };
+  } catch (error: any) {
+    return {
+      props: {
+        aboutData: null,
+        isError: true,
+        error: error.message || "An unexpected error occurred.",
+      },
+    };
+  }
+};
+
+const Footer = ({
+  aboutData,
+  isError,
+  error,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const logo = aboutData?.logo_url || Logo.src;
   const router = useTransitionRouter();
+
+  // Handle loading or error states
+  if (isError) return <Error error={error} />;
+  if (!aboutData) return <Loader />;
 
   const handleClick = (e: React.MouseEvent, url: string) => {
     e.preventDefault(); // Prevent default link behavior

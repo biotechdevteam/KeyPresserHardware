@@ -1,9 +1,9 @@
 import React from "react";
 import { Member } from "@/types/memberSchema";
-import { Card, CardContent } from "@/components/ui/card"; // shadcn Card component
+import { Card, CardContent } from "@/components/ui/card";
 
 interface MemberActivitiesProps {
-  member: Member; // Pass the member data as props
+  member: Member;
 }
 
 const MemberActivities: React.FC<MemberActivitiesProps> = ({ member }) => {

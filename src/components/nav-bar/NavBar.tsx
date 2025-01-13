@@ -36,10 +36,37 @@ import { Separator } from "../ui/separator";
 import { useMediaQuery } from "usehooks-ts";
 import Image from "next/image";
 import Logo from "../../../public/images/logo.png";
-import { About } from "@/types/aboutSchema";
 import { NavCollapsible, NavCollapsibleListItem } from "../ui/collapsible";
 import { slideInOut } from "../../lib/utils/pageTransitions";
 import useAuth from "@/lib/useAuth";
+import Error from "@/app/[locale]/error";
+import Loader from "@/components/loader/Loader";
+import { fetchAboutData } from "@/lib/utils/fetchUtils";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
+
+export const getStaticProps: GetStaticProps = async () => {
+  try {
+    // Fetch about data
+    const aboutData = await fetchAboutData();
+
+    // Return data as props (no ISR)
+    return {
+      props: {
+        aboutData,
+        isError: false,
+        error: null,
+      },
+    };
+  } catch (error: any) {
+    return {
+      props: {
+        aboutData: null,
+        isError: true,
+        error: error.message || "An unexpected error occurred.",
+      },
+    };
+  }
+};
 
 // array of pages
 type Pages = {
@@ -254,7 +281,11 @@ const navMenu: Pages[][] = [
   [{ title: "services", link: "/services" }],
 ];
 
-const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
+const NavBar = ({
+  aboutData,
+  isError,
+  error,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const t = useTranslations("NavBar");
   const logo = aboutData?.logo_url || Logo;
   const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
@@ -283,6 +314,10 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   let adminPage = navMenu[8][1];
   let LoginPage = navMenu[9][0];
   let servicesPage = navMenu[10][0];
+
+  // Handle loading or error states
+  if (isError) return <Error error={error} />;
+  if (!aboutData) return <Loader />;
 
   return (
     <nav className="absolute top-0 left-0 right-0 z-50 bg-transparent h-auto">

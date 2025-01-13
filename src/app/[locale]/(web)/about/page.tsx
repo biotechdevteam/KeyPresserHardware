@@ -4,8 +4,6 @@ import { fetchAboutData } from "@/lib/utils/fetchUtils";
 import AboutContainer from "@/components/about/about-container/AboutContainer";
 import { About } from "@/types/aboutSchema";
 import Loader from "@/components/loader/Loader";
-import { generateMetadata } from "@/lib/utils/generateMetadata";
-import Head from "next/head";
 
 export default async function AboutPage() {
   const {
@@ -33,18 +31,8 @@ export default async function AboutPage() {
     );
   }
 
-  const metadata = {
-    title: "Dynamic Page Title",
-    description: "Dynamic Page Description",
-    ...generateMetadata({ params: { route: "/about" } }),
-  };
-
   return (
     <div className="p-6">
-      <Head>
-        <title>{metadata.title}</title>
-        <meta name="description" content={metadata.description} />
-      </Head>
       <AboutContainer initialData={aboutData as About} />
     </div>
   );

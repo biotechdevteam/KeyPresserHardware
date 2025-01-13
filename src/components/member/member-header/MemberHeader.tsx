@@ -1,10 +1,10 @@
 import React from "react";
 import { Member } from "@/types/memberSchema";
-import { Card, CardContent } from "@/components/ui/card"; // shadcn Card component
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"; // shadcn Avatar component
+import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 interface MemberHeaderProps {
-  member: Member; // Pass the member data as props
+  member: Member;
 }
 
 const MemberHeader: React.FC<MemberHeaderProps> = ({ member }) => {

@@ -1,8 +1,6 @@
 "use client";
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
   Mail,
@@ -57,9 +55,9 @@ const AboutFooter = ({
   const t = useTranslations();
   const websiteURL = extractDomain();
 
-// Handle loading or error states
-if (isError) return <Error error={error} />;
-if (!aboutData) return <Loader />;
+  // Handle loading or error states
+  if (isError) return <Error error={error} />;
+  if (!aboutData) return <Loader />;
 
   return (
     <footer className="py-10">
@@ -101,14 +99,14 @@ if (!aboutData) return <Loader />;
               {websiteURL && (
                 <div className="flex items-center">
                   <Globe className="mr-3 text-foreground" />
-                  <a
+                  <Link
                     href={websiteURL}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:text-secondary transition-colors"
                   >
                     {websiteURL}
-                  </a>
+                  </Link>
                 </div>
               )}
             </div>

@@ -1,5 +1,4 @@
 "use client";
-
 import AboutTeam from "@/components/about/about-team/AboutTeam";
 import Loader from "@/components/loader/Loader";
 import { Separator } from "@/components/ui/separator";
@@ -7,6 +6,7 @@ import { fetchAboutData } from "@/lib/utils/fetchUtils";
 import { About } from "@/types/aboutSchema";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
+import Error from "../../error";
 
 const MembersPage: React.FC = () => {
   const {
@@ -17,22 +17,18 @@ const MembersPage: React.FC = () => {
   } = useQuery<About>({
     queryKey: ["about"],
     queryFn: fetchAboutData,
-    staleTime: Infinity, // Prevent unnecessary refetching, keep data fresh
+    staleTime: Infinity,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
 
-  if (loading && !aboutData) {
+  if (loading) {
     return <Loader />;
   }
 
-  if (error || isError) {
-    return (
-      <div className="text-destructive text-center inset-0">
-        Error: {error.message}
-      </div>
-    );
+  if (isError) {
+    return <Error error={error} />;
   }
 
   return (
@@ -45,7 +41,7 @@ const MembersPage: React.FC = () => {
         brings unique skills and experience, working together to shape the
         future of the industry and foster innovation.
       </p>
-      <AboutTeam leadershipTeam={aboutData?.leadership_team || []} />
+      <AboutTeam />
     </div>
   );
 };

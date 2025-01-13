@@ -1,3 +1,4 @@
+"use client";
 import React, { useMemo, useState } from "react";
 import { Blog, NewComment } from "@/types/blogSchema";
 import PostTitleAndMetadata from "../post-meta/PostMeta";

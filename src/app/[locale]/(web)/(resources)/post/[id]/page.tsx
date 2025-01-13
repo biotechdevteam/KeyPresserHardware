@@ -1,57 +1,71 @@
-"use client";
-import React from "react";
-import { useQuery } from "@tanstack/react-query";
 import { fetchBlogs } from "@/lib/utils/fetchUtils";
 import PostContainer from "@/components/blog/post-container/PostContainer";
-import Loader from "@/components/loader/Loader";
 import { Blog } from "@/types/blogSchema";
+import { Metadata, ResolvingMetadata } from "next";
+import Logo from "../../../../../../../public/images/logo.png";
+import { notFound } from "next/navigation";
 
-interface PageProps {
-  params: { id: string }; // Accept the params with post id
+// Fetch all blog IDs for static generation
+export async function generateStaticParams() {
+  const blogs = await fetchBlogs(); // Fetch all blogs
+  return blogs.map((blog: Blog) => ({
+    id: blog._id, // Map each blog ID
+  }));
 }
 
-const PostPage: React.FC<PageProps> = ({ params }) => {
-  // Use useQuery to fetch all blogs
-  const {
-    data: blogsData,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["blogs"],
-    queryFn: fetchBlogs,
-    staleTime: Infinity, // Avoid refetching unnecessarily
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
+// Dynamic Metadata Generation
+export async function generateMetadata(
+  { params }: { params: { id: string } },
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // Fetch all blog data
+  const blogs = await fetchBlogs();
+  const blog = blogs.find((b) => b._id === params.id);
 
-  // Handle loading state
-  if (isLoading) {
-    return <Loader />;
+  // Handle case where blog is not found
+  if (!blog) {
+    return {
+      title: "Blog Not Found",
+      description: "The requested blog could not be found.",
+    };
   }
 
-  // Handle error state
-  if (isError || !blogsData) {
-    return <div>Error fetching the post data...</div>;
-  }
+  // Access and extend parent metadata
+  const previousImages = (await parent).openGraph?.images || [];
+  const blogImage = blog.featuredImageUrl || Logo.src; // Fallback image
 
-  // Find the specific post by ID from the query data
-  const post = blogsData?.find((p: Blog) => p._id === params.id);
+  return {
+    title: blog.title,
+    description: blog.summary,
+    openGraph: {
+      title: blog.title,
+      description: blog.summary,
+      images: [blogImage, ...previousImages].filter(Boolean), // Filter out undefined values
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: blog.title,
+      description: blog.summary,
+      images: [blogImage], // Ensure it's a valid string
+    },
+  };
+}
 
-  // Handle the case where the post is not found
-  if (!post) {
-    return <div>Post not found</div>;
+export default async function PostPage({ params }: { params: { id: string } }) {
+  const blogs = await fetchBlogs(); // Fetch all blogs
+  const blog = blogs.find((b: Blog) => b._id === params.id); // Find blog by ID
+
+  // Handle not found blog
+  if (!blog) {
+    return notFound(); // Return 404 if no blog found
   }
 
   // Filter out the current post to pass the rest as relatedPosts
-  const relatedPosts = blogsData.filter((p: Blog) => p._id !== params.id);
+  const relatedPosts = blogs.filter((b: Blog) => b._id !== params.id);
 
   return (
     <div className="p-6">
-      {/* Pass the filtered post data and relatedPosts to PostContainer */}
-      <PostContainer post={post} relatedPosts={relatedPosts} />
+      <PostContainer post={blog} relatedPosts={relatedPosts} />
     </div>
   );
-};
-
-export default PostPage;
+}

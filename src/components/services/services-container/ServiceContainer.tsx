@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { Service } from "@/types/ServiceSchema";
 import { fetchFeedbacks, fetchServices } from "@/lib/utils/fetchUtils";
 import ServiceOverview from "../service-overview/ServiceOverview";
@@ -9,64 +8,75 @@ import { Feedback } from "@/types/feedbackSchema";
 import Gallery from "../gallery-section/GallerySection";
 import Testimonials from "../testimonials/Testimonials";
 import { useTransitionRouter } from "next-view-transitions";
+import Loader from "@/components/loader/Loader";
+import Error from "@/app/[locale]/error";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
+import { slideInOut } from "@/lib/utils/pageTransitions";
 
-interface ServicesContainerProps {
-  initialData: {
-    services: Service[];
-    feedbacks: Feedback[];
-  };
-}
+export const getStaticProps: GetStaticProps = async () => {
+  try {
+    // Fetch services and feedbacks data
+    const servicesData = await fetchServices();
+    const feedbacksData = await fetchFeedbacks();
 
-const ServicesContainer: React.FC<ServicesContainerProps> = ({
-  initialData,
-}) => {
-  const {
-    data: services,
-    isLoading: servicesLoading,
-    isError: servicesError,
-  } = useQuery({
-    queryKey: ["services"],
-    queryFn: fetchServices,
-    initialData: initialData.services,
-  });
+    // Return data as props with ISR enabled
+    return {
+      props: {
+        servicesData,
+        feedbacksData,
+        isError: false,
+        error: null,
+      },
+      revalidate: 60, // Revalidate data every 60 seconds
+    };
+  } catch (error) {
+    return {
+      props: {
+        servicesData: [],
+        feedbacksData: [],
+        isError: true,
+        error: error,
+      },
+      revalidate: 60,
+    };
+  }
+};
 
-  const {
-    data: feedbacks,
-    isLoading: feedbacksLoading,
-    isError: feedbacksError,
-  } = useQuery({
-    queryKey: ["feedbacks"],
-    queryFn: fetchFeedbacks,
-    initialData: initialData.feedbacks,
-  });
-
-  const [selectedCategory, setSelectedCategory] = useState<string | null>("all");
+const ServicesContainer = ({
+  servicesData,
+  feedbacksData,
+  isError,
+  error,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(
+    "all"
+  );
   const router = useTransitionRouter();
 
   const handleServiceClick = (serviceId: string) => {
-    router.push(`/service/${serviceId}`);
+    router.push(`/service/${serviceId}`, { onTransitionReady: slideInOut });
   };
-
   const handleCategoryClick = (category: string | null) => {
     setSelectedCategory(category);
   };
 
   const testimonialsTitle = "What Our Clients Say";
 
-  if (servicesLoading || feedbacksLoading) return <div>Loading...</div>;
-  if (servicesError || feedbacksError) return <div>Error loading data...</div>;
+  // Handle loading state (Client-side simulation)
+  const isLoading =
+    servicesData.length === 0 && feedbacksData.length === 0 && !isError;
+  if (isLoading) return <Loader />;
+  if (isError) return <Error error={error} />;
 
   return (
     <section className="relative p-3 grid place-items-center">
       {/* Service Overview Section with categories */}
-      <ServiceOverview
-        onCategoryClick={handleCategoryClick}
-      />
+      <ServiceOverview onCategoryClick={handleCategoryClick} />
 
       {/* Conditionally Render Filtered Services Section */}
       {selectedCategory !== null && (
         <FilteredServices
-          services={services}
+          services={servicesData}
           selectedCategory={selectedCategory}
           onServiceClick={handleServiceClick}
         />
@@ -75,7 +85,7 @@ const ServicesContainer: React.FC<ServicesContainerProps> = ({
       {/* Gallery Section */}
       {/* {selectedCategory !== null && (
         <Gallery
-          services={services}
+          services={servicesData}
           selectedCategory={selectedCategory}
           onServiceClick={handleServiceClick}
         />
@@ -84,7 +94,9 @@ const ServicesContainer: React.FC<ServicesContainerProps> = ({
       {/* Testimonials Section */}
       {selectedCategory !== null && (
         <Testimonials
-          feedbacks={feedbacks.filter(f=>f.type==="testimonial")}
+          feedbacks={feedbacksData.filter(
+            (f: Feedback) => f.type === "testimonial"
+          )}
           selectedCategory={selectedCategory}
           title={testimonialsTitle}
         />

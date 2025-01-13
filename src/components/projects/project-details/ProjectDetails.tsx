@@ -1,18 +1,27 @@
+"use client";
 import React from "react";
-import { Project } from "@/types/projectSchema"; // Assuming you have a Project type definition
-import { Button } from "@/components/ui/button"; // Using shadcn button component
-import { Progress } from "@/components/ui/progress"; // Using shadcn progress component
-import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card"; // Using shadcn card components
-import { Carousel } from "@/components/ui/carousel"; // Carousel for images/videos (using your preferred library)
+import { Project } from "@/types/projectSchema";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
+import { Carousel } from "@/components/ui/carousel";
+import ProjectHeader from "@/components/projects/project-header/ProjectHeader";
+import Image from "next/image";
+import { Link } from "next-view-transitions";
 
-// Dummy data for demonstration purposes
 interface ProjectDetailsProps {
   project: Project;
 }
 
 const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
   return (
-    <div className="container mx-auto">
+    <div className="container w-full mx-auto max-w-6xl p-6">
+      <ProjectHeader
+        title={project.title}
+        summary={project.summary}
+        backgroundImageUrl={project.projectImageUrl}
+      />
+
       {/* Project Description Section */}
       <section className="mb-10">
         <h2 className="text-2xl font-semibold mb-4">Project Description</h2>
@@ -76,9 +85,11 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
           {project.members.map((member, index) => (
             <Card key={index}>
               <CardHeader>
-                <img
-                  src={member.memberId.user_id.profile_photo_url}
+                <Image
+                  src={member.memberId.user_id.profile_photo_url || ""}
                   alt={member.memberId.user_id.first_name}
+                  width={100}
+                  height={100}
                   className="w-24 h-24 rounded-full mx-auto"
                 />
               </CardHeader>
@@ -93,14 +104,14 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
                   {member.memberId.bio}
                 </p>
                 <div className="text-center mt-4">
-                  <a
+                  <Link
                     href={`/members/${member.memberId._id}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-primary"
                   >
                     View Profile
-                  </a>
+                  </Link>
                 </div>
               </CardContent>
             </Card>
@@ -151,9 +162,11 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
           {project.partners &&
             project.partners.map((partner, index) => (
               <div key={index} className="flex flex-col items-center">
-                <img
+                <Image
                   src={partner.logoUrl}
                   alt={partner.name}
+                  width={100}
+                  height={100}
                   className="w-32 h-32 object-contain mb-2"
                 />
                 <span className="text-center text-sm font-medium">
@@ -171,14 +184,14 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
           <ul>
             {project.documents.map((doc, index) => (
               <li key={index}>
-                <a
+                <Link
                   href={doc.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-primary"
                 >
                   {doc.name}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

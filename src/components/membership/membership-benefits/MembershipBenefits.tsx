@@ -17,6 +17,7 @@ export const getStaticProps: GetStaticProps = async () => {
       props: {
         aboutData,
         isError: false,
+        error: null,
       },
     };
   } catch (error) {

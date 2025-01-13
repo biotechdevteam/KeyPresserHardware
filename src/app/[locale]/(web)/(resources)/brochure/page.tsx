@@ -1,5 +1,4 @@
 "use client";
-
 import Brochure from "@/components/resources/brochure/Brochure";
 import React from "react";
 

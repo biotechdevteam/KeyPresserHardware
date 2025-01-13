@@ -17,6 +17,7 @@ export const getStaticProps: GetStaticProps = async () => {
       props: {
         projectsData,
         isError: false,
+        error: null,
       },
       revalidate: 60, // Revalidate data every 60 seconds
     };

@@ -23,6 +23,7 @@ export const getStaticProps: GetStaticProps = async () => {
         eventsData,
         feedbacksData,
         isError: false,
+        error: null,
       },
       revalidate: 60, // Revalidate data every 60 seconds
     };

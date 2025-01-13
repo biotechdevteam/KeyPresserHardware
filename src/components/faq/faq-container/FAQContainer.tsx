@@ -26,6 +26,7 @@ export const getStaticProps: GetStaticProps = async () => {
       props: {
         faqData,
         isError: false,
+        error: null,
       },
       revalidate: 60, // Revalidate data every 60 seconds
     };

@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   HoverCard,
@@ -6,6 +7,34 @@ import {
 } from "@/components/ui/hover-card";
 import Image from "next/image";
 import Link from "next/link";
+import Error from "@/app/[locale]/error";
+import Loader from "@/components/loader/Loader";
+import { fetchAboutData } from "@/lib/utils/fetchUtils";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
+
+export const getStaticProps: GetStaticProps = async () => {
+  try {
+    // Fetch about data
+    const aboutData = await fetchAboutData();
+
+    // Return data as props (no ISR)
+    return {
+      props: {
+        aboutData,
+        isError: false,
+        error: null,
+      },
+    };
+  } catch (error: any) {
+    return {
+      props: {
+        aboutData: null,
+        isError: true,
+        error: error.message || "An unexpected error occurred.",
+      },
+    };
+  }
+};
 
 interface Partnership {
   partner: string;
@@ -14,13 +43,15 @@ interface Partnership {
   website?: string;
 }
 
-interface AboutPartnershipsProps {
-  partnerships: Partnership[];
-}
+const AboutPartnerships = ({
+  aboutData,
+  isError,
+  error,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
+  // Handle loading or error states
+  if (isError) return <Error error={error} />;
+  if (!aboutData) return <Loader />;
 
-const AboutPartnerships: React.FC<AboutPartnershipsProps> = ({
-  partnerships,
-}) => {
   return (
     <div className="p-8 pb-16">
       <h2 className="text-xl lg:text-2xl font-bold text-center">
@@ -38,7 +69,7 @@ const AboutPartnerships: React.FC<AboutPartnershipsProps> = ({
         {/* Don't delete this comment! It might be needed tomorrow */}
         {/* <div className="grid grid-flow-col auto-cols-[minmax(200px,1fr)] gap-8 animate-slide"> */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 p-8">
-          {partnerships.concat(partnerships).map((partnership, index) => (
+          {aboutData.partnerships.concat(aboutData.partnerships).map((partnership: Partnership, index: number) => (
             <HoverCard key={index}>
               <HoverCardTrigger asChild>
                 <Link

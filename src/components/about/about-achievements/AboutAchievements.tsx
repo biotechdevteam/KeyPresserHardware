@@ -1,8 +1,37 @@
+"use client";
 import React, { useEffect, useRef, useState } from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { CheckCircle, Users, Calendar, Projector, Star } from "lucide-react";
-import { About } from "@/types/aboutSchema";
 import { Separator } from "@/components/ui/separator";
+import Loader from "@/components/loader/Loader";
+import Error from "@/app/[locale]/error";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
+import { fetchAboutData } from "@/lib/utils/fetchUtils";
+
+// Incremental Static Regeneration: Fetch about data
+export const getStaticProps: GetStaticProps = async () => {
+  try {
+    const aboutData = await fetchAboutData();
+
+    return {
+      props: {
+        aboutData,
+        isError: false,
+        error: null,
+      },
+      revalidate: 60, // Revalidate every 60 seconds
+    };
+  } catch (error: any) {
+    return {
+      props: {
+        aboutData: null,
+        isError: true,
+        error: error.message || "An unexpected error occurred.",
+      },
+      revalidate: 60,
+    };
+  }
+};
 
 interface Achievement {
   title: string;
@@ -10,11 +39,7 @@ interface Achievement {
   date?: string;
 }
 
-interface AboutAchievementsProps {
-  achievements: Achievement[];
-  aboutData: About;
-}
-
+// Icon mapping for achievement categories
 const iconMap: Record<string, JSX.Element> = {
   project: <Projector className="h-10 w-10 text-primary" />,
   partners: <Users className="h-10 w-10 text-secondary" />,
@@ -22,6 +47,7 @@ const iconMap: Record<string, JSX.Element> = {
   mentorship: <Star className="h-10 w-10 text-yellow-500" />,
 };
 
+// Function to match icons based on keywords in title
 const getIconForTitle = (title: string): JSX.Element => {
   const lowerCaseTitle = title.toLowerCase();
   for (const keyword in iconMap) {
@@ -32,20 +58,17 @@ const getIconForTitle = (title: string): JSX.Element => {
   return <CheckCircle className="h-10 w-10 text-muted-foreground" />;
 };
 
+// Card for individual achievements
 const AchievementCard: React.FC<{
   achievement: Achievement;
-  isVisible: Boolean;
+  isVisible: boolean;
 }> = ({ achievement, isVisible }) => {
   const icon = getIconForTitle(achievement.title);
 
   return (
     <Card
-      className={`flex items-start p-2 shadow-lg rounded-lg 
-        ${isVisible ? "animate-spinCard" : "opacity-0"} 
-        hover:scale-105 hover:shadow-2xl`}
-      style={{
-        transition: "all 0.3s ease-in-out",
-      }}
+      className={`flex items-start p-4 shadow-lg rounded-lg transition-transform duration-300 
+        ${isVisible ? "animate-fadeIn scale-100" : "scale-90 opacity-0"}`}
     >
       <div className="flex flex-col items-center w-full">
         <div className="w-full flex justify-center mb-4">{icon}</div>
@@ -54,14 +77,16 @@ const AchievementCard: React.FC<{
             {achievement.title}
           </strong>
           {achievement.description && (
-            <p className="mt-2">{achievement.description}</p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              {achievement.description}
+            </p>
           )}
           {achievement.date && (
-            <p className="mt-2 text-sm">
+            <p className="mt-2 text-xs text-muted-foreground">
               {new Date(achievement.date).toLocaleDateString("en-US", {
                 year: "numeric",
-                month: "2-digit",
-                day: "2-digit",
+                month: "long",
+                day: "numeric",
               })}
             </p>
           )}
@@ -71,10 +96,11 @@ const AchievementCard: React.FC<{
   );
 };
 
-const AboutAchievements: React.FC<AboutAchievementsProps> = ({
-  achievements,
+const AboutAchievements = ({
   aboutData,
-}) => {
+  isError,
+  error,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [isVisible, setIsVisible] = useState(false);
   const achievementRef = useRef<HTMLDivElement | null>(null);
 
@@ -84,12 +110,10 @@ const AboutAchievements: React.FC<AboutAchievementsProps> = ({
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setIsVisible(true);
-          } else {
-            setIsVisible(false);
           }
         });
       },
-      { threshold: 0.2 } // Trigger when 20% of the component is visible
+      { threshold: 0.2 }
     );
 
     if (achievementRef.current) {
@@ -103,6 +127,10 @@ const AboutAchievements: React.FC<AboutAchievementsProps> = ({
     };
   }, []);
 
+  // Handle loading or error states
+  if (isError) return <Error error={error} />;
+  if (!aboutData) return <Loader />;
+
   return (
     <Card
       className="lg:p-8 bg-transparent shadow-none border-none rounded-lg"
@@ -112,18 +140,15 @@ const AboutAchievements: React.FC<AboutAchievementsProps> = ({
         <h2 className="text-2xl font-bold">Achievements</h2>
         <Separator className="w-16 mx-auto my-4" />
         <p className="text-base px-4">
-          Over the years, {aboutData.name} has made significant strides in
-          advancing biotechnology in Cameroon and beyond. From groundbreaking
-          research to impactful collaborations, these milestones reflect our
-          commitment to innovation, excellence, and the promotion of scientific
-          knowledge. Explore some of our proudest achievements and see how we
-          continue to drive change in the biotechnology landscape.
+          Over the years, {aboutData.name} has achieved remarkable milestones,
+          advancing biotechnology in Cameroon and beyond. Explore our proudest
+          moments below!
         </p>
       </CardHeader>
 
       <CardContent>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {achievements.map((achievement, index) => (
+          {aboutData.achievements.map((achievement: Achievement, index: number) => (
             <AchievementCard
               key={index}
               achievement={achievement}

@@ -25,7 +25,7 @@ async function getFAQData() {
 }
 
 // FAQPage component to fetch and display FAQs data
-const FAQPage: React.FC = async () => {
+export default async function FAQPage() {
   // Fetch the FAQs data
   const { faqData, faqLoading, faqFetching, faqError } = await getFAQData();
 
@@ -55,5 +55,3 @@ const FAQPage: React.FC = async () => {
     </section>
   );
 };
-
-export default FAQPage;

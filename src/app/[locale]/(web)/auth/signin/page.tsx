@@ -1,4 +1,5 @@
 "use client";
+import Error from "@/app/[locale]/error";
 import SignIn from "@/components/auth/SignIn";
 import Loader from "@/components/loader/Loader";
 import useAuth from "@/lib/useAuth";
@@ -7,12 +8,6 @@ import { About } from "@/types/aboutSchema";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
-
-// Function to fetch about data on the client side
-async function fetchAboutDataClient() {
-  const data = await fetchAboutData();
-  return data;
-}
 
 export default function SignInPage() {
   // Fetch about data
@@ -42,7 +37,7 @@ export default function SignInPage() {
 
   // Handle error state
   if (isError) {
-    return <div>Error: {error?.message}</div>;
+    return <Error error={error} />;
   }
 
   // Use useEffect to handle routing based on user type

@@ -1,13 +1,41 @@
+"use client";
 import React, { useEffect, useRef, useState } from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import Error from "@/app/[locale]/error";
+import Loader from "@/components/loader/Loader";
+import { fetchAboutData } from "@/lib/utils/fetchUtils";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
 
-interface AboutDetailsProps {
-  mission: string;
-  vision: string;
-}
+export const getStaticProps: GetStaticProps = async () => {
+  try {
+    // Fetch about data
+    const aboutData = await fetchAboutData();
 
-const AboutDetails: React.FC<AboutDetailsProps> = ({ mission, vision }) => {
+    // Return data as props (no ISR)
+    return {
+      props: {
+        aboutData,
+        isError: false,
+        error: null,
+      },
+    };
+  } catch (error: any) {
+    return {
+      props: {
+        aboutData: null,
+        isError: true,
+        error: error.message || "An unexpected error occurred.",
+      },
+    };
+  }
+};
+
+const AboutDetails = ({
+  aboutData,
+  isError,
+  error,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const detailsRef = useRef<HTMLDivElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -36,6 +64,10 @@ const AboutDetails: React.FC<AboutDetailsProps> = ({ mission, vision }) => {
     };
   }, []);
 
+  // Handle loading or error states
+  if (isError) return <Error error={error} />;
+  if (!aboutData) return <Loader />;
+
   return (
     <div className="py-12 lg:px-24 space-y-12" ref={detailsRef}>
       {/* Mission Section */}
@@ -50,7 +82,7 @@ const AboutDetails: React.FC<AboutDetailsProps> = ({ mission, vision }) => {
         </CardHeader>
         <CardContent>
           <p className="text-lg leading-relaxed text-center px-1 lg:px-12">
-            {mission}
+            {aboutData.mission_statement}
           </p>
         </CardContent>
       </Card>
@@ -67,7 +99,7 @@ const AboutDetails: React.FC<AboutDetailsProps> = ({ mission, vision }) => {
         </CardHeader>
         <CardContent>
           <p className="text-lg leading-relaxed text-center px-1 lg:px-12">
-            {vision}
+            {aboutData.vision_statement}
           </p>
         </CardContent>
       </Card>

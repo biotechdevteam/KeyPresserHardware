@@ -1,13 +1,10 @@
 "use client";
-
 import AboutMediaPage from "@/components/about/about-media/AboutMedia";
 import Loader from "@/components/loader/Loader";
 import { fetchAboutData } from "@/lib/utils/fetchUtils";
 import { About } from "@/types/aboutSchema";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import sampleVideo1 from "../../../../../../videos/Biologist.mp4";
-import sampleVideo2 from "../../../../../../videos/Flowered-DNA.mp4";
 
 const sampleVideos = [
   {

@@ -326,8 +326,6 @@ const NavBar = ({
         <div className="flex-shrink-0 text-center cursor-pointer">
           <Link
             href={homePage.link}
-            legacyBehavior
-            onClick={(e) => handleClick(e, homePage.link)}
           >
             <Image
               src={logo}
@@ -356,7 +354,6 @@ const NavBar = ({
                         <Link
                           href={LoginPage.link}
                           className="uppercase border border-border px-3 py-2 rounded text-xs font-semibold text-foreground flex gap-2"
-                          onClick={(e) => handleClick(e, LoginPage.link)}
                         >
                           <span>{LoginPage.title}</span>
                           <LogIn className="w-4 h-4" />
@@ -366,7 +363,6 @@ const NavBar = ({
                       <SheetClose asChild>
                         <Link
                           href={profilePage.link}
-                          onClick={(e) => handleClick(e, profilePage.link)}
                         >
                           <Avatar>
                             <AvatarImage src={user?.profile_photo_url} />
@@ -392,7 +388,6 @@ const NavBar = ({
                         <SheetClose asChild key={page.title}>
                           <NavCollapsibleListItem
                             href={page.link}
-                            onClick={(e) => handleClick(e, page.link)}
                           >
                             {page.title}
                           </NavCollapsibleListItem>
@@ -410,7 +405,6 @@ const NavBar = ({
                         <SheetClose asChild key={page.title}>
                           <NavCollapsibleListItem
                             href={page.link}
-                            onClick={(e) => handleClick(e, page.link)}
                           >
                             {page.title}
                           </NavCollapsibleListItem>
@@ -428,7 +422,6 @@ const NavBar = ({
                         <SheetClose asChild key={page.title}>
                           <NavCollapsibleListItem
                             href={page.link}
-                            onClick={(e) => handleClick(e, page.link)}
                           >
                             {page.title}
                           </NavCollapsibleListItem>
@@ -446,7 +439,6 @@ const NavBar = ({
                         <SheetClose asChild key={page.title}>
                           <NavCollapsibleListItem
                             href={page.link}
-                            onClick={(e) => handleClick(e, page.link)}
                           >
                             {page.title}
                           </NavCollapsibleListItem>
@@ -464,7 +456,6 @@ const NavBar = ({
                         <SheetClose asChild key={page.title}>
                           <NavCollapsibleListItem
                             href={page.link}
-                            onClick={(e) => handleClick(e, page.link)}
                           >
                             {page.title}
                           </NavCollapsibleListItem>
@@ -480,7 +471,6 @@ const NavBar = ({
                     <SheetClose asChild key={servicesPage.title}>
                       <NavCollapsibleListItem
                         href={servicesPage.link}
-                        onClick={(e) => handleClick(e, servicesPage.link)}
                       >
                         {servicesPage.title}
                       </NavCollapsibleListItem>
@@ -507,7 +497,6 @@ const NavBar = ({
                               key={page.title}
                               title={page.title}
                               href={page.link}
-                              onClick={(e) => handleClick(e, page.link)}
                             >
                               {page.description}
                             </ListItem>
@@ -529,7 +518,6 @@ const NavBar = ({
                               key={page.title}
                               title={page.title}
                               href={page.link}
-                              onClick={(e) => handleClick(e, page.link)}
                             >
                               {page.description}
                             </ListItem>
@@ -551,7 +539,6 @@ const NavBar = ({
                               key={page.title}
                               title={page.title}
                               href={page.link}
-                              onClick={(e) => handleClick(e, page.link)}
                             >
                               {page.description}
                             </ListItem>
@@ -573,7 +560,6 @@ const NavBar = ({
                               key={page.title}
                               title={page.title}
                               href={page.link}
-                              onClick={(e) => handleClick(e, page.link)}
                             >
                               {page.description}
                             </ListItem>
@@ -595,7 +581,6 @@ const NavBar = ({
                               key={page.title}
                               title={page.title}
                               href={page.link}
-                              onClick={(e) => handleClick(e, page.link)}
                             >
                               {page.description}
                             </ListItem>
@@ -611,7 +596,6 @@ const NavBar = ({
                     <NavigationMenuItem>
                       <NavigationMenuLink
                         href={servicesPage.link}
-                        onClick={(e) => handleClick(e, servicesPage.link)}
                         className="uppercase"
                       >
                         {servicesPage.title}
@@ -630,7 +614,6 @@ const NavBar = ({
                         <NavigationMenuItem>
                           <NavigationMenuLink
                             href={contactPage.link}
-                            onClick={(e) => handleClick(e, contactPage.link)}
                             className="uppercase border border-primary text-primary hover:bg-primary hover:text-primary-foreground"
                           >
                             {contactPage.title}
@@ -645,7 +628,6 @@ const NavBar = ({
                         <NavigationMenuItem>
                           <NavigationMenuLink
                             href={donationPage.link}
-                            onClick={(e) => handleClick(e, donationPage.link)}
                             className="uppercase border border-primary bg-primary hover:text-primary text-primary-foreground hover:bg-transparent"
                           >
                             {donationPage.title}
@@ -671,7 +653,6 @@ const NavBar = ({
                           <NavigationMenuLink
                             href="#"
                             asChild
-                            onClick={(e) => handleClick(e, "#")}
                           >
                             <em className="text-foreground">
                               No new notifications.

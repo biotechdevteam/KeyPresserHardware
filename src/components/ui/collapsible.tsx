@@ -68,7 +68,6 @@ const NavCollapsibleListItem = React.forwardRef<
           className
         )}
         {...props}
-        legacyBehavior
       >
         <p className="text-xs font-semibold text-foreground capitalize leading-none cursor-pointer">
           {children}

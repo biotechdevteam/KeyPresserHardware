@@ -14,7 +14,6 @@ import {
   fetchAboutData,
   fetchFeedbacks,
   fetchProjectsData,
-  fetchServices,
 } from "@/lib/utils/fetchUtils";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 
@@ -22,7 +21,6 @@ export const getStaticProps: GetStaticProps = async () => {
   try {
     // Fetch all data
     const aboutData = await fetchAboutData();
-    const services = await fetchServices();
     const feedbacks = await fetchFeedbacks();
     const projects = await fetchProjectsData();
 
@@ -30,7 +28,6 @@ export const getStaticProps: GetStaticProps = async () => {
     return {
       props: {
         aboutData,
-        services,
         feedbacks,
         projects,
         isError: false,
@@ -41,7 +38,6 @@ export const getStaticProps: GetStaticProps = async () => {
     return {
       props: {
         aboutData: null,
-        services: null,
         feedbacks: null,
         projects: null,
         isError: true,
@@ -53,7 +49,6 @@ export const getStaticProps: GetStaticProps = async () => {
 
 const LandingContainer = ({
   aboutData,
-  services,
   feedbacks,
   projects,
   isError,
@@ -61,7 +56,10 @@ const LandingContainer = ({
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   // Handle loading or error states
   if (isError) return <Error error={error} />;
-  if (!aboutData) return <Loader />;
+  // if (!aboutData && !isError) return <Loader />;
+  console.log("Fetched aboutData:", aboutData);
+  console.log("Fetched Feedbacks:", feedbacks);
+  console.log("Fetched projects:", projects);
 
   return (
     <div className="landing-page-container">

@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   generator: "Next.js",
   applicationName: "bt-verse",
   referrer: "origin-when-cross-origin",
-  keywords: ["biotech", "universe", "science"],
+  keywords: ["biotechnology", "universe", "science", "technology"],
   authors: [
     { name: "Nkengbeza Derick Ajong", url: "http://"},
     { name: "Nyochembeng Enzo Nkengafack", url: "https://nyochembeng-enzo-01.vercel.app/" },
@@ -55,9 +55,9 @@ export const metadata: Metadata = {
       'fr-FR': '/fr-FR',
     },
   },
-  openGraph: {
-    images: '/og-image.png',
-  },
+  // openGraph: {
+  //   images: '/og-image.png',
+  // },
 };
 
 

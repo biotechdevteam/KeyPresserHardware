@@ -102,7 +102,7 @@ const NavigationMenuLink = React.forwardRef<
   const isLandingPage = pathname === "/en/home" || pathname === "/fr/home";
 
   return (
-    <Link href={href} passHref legacyBehavior>
+    <Link href={href} passHref>
       <NavigationMenuPrimitive.Link
         ref={ref}
         className={cn(

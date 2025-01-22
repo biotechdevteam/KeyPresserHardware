@@ -3,52 +3,11 @@ import React from "react";
 import { Separator } from "@/components/ui/separator";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
-import Error from "@/app/[locale]/error";
-import Loader from "@/components/loader/Loader";
-import { fetchAboutData } from "@/lib/utils/fetchUtils";
-import { GetStaticProps, InferGetStaticPropsType } from "next";
+import { About } from "@/types/aboutSchema";
 
-export const getStaticProps: GetStaticProps = async () => {
-  try {
-    // Fetch about data
-    const aboutData = await fetchAboutData();
-
-    // Return data as props (no ISR)
-    return {
-      props: {
-        aboutData,
-        isError: false,
-        error: null,
-      },
-    };
-  } catch (error) {
-    return {
-      props: {
-        aboutData: [],
-        isError: true,
-        error: error,
-      },
-    };
-  }
-};
-
-const MembershipQualifications = ({
+const MembershipQualifications: React.FC<{ aboutData: About }> = ({
   aboutData,
-  isError,
-  error,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
-  // Handle loading state (Client-side simulation)
-  const isLoading = aboutData.length === 0 && !isError;
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  // Handle error state
-  if (isError) {
-    return <Error error={error} />;
-  }
-
+}) => {
   return (
     <div className="container mx-auto p-8">
       <div className="text-center mb-8">

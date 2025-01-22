@@ -3,38 +3,10 @@ import { About } from "@/types/aboutSchema";
 import React from "react";
 import { Separator } from "../ui/separator";
 import { Link } from "next-view-transitions";
-import Error from "@/app/[locale]/error";
-import Loader from "@/components/loader/Loader";
-import { fetchAboutData } from "@/lib/utils/fetchUtils";
-import { useQuery } from "@tanstack/react-query";
 
-const PrivacyPolicy: React.FC = () => {
+const PrivacyPolicy: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   let dateUpdated = "8th November 2024";
   let parentalGuide = 13;
-
-  const {
-    data: aboutData,
-    isLoading: loading,
-    error,
-    isError,
-  } = useQuery<About>({
-    queryKey: ["about"],
-    queryFn: fetchAboutData,
-    staleTime: Infinity,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
-
-  // Handle loading state
-  if (loading) {
-    return <Loader />;
-  }
-
-  // Handle error state
-  if (isError) {
-    return <Error error={error} />;
-  }
 
   return (
     <div className="min-h-screen px-8 lg:px-16 py-12">

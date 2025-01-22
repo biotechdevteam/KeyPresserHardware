@@ -1,9 +1,22 @@
 "use client";
 import ProjectsCalendarPage from "@/components/projects/calendar/Calendar";
-import React from "react";
+import Error from "@/app/[locale]/error";
 
-const CalenderPage = () => {
-  return <ProjectsCalendarPage />;
-};
-
-export default CalenderPage;
+export default async function CalenderPage() {
+  try {
+    const projectsData = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/projects`,
+      {
+        cache: "no-store",
+        next: { revalidate: 60 },
+      }
+    ).then((res) => res.json());
+    return <ProjectsCalendarPage projectsData={projectsData} />;
+  } catch (error: any) {
+    return (
+      <Error
+        error={error.message || "Failed to load data. Please try again."}
+      />
+    );
+  }
+}

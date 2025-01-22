@@ -1,47 +1,11 @@
 "use client";
-import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import HistoryTimeline from "../about-history/AboutHistory";
 import AboutFooter from "../about-footer/AboutFooter";
-import { extractDomain } from "@/lib/helpers";
-import { fetchAboutData } from "@/lib/utils/fetchUtils";
-import { useTransitionRouter } from "next-view-transitions";
 import SubscribeSection from "../subscribe/SubscribeSection";
 import { About } from "@/types/aboutSchema";
-import Loader from "@/components/loader/Loader";
 
-// Accept the pre-fetched initialData as a prop
-const AboutContainer: React.FC<{ initialData: About}> = ({ initialData }) => {
-  const {
-    data: aboutData,
-    isLoading: loading,
-    error,
-    isError,
-  } = useQuery({
-    queryKey: ["about"],
-    queryFn: fetchAboutData,
-    initialData, // Use pre-fetched data as initial value
-    staleTime: Infinity, // Prevent unnecessary refetching, keep data fresh
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
-
-  const router = useTransitionRouter();
-  const websiteURL = extractDomain();
-
-  if (loading && !aboutData) {
-    return <Loader />;
-  }
-
-  if (error || isError) {
-    return (
-      <div className="text-destructive text-center inset-0">
-        Error: {error.message}
-      </div>
-    );
-  }
-
+const AboutContainer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:mt-8 width-auto">
       {/* History, Timeline */}
@@ -56,13 +20,7 @@ const AboutContainer: React.FC<{ initialData: About}> = ({ initialData }) => {
 
       {/* Footer Section */}
       <div className="col-span-1 lg:col-span-2">
-        <AboutFooter
-          contactPhone={aboutData.contact_phone}
-          socialLinks={aboutData.social_links}
-          contactEmail={aboutData.contact_email}
-          address={aboutData.address}
-          website={websiteURL}
-        />
+        <AboutFooter aboutData={aboutData} />
       </div>
     </div>
   );

@@ -15,41 +15,12 @@ import {
   TwitterIcon,
   DribbbleIcon,
 } from "lucide-react";
-import { LeadershipTeam } from "@/types/aboutSchema";
+import { About, LeadershipTeam } from "@/types/aboutSchema";
 import { useTransitionRouter } from "next-view-transitions";
 import Image from "next/image";
 import PlaceholderImg from "../../../../public/images/Profile_placeholder.png";
 import Link from "next/link";
-import Loader from "@/components/loader/Loader";
-import Error from "@/app/[locale]/error";
-import { GetStaticProps, InferGetStaticPropsType } from "next";
-import { fetchAboutData } from "@/lib/utils/fetchUtils";
 import { slideInOut } from "@/lib/utils/pageTransitions";
-
-// Incremental Static Regeneration: Fetch about data
-export const getStaticProps: GetStaticProps = async () => {
-  try {
-    const aboutData = await fetchAboutData();
-
-    return {
-      props: {
-        aboutData,
-        isError: false,
-        error: null,
-      },
-      revalidate: 60, // Revalidate every 60 seconds
-    };
-  } catch (error: any) {
-    return {
-      props: {
-        aboutData: null,
-        isError: true,
-        error: error.message || "An unexpected error occurred.",
-      },
-      revalidate: 60,
-    };
-  }
-};
 
 // Helper function to render the appropriate icon
 const getSocialIcon = (url: string) => {
@@ -74,11 +45,7 @@ const getSocialIcon = (url: string) => {
   return null; // If no match, return null
 };
 
-const AboutTeam = ({
-  aboutData,
-  isError,
-  error,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+const AboutTeam: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   const [isVisible, setIsVisible] = useState(false);
   const teamRef = useRef<HTMLDivElement | null>(null);
 
@@ -109,14 +76,10 @@ const AboutTeam = ({
     };
   }, []);
 
-  // Handle loading or error states
-  if (isError) return <Error error={error} />;
-  if (!aboutData) return <Loader />;
-
   return (
     <div className="py-12" ref={teamRef}>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 justify-center items-center gap-8 lg:px-24">
-        {aboutData.leadershipTeam?.map(
+        {aboutData.leadership_team?.map(
           (leader: LeadershipTeam, index: number) => {
             const { member } = leader;
 

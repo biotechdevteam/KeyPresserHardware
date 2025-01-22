@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "next-view-transitions";
@@ -72,7 +71,8 @@ const Hero: React.FC<HeroProps> = ({ aboutData }) => {
             <div className="flex flex-col sm:flex-row justify-center lg:justify-start items-center">
               <Link href="/ongoing-projects">
                 <Button className="px-6 py-6 text-lg animate-beep">
-                  Explore Our Work <ArrowRight className="w-5 h-5 ml-2 inline" />
+                  Explore Our Work{" "}
+                  <ArrowRight className="w-5 h-5 ml-2 inline" />
                 </Button>
               </Link>
             </div>

@@ -1,37 +1,10 @@
 import React from "react";
 import { Separator } from "../ui/separator";
-import { About } from "@/types/aboutSchema";
 import Link from "next/link";
-import Error from "@/app/[locale]/error";
-import Loader from "@/components/loader/Loader";
-import { fetchAboutData } from "@/lib/utils/fetchUtils";
-import { useQuery } from "@tanstack/react-query";
+import { About } from "@/types/aboutSchema";
 
-const Disclaimer: React.FC = () => {
+const Disclaimer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   const lastUpdated = "8th November 2024";
-  const {
-    data: aboutData,
-    isLoading: loading,
-    error,
-    isError,
-  } = useQuery<About>({
-    queryKey: ["about"],
-    queryFn: fetchAboutData,
-    staleTime: Infinity,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
-
-  // Handle loading state
-  if (loading) {
-    return <Loader />;
-  }
-
-  // Handle error state
-  if (isError) {
-    return <Error error={error} />;
-  }
 
   return (
     <div className="min-h-screen px-8 lg:px-16 py-12">
@@ -72,11 +45,12 @@ const Disclaimer: React.FC = () => {
           <p className="text-muted-foreground">
             Our website may contain links to external sites or resources for
             informational purposes. These links are provided for your
-            convenience; however, {aboutData?.name} does not control or guarantee
-            the accuracy, relevance, timeliness, or completeness of information
-            on these external websites. The inclusion of such links does not
-            imply endorsement or recommendation. Users are advised to review the
-            terms of use and privacy policies of any linked third-party sites.
+            convenience; however, {aboutData?.name} does not control or
+            guarantee the accuracy, relevance, timeliness, or completeness of
+            information on these external websites. The inclusion of such links
+            does not imply endorsement or recommendation. Users are advised to
+            review the terms of use and privacy policies of any linked
+            third-party sites.
           </p>
         </section>
 

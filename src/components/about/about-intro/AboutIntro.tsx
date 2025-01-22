@@ -2,40 +2,9 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
-import Error from "@/app/[locale]/error";
-import Loader from "@/components/loader/Loader";
-import { fetchAboutData } from "@/lib/utils/fetchUtils";
-import { GetStaticProps, InferGetStaticPropsType } from "next";
+import { About } from "@/types/aboutSchema";
 
-export const getStaticProps: GetStaticProps = async () => {
-  try {
-    // Fetch about data
-    const aboutData = await fetchAboutData();
-
-    // Return data as props (no ISR)
-    return {
-      props: {
-        aboutData,
-        isError: false,
-        error: null,
-      },
-    };
-  } catch (error: any) {
-    return {
-      props: {
-        aboutData: null,
-        isError: true,
-        error: error.message || "An unexpected error occurred.",
-      },
-    };
-  }
-};
-
-const AboutIntro = ({
-  aboutData,
-  isError,
-  error,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+const AboutIntro: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   const introRef = useRef<HTMLDivElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -63,10 +32,6 @@ const AboutIntro = ({
       }
     };
   }, []);
-
-  // Handle loading or error states
-  if (isError) return <Error error={error} />;
-  if (!aboutData) return <Loader />;
 
   return (
     <div ref={introRef}>

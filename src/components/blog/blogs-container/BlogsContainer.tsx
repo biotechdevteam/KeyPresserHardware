@@ -1,53 +1,19 @@
 "use client";
 import React, { useState } from "react";
-import { fetchBlogs } from "@/lib/utils/fetchUtils";
 import { Blog } from "@/types/blogSchema";
 import { useTransitionRouter } from "next-view-transitions";
 import PostCard from "../post-card/PostCard";
 import BlogFilters from "../blog-filters/BlogFilters";
 import { Skeleton } from "@/components/ui/skeleton";
-import Loader from "@/components/loader/Loader";
-import Error from "@/app/[locale]/error";
-import { GetStaticProps, InferGetStaticPropsType } from "next";
 import { slideInOut } from "@/lib/utils/pageTransitions";
 
-export const getStaticProps: GetStaticProps = async () => {
-  try {
-    // Fetch blog data
-    const blogsData = await fetchBlogs();
-
-    // Return data as props with ISR enabled
-    return {
-      props: {
-        blogsData,
-        isError: false,
-        error: null,
-      },
-      revalidate: 60, // Revalidate data every 60 seconds
-    };
-  } catch (error) {
-    return {
-      props: {
-        blogsData: [],
-        isError: true,
-        error: error,
-      },
-      revalidate: 60,
-    };
-  }
-};
-
-const BlogsContainer = ({
-  blogsData,
-  isError,
-  error,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+const BlogsContainer: React.FC<{ blogsData: Blog[] }> = ({ blogsData }) => {
   const [filteredBlogs, setFilteredBlogs] = useState<Blog[]>(blogsData); // State for filtered blogs
   const router = useTransitionRouter();
 
   // Handle blog click for navigation
   const handleBlogClick = (blogId: string) => {
-    router.push(`/post/${blogId}`, {onTransitionReady: slideInOut});
+    router.push(`/post/${blogId}`, { onTransitionReady: slideInOut });
   };
 
   // Handle filter logic
@@ -62,10 +28,7 @@ const BlogsContainer = ({
     setFilteredBlogs(filtered);
   };
 
-  // Handle loading state (Client-side simulation)
-  const isLoading = blogsData.length === 0 && !isError;
-  if (isLoading) {
-    // return <Loader />;
+  if (blogsData.length === 0) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
         {/* Show a skeleton loader during loading */}
@@ -74,12 +37,7 @@ const BlogsContainer = ({
         ))}
       </div>
     );
-  }  
-
-  // Handle error state
-  if (isError) {
-    return <Error error={error} />;
-  }  
+  }
 
   return (
     <section className="relative">

@@ -1,13 +1,17 @@
 import { notFound } from "next/navigation";
 import ServiceDetails from "@/components/services/service-details/ServiceDetails";
-import { fetchFeedbacks, fetchServices } from "@/lib/utils/fetchUtils";
 import { Service } from "@/types/ServiceSchema";
 import { Feedback } from "@/types/feedbackSchema";
 import { Metadata, ResolvingMetadata } from "next";
 
 // Fetch all service IDs for static generation
 export async function generateStaticParams() {
-  const services = await fetchServices();
+  const services = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/services`,
+    {
+      cache: "force-cache",
+    }
+  ).then((res) => res.json());
   return services.map((service: Service) => ({
     id: service._id, // Map each service ID
   }));
@@ -18,10 +22,14 @@ export async function generateMetadata(
   { params }: { params: { id: string } },
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const services = await fetchServices();
-  const service = services.find((s) => s._id === params.id);
+  const services = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/services`,
+    {
+      cache: "force-cache",
+    }
+  ).then((res) => res.json());
+  const service = services.find((s: Service) => s._id === params.id);
 
-  // Handle case where service is not found
   if (!service) {
     return {
       title: "Service Not Found",
@@ -51,13 +59,15 @@ export default async function ServicePage({
 }) {
   // Fetch services and feedbacks
   const [services, feedbacks] = await Promise.all([
-    fetchServices(),
-    fetchFeedbacks(),
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/services`, {
+      cache: "force-cache",
+    }).then((res) => res.json()),
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/feedback`, {
+      cache: "force-cache",
+    }).then((res) => res.json()),
   ]);
-
   // Find the service with the matching ID
   const service = services.find((s: Service) => s._id === params.id);
-
   // Filter feedbacks related to this service
   const filteredFeedbacks = feedbacks?.filter(
     (f: Feedback) => f.serviceId?._id === params.id
@@ -65,7 +75,7 @@ export default async function ServicePage({
 
   // Handle not found service
   if (!service) {
-    return notFound(); // Return 404 if no service is found
+    return notFound();
   }
 
   return (

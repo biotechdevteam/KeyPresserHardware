@@ -2,8 +2,6 @@
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
-import { fetchEvents } from "@/lib/utils/fetchUtils";
-import Loader from "@/components/loader/Loader";
 import { Event } from "@/types/eventsSchema";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,43 +14,10 @@ import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { useState } from "react";
 import Link from "next/link";
-import Error from "@/app/[locale]/error";
-import { GetStaticProps, InferGetStaticPropsType } from "next";
-
-export const getStaticProps: GetStaticProps = async () => {
-  try {
-    // Fetch events data
-    const eventsData = await fetchEvents();
-
-    // Return data as props with ISR enabled
-    return {
-      props: {
-        eventsData,
-        isError: false,
-      },
-      revalidate: 60, // Revalidate data every 60 seconds
-    };
-  } catch (error) {
-    return {
-      props: {
-        eventsData: [],
-        isError: true,
-        error: error,
-      },
-      revalidate: 60,
-    };
-  }
-};
 
 const localizer = momentLocalizer(moment);
 
-const ActivitiesCalendarPage = ({
-  eventsData,
-  isError,
-  error,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
-  // Handle loading state (Client-side simulation)
-  const isLoading = eventsData.length === 0 && !isError;
+const ActivitiesCalendarPage: React.FC<{ eventsData: Event[] }> = ({ eventsData }) => {
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -72,13 +37,6 @@ const ActivitiesCalendarPage = ({
     end: new Date(event.endTime),
     allDay: true,
   }));
-
-  if (isLoading) {
-    return <Loader />;
-  }
-  if (isError) {
-    return <Error error={error} />;
-  }
 
   return (
     <div className="p-8">

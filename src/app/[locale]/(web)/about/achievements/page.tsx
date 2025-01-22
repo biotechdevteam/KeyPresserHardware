@@ -1,12 +1,27 @@
 "use client";
 import AboutAchievements from "@/components/about/about-achievements/AboutAchievements";
+import Error from "@/app/[locale]/error";
 
-const AchievementsPage: React.FC = () => {
-  return (
-    <div className="col-span-1 lg:col-span-2 m-8">
-      <AboutAchievements />
-    </div>
-  );
-};
+export default async function AchievementsPage() {
+  try {
+    const aboutData = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/about`,
+      {
+        cache: "no-store",
+        next: { revalidate: 60 },
+      }
+    ).then((res) => res.json());
 
-export default AchievementsPage;
+    return (
+      <div className="col-span-1 lg:col-span-2 m-8">
+        <AboutAchievements aboutData={aboutData} />
+      </div>
+    );
+  } catch (error: any) {
+    return (
+      <Error
+        error={error.message || "Failed to load data. Please try again."}
+      />
+    );
+  }
+}

@@ -7,34 +7,7 @@ import {
 } from "@/components/ui/hover-card";
 import Image from "next/image";
 import Link from "next/link";
-import Error from "@/app/[locale]/error";
-import Loader from "@/components/loader/Loader";
-import { fetchAboutData } from "@/lib/utils/fetchUtils";
-import { GetStaticProps, InferGetStaticPropsType } from "next";
-
-export const getStaticProps: GetStaticProps = async () => {
-  try {
-    // Fetch about data
-    const aboutData = await fetchAboutData();
-
-    // Return data as props (no ISR)
-    return {
-      props: {
-        aboutData,
-        isError: false,
-        error: null,
-      },
-    };
-  } catch (error: any) {
-    return {
-      props: {
-        aboutData: null,
-        isError: true,
-        error: error.message || "An unexpected error occurred.",
-      },
-    };
-  }
-};
+import { About } from "@/types/aboutSchema";
 
 interface Partnership {
   partner: string;
@@ -43,15 +16,7 @@ interface Partnership {
   website?: string;
 }
 
-const AboutPartnerships = ({
-  aboutData,
-  isError,
-  error,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
-  // Handle loading or error states
-  if (isError) return <Error error={error} />;
-  if (!aboutData) return <Loader />;
-
+const AboutPartnerships: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   return (
     <div className="p-8 pb-16">
       <h2 className="text-xl lg:text-2xl font-bold text-center">
@@ -69,47 +34,49 @@ const AboutPartnerships = ({
         {/* Don't delete this comment! It might be needed tomorrow */}
         {/* <div className="grid grid-flow-col auto-cols-[minmax(200px,1fr)] gap-8 animate-slide"> */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 p-8">
-          {aboutData.partnerships.concat(aboutData.partnerships).map((partnership: Partnership, index: number) => (
-            <HoverCard key={index}>
-              <HoverCardTrigger asChild>
-                <Link
-                  href={partnership?.website || ""}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group block transform transition-transform duration-300 hover:scale-105"
-                >
-                  <Image
-                    src={partnership.logo}
-                    alt={`${partnership.partner} logo`}
-                    style={{ objectFit: "contain" }}
-                    className="hover:shadow-lg transition-shadow rounded-lg overflow-hidden"
-                    width={300}
-                    height={300}
-                  />
-                </Link>
-              </HoverCardTrigger>
-
-              {/* Ensure HoverCardContent doesn't get cut off */}
-              <HoverCardContent className="w-64 p-4 bg-card shadow-lg rounded-lg z-50 max-w-xs">
-                <h3 className="text-xl font-semibold text-primary">
-                  {partnership.partner}
-                </h3>
-                {partnership.description && (
-                  <p className="text-sm mt-2">{partnership.description}</p>
-                )}
-                {partnership.website && (
+          {aboutData.partnerships
+            ?.concat(aboutData.partnerships)
+            .map((partnership: Partnership, index: number) => (
+              <HoverCard key={index}>
+                <HoverCardTrigger asChild>
                   <Link
-                    href={partnership.website}
+                    href={partnership?.website || ""}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-accent hover:underline mt-4 block"
+                    className="group block transform transition-transform duration-300 hover:scale-105"
                   >
-                    Visit Website
+                    <Image
+                      src={partnership.logo}
+                      alt={`${partnership.partner} logo`}
+                      style={{ objectFit: "contain" }}
+                      className="hover:shadow-lg transition-shadow rounded-lg overflow-hidden"
+                      width={300}
+                      height={300}
+                    />
                   </Link>
-                )}
-              </HoverCardContent>
-            </HoverCard>
-          ))}
+                </HoverCardTrigger>
+
+                {/* Ensure HoverCardContent doesn't get cut off */}
+                <HoverCardContent className="w-64 p-4 bg-card shadow-lg rounded-lg z-50 max-w-xs">
+                  <h3 className="text-xl font-semibold text-primary">
+                    {partnership.partner}
+                  </h3>
+                  {partnership.description && (
+                    <p className="text-sm mt-2">{partnership.description}</p>
+                  )}
+                  {partnership.website && (
+                    <Link
+                      href={partnership.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-accent hover:underline mt-4 block"
+                    >
+                      Visit Website
+                    </Link>
+                  )}
+                </HoverCardContent>
+              </HoverCard>
+            ))}
         </div>
       </div>
     </div>

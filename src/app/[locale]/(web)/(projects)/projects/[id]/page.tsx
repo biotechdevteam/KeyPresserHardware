@@ -1,4 +1,3 @@
-import { fetchProjectsData } from "@/lib/utils/fetchUtils";
 import ProjectDetails from "@/components/projects/project-details/ProjectDetails";
 import { notFound } from "next/navigation";
 import { Project } from "@/types/projectSchema";
@@ -8,7 +7,13 @@ import Logo from "../../../../../../../public/images/logo.png";
 
 // Fetch all project IDs for static generation
 export async function generateStaticParams() {
-  const projects = await fetchProjectsData(); // Fetch all projects
+  const projects = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/projects`,
+    {
+      cache: "no-store",
+      next: { revalidate: 60 },
+    }
+  ).then((res) => res.json());
   return projects.map((project: Project) => ({
     id: project._id, // Map each project ID
   }));
@@ -19,11 +24,15 @@ export async function generateMetadata(
   { params }: { params: { id: string } },
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  // Fetch all project data
-  const projects = await fetchProjectsData();
-  const project = projects.find((p) => p._id === params.id);
+  const projects = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/projects`,
+    {
+      cache: "no-store",
+      next: { revalidate: 60 },
+    }
+  ).then((res) => res.json());
+  const project = projects.find((p: Project) => p._id === params.id);
 
-  // Handle case where project is not found
   if (!project) {
     return {
       title: "Project Not Found",
@@ -33,7 +42,7 @@ export async function generateMetadata(
 
   // Access and extend parent metadata
   const previousImages = (await parent).openGraph?.images || [];
-  const projectImage = project.projectImageUrl || Logo.src; // Fallback image
+  const projectImage = project.projectImageUrl || Logo.src;
 
   return {
     title: project.title,
@@ -47,7 +56,7 @@ export async function generateMetadata(
       card: "summary_large_image",
       title: project.title,
       description: project.summary,
-      images: [projectImage], // Ensure it's a valid string
+      images: [projectImage],
     },
   };
 }
@@ -57,12 +66,18 @@ export default async function ProjectPage({
 }: {
   params: { id: string };
 }) {
-  const projects = await fetchProjectsData(); // Fetch all projects
-  const project = projects.find((p: Project) => p._id === params.id); // Find project by ID
+  const projects = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/projects`,
+    {
+      cache: "no-store",
+      next: { revalidate: 60 },
+    }
+  ).then((res) => res.json());
+  const project = projects.find((p: Project) => p._id === params.id);
 
   // Handle not found project
   if (!project) {
-    return notFound(); // Return 404 if no project found
+    return notFound();
   }
 
   return (

@@ -20,17 +20,6 @@ export const metadata: Metadata = {
       },
     ],
   },
-  appleWebApp: {
-    title: "BT Verse",
-    statusBarStyle: "black-translucent",
-    startupImage: [
-      "/apple-touch-icon.png",
-      {
-        url: "/apple-touch-icon.png",
-        media: "(device-width: 768px) and (device-height: 1024px)",
-      },
-    ],
-  },
   manifest: "/site.webmanifest",
   generator: "Next.js",
   applicationName: "bt-verse",
@@ -49,7 +38,7 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL('https://biotecuniverse.com'),
   alternates: {
-    canonical: '/',
+    canonical: '/home',
     languages: {
       'en-US': '/en-US',
       'fr-FR': '/fr-FR',

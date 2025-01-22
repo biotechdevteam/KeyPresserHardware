@@ -3,35 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { CheckCircle, Users, Calendar, Projector, Star } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import Loader from "@/components/loader/Loader";
-import Error from "@/app/[locale]/error";
-import { GetStaticProps, InferGetStaticPropsType } from "next";
-import { fetchAboutData } from "@/lib/utils/fetchUtils";
-
-// Incremental Static Regeneration: Fetch about data
-export const getStaticProps: GetStaticProps = async () => {
-  try {
-    const aboutData = await fetchAboutData();
-
-    return {
-      props: {
-        aboutData,
-        isError: false,
-        error: null,
-      },
-      revalidate: 60, // Revalidate every 60 seconds
-    };
-  } catch (error: any) {
-    return {
-      props: {
-        aboutData: null,
-        isError: true,
-        error: error.message || "An unexpected error occurred.",
-      },
-      revalidate: 60,
-    };
-  }
-};
+import { About } from "@/types/aboutSchema";
 
 interface Achievement {
   title: string;
@@ -96,11 +68,7 @@ const AchievementCard: React.FC<{
   );
 };
 
-const AboutAchievements = ({
-  aboutData,
-  isError,
-  error,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+const AboutAchievements: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   const [isVisible, setIsVisible] = useState(false);
   const achievementRef = useRef<HTMLDivElement | null>(null);
 
@@ -127,10 +95,6 @@ const AboutAchievements = ({
     };
   }, []);
 
-  // Handle loading or error states
-  if (isError) return <Error error={error} />;
-  if (!aboutData) return <Loader />;
-
   return (
     <Card
       className="lg:p-8 bg-transparent shadow-none border-none rounded-lg"
@@ -148,13 +112,15 @@ const AboutAchievements = ({
 
       <CardContent>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {aboutData.achievements.map((achievement: Achievement, index: number) => (
-            <AchievementCard
-              key={index}
-              achievement={achievement}
-              isVisible={isVisible}
-            />
-          ))}
+          {aboutData.achievements?.map(
+            (achievement: Achievement, index: number) => (
+              <AchievementCard
+                key={index}
+                achievement={achievement}
+                isVisible={isVisible}
+              />
+            )
+          )}
         </div>
       </CardContent>
     </Card>

@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { fetchFAQs } from "@/lib/utils/fetchUtils";
 import FAQList from "../faq-list/FAQList";
 import {
   Card,
@@ -11,40 +10,10 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import Loader from "@/components/loader/Loader";
-import { GetStaticProps, InferGetStaticPropsType } from "next";
-import Error from "@/app/[locale]/error";
-import { FAQ } from "@/types/FAQSchema";
+import { FAQ, FAQs } from "@/types/FAQSchema";
 
-export const getStaticProps: GetStaticProps = async () => {
-  try {
-    // Fetch FAQs data
-    const faqData = await fetchFAQs();
-
-    // Return data as props with ISR enabled
-    return {
-      props: {
-        faqData,
-        isError: false,
-        error: null,
-      },
-      revalidate: 60, // Revalidate data every 60 seconds
-    };
-  } catch (error) {
-    return {
-      props: {
-        faqData: [],
-        isError: true,
-        error: error,
-      },
-      revalidate: 60,
-    };
-  }
-};
-
-// Define the props interface
-interface FAQContainerProps
-  extends InferGetStaticPropsType<typeof getStaticProps> {
+interface FAQContainerProps {
+  faqData: FAQs;
   general?: boolean;
   membership?: boolean;
 }
@@ -53,19 +22,7 @@ const FAQContainer: React.FC<FAQContainerProps> = ({
   faqData,
   general = false,
   membership = false,
-  isError,
-  error,
 }) => {
-  // Handle loading state (Client-side simulation)
-  const isLoading = faqData.length === 0 && !isError;
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  // Handle error state
-  if (isError) {
-    return <Error error={error} />;
-  }
 
   // Initialize FAQs with a default value
   let faqs = faqData;

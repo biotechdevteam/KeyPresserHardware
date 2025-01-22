@@ -1,4 +1,3 @@
-import { fetchBlogs } from "@/lib/utils/fetchUtils";
 import PostContainer from "@/components/blog/post-container/PostContainer";
 import { Blog } from "@/types/blogSchema";
 import { Metadata, ResolvingMetadata } from "next";
@@ -7,7 +6,13 @@ import { notFound } from "next/navigation";
 
 // Fetch all blog IDs for static generation
 export async function generateStaticParams() {
-  const blogs = await fetchBlogs(); // Fetch all blogs
+  const blogs = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/blog/posts`,
+    {
+      cache: "no-store",
+      next: { revalidate: 60 },
+    }
+  ).then((res) => res.json());
   return blogs.map((blog: Blog) => ({
     id: blog._id, // Map each blog ID
   }));
@@ -18,11 +23,15 @@ export async function generateMetadata(
   { params }: { params: { id: string } },
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  // Fetch all blog data
-  const blogs = await fetchBlogs();
-  const blog = blogs.find((b) => b._id === params.id);
+  const blogs = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/blog/posts`,
+    {
+      cache: "no-store",
+      next: { revalidate: 60 },
+    }
+  ).then((res) => res.json());
+  const blog = blogs.find((b: Blog) => b._id === params.id);
 
-  // Handle case where blog is not found
   if (!blog) {
     return {
       title: "Blog Not Found",
@@ -32,7 +41,7 @@ export async function generateMetadata(
 
   // Access and extend parent metadata
   const previousImages = (await parent).openGraph?.images || [];
-  const blogImage = blog.featuredImageUrl || Logo.src; // Fallback image
+  const blogImage = blog.featuredImageUrl || Logo.src;
 
   return {
     title: blog.title,
@@ -46,18 +55,24 @@ export async function generateMetadata(
       card: "summary_large_image",
       title: blog.title,
       description: blog.summary,
-      images: [blogImage], // Ensure it's a valid string
+      images: [blogImage],
     },
   };
 }
 
 export default async function PostPage({ params }: { params: { id: string } }) {
-  const blogs = await fetchBlogs(); // Fetch all blogs
-  const blog = blogs.find((b: Blog) => b._id === params.id); // Find blog by ID
+  const blogs = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/blog/posts`,
+    {
+      cache: "no-store",
+      next: { revalidate: 60 },
+    }
+  ).then((res) => res.json());
+  const blog = blogs.find((b: Blog) => b._id === params.id);
 
   // Handle not found blog
   if (!blog) {
-    return notFound(); // Return 404 if no blog found
+    return notFound();
   }
 
   // Filter out the current post to pass the rest as relatedPosts

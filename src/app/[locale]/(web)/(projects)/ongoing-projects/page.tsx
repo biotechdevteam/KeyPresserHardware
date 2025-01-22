@@ -1,9 +1,22 @@
 "use client";
 import CurrentProjects from "@/components/projects/current-projects/CurrentProjects";
-import React from "react";
+import Error from "@/app/[locale]/error";
 
-const OngoingProjectsPage = () => {
-  return <CurrentProjects />;
-};
-
-export default OngoingProjectsPage;
+export default async function OngoingProjectsPage() {
+  try {
+    const projectsData = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/projects`,
+      {
+        cache: "no-store",
+        next: { revalidate: 60 },
+      }
+    ).then((res) => res.json());
+    return <CurrentProjects projectsData={projectsData} />;
+  } catch (error: any) {
+    return (
+      <Error
+        error={error.message || "Failed to load data. Please try again."}
+      />
+    );
+  }
+}

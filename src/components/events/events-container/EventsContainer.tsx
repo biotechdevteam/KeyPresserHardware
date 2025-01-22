@@ -6,57 +6,18 @@ import { Event } from "@/types/eventsSchema";
 import RegisterDialog from "@/components/register-dialog/RegisterDialog";
 import EnrollEventForm from "../events-enroll/EnrollForm";
 import EventCard from "../events-card/EventsCard";
-import { GetStaticProps, InferGetStaticPropsType } from "next";
-import { fetchEvents, fetchFeedbacks } from "@/lib/utils/fetchUtils";
-import Error from "@/app/[locale]/error";
-import Loader from "@/components/loader/Loader";
 
-export const getStaticProps: GetStaticProps = async () => {
-  try {
-    // Fetch events and feedbacks data
-    const eventsData = await fetchEvents();
-    const feedbacksData = await fetchFeedbacks();
-
-    // Return data as props with ISR enabled
-    return {
-      props: {
-        eventsData,
-        feedbacksData,
-        isError: false,
-        error: null,
-      },
-      revalidate: 60, // Revalidate data every 60 seconds
-    };
-  } catch (error) {
-    return {
-      props: {
-        eventsData: [],
-        feedbacksData: [],
-        isError: true,
-        error: error,
-      },
-      revalidate: 60,
-    };
-  }
-};
-
-interface EventsContainerProps
-  extends InferGetStaticPropsType<typeof getStaticProps> {
+const EventsContainer: React.FC<{
+  eventsData: Event[];
+  feedbacksData: Feedback[];
   pastEvents?: boolean;
   upcomingEvents?: boolean;
-}
-
-const EventsContainer: React.FC<EventsContainerProps> = ({
+}> = ({
   eventsData,
   feedbacksData, // Not used!
   pastEvents = false,
   upcomingEvents = false,
-  isError,
-  error,
 }) => {
-  // Handle loading state (Client-side simulation)
-  const isLoading =
-    eventsData.length === 0 && feedbacksData.length === 0 && !isError;
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [expandedEvents, setExpandedEvents] = useState<Record<string, boolean>>(
     {}
@@ -102,13 +63,6 @@ const EventsContainer: React.FC<EventsContainerProps> = ({
       const endDate = event.endTime;
       return endDate ? new Date(endDate) >= today : false;
     });
-  }
-
-  if (isLoading) {
-    return <Loader />;
-  }
-  if (isError) {
-    return <Error error={error} />;
   }
 
   return (

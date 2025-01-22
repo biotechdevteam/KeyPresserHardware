@@ -2,8 +2,6 @@
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
-import { fetchProjectsData } from "@/lib/utils/fetchUtils";
-import Loader from "@/components/loader/Loader";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -16,43 +14,12 @@ import { format } from "date-fns";
 import { useState } from "react";
 import Link from "next/link";
 import { Project } from "@/types/projectSchema";
-import Error from "@/app/[locale]/error";
-import { GetStaticProps, InferGetStaticPropsType } from "next";
-
-export const getStaticProps: GetStaticProps = async () => {
-  try {
-    // Fetch projects data
-    const projectsData = await fetchProjectsData();
-
-    // Return data as props with ISR enabled
-    return {
-      props: {
-        projectsData,
-        isError: false,
-      },
-      revalidate: 60, // Revalidate data every 60 seconds
-    };
-  } catch (error) {
-    return {
-      props: {
-        projectsData: [],
-        isError: true,
-        error: error,
-      },
-      revalidate: 60,
-    };
-  }
-};
 
 const localizer = momentLocalizer(moment);
 
-const ProjectsCalendarPage = ({
+const ProjectsCalendarPage: React.FC<{ projectsData: Project[] }> = ({
   projectsData,
-  isError,
-  error,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
-  // Handle loading state (Client-side simulation)
-  const isLoading = projectsData.length === 0 && !isError;
+}) => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -75,13 +42,6 @@ const ProjectsCalendarPage = ({
         : new Date(project.startDate),
       allDay: true,
     })) || [];
-
-  if (isLoading) {
-    return <Loader />;
-  }
-  if (isError) {
-    return <Error error={error} />;
-  }
 
   return (
     <div className="p-8">

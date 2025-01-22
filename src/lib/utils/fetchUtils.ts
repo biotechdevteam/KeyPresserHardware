@@ -52,13 +52,13 @@ export const fetchAboutData = async (): Promise<About> => {
   }
 };
 
-// Fetch About Data
+// Fetch Services Data
 export const fetchServices = async (): Promise<Service[]> => {
   try {
     const response = await fetchData("/services", "GET");
     return response?.data;
   } catch (error) {
-    console.error("Error during fetcServices:", error);
+    console.error("Error during fetchServices:", error);
     throw new Error("Network request failed.");
   }
 };
@@ -118,7 +118,7 @@ export const fetchBlogs = async (): Promise<Blog[]> => {
   }
 };
 
-// Fetch Blogs Function
+// Fetch Events Function
 export const fetchEvents = async (): Promise<Event[]> => {
   try {
     const response = await fetchData("/events", "GET");

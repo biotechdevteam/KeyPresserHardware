@@ -8,59 +8,16 @@ import ContactSection from "../contact/Contact";
 import AboutPartnerships from "@/components/about/about-partnerships/AboutPartnerships";
 import FAQContainer from "@/components/faq/faq-container/FAQContainer";
 import Testimonials from "@/components/services/testimonials/Testimonials";
-import Error from "@/app/[locale]/error";
-import Loader from "@/components/loader/Loader";
-import {
-  fetchAboutData,
-  fetchFeedbacks,
-  fetchProjectsData,
-} from "@/lib/utils/fetchUtils";
-import { GetStaticProps, InferGetStaticPropsType } from "next";
+import { About } from "@/types/aboutSchema";
+import { Feedback } from "@/types/feedbackSchema";
+import { FAQs } from "@/types/FAQSchema";
 
-export const getStaticProps: GetStaticProps = async () => {
-  try {
-    // Fetch all data
-    const aboutData = await fetchAboutData();
-    const feedbacks = await fetchFeedbacks();
-    const projects = await fetchProjectsData();
-
-    // Return data as props (no ISR)
-    return {
-      props: {
-        aboutData,
-        feedbacks,
-        projects,
-        isError: false,
-        error: null,
-      },
-    };
-  } catch (error: any) {
-    return {
-      props: {
-        aboutData: null,
-        feedbacks: null,
-        projects: null,
-        isError: true,
-        error: error.message || "An unexpected error occurred.",
-      },
-    };
-  }
-};
-
-const LandingContainer = ({
-  aboutData,
-  feedbacks,
-  projects,
-  isError,
-  error,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
-  // Handle loading or error states
-  if (isError) return <Error error={error} />;
-  // if (!aboutData && !isError) return <Loader />;
-  console.log("Fetched aboutData:", aboutData);
-  console.log("Fetched Feedbacks:", feedbacks);
-  console.log("Fetched projects:", projects);
-
+const LandingContainer: React.FC<{
+  aboutData: About;
+  projects: Project[];
+  feedbacks: Feedback[];
+  faqData: FAQs;
+}> = ({ aboutData, feedbacks, projects, faqData }) => {
   return (
     <div className="landing-page-container">
       <Hero aboutData={aboutData} />
@@ -73,7 +30,7 @@ const LandingContainer = ({
       />
       <div className="bg-card">
         <Testimonials feedbacks={feedbacks} title="Customer reviews" />
-        <FAQContainer general />
+        <FAQContainer faqData={faqData} general />
         <ContactSection />
       </div>
     </div>

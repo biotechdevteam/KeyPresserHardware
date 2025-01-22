@@ -1,18 +1,42 @@
 "use client";
 import EventsContainer from "@/components/events/events-container/EventsContainer";
+import Error from "@/app/[locale]/error";
 
 export default async function PastEventsPage() {
-  return (
-    <section className="grid min-h-screen place-items-center p-8">
-      <div className="w-full max-w-4xl mx-auto">
-        <header className="mb-8 text-center">
-          <h1 className="text-4xl font-bold">Past Events</h1>
-          <p className="text-lg mt-4">
-            Take a look at our previous events and activities.
-          </p>
-        </header>
-        <EventsContainer pastEvents />
-      </div>
-    </section>
-  );
+  try {
+    const [eventsData, feedbacks] = await Promise.all([
+      fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/events`, {
+        cache: "no-store",
+        next: { revalidate: 60 },
+      }).then((res) => res.json()),
+      fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/feedback`, {
+        cache: "no-store",
+        next: { revalidate: 60 },
+      }).then((res) => res.json()),
+    ]);
+
+    return (
+      <section className="grid min-h-screen place-items-center p-8">
+        <div className="w-full max-w-4xl mx-auto">
+          <header className="mb-8 text-center">
+            <h1 className="text-4xl font-bold">Past Events</h1>
+            <p className="text-lg mt-4">
+              Take a look at our previous events and activities.
+            </p>
+          </header>
+          <EventsContainer
+            eventsData={eventsData}
+            feedbacksData={feedbacks}
+            pastEvents
+          />
+        </div>
+      </section>
+    );
+  } catch (error: any) {
+    return (
+      <Error
+        error={error.message || "Failed to load data. Please try again."}
+      />
+    );
+  }
 }

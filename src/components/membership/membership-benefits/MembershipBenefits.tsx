@@ -2,52 +2,9 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import Error from "@/app/[locale]/error";
-import Loader from "@/components/loader/Loader";
-import { fetchAboutData } from "@/lib/utils/fetchUtils";
-import { GetStaticProps, InferGetStaticPropsType } from "next";
+import { About } from "@/types/aboutSchema";
 
-export const getStaticProps: GetStaticProps = async () => {
-  try {
-    // Fetch about data
-    const aboutData = await fetchAboutData();
-
-    // Return data as props (no ISR)
-    return {
-      props: {
-        aboutData,
-        isError: false,
-        error: null,
-      },
-    };
-  } catch (error) {
-    return {
-      props: {
-        aboutData: [],
-        isError: true,
-        error: error,
-      },
-    };
-  }
-};
-
-const MembershipBenefits = ({
-  aboutData,
-  isError,
-  error,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
-  // Handle loading state (Client-side simulation)
-  const isLoading = aboutData.length === 0 && !isError;
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  // Handle error state
-  if (isError) {
-    return <Error error={error} />;
-  }
-
+const MembershipBenefits: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   return (
     <section className="container mx-auto py-12 px-6 lg:px-12">
       <h1 className="text-3xl lg:text-4xl font-bold text-center mb-6">

@@ -7,7 +7,13 @@ import { notFound } from "next/navigation";
 
 // Fetch all member IDs for static generation
 export async function generateStaticParams() {
-  const members = await fetchMembers(); // Fetch all members
+  const members = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/members`,
+    {
+      cache: "no-store",
+      next: { revalidate: 60 },
+    }
+  ).then((res) => res.json());
   return members.map((member: Member) => ({
     id: member._id, // Map each member ID
   }));
@@ -18,11 +24,15 @@ export async function generateMetadata(
   { params }: { params: { id: string } },
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  // Fetch all member data
-  const members = await fetchMembers();
-  const member = members.find((m) => m._id === params.id);
+  const members = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/members`,
+    {
+      cache: "no-store",
+      next: { revalidate: 60 },
+    }
+  ).then((res) => res.json());
+  const member = members.find((m: Member) => m._id === params.id);
 
-  // Handle case where member is not found
   if (!member) {
     return {
       title: "Member Not Found",
@@ -56,7 +66,13 @@ export default async function MemberPage({
 }: {
   params: { id: string };
 }) {
-  const members = await fetchMembers(); // Fetch all members
+  const members = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/members`,
+    {
+      cache: "no-store",
+      next: { revalidate: 60 },
+    }
+  ).then((res) => res.json());
   const member = members.find((m: Member) => m._id === params.id); // Find member by ID
 
   if (!member) {

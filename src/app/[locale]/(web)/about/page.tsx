@@ -1,39 +1,41 @@
 "use client";
-import { useQuery } from "@tanstack/react-query";
-import { fetchAboutData } from "@/lib/utils/fetchUtils";
 import AboutContainer from "@/components/about/about-container/AboutContainer";
-import { About } from "@/types/aboutSchema";
-import Loader from "@/components/loader/Loader";
+import Error from "@/app/[locale]/error";
 
 export default async function AboutPage() {
-  const {
-    data: aboutData,
-    isLoading,
-    isError,
-    error,
-  } = useQuery<About>({
-    queryKey: ["about"],
-    queryFn: fetchAboutData,
-    staleTime: Infinity,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
+  try {
+    const aboutData = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/about`,
+      {
+        cache: "no-store",
+        next: { revalidate: 60 },
+      }
+    ).then((res) => res.json());
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  if (isError) {
     return (
-      <div className="text-destructive text-center inset-0">
-        Error: {error instanceof Error ? error.message : "Unknown error"}
+      <div className="p-6">
+        <AboutContainer aboutData={aboutData} />
       </div>
     );
+  } catch (error: any) {
+    return (
+      <Error
+        error={error.message || "Failed to load data. Please try again."}
+      />
+    );
   }
-
-  return (
-    <div className="p-6">
-      <AboutContainer initialData={aboutData as About} />
-    </div>
-  );
 }
+
+// const {
+//   data: aboutData,
+//   isLoading,
+//   isError,
+//   error,
+// } = useQuery<About>({
+//   queryKey: ["about"],
+//   queryFn: fetchAboutData,
+//   staleTime: Infinity,
+//   refetchOnMount: false,
+//   refetchOnWindowFocus: false,
+//   refetchOnReconnect: false,
+// });

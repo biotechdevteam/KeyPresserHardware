@@ -16,48 +16,13 @@ import {
 import { useTranslations } from "next-intl";
 import ContactForm from "../contact-form/ContactForm";
 import { extractUsername } from "@/lib/helpers";
-import Error from "@/app/[locale]/error";
-import Loader from "@/components/loader/Loader";
-import { fetchAboutData } from "@/lib/utils/fetchUtils";
-import { GetStaticProps, InferGetStaticPropsType } from "next";
 import Link from "next/link";
 import { extractDomain } from "@/lib/helpers";
+import { About } from "@/types/aboutSchema";
 
-export const getStaticProps: GetStaticProps = async () => {
-  try {
-    // Fetch about data
-    const aboutData = await fetchAboutData();
-
-    // Return data as props (no ISR)
-    return {
-      props: {
-        aboutData,
-        isError: false,
-        error: null,
-      },
-    };
-  } catch (error: any) {
-    return {
-      props: {
-        aboutData: null,
-        isError: true,
-        error: error.message || "An unexpected error occurred.",
-      },
-    };
-  }
-};
-
-const AboutFooter = ({
-  aboutData,
-  isError,
-  error,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+const AboutFooter: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   const t = useTranslations();
   const websiteURL = extractDomain();
-
-  // Handle loading or error states
-  if (isError) return <Error error={error} />;
-  if (!aboutData) return <Loader />;
 
   return (
     <footer className="py-10">
@@ -120,7 +85,7 @@ const AboutFooter = ({
               {t("footer.socialMediaTitle")}
             </h3>
             <div className="space-y-4">
-              {aboutData.social_links.linkedin && (
+              {aboutData.social_links?.linkedin && (
                 <div className="flex items-center">
                   <Link
                     href={aboutData.social_links.linkedin}

@@ -104,9 +104,15 @@ const AboutAchievements: React.FC<{ aboutData: About }> = ({ aboutData }) => {
         <h2 className="text-2xl font-bold">Achievements</h2>
         <Separator className="w-16 mx-auto my-4" />
         <p className="text-base px-4">
-          Over the years, {aboutData.name} has achieved remarkable milestones,
-          advancing biotechnology in Cameroon and beyond. Explore our proudest
-          moments below!
+          Over the years, {aboutData.name} has made significant strides in
+          leveraging biotechnology, technology, and health initiatives for the
+          betterment of our communities in Cameroon and beyond. From innovative
+          research and strategic collaborations to impactful health programs,
+          our milestones reflect our unwavering commitment to personal
+          development, business growth, and humanitarian efforts. Explore some
+          of our proudest achievements and see how we continue to drive positive
+          change and foster sustainable growth through science, technology, and
+          health advancements.
         </p>
       </CardHeader>
 

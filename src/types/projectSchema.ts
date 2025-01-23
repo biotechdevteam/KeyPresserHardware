@@ -8,7 +8,7 @@ const ProjectSchema = z.object({
   description: z.string(),
   startDate: z.string().datetime(),
   endDate: z.string().datetime().optional(),
-  status: z.enum(["ongoing", "completed", "paused"]),
+  status: z.enum(["ongoing", "completed", "upcoming"]),
   category: z.string(),
   projectImageUrl: z.string().url().optional(),
   createdAt: z.string().datetime(),

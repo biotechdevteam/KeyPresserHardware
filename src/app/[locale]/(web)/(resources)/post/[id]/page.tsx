@@ -59,12 +59,14 @@ export async function generateMetadata(
 }
 
 export default async function PostPage({ params }: { params: { id: string } }) {
-  const blogs = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/blog/posts`,
-    {
+  const [blogs, aboutData] = await Promise.all([
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/blog/posts`, {
       next: { revalidate: 60 },
-    }
-  ).then((res) => res.json());
+    }).then((res) => res.json()),
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/about`, {
+      next: { revalidate: 60 },
+    }).then((res) => res.json()),
+  ]);
   const blog = blogs.find((b: Blog) => b._id === params.id);
 
   // Handle not found blog
@@ -77,7 +79,11 @@ export default async function PostPage({ params }: { params: { id: string } }) {
 
   return (
     <div className="p-6">
-      <PostContainer post={blog} relatedPosts={relatedPosts} />
+      <PostContainer
+        post={blog}
+        relatedPosts={relatedPosts}
+        aboutData={aboutData}
+      />
     </div>
   );
 }

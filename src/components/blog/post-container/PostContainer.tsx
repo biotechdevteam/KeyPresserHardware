@@ -17,15 +17,18 @@ import RegisterDialog from "@/components/register-dialog/RegisterDialog";
 import { useBlog } from "@/lib/useBlog";
 import useAuth from "@/lib/useAuth";
 import { ReactionType } from "@/lib/utils/fetchUtils";
+import { About } from "@/types/aboutSchema";
 
 interface PostContainerProps {
   post: Blog;
   relatedPosts: Blog[];
+  aboutData: About;
 }
 
 const PostContainer: React.FC<PostContainerProps> = ({
   post,
   relatedPosts,
+  aboutData,
 }) => {
   const [comments, setComments] = useState(post.comments || []);
   const [contentHeadings, setContentHeadings] = useState<
@@ -233,7 +236,7 @@ const PostContainer: React.FC<PostContainerProps> = ({
 
         {/* Render Share Buttons */}
         <section id="follow-us" className="max-w-4xl mx-auto mt-6">
-          <FollowUs />
+          <FollowUs aboutData={aboutData}/>
         </section>
       </div>
 

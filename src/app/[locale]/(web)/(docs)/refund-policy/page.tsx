@@ -1,4 +1,3 @@
-"use client";
 import RefundPolicy from "@/components/Policies/RefundPolicy";
 import Error from "@/app/[locale]/error";
 

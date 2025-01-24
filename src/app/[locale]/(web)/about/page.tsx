@@ -1,4 +1,3 @@
-"use client";
 import AboutContainer from "@/components/about/about-container/AboutContainer";
 import Error from "@/app/[locale]/error";
 
@@ -7,7 +6,6 @@ export default async function AboutPage() {
     const aboutData = await fetch(
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/about`,
       {
-        cache: "no-store",
         next: { revalidate: 60 },
       }
     ).then((res) => res.json());

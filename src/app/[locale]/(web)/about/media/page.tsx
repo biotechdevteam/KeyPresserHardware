@@ -1,4 +1,3 @@
-"use client";
 import AboutMediaPage from "@/components/about/about-media/AboutMedia";
 import Error from "@/app/[locale]/error";
 

@@ -1,4 +1,3 @@
-"use client";
 import PrivacyPolicy from "@/components/Policies/PrivacyPolicy";
 import Error from "@/app/[locale]/error";
 

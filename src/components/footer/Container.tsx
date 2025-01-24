@@ -5,52 +5,17 @@ import FollowUs from "../speed-dial/FollowUs";
 import { Link, useTransitionRouter } from "next-view-transitions";
 import Image from "next/image";
 import Logo from "../../../public/images/logo.png";
-import { slideInOut } from "../../lib/utils/pageTransitions";
-import Error from "@/app/[locale]/error";
-import Loader from "@/components/loader/Loader";
-import { fetchAboutData } from "@/lib/utils/fetchUtils";
-import { GetStaticProps, InferGetStaticPropsType } from "next";
+// import { slideInOut } from "../../lib/utils/pageTransitions";
+import { About } from "@/types/aboutSchema";
 
-export const getStaticProps: GetStaticProps = async () => {
-  try {
-    // Fetch about data
-    const aboutData = await fetchAboutData();
-
-    // Return data as props (no ISR)
-    return {
-      props: {
-        aboutData,
-        isError: false,
-        error: null,
-      },
-    };
-  } catch (error: any) {
-    return {
-      props: {
-        aboutData: null,
-        isError: true,
-        error: error.message || "An unexpected error occurred.",
-      },
-    };
-  }
-};
-
-const Footer = ({
-  aboutData,
-  isError,
-  error,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   const logo = aboutData?.logo_url || Logo.src;
-  const router = useTransitionRouter();
+  // const router = useTransitionRouter();
 
-  // Handle loading or error states
-  if (isError) return <Error error={error} />;
-  if (!aboutData) return <Loader />;
-
-  const handleClick = (e: React.MouseEvent, url: string) => {
-    e.preventDefault(); // Prevent default link behavior
-    router.push(url, { onTransitionReady: slideInOut });
-  };
+  // const handleClick = (e: React.MouseEvent, url: string) => {
+  //   e.preventDefault(); // Prevent default link behavior
+  //   router.push(url, { onTransitionReady: slideInOut });
+  // };
 
   return (
     <div className="bg-secondary py-12">
@@ -63,6 +28,7 @@ const Footer = ({
               alt={aboutData?.name}
               width={100}
               height={100}
+              priority
               className="mx-auto lg:mx-0 rounded-lg"
             />
           </Link>
@@ -74,7 +40,7 @@ const Footer = ({
         <div className="container grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-8 mx-auto sm:col-span-2 lg:col-span-1">
           {/* Quick Links Section */}
           <div className="text-center lg:text-left">
-            <h3 className="text-lg font-semibold mb-4 text-primary-foreground">
+            <h3 className="text-lg font-semibold mb-4 text-primary-foreground underline">
               Quick Links
             </h3>
             <ul className="space-y-2">
@@ -131,7 +97,7 @@ const Footer = ({
 
           {/* Explore Section */}
           <div className="text-center lg:text-left">
-            <h3 className="text-lg font-semibold mb-4 text-primary-foreground">
+            <h3 className="text-lg font-semibold mb-4 text-primary-foreground underline">
               Explore
             </h3>
             <ul className="space-y-2">
@@ -172,7 +138,7 @@ const Footer = ({
 
           {/* Legal Section */}
           <div className="text-center lg:text-left">
-            <h3 className="text-lg font-semibold mb-4 text-primary-foreground">
+            <h3 className="text-lg font-semibold mb-4 text-primary-foreground underline">
               Legal Pages
             </h3>
             <ul className="space-y-2">
@@ -213,7 +179,7 @@ const Footer = ({
         </div>
 
         {/* Social Media Links Section */}
-        <FollowUs />
+        <FollowUs aboutData={aboutData} />
       </div>
 
       {/* Footer Bottom */}

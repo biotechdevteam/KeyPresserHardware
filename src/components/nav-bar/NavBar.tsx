@@ -1,5 +1,5 @@
 "use client";
-import { Link, useTransitionRouter } from "next-view-transitions";
+import { Link } from "next-view-transitions";
 import { useTranslations } from "next-intl";
 import React from "react";
 import {
@@ -37,36 +37,9 @@ import { useMediaQuery } from "usehooks-ts";
 import Image from "next/image";
 import Logo from "../../../public/images/logo.png";
 import { NavCollapsible, NavCollapsibleListItem } from "../ui/collapsible";
-import { slideInOut } from "../../lib/utils/pageTransitions";
+// import { slideInOut } from "../../lib/utils/pageTransitions";
 import useAuth from "@/lib/useAuth";
-import Error from "@/app/[locale]/error";
-import Loader from "@/components/loader/Loader";
-import { fetchAboutData } from "@/lib/utils/fetchUtils";
-import { GetStaticProps, InferGetStaticPropsType } from "next";
-
-export const getStaticProps: GetStaticProps = async () => {
-  try {
-    // Fetch about data
-    const aboutData = await fetchAboutData();
-
-    // Return data as props (no ISR)
-    return {
-      props: {
-        aboutData,
-        isError: false,
-        error: null,
-      },
-    };
-  } catch (error: any) {
-    return {
-      props: {
-        aboutData: null,
-        isError: true,
-        error: error.message || "An unexpected error occurred.",
-      },
-    };
-  }
-};
+import { About } from "@/types/aboutSchema";
 
 // array of pages
 type Pages = {
@@ -106,18 +79,18 @@ const navMenu: Pages[][] = [
       description:
         "Discover the milestones and successes the association has achieved over time.",
     },
-    {
-      title: "partners & sponsors",
-      link: "/about/partners-&-sponsors",
-      description:
-        "Explore the various partners and sponsors that support the association's activities.",
-    },
-    {
-      title: "media",
-      link: "/about/media",
-      description:
-        "Access multimedia content, including videos, images, and press coverage related to the association.",
-    },
+    // {
+    //   title: "partners & sponsors",
+    //   link: "/about/partners-&-sponsors",
+    //   description:
+    //     "Explore the various partners and sponsors that support the association's activities.",
+    // },
+    // {
+    //   title: "media",
+    //   link: "/about/media",
+    //   description:
+    //     "Access multimedia content, including videos, images, and press coverage related to the association.",
+    // },
     {
       title: "faqs",
       link: "/about/faqs",
@@ -152,12 +125,12 @@ const navMenu: Pages[][] = [
       description:
         "Learn about the different membership tiers and the benefits associated with each level.",
     },
-    {
-      title: "members directory",
-      link: "/members-directory",
-      description:
-        "A comprehensive directory of members and their contact information.", // *
-    },
+    // {
+    //   title: "members directory",
+    //   link: "/members-directory",
+    //   description:
+    //     "A comprehensive directory of members and their contact information.", // *
+    // },
     {
       title: "membership faqs",
       link: "/membership-faqs",
@@ -168,12 +141,12 @@ const navMenu: Pages[][] = [
 
   // Events
   [
-    {
-      title: "Events Calender",
-      link: "/events-calender",
-      description:
-        "Stay updated with a calendar of upcoming events, meetings, and important dates.",
-    },
+    // {
+    //   title: "events calender",
+    //   link: "/events-calender",
+    //   description:
+    //     "Stay updated with a calendar of upcoming events, meetings, and important dates.",
+    // },
     {
       title: "upcoming events",
       link: "/upcoming-events",
@@ -202,42 +175,42 @@ const navMenu: Pages[][] = [
       description:
         "Stay informed with the latest news, industry insights, and updates from the association.",
     },
-    {
-      title: "brochure",
-      link: "/brochure",
-      description:
-        "Download the official association brochure to get a detailed overview of its services and activities.",
-    },
-    {
-      title: "whitepapers",
-      link: "/whitepapers",
-      description:
-        "Read in-depth whitepapers on key topics and research areas in the industry.",
-    },
-    {
-      title: "research studies",
-      link: "/research-studies",
-      description:
-        "Explore published research studies and findings conducted by the association.", // *
-    },
-    {
-      title: "industry reports",
-      link: "/industry-reports",
-      description:
-        "Industry reports that provide critical data, trends, and forecasts relevant to the association's work.", // *
-    },
-    {
-      title: "guidelines",
-      link: "/guidelines",
-      description:
-        "Access best practices and guidelines to support professional and industry standards.", // *
-    },
+    // {
+    //   title: "brochure",
+    //   link: "/brochure",
+    //   description:
+    //     "Download the official association brochure to get a detailed overview of its services and activities.",
+    // },
+    // {
+    //   title: "whitepapers",
+    //   link: "/whitepapers",
+    //   description:
+    //     "Read in-depth whitepapers on key topics and research areas in the industry.",
+    // },
+    // {
+    //   title: "research studies",
+    //   link: "/research-studies",
+    //   description:
+    //     "Explore published research studies and findings conducted by the association.", // *
+    // },
+    // {
+    //   title: "industry reports",
+    //   link: "/industry-reports",
+    //   description:
+    //     "Industry reports that provide critical data, trends, and forecasts relevant to the association's work.", // *
+    // },
+    // {
+    //   title: "guidelines",
+    //   link: "/guidelines",
+    //   description:
+    //     "Access best practices and guidelines to support professional and industry standards.", // *
+    // },
   ],
 
   // Projects
   [
     {
-      title: "Activities Calendar",
+      title: "activities calendar",
       link: "/projects-calendar",
       description:
         "Stay updated with a calendar of Our Activities, milestones and opportunities.",
@@ -281,21 +254,17 @@ const navMenu: Pages[][] = [
   [{ title: "services", link: "/services" }],
 ];
 
-const NavBar = ({
-  aboutData,
-  isError,
-  error,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   const t = useTranslations("NavBar");
   const logo = aboutData?.logo_url || Logo;
   const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
   const { isAuthenticated, user, signOut } = useAuth(); // Use the useAuth hook
-  const router = useTransitionRouter();
+  // const router = useTransitionRouter();
 
-  const handleClick = (e: React.MouseEvent, url: string) => {
-    e.preventDefault(); // Prevent default link behavior
-    router.push(url, { onTransitionReady: slideInOut });
-  };
+  // const handleClick = (e: React.MouseEvent, url: string) => {
+  //   e.preventDefault(); // Prevent default link behavior
+  //   router.push(url, { onTransitionReady: slideInOut });
+  // };
 
   const [openIndex, setOpenIndex] = React.useState<number | null>(null); // State to track which collapsible is open
   const handleOpenChange = (index: number) => {
@@ -311,22 +280,16 @@ const NavBar = ({
   let contactPage = navMenu[6][0];
   let donationPage = navMenu[7][0];
   let profilePage = navMenu[8][0];
-  let adminPage = navMenu[8][1];
+  // let adminPage = navMenu[8][1];
   let LoginPage = navMenu[9][0];
   let servicesPage = navMenu[10][0];
-
-  // Handle loading or error states
-  if (isError) return <Error error={error} />;
-  if (!aboutData) return <Loader />;
 
   return (
     <nav className="absolute top-0 left-0 right-0 z-50 bg-transparent h-auto">
       <div className="flex lg:justify-evenly justify-between items-center m-4">
         {/* Logo */}
         <div className="flex-shrink-0 text-center cursor-pointer">
-          <Link
-            href={homePage.link}
-          >
+          <Link href={homePage.link}>
             <Image
               src={logo}
               width={50}
@@ -361,9 +324,7 @@ const NavBar = ({
                       </SheetClose>
                     ) : (
                       <SheetClose asChild>
-                        <Link
-                          href={profilePage.link}
-                        >
+                        <Link href={profilePage.link}>
                           <Avatar>
                             <AvatarImage src={user?.profile_photo_url} />
                             <AvatarFallback>
@@ -386,9 +347,7 @@ const NavBar = ({
                     <ul>
                       {aboutPages.map((page, index) => (
                         <SheetClose asChild key={page.title}>
-                          <NavCollapsibleListItem
-                            href={page.link}
-                          >
+                          <NavCollapsibleListItem href={page.link}>
                             {page.title}
                           </NavCollapsibleListItem>
                         </SheetClose>
@@ -403,9 +362,7 @@ const NavBar = ({
                     <ul>
                       {membershipPages.map((page, index) => (
                         <SheetClose asChild key={page.title}>
-                          <NavCollapsibleListItem
-                            href={page.link}
-                          >
+                          <NavCollapsibleListItem href={page.link}>
                             {page.title}
                           </NavCollapsibleListItem>
                         </SheetClose>
@@ -420,9 +377,7 @@ const NavBar = ({
                     <ul>
                       {eventsPages.map((page, index) => (
                         <SheetClose asChild key={page.title}>
-                          <NavCollapsibleListItem
-                            href={page.link}
-                          >
+                          <NavCollapsibleListItem href={page.link}>
                             {page.title}
                           </NavCollapsibleListItem>
                         </SheetClose>
@@ -437,9 +392,7 @@ const NavBar = ({
                     <ul>
                       {resourcesPages.map((page, index) => (
                         <SheetClose asChild key={page.title}>
-                          <NavCollapsibleListItem
-                            href={page.link}
-                          >
+                          <NavCollapsibleListItem href={page.link}>
                             {page.title}
                           </NavCollapsibleListItem>
                         </SheetClose>
@@ -454,9 +407,7 @@ const NavBar = ({
                     <ul>
                       {projectsPages.map((page, index) => (
                         <SheetClose asChild key={page.title}>
-                          <NavCollapsibleListItem
-                            href={page.link}
-                          >
+                          <NavCollapsibleListItem href={page.link}>
                             {page.title}
                           </NavCollapsibleListItem>
                         </SheetClose>
@@ -469,9 +420,7 @@ const NavBar = ({
                     onOpenChange={() => handleOpenChange(5)}
                   >
                     <SheetClose asChild key={servicesPage.title}>
-                      <NavCollapsibleListItem
-                        href={servicesPage.link}
-                      >
+                      <NavCollapsibleListItem href={servicesPage.link}>
                         {servicesPage.title}
                       </NavCollapsibleListItem>
                     </SheetClose>
@@ -605,7 +554,7 @@ const NavBar = ({
                 </NavigationMenu>
               </div>
 
-              <div className="flex justify-evenly">
+              <div className="flex justify-evenly gap-2">
                 {!user && (
                   <>
                     {/* Contact Us CTA */}
@@ -650,10 +599,7 @@ const NavBar = ({
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
                           {/* Logic enters here */}
-                          <NavigationMenuLink
-                            href="#"
-                            asChild
-                          >
+                          <NavigationMenuLink href="#" asChild>
                             <em className="text-foreground">
                               No new notifications.
                             </em>

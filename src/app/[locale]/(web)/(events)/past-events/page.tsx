@@ -1,4 +1,3 @@
-"use client";
 import EventsContainer from "@/components/events/events-container/EventsContainer";
 import Error from "@/app/[locale]/error";
 
@@ -6,11 +5,9 @@ export default async function PastEventsPage() {
   try {
     const [eventsData, feedbacks] = await Promise.all([
       fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/events`, {
-        cache: "no-store",
         next: { revalidate: 60 },
       }).then((res) => res.json()),
       fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/feedback`, {
-        cache: "no-store",
         next: { revalidate: 60 },
       }).then((res) => res.json()),
     ]);

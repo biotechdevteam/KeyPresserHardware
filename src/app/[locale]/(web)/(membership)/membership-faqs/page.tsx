@@ -1,4 +1,3 @@
-"use client";
 import FAQContainer from "@/components/faq/faq-container/FAQContainer";
 import Error from "@/app/[locale]/error";
 

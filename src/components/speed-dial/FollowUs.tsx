@@ -6,13 +6,9 @@ import {
   InstagramIcon,
   TwitterIcon,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useQuery } from "@tanstack/react-query";
-import { fetchAboutData } from "@/lib/utils/fetchUtils"; // Import the fetch function
-import Loader from "@/components/loader/Loader";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // Import Card components
-import { useTransitionRouter } from "next-view-transitions";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
+import { About } from "@/types/aboutSchema";
 
 // Helper function to render the appropriate icon
 const getSocialIcon = (url: string) => {
@@ -31,28 +27,7 @@ const getSocialIcon = (url: string) => {
   return null; // If no match, return null
 };
 
-const FollowUs = () => {
-  const router = useTransitionRouter();
-
-  // Fetch about data using useQuery
-  const {
-    data: aboutData,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["about"],
-    queryFn: fetchAboutData,
-    staleTime: Infinity,
-  });
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  if (error) {
-    return <p>Can't fetch links.</p>;
-  }
-
+const FollowUs: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   // Ensure social_links is an array before mapping
   const socialLinks = Array.isArray(aboutData?.social_links)
     ? aboutData.social_links

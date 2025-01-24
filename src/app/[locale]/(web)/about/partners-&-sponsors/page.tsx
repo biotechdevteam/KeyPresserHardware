@@ -1,4 +1,3 @@
-"use client";
 import AboutPartnerships from "@/components/about/about-partnerships/AboutPartnerships";
 import Error from "@/app/[locale]/error";
 

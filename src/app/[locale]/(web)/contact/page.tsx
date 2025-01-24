@@ -1,4 +1,3 @@
-"use client";
 import AboutFooter from "@/components/about/about-footer/AboutFooter";
 import Error from "@/app/[locale]/error";
 

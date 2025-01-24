@@ -3,38 +3,35 @@
 @tailwind utilities;
 
 :root {
-  /* website theme colors*/
-  --teal: #5eead4; /* Secondary supportive green */
-  --lavender: #c084fc; /* Subtle lavender for accents */
-
+  /* website theme colors */
   --background: #f4f4f5;
   --foreground: #18181b;
 
-  --card: #ffffff;
+  --card: white;
   --card-foreground: var(--foreground);
 
-  --popover: #ffffff;
+  --popover: white;
   --popover-foreground: var(--foreground);
 
-  --primary: #1F5256;
+  --primary: #1f5256;
   --primary-foreground: white;
 
-  --secondary: #330C2F;
+  --secondary: #330c2f;
   --secondary-foreground: white;
 
   --muted: #e5e7eb;
-  --muted-foreground: #6b7280;
-  --muted-primary: #CBF3D2;
+  --muted-foreground: #4b5563;
+  --muted-primary: #cbf3d2;
 
-  --accent: #B7C0EE;
+  --accent: #85a9cc;
   --accent-foreground: var(--foreground);
 
-  --destructive: #ef4444;
+  --destructive: #d83a3a;
   --destructive-foreground: white;
 
-  --border: #d1d5db;
+  --border: #c9d6d8;
   --input: var(--background);
-  --ring: var(--primary);
+  --ring: #377b78;
 
   --radius: 0.75rem;
 }
@@ -42,34 +39,34 @@
 @media (prefers-color-scheme: dark) {
   :root {
     /* Dark Mode Colors */
-    --background: #0f172a;
-    --foreground: white;
+    --background: #0a1b1f;
+    --foreground: #f4f4f5;
 
-    --card: ;
+    --card: #1a1e24;
     --card-foreground: var(--foreground);
 
-    --popover: ;
+    --popover: #1a1e24;
     --popover-foreground: var(--foreground);
 
-    --primary: #1F5256;
+    --primary: #1f5256;
     --primary-foreground: white;
 
-    --secondary: #330C2F;
+    --secondary: #330c2f;
     --secondary-foreground: white;
 
-    --muted: #1f2937;
-    --muted-foreground: #d1d5db;
-    --muted-primary: #CBF3D2;
+    --muted: #152327;
+    --muted-foreground: #dde2e5;
+    --muted-primary: #5a9f99;
 
-    --accent: ;
-    --accent-foreground: ;
+    --accent: #86bfcb;
+    --accent-foreground: var(--foreground);
 
-    --destructive: #ef4444;
+    --destructive: #d83a3a;
     --destructive-foreground: white;
 
-    --border: #374151;
+    --border: #27504f;
     --input: var(--background);
-    --ring: var(--primary);
+    --ring: #27504f;
 
     --radius: 0.75rem;
   }
@@ -87,12 +84,12 @@
   }
 
   a {
-    @apply text-secondary underline-offset-2;
+    @apply text-accent underline-offset-2;
     text-decoration-skip-ink: auto;
   }
 
   a:hover {
-    @apply text-accent underline transition-colors;
+    @apply text-primary underline transition-colors;
   }
 
   h1,
@@ -121,8 +118,8 @@
     @apply bg-muted-primary text-primary-foreground;
   }
 
-   /* Refined card styles */
-   .card {
+  /* Refined card styles */
+  .card {
     @apply bg-card text-card-foreground p-6 rounded-lg shadow-md transition-all;
     border: 1px solid var(--border);
   }

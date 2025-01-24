@@ -1,4 +1,3 @@
-"use client";
 import MembershipBenefits from "@/components/membership/membership-benefits/MembershipBenefits";
 import Error from "@/app/[locale]/error";
 

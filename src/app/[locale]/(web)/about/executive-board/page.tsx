@@ -1,4 +1,3 @@
-"use client";
 import AboutTeam from "@/components/about/about-team/AboutTeam";
 import { Separator } from "@/components/ui/separator";
 import Error from "@/app/[locale]/error";
@@ -8,7 +7,6 @@ export default async function ExecutiveBoardPage() {
     const aboutData = await fetch(
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/about`,
       {
-        cache: "no-store",
         next: { revalidate: 60 },
       }
     ).then((res) => res.json());

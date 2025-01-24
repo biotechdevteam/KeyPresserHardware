@@ -1,4 +1,3 @@
-"use client";
 import CurrentProjects from "@/components/projects/current-projects/CurrentProjects";
 import Error from "@/app/[locale]/error";
 
@@ -7,7 +6,6 @@ export default async function OngoingProjectsPage() {
     const projectsData = await fetch(
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/projects`,
       {
-        cache: "no-store",
         next: { revalidate: 60 },
       }
     ).then((res) => res.json());

@@ -1,4 +1,3 @@
-"use client";
 import Disclaimer from "@/components/Policies/Disclaimer";
 import Error from "@/app/[locale]/error";
 

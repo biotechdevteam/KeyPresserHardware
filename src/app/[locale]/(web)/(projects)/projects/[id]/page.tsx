@@ -10,7 +10,6 @@ export async function generateStaticParams() {
   const projects = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/projects`,
     {
-      cache: "no-store",
       next: { revalidate: 60 },
     }
   ).then((res) => res.json());
@@ -27,7 +26,6 @@ export async function generateMetadata(
   const projects = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/projects`,
     {
-      cache: "no-store",
       next: { revalidate: 60 },
     }
   ).then((res) => res.json());
@@ -69,7 +67,6 @@ export default async function ProjectPage({
   const projects = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/projects`,
     {
-      cache: "no-store",
       next: { revalidate: 60 },
     }
   ).then((res) => res.json());

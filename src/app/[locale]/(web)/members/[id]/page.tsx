@@ -1,4 +1,3 @@
-import { fetchMembers } from "@/lib/utils/fetchUtils";
 import MemberContainer from "@/components/member/member-container/MemberContainer";
 import { Member } from "@/types/memberSchema";
 import MemberHeader from "@/components/member/member-header/MemberHeader";
@@ -10,7 +9,6 @@ export async function generateStaticParams() {
   const members = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/members`,
     {
-      cache: "no-store",
       next: { revalidate: 60 },
     }
   ).then((res) => res.json());
@@ -27,7 +25,6 @@ export async function generateMetadata(
   const members = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/members`,
     {
-      cache: "no-store",
       next: { revalidate: 60 },
     }
   ).then((res) => res.json());
@@ -69,7 +66,6 @@ export default async function MemberPage({
   const members = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/members`,
     {
-      cache: "no-store",
       next: { revalidate: 60 },
     }
   ).then((res) => res.json());

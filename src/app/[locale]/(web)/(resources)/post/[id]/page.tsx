@@ -9,7 +9,6 @@ export async function generateStaticParams() {
   const blogs = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/blog/posts`,
     {
-      cache: "no-store",
       next: { revalidate: 60 },
     }
   ).then((res) => res.json());
@@ -26,7 +25,6 @@ export async function generateMetadata(
   const blogs = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/blog/posts`,
     {
-      cache: "no-store",
       next: { revalidate: 60 },
     }
   ).then((res) => res.json());
@@ -64,7 +62,6 @@ export default async function PostPage({ params }: { params: { id: string } }) {
   const blogs = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/blog/posts`,
     {
-      cache: "no-store",
       next: { revalidate: 60 },
     }
   ).then((res) => res.json());

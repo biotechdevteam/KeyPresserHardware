@@ -1,4 +1,3 @@
-"use client";
 import MembershipQualifications from "@/components/membership/membership-qualifications/MembershipQualifications";
 import Error from "@/app/[locale]/error";
 

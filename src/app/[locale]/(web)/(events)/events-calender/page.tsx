@@ -1,4 +1,3 @@
-"use client";
 import ActivitiesCalendarPage from "@/components/events/calender/Calender";
 import Error from "@/app/[locale]/error";
 
@@ -7,7 +6,6 @@ export default async function CalenderPage() {
     const eventsData = await fetch(
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/events`,
       {
-        cache: "no-store",
         next: { revalidate: 60 },
       }
     ).then((res) => res.json());

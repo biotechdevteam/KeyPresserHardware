@@ -1,16 +1,15 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils/utils";
 import { XIcon } from "lucide-react";
 import { Link, useTransitionRouter } from "next-view-transitions";
-import { slideInOut } from "../../lib/utils/pageTransitions";
+// import { slideInOut } from "../../lib/utils/pageTransitions";
 
 const CookieConsent: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [hasConsented, setHasConsented] = useState<boolean | null>(null);
-  const router = useTransitionRouter();
+  // const router = useTransitionRouter();
 
   // Check if user has already given consent
   useEffect(() => {
@@ -18,7 +17,7 @@ const CookieConsent: React.FC = () => {
     if (!consent) {
       setTimeout(() => {
         setIsVisible(true);
-      }, 5000); // Show after 5 seconds
+      }, 10000); // Show after 10 seconds
     } else {
       setHasConsented(consent === "accepted");
     }
@@ -64,23 +63,11 @@ const CookieConsent: React.FC = () => {
         <p className="text-sm lg:text-base flex-1 px-2">
           We use cookies to improve your experience on our site. You can accept
           all cookies or select preferences in the{" "}
-          <Link
-            href="/cookie-settings"
-            onClick={() =>
-              router.push("/cookie-settings", { onTransitionReady: slideInOut })
-            }
-            legacyBehavior
-          >
+          <Link href="/cookie-settings">
             <span>Cookie Settings.</span>
           </Link>{" "}
           For more information, see our{" "}
-          <Link
-            href="/privacy-policy"
-            onClick={() =>
-              router.push("/privacy-policy", { onTransitionReady: slideInOut })
-            }
-            legacyBehavior
-          >
+          <Link href="/privacy-policy">
             <span>Privacy Policy.</span>
           </Link>
         </p>

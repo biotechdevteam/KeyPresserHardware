@@ -1,52 +1,20 @@
-"use client";
-
 import FAQContainer from "@/components/faq/faq-container/FAQContainer";
-import Loader from "@/components/loader/Loader";
-import { fetchFAQs } from "@/lib/utils/fetchUtils";
-import { FAQs } from "@/types/FAQSchema";
-import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import Error from "@/app/[locale]/error";
 
-const MembershipFAQsPage: React.FC = () => {
-  // Fetch the FAQs data using useQuery directly in the component
-  const {
-    data: faqData,
-    isLoading: faqLoading,
-    isFetching: faqFetching,
-    isError: faqError,
-  } = useQuery({
-    queryKey: ["faqs"],
-    queryFn: fetchFAQs,
-    staleTime: Infinity, // Prevent unnecessary refetching, keep data fresh
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
-
-  // Show a loader if data is loading or fetching
-  if (faqLoading || faqFetching) {
-    return <Loader />;
-  }
-
-  // Show an error message if there was an error fetching data
-  if (faqError) {
+export default async function MembershipFAQsPage() {
+  try {
+    const faqData = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/about/faqs`,
+      {
+        cache: "force-cache",
+      }
+    ).then((res) => res.json());
+    return <FAQContainer faqData={faqData} membership />;
+  } catch (error: any) {
     return (
-      <div className="text-destructive text-center inset-0">
-        Error: Failed to load FAQs.
-      </div>
+      <Error
+        error={error.message || "Failed to load data. Please try again."}
+      />
     );
   }
-
-  // Filter the FAQs based on the "Membership" category
-  const membershipFAQs = faqData?.filter(
-    (faq) => faq.category === "Membership"
-  );
-
-  return (
-    <div className="my-8">
-      <FAQContainer initialData={membershipFAQs} membership />
-    </div>
-  );
-};
-
-export default MembershipFAQsPage;
+}

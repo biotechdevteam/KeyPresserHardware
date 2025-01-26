@@ -1,12 +1,20 @@
 import UpcomingProjects from "@/components/projects/upcoming-projects/UpcomingProjects";
-import React from "react";
+import Error from "@/app/[locale]/error";
 
-const UpcomingProjectsPage = () => {
-  return (
-    <div className="my-8">
-      <UpcomingProjects />
-    </div>
-  );
-};
-
-export default UpcomingProjectsPage;
+export default async function UpcomingProjectsPage() {
+  try {
+    const projectsData = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/projects`,
+      {
+        next: { revalidate: 60 },
+      }
+    ).then((res) => res.json());
+    return <UpcomingProjects projectsData={projectsData} />;
+  } catch (error: any) {
+    return (
+      <Error
+        error={error.message || "Failed to load data. Please try again."}
+      />
+    );
+  }
+}

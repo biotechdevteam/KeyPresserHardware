@@ -1,47 +1,25 @@
-"use client";
-
 import AboutAchievements from "@/components/about/about-achievements/AboutAchievements";
-import Loader from "@/components/loader/Loader";
-import { fetchAboutData } from "@/lib/utils/fetchUtils";
-import { About } from "@/types/aboutSchema";
-import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import Error from "@/app/[locale]/error";
 
-const AchievementsPage: React.FC = () => {
-  const {
-    data: aboutData,
-    isLoading: loading,
-    error,
-    isError,
-  } = useQuery<About>({
-    queryKey: ["about"],
-    queryFn: fetchAboutData,
-    staleTime: Infinity,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
+export default async function AchievementsPage() {
+  try {
+    const aboutData = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/about`,
+      {
+        next: { revalidate: 60 },
+      }
+    ).then((res) => res.json());
 
-  if (loading && !aboutData) {
-    return <Loader />;
-  }
-
-  if (error || isError) {
     return (
-      <div className="text-destructive text-center">
-        Error: {error.message}
+      <div className="col-span-1 lg:col-span-2 m-8">
+        <AboutAchievements aboutData={aboutData} />
       </div>
     );
-  }
-
-  return (
-    <div className="col-span-1 lg:col-span-2 m-8">
-      <AboutAchievements
-        achievements={aboutData?.achievements || []}
-        aboutData={aboutData as About}
+  } catch (error: any) {
+    return (
+      <Error
+        error={error.message || "Failed to load data. Please try again."}
       />
-    </div>
-  );
-};
-
-export default AchievementsPage;
+    );
+  }
+}

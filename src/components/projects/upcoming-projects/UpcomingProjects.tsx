@@ -1,26 +1,15 @@
 "use client";
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
-import { fetchProjectsData } from "@/lib/utils/fetchUtils";
 import { filterProjectsByStatus } from "@/lib/utils/projectUtils";
 import ProjectCard from "../project-card/ProjectCard";
+import { Project } from "@/types/projectSchema";
 
-const UpcomingProjects: React.FC = () => {
-  const {
-    data: projectsData,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["projects"],
-    queryFn: fetchProjectsData,
-  });
-
+const UpcomingProjects: React.FC<{ projectsData: Project[] }> = ({
+  projectsData,
+}) => {
   const upcomingProjects = projectsData
     ? filterProjectsByStatus(projectsData, "upcoming")
     : [];
-
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error loading projects...</div>;
 
   return (
     <div className="text-center">

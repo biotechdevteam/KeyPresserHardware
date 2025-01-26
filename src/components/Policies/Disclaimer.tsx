@@ -1,7 +1,7 @@
 import React from "react";
 import { Separator } from "../ui/separator";
-import { About } from "@/types/aboutSchema";
 import Link from "next/link";
+import { About } from "@/types/aboutSchema";
 
 const Disclaimer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   const lastUpdated = "8th November 2024";
@@ -21,7 +21,7 @@ const Disclaimer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
         <section className="mb-6">
           <h2 className="text-xl font-semibold mb-2">General Information</h2>
           <p className="text-muted-foreground">
-            The information provided by {aboutData.name} on{" "}
+            The information provided by {aboutData?.name} on{" "}
             <Link
               href="https://www.biotecuniverse.org"
               target="_blank"
@@ -45,11 +45,12 @@ const Disclaimer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
           <p className="text-muted-foreground">
             Our website may contain links to external sites or resources for
             informational purposes. These links are provided for your
-            convenience; however, {aboutData.name} does not control or guarantee
-            the accuracy, relevance, timeliness, or completeness of information
-            on these external websites. The inclusion of such links does not
-            imply endorsement or recommendation. Users are advised to review the
-            terms of use and privacy policies of any linked third-party sites.
+            convenience; however, {aboutData?.name} does not control or
+            guarantee the accuracy, relevance, timeliness, or completeness of
+            information on these external websites. The inclusion of such links
+            does not imply endorsement or recommendation. Users are advised to
+            review the terms of use and privacy policies of any linked
+            third-party sites.
           </p>
         </section>
 
@@ -103,14 +104,14 @@ const Disclaimer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
           <ul className="mt-2 text-muted-foreground">
             <li>
               Email:{" "}
-              <Link href={`mailto:${aboutData.contact_email}`}>
-                {aboutData.contact_email}
+              <Link href={`mailto:${aboutData?.contact_email}`}>
+                {aboutData?.contact_email}
               </Link>
             </li>
             <li>
               Phone:{" "}
-              <Link href={`tel:${aboutData.contact_phone}`}>
-                {aboutData.contact_phone}
+              <Link href={`tel:${aboutData?.contact_phone}`}>
+                {aboutData?.contact_phone}
               </Link>
             </li>
           </ul>

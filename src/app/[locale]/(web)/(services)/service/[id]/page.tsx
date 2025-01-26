@@ -1,68 +1,86 @@
-// app/services/[id]/page.tsx
-"use client";
-import React from "react";
-import { useQuery } from "@tanstack/react-query";
 import { notFound } from "next/navigation";
 import ServiceDetails from "@/components/services/service-details/ServiceDetails";
-import { fetchFeedbacks, fetchServices } from "@/lib/utils/fetchUtils";
 import { Service } from "@/types/ServiceSchema";
 import { Feedback } from "@/types/feedbackSchema";
+import { Metadata, ResolvingMetadata } from "next";
 
-// Page component
-export default function ServicePage({ params }: { params: { id: string } }) {
-  // Fetch services using useQuery
-  const {
-    data: servicesData,
-    isLoading: servicesLoading,
-    isError: servicesError,
-  } = useQuery({
-    queryKey: ["services"],
-    queryFn: fetchServices,
-    staleTime: Infinity,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
+// Fetch all service IDs for static generation
+export async function generateStaticParams() {
+  const services = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/services`,
+    {
+      cache: "force-cache",
+    }
+  ).then((res) => res.json());
+  return services.map((service: Service) => ({
+    id: service._id, // Map each service ID
+  }));
+}
 
-  // Fetch feedbacks using useQuery
-  const {
-    data: feedbacks,
-    isLoading: feedbacksLoading,
-    isError: feedbacksError,
-  } = useQuery({
-    queryKey: ["feedbacks"],
-    queryFn: fetchFeedbacks,
-    staleTime: Infinity,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
+// Dynamic Metadata Generation
+export async function generateMetadata(
+  { params }: { params: { id: string } },
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const services = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/services`,
+    {
+      cache: "force-cache",
+    }
+  ).then((res) => res.json());
+  const service = services.find((s: Service) => s._id === params.id);
 
-  // Handle loading state
-  if (servicesLoading || feedbacksLoading) {
-    return <div>Loading...</div>; // Or you can use your Loader component
+  if (!service) {
+    return {
+      title: "Service Not Found",
+      description: "The requested service could not be found.",
+    };
   }
 
-  // Handle error state
-  if (servicesError || feedbacksError) {
-    return <div>Error loading data...</div>;
-  }
+  return {
+    title: service.title,
+    description: service.summary,
+    openGraph: {
+      title: service.title,
+      description: service.summary,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: service.title,
+      description: service.summary,
+    },
+  };
+}
 
+export default async function ServicePage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  // Fetch services and feedbacks
+  const [services, feedbacks] = await Promise.all([
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/services`, {
+      cache: "force-cache",
+    }).then((res) => res.json()),
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/feedback`, {
+      cache: "force-cache",
+    }).then((res) => res.json()),
+  ]);
   // Find the service with the matching ID
-  const service = servicesData?.find((s: any) => s._id === params.id);
+  const service = services.find((s: Service) => s._id === params.id);
+  // Filter feedbacks related to this service
   const filteredFeedbacks = feedbacks?.filter(
-    (f: any) => f.serviceId?._id === params.id
+    (f: Feedback) => f.serviceId?._id === params.id
   );
 
-  // If the service is not found, show a 404 page
+  // Handle not found service
   if (!service) {
     return notFound();
   }
 
-  // Render the ServiceDetails component
   return (
     <div className="max-w-4xl grid place-items-center mx-auto">
-      <ServiceDetails service={service as Service} feedbacks={filteredFeedbacks as Feedback[]} />
+      <ServiceDetails service={service} feedbacks={filteredFeedbacks} />
     </div>
   );
 }

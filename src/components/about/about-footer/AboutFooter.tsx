@@ -1,7 +1,6 @@
+"use client";
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
   Mail,
@@ -17,29 +16,13 @@ import {
 import { useTranslations } from "next-intl";
 import ContactForm from "../contact-form/ContactForm";
 import { extractUsername } from "@/lib/helpers";
+import Link from "next/link";
+import { extractDomain } from "@/lib/helpers";
+import { About } from "@/types/aboutSchema";
 
-interface AboutFooterProps {
-  contactEmail?: string;
-  contactPhone?: string;
-  address?: string;
-  website?: string;
-  socialLinks?: {
-    linkedin?: string;
-    twitter?: string;
-    facebook?: string;
-    instagram?: string;
-    github?: string;
-  };
-}
-
-const AboutFooter: React.FC<AboutFooterProps> = ({
-  contactEmail,
-  contactPhone,
-  socialLinks,
-  address,
-  website,
-}) => {
+const AboutFooter: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   const t = useTranslations();
+  const websiteURL = extractDomain();
 
   return (
     <footer className="py-10">
@@ -53,37 +36,42 @@ const AboutFooter: React.FC<AboutFooterProps> = ({
             <div className="space-y-4">
               <div className="flex items-center">
                 <Mail className="mr-3 text-primary" />
-                <a
-                  href={`mailto:${contactEmail}`}
+                <Link
+                  href={`mailto:${aboutData.contact_email}`}
                   className="text-secondary hover:text-primary transition-colors"
                 >
-                  {contactEmail}
-                </a>
+                  {aboutData.contact_email}
+                </Link>
               </div>
               <Separator />
               <div className="flex items-center">
                 <Phone className="mr-3 text-primary" />
-                <span className="text-foreground">{contactPhone}</span>
+                <Link
+                  href={`tel:${aboutData.contact_phone}`}
+                  className="text-secondary hover:text-primary transition-colors"
+                >
+                  {aboutData.contact_phone}
+                </Link>
               </div>
               <Separator />
-              {address && (
+              {aboutData.address && (
                 <div className="flex items-center">
                   <MapPin className="mr-3 text-primary" />
-                  <span className="text-foreground">{address}</span>
+                  <span className="text-foreground">{aboutData.address}</span>
                 </div>
               )}
               <Separator />
-              {website && (
+              {websiteURL && (
                 <div className="flex items-center">
                   <Globe className="mr-3 text-foreground" />
-                  <a
-                    href={website}
+                  <Link
+                    href={websiteURL}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:text-secondary transition-colors"
                   >
-                    {website}
-                  </a>
+                    {websiteURL}
+                  </Link>
                 </div>
               )}
             </div>
@@ -97,73 +85,73 @@ const AboutFooter: React.FC<AboutFooterProps> = ({
               {t("footer.socialMediaTitle")}
             </h3>
             <div className="space-y-4">
-              {socialLinks?.linkedin && (
+              {aboutData.social_links?.linkedin && (
                 <div className="flex items-center">
-                  <a
-                    href={socialLinks.linkedin}
+                  <Link
+                    href={aboutData.social_links.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:text-primary transition-colors flex items-center"
                   >
                     <Linkedin className="w-5 h-5 mr-3" />
-                    {extractUsername(socialLinks.linkedin)}
-                  </a>
+                    {extractUsername(aboutData.social_links.linkedin)}
+                  </Link>
                 </div>
               )}
               <Separator />
-              {socialLinks?.twitter && (
+              {aboutData.social_links?.twitter && (
                 <div className="flex items-center">
-                  <a
-                    href={socialLinks.twitter}
+                  <Link
+                    href={aboutData.social_links.twitter}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:text-primary transition-colors flex items-center"
                   >
                     <Twitter className="w-5 h-5 mr-3" />
-                    {extractUsername(socialLinks.twitter)}
-                  </a>
+                    {extractUsername(aboutData.social_links.twitter)}
+                  </Link>
                 </div>
               )}
               <Separator />
-              {socialLinks?.facebook && (
+              {aboutData.social_links?.facebook && (
                 <div className="flex items-center">
-                  <a
-                    href={socialLinks.facebook}
+                  <Link
+                    href={aboutData.social_links.facebook}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:text-primary transition-colors flex items-center"
                   >
                     <Facebook className="w-5 h-5 mr-3" />
-                    {extractUsername(socialLinks.facebook)}
-                  </a>
+                    {extractUsername(aboutData.social_links.facebook)}
+                  </Link>
                 </div>
               )}
               <Separator />
-              {socialLinks?.github && (
+              {aboutData.social_links?.github && (
                 <div className="flex items-center">
-                  <a
-                    href={socialLinks.github}
+                  <Link
+                    href={aboutData.social_links.github}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:text-primary transition-colors flex items-center"
                   >
                     <Github className="w-5 h-5 mr-3" />
-                    {extractUsername(socialLinks.github)}
-                  </a>
+                    {extractUsername(aboutData.social_links.github)}
+                  </Link>
                 </div>
               )}
               <Separator />
-              {socialLinks?.instagram && (
+              {aboutData.social_links?.instagram && (
                 <div className="flex items-center">
-                  <a
-                    href={socialLinks.instagram}
+                  <Link
+                    href={aboutData.social_links.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:text-primary transition-colors flex items-center"
                   >
                     <Instagram className="w-5 h-5 mr-3" />
-                    {extractUsername(socialLinks.instagram)}
-                  </a>
+                    {extractUsername(aboutData.social_links.instagram)}
+                  </Link>
                 </div>
               )}
               <Separator />

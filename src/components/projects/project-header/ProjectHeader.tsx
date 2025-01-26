@@ -1,8 +1,10 @@
+"use client";
+import Image from "next/image";
 import React from "react";
 
 interface ProjectHeaderProps {
-  title: string;
-  summary: string;
+  title?: string;
+  summary?: string;
   backgroundImageUrl?: string;
 }
 
@@ -21,9 +23,11 @@ const ProjectHeader: React.FC<ProjectHeaderProps> = ({
 
       {/* Image below the title and summary */}
       {backgroundImageUrl && (
-        <img
+        <Image
           src={backgroundImageUrl}
           alt="Project background"
+          width={100}
+          height={100}
           className="w-full h-auto max-h-96 object-cover mt-4 rounded-lg shadow-md"
         />
       )}

@@ -1,5 +1,5 @@
 "use client";
-import { Link, useTransitionRouter } from "next-view-transitions";
+import { Link } from "next-view-transitions";
 import { useTranslations } from "next-intl";
 import React from "react";
 import {
@@ -36,10 +36,10 @@ import { Separator } from "../ui/separator";
 import { useMediaQuery } from "usehooks-ts";
 import Image from "next/image";
 import Logo from "../../../public/images/logo.png";
-import { About } from "@/types/aboutSchema";
 import { NavCollapsible, NavCollapsibleListItem } from "../ui/collapsible";
-import { slideInOut } from "../../../pageTransitions";
+// import { slideInOut } from "../../lib/utils/pageTransitions";
 import useAuth from "@/lib/useAuth";
+import { About } from "@/types/aboutSchema";
 
 // array of pages
 type Pages = {
@@ -79,18 +79,18 @@ const navMenu: Pages[][] = [
       description:
         "Discover the milestones and successes the association has achieved over time.",
     },
-    {
-      title: "partners & sponsors",
-      link: "/about/partners-&-sponsors",
-      description:
-        "Explore the various partners and sponsors that support the association's activities.",
-    },
-    {
-      title: "media",
-      link: "/about/media",
-      description:
-        "Access multimedia content, including videos, images, and press coverage related to the association.",
-    },
+    // {
+    //   title: "partners & sponsors",
+    //   link: "/about/partners-&-sponsors",
+    //   description:
+    //     "Explore the various partners and sponsors that support the association's activities.",
+    // },
+    // {
+    //   title: "media",
+    //   link: "/about/media",
+    //   description:
+    //     "Access multimedia content, including videos, images, and press coverage related to the association.",
+    // },
     {
       title: "faqs",
       link: "/about/faqs",
@@ -125,12 +125,12 @@ const navMenu: Pages[][] = [
       description:
         "Learn about the different membership tiers and the benefits associated with each level.",
     },
-    {
-      title: "members directory",
-      link: "/members-directory",
-      description:
-        "A comprehensive directory of members and their contact information.", // *
-    },
+    // {
+    //   title: "members directory",
+    //   link: "/members-directory",
+    //   description:
+    //     "A comprehensive directory of members and their contact information.", // *
+    // },
     {
       title: "membership faqs",
       link: "/membership-faqs",
@@ -141,12 +141,12 @@ const navMenu: Pages[][] = [
 
   // Events
   [
-    {
-      title: "Events Calender",
-      link: "/events-calender",
-      description:
-        "Stay updated with a calendar of upcoming events, meetings, and important dates.",
-    },
+    // {
+    //   title: "events calender",
+    //   link: "/events-calender",
+    //   description:
+    //     "Stay updated with a calendar of upcoming events, meetings, and important dates.",
+    // },
     {
       title: "upcoming events",
       link: "/upcoming-events",
@@ -175,42 +175,42 @@ const navMenu: Pages[][] = [
       description:
         "Stay informed with the latest news, industry insights, and updates from the association.",
     },
-    {
-      title: "brochure",
-      link: "/brochure",
-      description:
-        "Download the official association brochure to get a detailed overview of its services and activities.",
-    },
-    {
-      title: "whitepapers",
-      link: "/whitepapers",
-      description:
-        "Read in-depth whitepapers on key topics and research areas in the industry.",
-    },
-    {
-      title: "research studies",
-      link: "/research-studies",
-      description:
-        "Explore published research studies and findings conducted by the association.", // *
-    },
-    {
-      title: "industry reports",
-      link: "/industry-reports",
-      description:
-        "Industry reports that provide critical data, trends, and forecasts relevant to the association's work.", // *
-    },
-    {
-      title: "guidelines",
-      link: "/guidelines",
-      description:
-        "Access best practices and guidelines to support professional and industry standards.", // *
-    },
+    // {
+    //   title: "brochure",
+    //   link: "/brochure",
+    //   description:
+    //     "Download the official association brochure to get a detailed overview of its services and activities.",
+    // },
+    // {
+    //   title: "whitepapers",
+    //   link: "/whitepapers",
+    //   description:
+    //     "Read in-depth whitepapers on key topics and research areas in the industry.",
+    // },
+    // {
+    //   title: "research studies",
+    //   link: "/research-studies",
+    //   description:
+    //     "Explore published research studies and findings conducted by the association.", // *
+    // },
+    // {
+    //   title: "industry reports",
+    //   link: "/industry-reports",
+    //   description:
+    //     "Industry reports that provide critical data, trends, and forecasts relevant to the association's work.", // *
+    // },
+    // {
+    //   title: "guidelines",
+    //   link: "/guidelines",
+    //   description:
+    //     "Access best practices and guidelines to support professional and industry standards.", // *
+    // },
   ],
 
   // Projects
   [
     {
-      title: "Activities Calendar",
+      title: "activities calendar",
       link: "/projects-calendar",
       description:
         "Stay updated with a calendar of Our Activities, milestones and opportunities.",
@@ -259,12 +259,12 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   const logo = aboutData?.logo_url || Logo;
   const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
   const { isAuthenticated, user, signOut } = useAuth(); // Use the useAuth hook
-  const router = useTransitionRouter();
+  // const router = useTransitionRouter();
 
-  const handleClick = (e: React.MouseEvent, url: string) => {
-    e.preventDefault(); // Prevent default link behavior
-    router.push(url, { onTransitionReady: slideInOut });
-  };
+  // const handleClick = (e: React.MouseEvent, url: string) => {
+  //   e.preventDefault(); // Prevent default link behavior
+  //   router.push(url, { onTransitionReady: slideInOut });
+  // };
 
   const [openIndex, setOpenIndex] = React.useState<number | null>(null); // State to track which collapsible is open
   const handleOpenChange = (index: number) => {
@@ -280,246 +280,161 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   let contactPage = navMenu[6][0];
   let donationPage = navMenu[7][0];
   let profilePage = navMenu[8][0];
-  let adminPage = navMenu[8][1];
+  // let adminPage = navMenu[8][1];
   let LoginPage = navMenu[9][0];
   let servicesPage = navMenu[10][0];
 
   return (
-    <nav className="absolute top-0 left-0 right-0 z-50 bg-card h-auto">
-      <div className="flex justify-between items-center m-4">
+    <nav className="absolute top-0 left-0 right-0 z-50 bg-transparent h-auto">
+      <div className="flex lg:justify-evenly justify-between items-center m-4">
         {/* Logo */}
-        <div className="flex-shrink-0 text-center">
-          <Link
-            href={homePage.link}
-            legacyBehavior
-            onClick={(e) => handleClick(e, homePage.link)}
-          >
+        <div className="flex-shrink-0 text-center cursor-pointer">
+          <Link href={homePage.link}>
             <Image
               src={logo}
               width={50}
               height={50}
               priority
               alt={aboutData?.name}
-              className="rounded"
             />
           </Link>
         </div>
 
         <div>
+          {/* Mobile Menu */}
           {isSmallDevice ? (
-            <div className="flex justify-between gap-2">
-              {/* Notifications Menu */}
-              {user && (
-                <NavigationMenu>
-                  <NavigationMenuList>
-                    <NavigationMenuItem>
-                      <NavigationMenuTrigger>
-                        <Bell />
-                        <Badge>17</Badge>
-                      </NavigationMenuTrigger>
-                      <NavigationMenuContent>
-                        {/* Logic enters here */}
-                        <NavigationMenuLink
-                          href="#"
-                          asChild
-                          onClick={(e) => handleClick(e, "#")}
+            <Sheet>
+              <SheetTrigger>
+                <Menu className="h-10 w-10 text-card hover:text-foreground focus:text-foreground transition-transform transform hover:rotate-180 duration-500" />
+              </SheetTrigger>
+              <SheetContent>
+                <SheetHeader>
+                  <SheetTitle className="flex justify-between items-end">
+                    Menu
+                    {/* Toggle Login or profile photo*/}
+                    {!isAuthenticated ? (
+                      <SheetClose asChild>
+                        <Link
+                          href={LoginPage.link}
+                          className="uppercase border border-border px-3 py-2 rounded text-xs font-semibold text-foreground flex gap-2"
                         >
-                          <em className="text-foreground">
-                            No new notifications.
-                          </em>
-                        </NavigationMenuLink>
-                      </NavigationMenuContent>
-                    </NavigationMenuItem>
-                  </NavigationMenuList>
-                </NavigationMenu>
-              )}
-
-              {/* Mobile Menu */}
-              <Sheet>
-                <SheetTrigger className="bg-transparent">
-                  <Menu className="transition-transform transform hover:rotate-90 duration-500 h-10 w-10 text-foreground" />
-                </SheetTrigger>
-                <SheetContent>
-                  <SheetHeader>
-                    <SheetTitle className="flex justify-between items-end">
-                      Menu
-                      {/* Toggle Login or profile photo*/}
-                      {!isAuthenticated ? (
-                        <SheetClose asChild>
-                          <Link
-                            href={LoginPage.link}
-                            legacyBehavior
-                            className="uppercase border border-border px-3 py-2 rounded text-xs font-semibold text-primary-foreground flex gap-2"
-                            onClick={(e) => handleClick(e, LoginPage.link)}
-                          >
-                            {LoginPage.title}
-                            <LogIn className="w-4 h-4" />
-                          </Link>
-                        </SheetClose>
-                      ) : (
-                        <Avatar>
-                          <AvatarImage src={user?.profile_photo_url} />
-                          <AvatarFallback>
-                            <CircleUser />
-                          </AvatarFallback>
-                        </Avatar>
-                      )}
-                    </SheetTitle>
-                    <Separator className="my-4 bg-primary-foreground" />
-                  </SheetHeader>
-
-                  <SheetBody>
-                    <NavCollapsible
-                      triggerText="About Us"
-                      isOpen={openIndex === 0}
-                      onOpenChange={() => handleOpenChange(0)}
-                    >
-                      <ul>
-                        {aboutPages.map((page, index) => (
-                          <SheetClose asChild key={page.title}>
-                            <NavCollapsibleListItem
-                              href={page.link}
-                              onClick={(e) => handleClick(e, page.link)}
-                            >
-                              {page.title}
-                            </NavCollapsibleListItem>
-                          </SheetClose>
-                        ))}
-                      </ul>
-                    </NavCollapsible>
-                    <NavCollapsible
-                      triggerText="Membership"
-                      isOpen={openIndex === 1}
-                      onOpenChange={() => handleOpenChange(1)}
-                    >
-                      <ul>
-                        {membershipPages.map((page, index) => (
-                          <SheetClose asChild key={page.title}>
-                            <NavCollapsibleListItem
-                              href={page.link}
-                              onClick={(e) => handleClick(e, page.link)}
-                            >
-                              {page.title}
-                            </NavCollapsibleListItem>
-                          </SheetClose>
-                        ))}
-                      </ul>
-                    </NavCollapsible>
-                    <NavCollapsible
-                      triggerText="Events"
-                      isOpen={openIndex === 2}
-                      onOpenChange={() => handleOpenChange(2)}
-                    >
-                      <ul>
-                        {eventsPages.map((page, index) => (
-                          <SheetClose asChild key={page.title}>
-                            <NavCollapsibleListItem
-                              href={page.link}
-                              onClick={(e) => handleClick(e, page.link)}
-                            >
-                              {page.title}
-                            </NavCollapsibleListItem>
-                          </SheetClose>
-                        ))}
-                      </ul>
-                    </NavCollapsible>
-                    <NavCollapsible
-                      triggerText="Resources"
-                      isOpen={openIndex === 3}
-                      onOpenChange={() => handleOpenChange(3)}
-                    >
-                      <ul>
-                        {resourcesPages.map((page, index) => (
-                          <SheetClose asChild key={page.title}>
-                            <NavCollapsibleListItem
-                              href={page.link}
-                              onClick={(e) => handleClick(e, page.link)}
-                            >
-                              {page.title}
-                            </NavCollapsibleListItem>
-                          </SheetClose>
-                        ))}
-                      </ul>
-                    </NavCollapsible>
-                    <NavCollapsible
-                      triggerText="Projects"
-                      isOpen={openIndex === 4}
-                      onOpenChange={() => handleOpenChange(4)}
-                    >
-                      <ul>
-                        {projectsPages.map((page, index) => (
-                          <SheetClose asChild key={page.title}>
-                            <NavCollapsibleListItem
-                              href={page.link}
-                              onClick={(e) => handleClick(e, page.link)}
-                            >
-                              {page.title}
-                            </NavCollapsibleListItem>
-                          </SheetClose>
-                        ))}
-                      </ul>
-                    </NavCollapsible>
-                    <NavCollapsible
-                      triggerText="Services"
-                      isOpen={openIndex === 5}
-                      onOpenChange={() => handleOpenChange(5)}
-                    >
-                      <SheetClose asChild key={servicesPage.title}>
-                        <NavCollapsibleListItem
-                          href={servicesPage.link}
-                          onClick={(e) => handleClick(e, servicesPage.link)}
-                        >
-                          {servicesPage.title}
-                        </NavCollapsibleListItem>
+                          <span>{LoginPage.title}</span>
+                          <LogIn className="w-4 h-4" />
+                        </Link>
                       </SheetClose>
-                    </NavCollapsible>
-                    {/* Profile */}
-                    {isAuthenticated && (
-                      <div className="space-y-4 mt-4">
-                        <SheetClose asChild>
-                          <NavigationMenu>
-                            <NavigationMenuList>
-                              <NavigationMenuItem>
-                                <NavigationMenuLink
-                                  href={profilePage.link}
-                                  onClick={(e) =>
-                                    handleClick(e, profilePage.link)
-                                  }
-                                  className="capitalize font-semibold text-md flex gap-2"
-                                >
-                                  {profilePage.title}
-                                  <User className="w-4 h-4" />
-                                </NavigationMenuLink>
-                              </NavigationMenuItem>
-                            </NavigationMenuList>
-                          </NavigationMenu>
-                        </SheetClose>
-                        <SheetClose asChild>
-                          <Link
-                            href="#"
-                            onClick={signOut}
-                            legacyBehavior
-                            className="uppercase border border-border px-3 py-2 rounded text-xs font-semibold text-primary-foreground flex gap-2"
-                          >
-                            <span className="flex gap-2 justify-center items-center">
-                              {t("logout")}
-                              <LogOut className="w-4 h-4" />
-                            </span>
-                          </Link>
-                        </SheetClose>
-                      </div>
+                    ) : (
+                      <SheetClose asChild>
+                        <Link href={profilePage.link}>
+                          <Avatar>
+                            <AvatarImage src={user?.profile_photo_url} />
+                            <AvatarFallback>
+                              <CircleUser />
+                            </AvatarFallback>
+                          </Avatar>
+                        </Link>
+                      </SheetClose>
                     )}
-                  </SheetBody>
-                  <SheetFooter>
-                    &copy; {new Date().getFullYear()} {aboutData?.name}
-                  </SheetFooter>
-                </SheetContent>
-              </Sheet>
-            </div>
+                  </SheetTitle>
+                  <Separator className="my-4" />
+                </SheetHeader>
+
+                <SheetBody>
+                  <NavCollapsible
+                    triggerText="About Us"
+                    isOpen={openIndex === 0}
+                    onOpenChange={() => handleOpenChange(0)}
+                  >
+                    <ul>
+                      {aboutPages.map((page, index) => (
+                        <SheetClose asChild key={page.title}>
+                          <NavCollapsibleListItem href={page.link}>
+                            {page.title}
+                          </NavCollapsibleListItem>
+                        </SheetClose>
+                      ))}
+                    </ul>
+                  </NavCollapsible>
+                  <NavCollapsible
+                    triggerText="Membership"
+                    isOpen={openIndex === 1}
+                    onOpenChange={() => handleOpenChange(1)}
+                  >
+                    <ul>
+                      {membershipPages.map((page, index) => (
+                        <SheetClose asChild key={page.title}>
+                          <NavCollapsibleListItem href={page.link}>
+                            {page.title}
+                          </NavCollapsibleListItem>
+                        </SheetClose>
+                      ))}
+                    </ul>
+                  </NavCollapsible>
+                  <NavCollapsible
+                    triggerText="Events"
+                    isOpen={openIndex === 2}
+                    onOpenChange={() => handleOpenChange(2)}
+                  >
+                    <ul>
+                      {eventsPages.map((page, index) => (
+                        <SheetClose asChild key={page.title}>
+                          <NavCollapsibleListItem href={page.link}>
+                            {page.title}
+                          </NavCollapsibleListItem>
+                        </SheetClose>
+                      ))}
+                    </ul>
+                  </NavCollapsible>
+                  <NavCollapsible
+                    triggerText="Resources"
+                    isOpen={openIndex === 3}
+                    onOpenChange={() => handleOpenChange(3)}
+                  >
+                    <ul>
+                      {resourcesPages.map((page, index) => (
+                        <SheetClose asChild key={page.title}>
+                          <NavCollapsibleListItem href={page.link}>
+                            {page.title}
+                          </NavCollapsibleListItem>
+                        </SheetClose>
+                      ))}
+                    </ul>
+                  </NavCollapsible>
+                  <NavCollapsible
+                    triggerText="Projects"
+                    isOpen={openIndex === 4}
+                    onOpenChange={() => handleOpenChange(4)}
+                  >
+                    <ul>
+                      {projectsPages.map((page, index) => (
+                        <SheetClose asChild key={page.title}>
+                          <NavCollapsibleListItem href={page.link}>
+                            {page.title}
+                          </NavCollapsibleListItem>
+                        </SheetClose>
+                      ))}
+                    </ul>
+                  </NavCollapsible>
+                  <NavCollapsible
+                    triggerText="Services"
+                    isOpen={openIndex === 5}
+                    onOpenChange={() => handleOpenChange(5)}
+                  >
+                    <SheetClose asChild key={servicesPage.title}>
+                      <NavCollapsibleListItem href={servicesPage.link}>
+                        {servicesPage.title}
+                      </NavCollapsibleListItem>
+                    </SheetClose>
+                  </NavCollapsible>
+                </SheetBody>
+                {/* <SheetFooter>
+                  &copy; {new Date().getFullYear()} {aboutData?.name}
+                </SheetFooter> */}
+              </SheetContent>
+            </Sheet>
           ) : (
-            <div className="flex justify-center gap-4 xl:gap-16">
+            <div className="flex justify-evenly">
               {/* Desktop Menu */}
-              <div className="flex justify-between">
+              <div className="flex justify-evenly">
                 <NavigationMenu>
                   <NavigationMenuList>
                     <NavigationMenuItem>
@@ -531,7 +446,6 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                               key={page.title}
                               title={page.title}
                               href={page.link}
-                              onClick={(e) => handleClick(e, page.link)}
                             >
                               {page.description}
                             </ListItem>
@@ -553,7 +467,6 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                               key={page.title}
                               title={page.title}
                               href={page.link}
-                              onClick={(e) => handleClick(e, page.link)}
                             >
                               {page.description}
                             </ListItem>
@@ -575,7 +488,6 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                               key={page.title}
                               title={page.title}
                               href={page.link}
-                              onClick={(e) => handleClick(e, page.link)}
                             >
                               {page.description}
                             </ListItem>
@@ -597,7 +509,6 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                               key={page.title}
                               title={page.title}
                               href={page.link}
-                              onClick={(e) => handleClick(e, page.link)}
                             >
                               {page.description}
                             </ListItem>
@@ -619,7 +530,6 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                               key={page.title}
                               title={page.title}
                               href={page.link}
-                              onClick={(e) => handleClick(e, page.link)}
                             >
                               {page.description}
                             </ListItem>
@@ -635,7 +545,6 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                     <NavigationMenuItem>
                       <NavigationMenuLink
                         href={servicesPage.link}
-                        onClick={(e) => handleClick(e, servicesPage.link)}
                         className="uppercase"
                       >
                         {servicesPage.title}
@@ -645,37 +554,39 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                 </NavigationMenu>
               </div>
 
-              <div className="flex justify-center gap-4">
-                {/* Contact Us CTA */}
-                <NavigationMenu>
-                  <NavigationMenuList>
-                    <NavigationMenuItem>
-                      <NavigationMenuLink
-                        href={contactPage.link}
-                        onClick={(e) => handleClick(e, contactPage.link)}
-                        className="uppercase border border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-                      >
-                        {contactPage.title}
-                      </NavigationMenuLink>
-                    </NavigationMenuItem>
-                  </NavigationMenuList>
-                </NavigationMenu>
+              <div className="flex justify-evenly gap-2">
+                {!user && (
+                  <>
+                    {/* Contact Us CTA */}
+                    <NavigationMenu>
+                      <NavigationMenuList>
+                        <NavigationMenuItem>
+                          <NavigationMenuLink
+                            href={contactPage.link}
+                            className="uppercase border border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                          >
+                            {contactPage.title}
+                          </NavigationMenuLink>
+                        </NavigationMenuItem>
+                      </NavigationMenuList>
+                    </NavigationMenu>
 
-                {/* Donation CTA */}
-                <NavigationMenu>
-                  <NavigationMenuList>
-                    <NavigationMenuItem>
-                      <NavigationMenuLink
-                        href={donationPage.link}
-                        onClick={(e) => handleClick(e, donationPage.link)}
-                        className="uppercase border border-primary bg-primary hover:text-primary text-primary-foreground hover:bg-transparent"
-                      >
-                        {donationPage.title}
-                        <Heart className="ml-2 w-4 h-4" />
-                      </NavigationMenuLink>
-                    </NavigationMenuItem>
-                  </NavigationMenuList>
-                </NavigationMenu>
+                    {/* Donation CTA */}
+                    <NavigationMenu>
+                      <NavigationMenuList>
+                        <NavigationMenuItem>
+                          <NavigationMenuLink
+                            href={donationPage.link}
+                            className="uppercase border border-primary bg-primary hover:text-primary text-primary-foreground hover:bg-transparent"
+                          >
+                            {donationPage.title}
+                            <Heart className="ml-2 w-4 h-4" />
+                          </NavigationMenuLink>
+                        </NavigationMenuItem>
+                      </NavigationMenuList>
+                    </NavigationMenu>
+                  </>
+                )}
 
                 {/* Notifications Menu */}
                 {user && (
@@ -684,15 +595,11 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                       <NavigationMenuItem>
                         <NavigationMenuTrigger>
                           <Bell />
-                          <Badge>17</Badge>
+                          <Badge>1</Badge>
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
                           {/* Logic enters here */}
-                          <NavigationMenuLink
-                            href="#"
-                            asChild
-                            onClick={(e) => handleClick(e, "#")}
-                          >
+                          <NavigationMenuLink href="#" asChild>
                             <em className="text-foreground">
                               No new notifications.
                             </em>

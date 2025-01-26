@@ -1,12 +1,12 @@
 "use client";
 import React, { useState } from "react";
 import { Member } from "@/types/memberSchema";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"; // Import Tabs from your UI library
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import MemberDetails from "../member-details/MemberDetails";
 import MemberActivities from "../member-activities/MemberActivities";
 
 interface MemberContainerProps {
-  member: Member; // Pass the member data as props
+  member: Member;
 }
 
 const MemberContainer: React.FC<MemberContainerProps> = ({ member }) => {

@@ -1,51 +1,80 @@
-"use client";
-import { useQuery } from "@tanstack/react-query";
-import { fetchMembers } from "@/lib/utils/fetchUtils"; // Fetch member details
-import Loader from "@/components/loader/Loader";
 import MemberContainer from "@/components/member/member-container/MemberContainer";
 import { Member } from "@/types/memberSchema";
 import MemberHeader from "@/components/member/member-header/MemberHeader";
+import { Metadata, ResolvingMetadata } from "next";
+import { notFound } from "next/navigation";
 
-// This function fetches member data based on the ID from the params
-async function getMemberData(id: string) {
-  const { data, isLoading, isFetching, isError, error } = useQuery({
-    queryKey: ["members"],
-    queryFn: fetchMembers,
-    staleTime: Infinity,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
+// Fetch all member IDs for static generation
+export async function generateStaticParams() {
+  const members = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/members`,
+    {
+      next: { revalidate: 60 },
+    }
+  ).then((res) => res.json());
+  return members.map((member: Member) => ({
+    id: member._id, // Map each member ID
+  }));
+}
 
-  // Find the specific member based on the ID
-  const member = data?.find((m: Member) => m._id === id);
+// Dynamic Metadata Generation
+export async function generateMetadata(
+  { params }: { params: { id: string } },
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const members = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/members`,
+    {
+      next: { revalidate: 60 },
+    }
+  ).then((res) => res.json());
+  const member = members.find((m: Member) => m._id === params.id);
+
+  if (!member) {
+    return {
+      title: "Member Not Found",
+      description: "The requested member could not be found.",
+    };
+  }
+
+  // Access and extend parent metadata
+  const previousImages = (await parent).openGraph?.images || [];
+  const memberImage = member.profile_photo_url || "";
 
   return {
-    member,
-    isLoading,
-    isFetching,
-    isError,
-    error,
+    title: member.first_name + "'s Profile",
+    description: member.bio,
+    openGraph: {
+      title: member.first_name,
+      description: member.bio,
+      images: [memberImage, ...previousImages].filter(Boolean), // Filter out undefined values
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: member.first_name,
+      description: member.bio,
+      images: [memberImage],
+    },
   };
 }
 
-// MemberPage component to fetch and display a specific member based on ID
-const MemberPage: React.FC<{ params: { id: string } }> = async ({ params }) => {
-  const { member, isLoading, isFetching, isError } = await getMemberData(
-    params.id
-  );
+export default async function MemberPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const members = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/members`,
+    {
+      next: { revalidate: 60 },
+    }
+  ).then((res) => res.json());
+  const member = members.find((m: Member) => m._id === params.id); // Find member by ID
 
-  // Handle loading state
-  if (isLoading || isFetching) {
-    return <Loader />;
+  if (!member) {
+    return notFound(); // Return 404 if no member found
   }
 
-  // Handle error or missing member state
-  if (isError || !member) {
-    return <div>Member not found</div>; // You could also use `notFound()` if available in this environment
-  }
-
-  // Render the MemberContainer with the found member data
   return (
     <div className="min-h-screen flex flex-col items-center justify-start py-12 px-4 bg-background">
       {/* Profile Header */}
@@ -57,6 +86,4 @@ const MemberPage: React.FC<{ params: { id: string } }> = async ({ params }) => {
       </div>
     </div>
   );
-};
-
-export default MemberPage;
+}

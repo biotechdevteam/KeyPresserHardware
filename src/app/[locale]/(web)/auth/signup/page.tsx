@@ -1,4 +1,5 @@
 "use client";
+import Error from "@/app/[locale]/error";
 import SignUp from "@/components/auth/SignUp";
 import Loader from "@/components/loader/Loader";
 import { fetchAboutData } from "@/lib/utils/fetchUtils";
@@ -6,35 +7,22 @@ import { About } from "@/types/aboutSchema";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
-// This function runs on the server-side and fetches the about data.
-async function getAboutData() {
+export default async function SignUpPage() {
+  // Fetch about data
   const {
-    data,
+    data: aboutData,
     isLoading: loading,
     isFetching: fetching,
-    error,
     isError,
+    error,
   } = useQuery({
     queryKey: ["about"],
     queryFn: fetchAboutData,
-    staleTime: Infinity, // Prevent unnecessary refetching, keep data fresh
+    staleTime: Infinity,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
-
-  // Return the prefetched data, loading, and error state
-  return {
-    aboutData: data,
-    loading,
-    fetching,
-    isError,
-    error,
-  };
-}
-export default async function SignUpPage() {
-  // Get the prefetched data from the server
-  const { aboutData, loading, fetching, isError, error } = await getAboutData();
 
   // Handle loading state
   if (loading || fetching) {
@@ -43,7 +31,7 @@ export default async function SignUpPage() {
 
   // Handle error state
   if (isError) {
-    return { error };
+    return <Error error={error} />;
   }
 
   return (

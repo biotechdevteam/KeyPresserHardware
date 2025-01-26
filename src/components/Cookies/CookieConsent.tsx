@@ -1,16 +1,15 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils/utils";
 import { XIcon } from "lucide-react";
 import { Link, useTransitionRouter } from "next-view-transitions";
-import { slideInOut } from "../../../pageTransitions";
+// import { slideInOut } from "../../lib/utils/pageTransitions";
 
 const CookieConsent: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [hasConsented, setHasConsented] = useState<boolean | null>(null);
-  const router = useTransitionRouter();
+  // const router = useTransitionRouter();
 
   // Check if user has already given consent
   useEffect(() => {
@@ -18,7 +17,7 @@ const CookieConsent: React.FC = () => {
     if (!consent) {
       setTimeout(() => {
         setIsVisible(true);
-      }, 5000); // Show after 5 seconds
+      }, 10000); // Show after 10 seconds
     } else {
       setHasConsented(consent === "accepted");
     }
@@ -45,7 +44,7 @@ const CookieConsent: React.FC = () => {
   return (
     <div
       className={cn(
-        "fixed bottom-0 left-0 right-0 bg-popover text-popover-foreground border p-4 lg:p-8 shadow-lg z-50 transition-transform duration-500 transform",
+        "fixed bottom-0 left-0 right-0 bg-popover text-popover-foreground border border-border p-4 lg:p-8 shadow-lg z-50 transition-transform duration-500 transform",
         isVisible ? "translate-y-0" : "translate-y-full"
       )}
     >
@@ -64,24 +63,12 @@ const CookieConsent: React.FC = () => {
         <p className="text-sm lg:text-base flex-1 px-2">
           We use cookies to improve your experience on our site. You can accept
           all cookies or select preferences in the{" "}
-          <Link
-            href="/cookie-settings"
-            onClick={() =>
-              router.push("/cookie-settings", { onTransitionReady: slideInOut })
-            }
-            legacyBehavior
-          >
-            Cookie Settings.
+          <Link href="/cookie-settings">
+            <span>Cookie Settings.</span>
           </Link>{" "}
           For more information, see our{" "}
-          <Link
-            href="/privacy-policy"
-            onClick={() =>
-              router.push("/privacy-policy", { onTransitionReady: slideInOut })
-            }
-            legacyBehavior
-          >
-            Privacy Policy.
+          <Link href="/privacy-policy">
+            <span>Privacy Policy.</span>
           </Link>
         </p>
 

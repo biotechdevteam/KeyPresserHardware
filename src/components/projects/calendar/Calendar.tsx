@@ -1,11 +1,7 @@
 "use client";
-
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
-import { useQuery } from "@tanstack/react-query";
-import { fetchProjectsData } from "@/lib/utils/fetchUtils"; // Adjust this path as necessary
-import Loader from "@/components/loader/Loader"; // Adjust this path as necessary
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -17,42 +13,24 @@ import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { useState } from "react";
 import Link from "next/link";
-import { Project } from "@/types/projectSchema"; // Ensure the type is correctly imported
+import { Project } from "@/types/projectSchema";
 
 const localizer = momentLocalizer(moment);
 
-const ProjectsCalendarPage = () => {
-  const {
-    data: projectsData,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["projects"],
-    queryFn: fetchProjectsData,
-  });
-
+const ProjectsCalendarPage: React.FC<{ projectsData: Project[] }> = ({
+  projectsData,
+}) => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const handleProjectClick = (project: Project) => {
+  const handleProjectClick = (project: any) => {
     setSelectedProject(project);
     setIsDialogOpen(true);
   };
-
   const closeDialog = () => {
     setIsDialogOpen(false);
     setSelectedProject(null);
   };
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  if (isError) {
-    return (
-      <div className="text-center">Error loading calendar projects...</div>
-    );
-  }
 
   // Map projects to a format suitable for react-big-calendar
   const mappedProjects =
@@ -63,18 +41,17 @@ const ProjectsCalendarPage = () => {
         ? new Date(project.endDate)
         : new Date(project.startDate),
       allDay: true,
-      rawProject: project,
     })) || [];
 
   return (
     <div className="p-8">
-      <h1 className="text-4xl font-bold text-center mb-8">Project Calendar</h1>
+      <h1 className="text-4xl font-bold text-center mb-8">Projects Calendar</h1>
       <Calendar
         localizer={localizer}
         events={mappedProjects}
         startAccessor="start"
         endAccessor="end"
-        onSelectEvent={(event) => handleProjectClick(event.rawProject)}
+        onSelectEvent={(event) => handleProjectClick(event)}
         style={{ height: "75vh" }}
         className="shadow-lg border rounded-lg"
         views={["month", "week", "day", "agenda"]}
@@ -90,7 +67,7 @@ const ProjectsCalendarPage = () => {
               <DialogTitle>{selectedProject.title}</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
-              <p className="text-gray-700">{selectedProject.description}</p>
+              <p>{selectedProject.description}</p>
               <div className="flex items-center space-x-2">
                 <Badge variant="outline">Start:</Badge>
                 <span>
@@ -115,7 +92,7 @@ const ProjectsCalendarPage = () => {
               </div>
               <div className="text-center">
                 <Link href={`/projects/${selectedProject._id}`}>
-                  <Button>View Project Details</Button>
+                  <Button>Read More</Button>
                 </Link>
               </div>
             </div>

@@ -33,7 +33,7 @@ const NavCollapsible = ({
       className={cn("w-full flex flex-col items-center mx-auto", className)}
       {...props}
     >
-      <CollapsiblePrimitive.Trigger className="flex justify-center items-center p-4 w-full bg-transparent">
+      <CollapsiblePrimitive.Trigger className="flex justify-center items-center p-4 w-full bg-transparent text-foreground">
         <span className="font-medium">{triggerText}</span>
         <ChevronDownIcon
           className={cn(
@@ -59,18 +59,17 @@ const NavCollapsibleListItem = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof Link> & { href: string }
 >(({ className, href, children, ...props }, ref) => {
   return (
-    <li className="w-full flex justify-center">
+    <li className="w-full flex justify-center p-2">
       <Link
         ref={ref}
         href={href}
         className={cn(
-          "block w-full select-none space-y-1 p-2 rounded-md text-center h-fit leading-none no-underline outline-none bg-transparent focus:bg-muted-primary focus:no-underline",
+          "block w-full select-none rounded-md text-center h-fit leading-none no-underline outline-none bg-transparent focus:no-underline",
           className
         )}
         {...props}
-        legacyBehavior
       >
-        <p className="text-xs font-semibold text-foreground uppercase leading-none">
+        <p className="text-xs font-semibold text-foreground capitalize leading-none cursor-pointer">
           {children}
         </p>
       </Link>

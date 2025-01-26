@@ -3,11 +3,11 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useTransitionRouter } from "next-view-transitions";
-import { slideInOut } from "../../../../pageTransitions";
+import { slideInOut } from "../../../lib/utils/pageTransitions";
 
 const EventExhibitions: React.FC = () => {
-    const router = useTransitionRouter();
-    
+  const router = useTransitionRouter();
+
   return (
     <div className="p-8 mx-auto max-w-4xl">
       {/* Page Header */}
@@ -29,8 +29,14 @@ const EventExhibitions: React.FC = () => {
             audience. Our exhibitions offer prime visibility for biotech
             companies, research institutions, and entrepreneurs.
           </p>
-          <Button className="mt-4 animate-beep" variant="default" onClick={() => (router.push("/contact", {onTransitionReady: slideInOut}))}>
-            Learn More
+          <Button
+            className="mt-4 animate-beep"
+            variant="default"
+            onClick={() =>
+              router.push("/contact", { onTransitionReady: slideInOut })
+            }
+          >
+            Contact Us
           </Button>
         </Card>
       </section>
@@ -86,12 +92,20 @@ const EventExhibitions: React.FC = () => {
 
       {/* Contact Section */}
       <section className="my-10 text-center">
-        <h2 className="text-2xl font-semibold mb-4">Interested in Partnering?</h2>
+        <h2 className="text-2xl font-semibold mb-4">
+          Interested in Partnering?
+        </h2>
         <p className="text-base mb-4">
           Contact us to discuss how you can participate in our exhibitions or
           become a sponsor.
         </p>
-        <Button variant="default" className="animate-beep" onClick={() => (router.push("/contact", {onTransitionReady: slideInOut}))}>
+        <Button
+          variant="default"
+          className="animate-beep"
+          onClick={() =>
+            router.push("/contact", { onTransitionReady: slideInOut })
+          }
+        >
           Get in Touch
         </Button>
       </section>

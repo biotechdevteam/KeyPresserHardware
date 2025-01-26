@@ -1,14 +1,14 @@
 import React from "react";
 import { Member } from "@/types/memberSchema";
-import { Card, CardContent } from "@/components/ui/card"; // shadcn Card component
-import { Badge } from "@/components/ui/badge"; // shadcn Badge component for skills and interests
-import { Button } from "@/components/ui/button"; // shadcn Button component
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Link } from "next-view-transitions";
 import SocialLinks from "../member-links/Sociallinks";
 import { redirect } from "next/navigation";
 
 interface MemberDetailsProps {
-  member: Member; // Pass the member data as props
+  member: Member;
 }
 
 const MemberDetails: React.FC<MemberDetailsProps> = ({ member }) => {

@@ -21,7 +21,7 @@ const PrivacyPolicy: React.FC<{ aboutData: About }> = ({ aboutData }) => {
             <span className="italic font-semibold">{dateUpdated}</span>
           </h3>
           <p>
-            Welcome to {aboutData.name}. We are committed to protecting your
+            Welcome to {aboutData?.name}. We are committed to protecting your
             privacy and ensuring that your personal information is secure. This
             Privacy Policy outlines how we collect, use, disclose, and safeguard
             your data when you visit our website, use our services, or engage
@@ -188,8 +188,8 @@ const PrivacyPolicy: React.FC<{ aboutData: About }> = ({ aboutData }) => {
           </ul>
           <p className="mt-2">
             To exercise these rights, please contact us at{" "}
-            <Link href={`mailto:${aboutData.contact_email}`}>
-              {aboutData.contact_email}.
+            <Link href={`mailto:${aboutData?.contact_email}`}>
+              {aboutData?.contact_email}.
             </Link>{" "}
             We will respond to your request within the time frames required by
             applicable laws.
@@ -243,14 +243,14 @@ const PrivacyPolicy: React.FC<{ aboutData: About }> = ({ aboutData }) => {
           <ul className="mt-2 text-muted-foreground">
             <li>
               Email:{" "}
-              <Link href={`mailto:${aboutData.contact_email}`}>
-                {aboutData.contact_email}
+              <Link href={`mailto:${aboutData?.contact_email}`}>
+                {aboutData?.contact_email}
               </Link>
             </li>
             <li>
               Phone:{" "}
-              <Link href={`tel:${aboutData.contact_phone}`}>
-                {aboutData.contact_phone}
+              <Link href={`tel:${aboutData?.contact_phone}`}>
+                {aboutData?.contact_phone}
               </Link>
             </li>
           </ul>

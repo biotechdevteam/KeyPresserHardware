@@ -1,44 +1,20 @@
-"use client";
-
-import Loader from "@/components/loader/Loader";
 import MembershipQualifications from "@/components/membership/membership-qualifications/MembershipQualifications";
-import { fetchAboutData } from "@/lib/utils/fetchUtils";
-import { About } from "@/types/aboutSchema";
-import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import Error from "@/app/[locale]/error";
 
-const MembershipQualificationsPage: React.FC = () => {
-  const {
-    data: aboutData,
-    isLoading: loading,
-    error,
-    isError,
-  } = useQuery<About>({
-    queryKey: ["about"],
-    queryFn: fetchAboutData,
-    staleTime: Infinity, // Prevent unnecessary refetching, keep data fresh
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
-
-  if (loading && !aboutData) {
-    return <Loader />;
-  }
-
-  if (error || isError) {
+export default async function MembershipQualificationsPage() {
+  try {
+    const aboutData = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/about`,
+      {
+        cache: "force-cache",
+      }
+    ).then((res) => res.json());
+    return <MembershipQualifications aboutData={aboutData} />;
+  } catch (error: any) {
     return (
-      <div className="text-destructive text-center inset-0">
-        Error: {error.message}
-      </div>
+      <Error
+        error={error.message || "Failed to load data. Please try again."}
+      />
     );
   }
-
-  return (
-    <div className="m-8">
-      <MembershipQualifications aboutData={aboutData as About} />
-    </div>
-  );
-};
-
-export default MembershipQualificationsPage;
+}

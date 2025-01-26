@@ -1,41 +1,24 @@
 "use client";
 import React, { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { fetchBlogs } from "@/lib/utils/fetchUtils";
 import { Blog } from "@/types/blogSchema";
 import { useTransitionRouter } from "next-view-transitions";
 import PostCard from "../post-card/PostCard";
 import BlogFilters from "../blog-filters/BlogFilters";
 import { Skeleton } from "@/components/ui/skeleton";
+import { slideInOut } from "@/lib/utils/pageTransitions";
 
-interface BlogsContainerProps {
-  initialData: {
-    blogs: Blog[];
-  };
-}
-
-const BlogsContainer: React.FC<BlogsContainerProps> = ({ initialData: { blogs: initialBlogs} }) => {
-  const {
-    data: blogs,
-    isLoading: blogsLoading,
-    isError: blogsError,
-  } = useQuery({
-    queryKey: ["blogs"],
-    queryFn: fetchBlogs,
-    initialData: initialBlogs,
-  });
-
-  const [filteredBlogs, setFilteredBlogs] = useState<Blog[]>(initialBlogs); // State for filtered blogs
+const BlogsContainer: React.FC<{ blogsData: Blog[] }> = ({ blogsData }) => {
+  const [filteredBlogs, setFilteredBlogs] = useState<Blog[]>(blogsData); // State for filtered blogs
   const router = useTransitionRouter();
 
   // Handle blog click for navigation
   const handleBlogClick = (blogId: string) => {
-    router.push(`/post/${blogId}`);
+    router.push(`/post/${blogId}`, { onTransitionReady: slideInOut });
   };
 
   // Handle filter logic
   const handleFilter = (filterCriteria: any) => {
-    const filtered = blogs.filter((blog: Blog) => {
+    const filtered = blogsData.filter((blog: Blog) => {
       return (
         (!filterCriteria.category ||
           blog.category === filterCriteria.category) &&
@@ -45,7 +28,7 @@ const BlogsContainer: React.FC<BlogsContainerProps> = ({ initialData: { blogs: i
     setFilteredBlogs(filtered);
   };
 
-  if (blogsLoading) {
+  if (blogsData.length === 0) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
         {/* Show a skeleton loader during loading */}
@@ -54,10 +37,6 @@ const BlogsContainer: React.FC<BlogsContainerProps> = ({ initialData: { blogs: i
         ))}
       </div>
     );
-  }
-
-  if (blogsError) {
-    return <div className="text-red-500">Error loading data...</div>;
   }
 
   return (
@@ -76,7 +55,7 @@ const BlogsContainer: React.FC<BlogsContainerProps> = ({ initialData: { blogs: i
             />
           ))
         ) : (
-          <div className="col-span-full text-center text-gray-500">
+          <div className="col-span-full text-center text-muted-primary">
             No blogs found.
           </div>
         )}

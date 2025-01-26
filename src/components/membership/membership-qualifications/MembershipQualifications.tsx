@@ -1,8 +1,9 @@
+"use client";
 import React from "react";
 import { Separator } from "@/components/ui/separator";
 import { Card } from "@/components/ui/card";
-import { About } from "@/types/aboutSchema";
 import Link from "next/link";
+import { About } from "@/types/aboutSchema";
 
 const MembershipQualifications: React.FC<{ aboutData: About }> = ({
   aboutData,

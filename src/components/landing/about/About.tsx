@@ -46,7 +46,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({ aboutData }) => {
 
         {/* Team Highlights */}
         <div>
-          <AboutTeam leadershipTeam={aboutData.leadership_team} />
+          <AboutTeam aboutData={aboutData} />
         </div>
 
         {/* Call to Action */}

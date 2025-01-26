@@ -1,46 +1,25 @@
-"use client";
-
 import AboutPartnerships from "@/components/about/about-partnerships/AboutPartnerships";
-import Loader from "@/components/loader/Loader";
-import { fetchAboutData } from "@/lib/utils/fetchUtils";
-import { About } from "@/types/aboutSchema";
-import { useQuery } from "@tanstack/react-query";
-import { useTransitionRouter } from "next-view-transitions";
-import React from "react";
+import Error from "@/app/[locale]/error";
 
-const PartnersSponsorsPage: React.FC = () => {
-  const {
-    data: aboutData,
-    isLoading: loading,
-    error,
-    isError,
-  } = useQuery<About>({
-    queryKey: ["about"],
-    queryFn: fetchAboutData,
-    staleTime: Infinity, // Prevent unnecessary refetching, keep data fresh
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
+export default async function PartnersSponsorsPage() {
+  try {
+    const aboutData = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/about`,
+      {
+        cache: "force-cache",
+      }
+    ).then((res) => res.json());
 
-  const router = useTransitionRouter();
-
-  if (loading && !aboutData) {
-    return <Loader />;
-  }
-
-  if (error || isError) {
     return (
-      <div className="text-destructive text-center inset-0">
-        Error: {error.message}
+      <div className="col-span-1 lg:col-span-2 my-8">
+        <AboutPartnerships aboutData={aboutData} />
       </div>
     );
+  } catch (error: any) {
+    return (
+      <Error
+        error={error.message || "Failed to load data. Please try again."}
+      />
+    );
   }
-  return (
-      <div className="col-span-1 lg:col-span-2 my-8">
-        <AboutPartnerships partnerships={aboutData?.partnerships || []} />
-      </div>
-  );
-};
-
-export default PartnersSponsorsPage;
+}

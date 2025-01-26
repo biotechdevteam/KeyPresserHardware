@@ -1,7 +1,6 @@
-"use client"; // This ensures the component is client-side only
-
+"use client";
 import React, { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button"; // Shadcn Button component
+import { Button } from "@/components/ui/button";
 import { ChevronsUp } from "lucide-react";
 
 const ScrollToTopButton: React.FC = () => {

@@ -1,8 +1,9 @@
+"use client";
 import React, { useEffect, useRef, useState } from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { CheckCircle, Users, Calendar, Projector, Star } from "lucide-react";
-import { About } from "@/types/aboutSchema";
 import { Separator } from "@/components/ui/separator";
+import { About } from "@/types/aboutSchema";
 
 interface Achievement {
   title: string;
@@ -10,11 +11,7 @@ interface Achievement {
   date?: string;
 }
 
-interface AboutAchievementsProps {
-  achievements: Achievement[];
-  aboutData: About;
-}
-
+// Icon mapping for achievement categories
 const iconMap: Record<string, JSX.Element> = {
   project: <Projector className="h-10 w-10 text-primary" />,
   partners: <Users className="h-10 w-10 text-secondary" />,
@@ -22,6 +19,7 @@ const iconMap: Record<string, JSX.Element> = {
   mentorship: <Star className="h-10 w-10 text-yellow-500" />,
 };
 
+// Function to match icons based on keywords in title
 const getIconForTitle = (title: string): JSX.Element => {
   const lowerCaseTitle = title.toLowerCase();
   for (const keyword in iconMap) {
@@ -32,20 +30,17 @@ const getIconForTitle = (title: string): JSX.Element => {
   return <CheckCircle className="h-10 w-10 text-muted-foreground" />;
 };
 
+// Card for individual achievements
 const AchievementCard: React.FC<{
   achievement: Achievement;
-  isVisible: Boolean;
+  isVisible: boolean;
 }> = ({ achievement, isVisible }) => {
   const icon = getIconForTitle(achievement.title);
 
   return (
     <Card
-      className={`flex items-start p-2 shadow-lg rounded-lg 
-        ${isVisible ? "animate-spinCard" : "opacity-0"} 
-        hover:scale-105 hover:shadow-2xl`}
-      style={{
-        transition: "all 0.3s ease-in-out",
-      }}
+      className={`flex items-start p-4 shadow-lg rounded-lg transition-transform duration-300 
+        ${isVisible ? "animate-fadeIn scale-100" : "scale-90 opacity-0"}`}
     >
       <div className="flex flex-col items-center w-full">
         <div className="w-full flex justify-center mb-4">{icon}</div>
@@ -54,14 +49,16 @@ const AchievementCard: React.FC<{
             {achievement.title}
           </strong>
           {achievement.description && (
-            <p className="mt-2">{achievement.description}</p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              {achievement.description}
+            </p>
           )}
           {achievement.date && (
-            <p className="mt-2 text-sm">
+            <p className="mt-2 text-xs text-muted-foreground">
               {new Date(achievement.date).toLocaleDateString("en-US", {
                 year: "numeric",
-                month: "2-digit",
-                day: "2-digit",
+                month: "long",
+                day: "numeric",
               })}
             </p>
           )}
@@ -71,10 +68,7 @@ const AchievementCard: React.FC<{
   );
 };
 
-const AboutAchievements: React.FC<AboutAchievementsProps> = ({
-  achievements,
-  aboutData,
-}) => {
+const AboutAchievements: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   const [isVisible, setIsVisible] = useState(false);
   const achievementRef = useRef<HTMLDivElement | null>(null);
 
@@ -84,12 +78,10 @@ const AboutAchievements: React.FC<AboutAchievementsProps> = ({
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setIsVisible(true);
-          } else {
-            setIsVisible(false);
           }
         });
       },
-      { threshold: 0.2 } // Trigger when 20% of the component is visible
+      { threshold: 0.2 }
     );
 
     if (achievementRef.current) {
@@ -113,23 +105,28 @@ const AboutAchievements: React.FC<AboutAchievementsProps> = ({
         <Separator className="w-16 mx-auto my-4" />
         <p className="text-base px-4">
           Over the years, {aboutData.name} has made significant strides in
-          advancing biotechnology in Cameroon and beyond. From groundbreaking
-          research to impactful collaborations, these milestones reflect our
-          commitment to innovation, excellence, and the promotion of scientific
-          knowledge. Explore some of our proudest achievements and see how we
-          continue to drive change in the biotechnology landscape.
+          leveraging biotechnology, technology, and health initiatives for the
+          betterment of our communities in Cameroon and beyond. From innovative
+          research and strategic collaborations to impactful health programs,
+          our milestones reflect our unwavering commitment to personal
+          development, business growth, and humanitarian efforts. Explore some
+          of our proudest achievements and see how we continue to drive positive
+          change and foster sustainable growth through science, technology, and
+          health advancements.
         </p>
       </CardHeader>
 
       <CardContent>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {achievements.map((achievement, index) => (
-            <AchievementCard
-              key={index}
-              achievement={achievement}
-              isVisible={isVisible}
-            />
-          ))}
+          {aboutData.achievements?.map(
+            (achievement: Achievement, index: number) => (
+              <AchievementCard
+                key={index}
+                achievement={achievement}
+                isVisible={isVisible}
+              />
+            )
+          )}
         </div>
       </CardContent>
     </Card>

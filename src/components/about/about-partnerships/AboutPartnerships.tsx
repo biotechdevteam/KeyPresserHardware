@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   HoverCard,
@@ -6,6 +7,7 @@ import {
 } from "@/components/ui/hover-card";
 import Image from "next/image";
 import Link from "next/link";
+import { About } from "@/types/aboutSchema";
 
 interface Partnership {
   partner: string;
@@ -14,13 +16,7 @@ interface Partnership {
   website?: string;
 }
 
-interface AboutPartnershipsProps {
-  partnerships: Partnership[];
-}
-
-const AboutPartnerships: React.FC<AboutPartnershipsProps> = ({
-  partnerships,
-}) => {
+const AboutPartnerships: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   return (
     <div className="p-8 pb-16">
       <h2 className="text-xl lg:text-2xl font-bold text-center">
@@ -38,47 +34,49 @@ const AboutPartnerships: React.FC<AboutPartnershipsProps> = ({
         {/* Don't delete this comment! It might be needed tomorrow */}
         {/* <div className="grid grid-flow-col auto-cols-[minmax(200px,1fr)] gap-8 animate-slide"> */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 p-8">
-          {partnerships.concat(partnerships).map((partnership, index) => (
-            <HoverCard key={index}>
-              <HoverCardTrigger asChild>
-                <Link
-                  href={partnership?.website || ""}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group block transform transition-transform duration-300 hover:scale-105"
-                >
-                  <Image
-                    src={partnership.logo}
-                    alt={`${partnership.partner} logo`}
-                    style={{ objectFit: "contain" }}
-                    className="hover:shadow-lg transition-shadow rounded-lg overflow-hidden"
-                    width={300}
-                    height={300}
-                  />
-                </Link>
-              </HoverCardTrigger>
-
-              {/* Ensure HoverCardContent doesn't get cut off */}
-              <HoverCardContent className="w-64 p-4 bg-card shadow-lg rounded-lg z-50 max-w-xs">
-                <h3 className="text-xl font-semibold text-primary">
-                  {partnership.partner}
-                </h3>
-                {partnership.description && (
-                  <p className="text-sm mt-2">{partnership.description}</p>
-                )}
-                {partnership.website && (
+          {aboutData.partnerships
+            ?.concat(aboutData.partnerships)
+            .map((partnership: Partnership, index: number) => (
+              <HoverCard key={index}>
+                <HoverCardTrigger asChild>
                   <Link
-                    href={partnership.website}
+                    href={partnership?.website || ""}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-accent hover:underline mt-4 block"
+                    className="group block transform transition-transform duration-300 hover:scale-105"
                   >
-                    Visit Website
+                    <Image
+                      src={partnership.logo}
+                      alt={`${partnership.partner} logo`}
+                      style={{ objectFit: "contain" }}
+                      className="hover:shadow-lg transition-shadow rounded-lg overflow-hidden"
+                      width={300}
+                      height={300}
+                    />
                   </Link>
-                )}
-              </HoverCardContent>
-            </HoverCard>
-          ))}
+                </HoverCardTrigger>
+
+                {/* Ensure HoverCardContent doesn't get cut off */}
+                <HoverCardContent className="w-64 p-4 bg-card shadow-lg rounded-lg z-50 max-w-xs">
+                  <h3 className="text-xl font-semibold text-primary">
+                    {partnership.partner}
+                  </h3>
+                  {partnership.description && (
+                    <p className="text-sm mt-2">{partnership.description}</p>
+                  )}
+                  {partnership.website && (
+                    <Link
+                      href={partnership.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-accent hover:underline mt-4 block"
+                    >
+                      Visit Website
+                    </Link>
+                  )}
+                </HoverCardContent>
+              </HoverCard>
+            ))}
         </div>
       </div>
     </div>

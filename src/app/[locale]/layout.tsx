@@ -17,7 +17,7 @@ export default async function LocaleLayout({
   return (
     <ViewTransitions>
       <html lang={params.locale}>
-        <body>
+        <body suppressHydrationWarning={true}>
           <NextIntlClientProvider messages={messages}>
             <ClientLayout>
               <StoreProvider>

@@ -1,88 +1,93 @@
+import { Metadata } from "next";
 import Footer from "@/components/footer/Container";
 import NavBar from "@/components/nav-bar/NavBar";
-import type { Metadata } from "next";
-import { About } from "@/types/aboutSchema";
 import ScrollToTopButton from "@/components/ScrollToTop/ScrollToTopButton";
 import CookieConsent from "@/components/Cookies/CookieConsent";
-import Loader from "@/components/loader/Loader";
-import { fetchAboutData } from "@/lib/utils/fetchUtils"; // Server-side fetch
+import Error from "@/app/[locale]/error";
 
-// This function runs on the server-side and fetches the about data.
-async function getAboutData() {
-  try {
-    const aboutData = await fetchAboutData();
-    return {
-      aboutData,
-      loading: false,
-      fetching: false,
-      isError: false,
-      error: null,
-    };
-  } catch (error) {
-    return {
-      aboutData: null,
-      loading: false,
-      fetching: false,
-      isError: true,
-      error,
-    };
-  }
-}
-
-// This function can be used to generate metadata dynamically
-export async function generateMetadata(): Promise<Metadata> {
-  const { aboutData } = await getAboutData();
-  return {
-    title: aboutData?.name || "Biotech Universe",
-    description:
-      aboutData?.history ||
-      "A biotechnology association based in Buea, Cameroon, founded by the 2024/2025 Master's graduates from the Department of Biochemistry at the University of Buea.",
-    icons: {
-      icon: "/favicon-48x48.png",
-      shortcut: "/favicon.ico",
-      apple: "/apple-touch-icon.png",
-      other: [
-        {
-          rel: "icon",
-          url: "/favicon.svg",
-          type: "image/svg+xml",
-        },
-      ],
+export const metadata: Metadata = {
+  title: "BioTec Universe",
+  description:
+    "BioTech Universe is a biotechnology association based in Buea, Cameroon, founded by the 2024/2025 Master's graduates from the Department of Biochemistry at the University of Buea.",
+  icons: {
+    icon: "/favicon-48x48.png",
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+    other: [
+      {
+        rel: "icon",
+        url: "/favicon.svg",
+        type: "image/svg+xml",
+      },
+    ],
+  },
+  manifest: "/site.webmanifest",
+  generator: "Next.js",
+  applicationName: "bt-verse",
+  referrer: "origin-when-cross-origin",
+  keywords: ["biotechnology", "universe", "science", "technology"],
+  authors: [
+    { name: "Nkengbeza Derick Ajong", url: "http://" },
+    {
+      name: "Nyochembeng Enzo Nkengafack",
+      url: "https://nyochembeng-enzo-01.vercel.app/",
     },
-    manifest: "/site.webmanifest",
-    // <meta name="apple-mobile-web-app-title" content="BT Verse" />
-    // appleMobileWebAppTitle: "BT Verse",
-  };
-}
+  ],
+  creator: "Ngameleu Siatag Williams Anderson",
+  publisher: "Nyochembeng Enzo Nkengafack",
+  formatDetection: {
+    email: true,
+    address: true,
+    telephone: true,
+  },
+  metadataBase: new URL("https://biotecuniverse.com"),
+  alternates: {
+    canonical: "/home",
+    languages: {
+      "en-US": "/en-US",
+      "fr-FR": "/fr-FR",
+    },
+  },
+  // openGraph: {
+  //   images: '/og-image.png',
+  // },
+};
 
-export default async function LocaleLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { aboutData, loading, fetching, isError, error } = await getAboutData();
+  try {
+    const aboutData = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/about`,
+      {
+        cache: "force-cache",
+      }
+    ).then((res) => res.json());
 
-  // Handle loading state
-  if (loading || fetching) {
-    return <Loader />;
+    return (
+      <div className="flex flex-col min-h-screen">
+        <header>
+          <NavBar aboutData={aboutData} />
+        </header>
+
+        <main className="flex-grow mt-24">
+          {children}
+          <CookieConsent />
+          <ScrollToTopButton />
+        </main>
+
+        <footer>
+          <Footer aboutData={aboutData}/>
+        </footer>
+      </div>
+    );
+  } catch (error: any) {
+    return (
+      <Error
+        error={error.message || "Failed to load data at root layout. Please try again."}
+      />
+    );
   }
-
-
-  return (
-    <div className="flex flex-col min-h-screen">
-      <header>
-        <NavBar aboutData={aboutData as About} />
-      </header>
-
-      <main className="flex-grow mt-24">
-        {children}
-        <CookieConsent />
-        <ScrollToTopButton />
-      </main>
-
-      <footer>
-        <Footer aboutData={aboutData as About} />
-      </footer>
-    </div>
-  );
 }

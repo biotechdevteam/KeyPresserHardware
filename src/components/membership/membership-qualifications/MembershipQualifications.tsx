@@ -113,7 +113,7 @@ const MembershipQualifications: React.FC<{ aboutData: About }> = ({
         <h2 className="text-2xl font-semibold mb-4">How to Apply</h2>
         <p>
           Interested in becoming a member? Simply fill out our{" "}
-          <Link href="/membership/application-form" className="underline">
+          <Link href="/apply" className="underline">
             Membership Application Form
           </Link>{" "}
           and attach your required documents. Once submitted, our team will

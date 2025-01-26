@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"; // shadcn button
 import { About } from "@/types/aboutSchema";
 import AnimeBg from "../../../../public/animations/biologist-animate.svg";
 import { Link } from "next-view-transitions";
-import { ArrowRight, Users } from "lucide-react";
+import { ArrowRight, ArrowRightIcon, Users } from "lucide-react";
 
 interface HeroProps {
   aboutData: About;
@@ -48,12 +48,13 @@ const Hero: React.FC<HeroProps> = ({ aboutData }) => {
           <div className="flex flex-col sm:flex-row justify-center lg:justify-start items-center gap-4 mt-8">
             {/* Explore Innovations Button */}
             <Link href="/services">
-              <Button className="px-6 py-6 text-xl transition-all transform hover:scale-105">
-                Explore{" "}
-                <ArrowRight className="w-5 h-5 ml-2 inline" />
+              <Button
+                variant={"secondary"}
+                className="px-6 py-6 text-xl transition-all transform hover:scale-105"
+              >
+                Explore <ArrowRightIcon className="w-5 h-5 ml-2 inline" />
               </Button>
             </Link>
-
             {/* Join Us Button */}
             <Link href="/apply">
               <Button

@@ -59,7 +59,7 @@ const NavigationMenuTrigger = React.forwardRef<
       className={cn(
         navigationMenuTriggerStyle(),
         "group uppercase hover:text-foreground focus:text-foreground data-[state=open]:text-foreground",
-        isLandingPage ? "text-card" : "text-foreground",
+        isLandingPage ? "text-white" : "text-foreground",
         className
       )}
       {...props}
@@ -108,7 +108,7 @@ const NavigationMenuLink = React.forwardRef<
         className={cn(
           navigationMenuTriggerStyle(),
           "hover:text-foreground focus:text-foreground hover:no-underline focus:no-underline data-[active]:text-foreground",
-          isLandingPage ? "text-card" : "text-foreground",
+          isLandingPage ? "text-white" : "text-foreground",
           className
         )}
         {...props}

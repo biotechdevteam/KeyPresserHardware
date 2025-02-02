@@ -33,7 +33,10 @@ const EventCard: React.FC<EventCardProps> = ({
         {/* Image and Timing Section */}
         <div className="md:col-span-1 relative">
           <Image
-            src={event.eventImageUrl || "https://via.placeholder.com/500x300"}
+            src={
+              event.eventImageUrl ||
+              "https://img.freepik.com/premium-photo/low-angle-fish-eye-shot-garden-city-skyscraper-singapore_76964-36271.jpg"
+            }
             alt={event.title}
             width={500}
             height={300}

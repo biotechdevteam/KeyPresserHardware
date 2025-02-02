@@ -38,9 +38,9 @@ const RegisterDialog: React.FC<RegisterDialogProps> = ({
       <div className="fixed inset-0 flex items-center justify-center mx-4">
         {" "}
         {/* Add mx-4 for horizontal margins */}
-        <DialogContent className="max-w-lg w-full bg-white p-6 rounded-lg shadow-lg mx-auto">
+        <DialogContent className="max-w-lg w-full bg-popover p-6 rounded-lg shadow-lg mx-auto">
           <DialogHeader>
-            <DialogTitle>
+            <DialogTitle className="text-2xl font-bold text-center">
               {isAuthenticated && user
                 ? `Is this you, ${user.first_name}?`
                 : "Let’s get to know you!"}

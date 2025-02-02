@@ -6,6 +6,9 @@ import {
   contactFormSchema,
   ContactFormValues,
 } from "@/types/contactFormSchema";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 const ContactForm: React.FC = () => {
   const t = useTranslations("contactform");
@@ -25,17 +28,17 @@ const ContactForm: React.FC = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-white p-6 rounded-lg shadow-lg"
+      className="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-card p-6 rounded-lg shadow-lg"
     >
       {/* First Name Field */}
       <div>
-        <label
+        <Label
           htmlFor="firstName"
           className="block mb-2 text-sm font-semibold text-muted-primary"
         >
           {t("firstNameLabel")}
-        </label>
-        <input
+        </Label>
+        <Input
           id="firstName"
           {...register("firstName")}
           placeholder={t("firstNamePlaceholder")}
@@ -52,13 +55,13 @@ const ContactForm: React.FC = () => {
 
       {/* Last Name Field */}
       <div>
-        <label
+        <Label
           htmlFor="lastName"
           className="block mb-2 text-sm font-semibold text-muted-primary"
         >
           {t("lastNameLabel")}
-        </label>
-        <input
+        </Label>
+        <Input
           id="lastName"
           {...register("lastName")}
           placeholder={t("lastNamePlaceholder")}
@@ -75,13 +78,13 @@ const ContactForm: React.FC = () => {
 
       {/* Email Field */}
       <div>
-        <label
+        <Label
           htmlFor="email"
           className="block mb-2 text-sm font-semibold text-muted-primary"
         >
           {t("emailLabel")}
-        </label>
-        <input
+        </Label>
+        <Input
           id="email"
           type="email"
           {...register("email")}
@@ -99,13 +102,13 @@ const ContactForm: React.FC = () => {
 
       {/* Phone Field */}
       <div>
-        <label
+        <Label
           htmlFor="phone"
           className="block mb-2 text-sm font-semibold text-muted-primary"
         >
           {t("phoneLabel")}
-        </label>
-        <input
+        </Label>
+        <Input
           id="phone"
           {...register("phone")}
           placeholder={t("phonePlaceholder")}
@@ -122,13 +125,13 @@ const ContactForm: React.FC = () => {
 
       {/* Message Field */}
       <div className="sm:col-span-2">
-        <label
+        <Label
           htmlFor="message"
           className="block mb-2 text-sm font-semibold text-muted-primary"
         >
           {t("messageLabel")}
-        </label>
-        <textarea
+        </Label>
+        <Textarea
           id="message"
           {...register("message")}
           placeholder={t("messagePlaceholder")}
@@ -148,7 +151,7 @@ const ContactForm: React.FC = () => {
       <div className="sm:col-span-2">
         <button
           type="submit"
-          className="w-full px-4 py-2 font-semibold text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600 transition-colors duration-200 ease-in-out"
+          className="w-full"
         >
           {t("sendMessageButton")}
         </button>

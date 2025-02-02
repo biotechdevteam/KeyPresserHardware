@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "next-view-transitions";
 import { ExternalLinkIcon } from "lucide-react";
 
-// Define the MembershipTier type directly within this component
 interface MembershipTier {
   id: string;
   name: string;
@@ -16,14 +15,38 @@ interface MembershipTier {
 const membershipTiers: MembershipTier[] = [
   {
     id: "1",
-    name: "Standard",
+    name: "Student Membership",
     description:
-      "A unified membership for all members of the biotechnology space.",
+      "Open to undergraduates, postgraduates, and PhD candidates interested in biotechnology.",
     benefits: [
-      "Equal access to all resources",
-      "Monthly community updates",
-      "Participation in exclusive biotech events",
-      "Access to the biotechnology research hub",
+      "Discounted event fees",
+      "Access to mentorship programs",
+      "Exclusive networking opportunities with industry professionals",
+      "Biotech research internship opportunities",
+    ],
+  },
+  {
+    id: "2",
+    name: "Professional Membership",
+    description:
+      "For individuals working in the biotech or technology field with 1+ years of experience.",
+    benefits: [
+      "Access to premium biotech research and reports",
+      "Exclusive professional networking events",
+      "Career development and training sessions",
+      "Opportunities to collaborate on industry projects",
+    ],
+  },
+  {
+    id: "3",
+    name: "Institutional Membership",
+    description:
+      "For organisations such as universities, biotech companies, and research centres.",
+    benefits: [
+      "Recognition as a biotech industry partner",
+      "Opportunities for institutional collaborations",
+      "Access to industry research insights",
+      "Special invitations to biotech conferences and summits",
     ],
   },
 ];
@@ -76,8 +99,8 @@ const MembershipSection: React.FC = () => {
             isVisible ? "opacity-100" : "opacity-0"
           }`}
         >
-          Explore the benefits of joining our community. Choose the membership
-          tier that best fits your needs and unlock exclusive perks.
+          We offer different membership tiers based on your professional
+          background and experience. Choose the one that best suits your needs.
         </p>
 
         {/* Membership Tiers */}
@@ -128,19 +151,6 @@ const MembershipSection: React.FC = () => {
               </CardContent>
             </Card>
           ))}
-        </div>
-
-        {/* Call to Action */}
-        <div
-          className={`mt-12 text-center transition-opacity duration-700 ${
-            isVisible ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <Link href="/apply">
-            <Button className="animate-beep" variant="default">
-              Become a Member Now <ExternalLinkIcon className="w-4 h-4 ml-2" />
-            </Button>
-          </Link>
         </div>
       </div>
     </section>

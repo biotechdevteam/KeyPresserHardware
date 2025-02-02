@@ -72,8 +72,8 @@ const ForgotPassword = () => {
         >
           <p className="text-center">
             {resetMethod === "email"
-              ? "Enter your email to receive a reset link."
-              : "Enter your phone number to receive a reset code."}
+              ? "Enter the same email you used for registration to receive a reset link."
+              : "Enter the same phone number you used for registration to receive a reset code."}
           </p>
 
           {resetMethod === "email" && (
@@ -104,7 +104,13 @@ const ForgotPassword = () => {
               : "Send Reset Code"}
           </Button>
 
-          {error && <p className="text-red-500 text-center mt-4">{error === "email must be an email" ? "Please verify and try using a valid Email" : error}</p>}
+          {error && (
+            <p className="text-red-500 text-center mt-4">
+              {error === "email must be an email"
+                ? "Please verify and try using a valid Email"
+                : error}
+            </p>
+          )}
 
           <p className="text-center mt-4">
             Not sure?{" "}

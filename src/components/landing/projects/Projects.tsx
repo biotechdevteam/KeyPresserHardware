@@ -1,8 +1,10 @@
 import ProjectCard from "@/components/projects/project-card/ProjectCard";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { slideInOut } from "@/lib/utils/pageTransitions";
 import { Project } from "@/types/projectSchema";
 import { ArrowRight } from "lucide-react";
+import { useTransitionRouter } from "next-view-transitions";
 import React, { useRef, useEffect, useState } from "react";
 
 interface ProjectPortfolioSectionProps {
@@ -12,6 +14,7 @@ interface ProjectPortfolioSectionProps {
 const ProjectPortfolioSection: React.FC<ProjectPortfolioSectionProps> = ({
   projects,
 }) => {
+  const router = useTransitionRouter();
   const sectionRef = useRef<HTMLDivElement>(null); // Reference for the section
   const [isVisible, setIsVisible] = useState(false);
 
@@ -76,7 +79,13 @@ const ProjectPortfolioSection: React.FC<ProjectPortfolioSectionProps> = ({
 
         {/* Call to Action */}
         <div className="mt-8 text-center">
-          <Button variant="default" className="animate-beep">
+          <Button
+            variant="default"
+            className="animate-beep"
+            onClick={() =>
+              router.push("/upcoming-projects", { onTransitionReady: slideInOut })
+            }
+          >
             Discover More Projects
             <ArrowRight className="w-4 h-4 ml-2" />
           </Button>

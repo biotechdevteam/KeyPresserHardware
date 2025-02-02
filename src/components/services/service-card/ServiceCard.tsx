@@ -52,7 +52,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, onClick }) => {
           {service.pricing_plans.length > 0 && (
             <p className="mt-4 text-muted-foreground">
               Starting at:{" "}
-              <span className="font-bold text-secondary">
+              <span className="font-bold text-accent">
                 ${service.pricing_plans[0].price}
               </span>
             </p>

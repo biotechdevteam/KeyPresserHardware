@@ -1,5 +1,5 @@
 "use client";
-// import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import { About } from "@/types/aboutSchema";
@@ -66,16 +66,18 @@ const AboutIntro: React.FC<{ aboutData: About }> = ({ aboutData }) => {
         {/* Cover Photo Section */}
         <div className="mt-16">
           {aboutData.cover_photo_url && (
-            <Image
-              src={aboutData.cover_photo_url}
-              alt={aboutData.name}
-              width={700}
-              height={700}
-              priority={true}
-              className={`w-auto h-auto mx-auto object-cover rounded-lg transition-all duration-500 ease-in-out ${
-                isVisible ? "animate-fadeIn" : "opacity-0"
-              }`}
-            />
+            <AspectRatio ratio={16/9} className="mx-auto rounded-lg">
+              <Image
+                src={aboutData.cover_photo_url}
+                alt={aboutData.name}
+                width={100}
+                height={100}
+                priority={true}
+                className={`w-auto h-auto object-cover rounded-lg transition-all duration-500 ease-in-out ${
+                  isVisible ? "animate-fadeIn" : "opacity-0"
+                }`}
+              />
+            </AspectRatio>
           )}
         </div>
 
@@ -90,7 +92,8 @@ const AboutIntro: React.FC<{ aboutData: About }> = ({ aboutData }) => {
               >
                 Our Story
               </h3>
-              <p className="mt-2">{aboutData.history}</p>
+              <p className="mt-2 whitespace-pre-line">{aboutData.history}</p>
+              {/* <p dangerouslySetInnerHTML={{ __html: history.replace(/\n\n/g, "<br /><br />") }} /> */}
             </>
           )}
         </div>

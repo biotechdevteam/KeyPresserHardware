@@ -95,7 +95,6 @@ const ServiceDetails: React.FC<ServiceDetailsProps> = ({
         description="Check out our pricing plans and book this service today!"
         buttonText="Book Now"
         onClick={handleOpenRegisterDialog}
-        secondaryText="Learn More"
         secondaryAction={handleLearnMore}
       />
 

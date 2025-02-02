@@ -7,13 +7,15 @@ import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Carousel } from "@/components/ui/carousel";
 import ProjectHeader from "@/components/projects/project-header/ProjectHeader";
 import Image from "next/image";
-import { Link } from "next-view-transitions";
+import { Link, useTransitionRouter } from "next-view-transitions";
+import { slideInOut } from "@/lib/utils/pageTransitions";
 
 interface ProjectDetailsProps {
   project: Project;
 }
 
 const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
+  const router = useTransitionRouter();
   return (
     <div className="container w-full mx-auto max-w-6xl p-6">
       <ProjectHeader
@@ -201,7 +203,14 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
       {/* Calls to Action (CTAs) */}
       <section className="mb-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Button className="bg-primary w-full">Support This Project</Button>
+          <Button
+            className="bg-primary w-full"
+            onClick={() =>
+              router.push("/donate", { onTransitionReady: slideInOut })
+            }
+          >
+            Support This Project
+          </Button>
           <Button className="bg-primary w-full">Share</Button>
         </div>
       </section>
@@ -210,7 +219,7 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
       <section className="mb-10">
         <h2 className="text-2xl font-semibold mb-4">Comments and Feedback</h2>
         {/* Comments Section - You can replace this with your comment system */}
-        <p>Comment functionality will go here.</p>
+        <p>No comments yet.</p>
       </section>
     </div>
   );

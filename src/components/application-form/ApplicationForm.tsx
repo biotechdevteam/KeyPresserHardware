@@ -347,6 +347,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
             height: "250px",
             border: "1px solid border",
             padding: "8px",
+            color: "var(--foreground)",
           }}
           placeholder="Write your motivation letter here..."
         />

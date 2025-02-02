@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Link } from "next-view-transitions";
+import { Link, useTransitionRouter } from "next-view-transitions";
 import { ArrowRight } from "lucide-react";
 import BackgroundVideo from "next-video/background-video";
 import CattleRanging from "../../../../videos/cattle-ranging.mp4";
@@ -10,6 +10,8 @@ import Farming from "../../../../videos/farming.mp4";
 import LabScience from "../../../../videos/lab-science.mp4";
 import WebDev from "../../../../videos/web-development.mp4";
 import { About } from "@/types/aboutSchema";
+import { slideInOut } from "@/lib/utils/pageTransitions";
+import { motion } from "framer-motion";
 
 interface HeroProps {
   aboutData: About;
@@ -24,7 +26,9 @@ const backgroundVideos: any[] = [
 ];
 
 const Hero: React.FC<HeroProps> = ({ aboutData }) => {
+  const router = useTransitionRouter();
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
     const videoSwitchInterval = setInterval(() => {
@@ -35,6 +39,22 @@ const Hero: React.FC<HeroProps> = ({ aboutData }) => {
 
     return () => clearInterval(videoSwitchInterval);
   }, []);
+
+  let heading = [
+    "Welcome to BioTec Universe!",
+    `${aboutData.slogan}.`,
+    "Join the Future of Science.",
+  ];
+  let paragraph =
+    "We harness biology and technology to drive personal, business, and humanitarian development. Our mission is to eradicate poverty and hunger, increase disease awareness, promote academic excellence, and enhance skill acquisition. Join us in using science to foster growth and improve lives.";
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIndex((prevIndex) => (prevIndex + 1) % heading.length);
+    }, 10000); // Change text every 10 seconds
+
+    return () => clearTimeout(timeout);
+  }, [heading.length]);
 
   return (
     <div className="relative overflow-hidden min-h-screen">
@@ -48,35 +68,61 @@ const Hero: React.FC<HeroProps> = ({ aboutData }) => {
           loop
         />
         {/* Overlay */}
-        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+        <div className="absolute inset-0 bg-black bg-opacity-60"></div>
       </div>
 
       {/* Hero Content */}
       <div className="absolute inset-0 flex items-center justify-center px-8 lg:px-16 py-16">
-        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 items-center gap-12 min-h-full">
-          <div className="space-y-6 text-center lg:text-left">
-            <div className="text-4xl lg:text-6xl font-bold tracking-tight text-white">
-              <h1>Building a Better World</h1>
-            </div>
+        <div className="relative z-10 grid grid-cols-1 items-center gap-12 min-h-full">
+          <div className="space-y-6 text-center">
+            {/* Heading Animation */}
+            <motion.h1
+              key={index} // Key forces re-animation when index changes
+              className="text-4xl lg:text-6xl font-bold tracking-tight text-white"
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 50 }}
+              transition={{ duration: 1 }}
+            >
+              {heading[index]}
+            </motion.h1>
 
-            <p className="text-lg lg:text-2xl text-white opacity-90">
-              We harness biology and technology to drive personal, business, and
-              humanitarian development. Our mission is to eradicate poverty and
-              hunger, increase disease awareness, promote academic excellence,
-              and enhance skill acquisition. Join us in using science to foster
-              growth and improve lives.
-            </p>
+            {/* Paragraph Animation */}
+            <motion.p
+              className="text-lg lg:text-2xl text-white opacity-90"
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, staggerChildren: 0.1 }}
+            >
+              {paragraph.split(" ").map((word, index) => (
+                <motion.span
+                  key={index}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.1 }}
+                >
+                  {word}{" "}
+                </motion.span>
+              ))}
+            </motion.p>
+          </div>
 
-            {/* Call-to-Actions */}
-            <div className="flex flex-col sm:flex-row justify-center lg:justify-start items-center">
+          {/* Call-to-Actions */}
+          {/* <div className="flex flex-col sm:flex-row justify-center items-center">
               <Link href="/ongoing-projects">
-                <Button className="px-6 py-6 text-lg animate-beep">
+                <Button
+                  className="px-6 py-6 text-lg animate-beep"
+                  onClick={() =>
+                    router.push("/ongoing-projects", {
+                      onTransitionReady: slideInOut,
+                    })
+                  }
+                >
                   Explore Our Work{" "}
                   <ArrowRight className="w-5 h-5 ml-2 inline" />
                 </Button>
               </Link>
-            </div>
-          </div>
+            </div> */}
         </div>
       </div>
 

@@ -46,7 +46,7 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/story"
+                  href="/about/story"
                   className="text-base hover:underline text-primary-foreground"
                 >
                   About Us
@@ -103,7 +103,7 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/partners-&-sponsors"
+                  href="/about/partners-&-sponsors"
                   className="text-base hover:underline text-primary-foreground"
                 >
                   Our Partners & Sponsors
@@ -111,7 +111,7 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
               </li>
               <li>
                 <Link
-                  href="/mission-&-vision"
+                  href="/about/mission-&-vision"
                   className="text-base hover:underline text-primary-foreground"
                 >
                   Our Mission & Vision
@@ -119,7 +119,7 @@ const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
               </li>
               <li>
                 <Link
-                  href="/achievements"
+                  href="/about/achievements"
                   className="text-base hover:underline text-primary-foreground"
                 >
                   Our Achievements

@@ -378,7 +378,7 @@ const useAuth = create<AuthStore>()(
       },
     }),
     {
-      name: "auth-storage",
+      name: "biotec-auth-storage",
       storage: zustandLocalStorage,
     }
   )

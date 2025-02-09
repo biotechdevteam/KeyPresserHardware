@@ -85,4 +85,10 @@ export const metadata: Metadata = {
 5. getting better
 
 By completing these tasks, we'll optimize the project's performance, maintainability, and SEO, ensuring a better user experience.
+
+
+
+service meta data removed
+
+
 ```

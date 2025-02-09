@@ -23,7 +23,7 @@ const CustomError: React.FC<CustomErrorProps> = ({ error }) => {
       ? typeof error === "string"
         ? error
         : error.message
-      : "An error occurred.";
+      : undefined;
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen text-foreground p-6">
@@ -39,9 +39,11 @@ const CustomError: React.FC<CustomErrorProps> = ({ error }) => {
           </p>
 
           {/* Error details */}
-          <pre className="bg-destructive/50 p-4 rounded-md text-destructive mb-4 text-wrap">
-            {errorMessage}
-          </pre>
+          {errorMessage && (
+            <pre className="bg-destructive/50 p-4 rounded-md text-destructive mb-4 text-wrap">
+              {errorMessage}
+            </pre>
+          )}
 
           <div className="flex justify-center space-x-4">
             {/* Retry Button */}

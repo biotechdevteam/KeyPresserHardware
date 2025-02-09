@@ -38,7 +38,7 @@ const AboutFooter: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                 <Mail className="mr-3 text-primary" />
                 <Link
                   href={`mailto:${aboutData.contact_email}`}
-                  className="text-secondary hover:text-primary transition-colors"
+                  className="hover:text-primary transition-colors"
                 >
                   {aboutData.contact_email}
                 </Link>
@@ -48,7 +48,7 @@ const AboutFooter: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                 <Phone className="mr-3 text-primary" />
                 <Link
                   href={`tel:${aboutData.contact_phone}`}
-                  className="text-secondary hover:text-primary transition-colors"
+                  className="hover:text-primary transition-colors"
                 >
                   {aboutData.contact_phone}
                 </Link>
@@ -63,14 +63,15 @@ const AboutFooter: React.FC<{ aboutData: About }> = ({ aboutData }) => {
               <Separator />
               {websiteURL && (
                 <div className="flex items-center">
-                  <Globe className="mr-3 text-foreground" />
+                  <Globe className="mr-3 text-primary" />
                   <Link
-                    href={websiteURL}
+                    href="https://biotecuniverse.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-secondary transition-colors"
+                    className="hover:transition-colors"
                   >
-                    {websiteURL}
+                    {/* {websiteURL} */}
+                    https://biotecuniverse.com
                   </Link>
                 </div>
               )}
@@ -160,16 +161,14 @@ const AboutFooter: React.FC<{ aboutData: About }> = ({ aboutData }) => {
         </Card>
 
         {/* Contact Form */}
-        <Card className="bg-card shadow-lg col-span-1 md:col-span-2 p-4">
-          <CardContent className="flex flex-col items-center justify-center">
-            <h3 className="text-2xl font-semibold mb-6">
-              {t("footer.contactFormTitle")}
-            </h3>
-            <div className="max-w-lg">
-              <ContactForm />
-            </div>
-          </CardContent>
-        </Card>
+        <div className="flex flex-col items-center justify-center">
+          <h3 className="text-2xl font-semibold mb-6">
+            {t("footer.contactFormTitle")}
+          </h3>
+          <div className="max-w-lg">
+            <ContactForm />
+          </div>
+        </div>
       </div>
     </footer>
   );

@@ -30,16 +30,6 @@ export default function SignInPage() {
   const { user } = useAuth();
   const router = useRouter();
 
-  // Handle loading state
-  if (loading || fetching) {
-    return <Loader />;
-  }
-
-  // Handle error state
-  if (isError) {
-    return <Error error={error} />;
-  }
-
   // Use useEffect to handle routing based on user type
   useEffect(() => {
     if (user) {
@@ -53,6 +43,16 @@ export default function SignInPage() {
       }
     }
   }, [user, router]);
+
+  // Handle loading state
+  if (loading || fetching) {
+    return <Loader />;
+  }
+
+  // Handle error state
+  if (isError) {
+    return <Error error={error} />;
+  }
 
   return (
     <div>

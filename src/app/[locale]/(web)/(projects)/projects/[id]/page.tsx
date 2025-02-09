@@ -79,11 +79,6 @@ export default async function ProjectPage({
 
   return (
     <div className="w-full mx-auto max-w-6xl p-6">
-      <ProjectHeader
-        title={project.title}
-        summary={project.summary}
-        backgroundImageUrl={project.projectImageUrl}
-      />
       <ProjectDetails project={project} />
     </div>
   );

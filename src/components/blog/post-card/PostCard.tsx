@@ -18,8 +18,8 @@ import {
   ThumbsUp,
   ThumbsDown,
   MessageCircle,
-} from "lucide-react"; // Importing Lucid icons
-import { Badge } from "@/components/ui/badge"; // Assuming you have a Badge component
+} from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Link } from "next-view-transitions";
 
 interface PostCardProps {
@@ -42,7 +42,10 @@ const PostCard: React.FC<PostCardProps> = ({ blog, onClick }) => {
       {/* Left Side: Image (full height on both mobile and desktop) */}
       <div className="lg:w-1/3 w-full h-full">
         <Image
-          src={blog.featuredImageUrl || "https://via.placeholder.com/400x200"}
+          src={
+            blog.featuredImageUrl ||
+            "https://img.freepik.com/premium-photo/people-generating-images-using-artificial-intelligence-laptop_23-2150794312.jpg"
+          }
           alt={blog.title}
           width={400}
           height={400}
@@ -76,7 +79,7 @@ const PostCard: React.FC<PostCardProps> = ({ blog, onClick }) => {
         {/* Add likes, dislikes, and comments badges */}
         <CardFooter className="mt-4 flex flex-col sm:flex-row w-full justify-between">
           <div className="flex space-x-4 mb-2 text-center">
-            <Button variant="secondary" size="sm" onClick={onClick}>
+            <Button size="sm" onClick={onClick}>
               Read more
             </Button>
           </div>

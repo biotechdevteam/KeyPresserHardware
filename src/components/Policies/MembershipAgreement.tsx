@@ -99,7 +99,7 @@ const MembershipAgreement: React.FC<{ aboutData: About }> = ({ aboutData }) => {
             whitepapers, and reports.
           </li>
           <li>
-            Invitations to events, workshops, and conferences hosted by Biotech
+            Invitations to events, workshops, and conferences hosted by BioTec
             Universe.
           </li>
           <li>
@@ -179,7 +179,7 @@ const MembershipAgreement: React.FC<{ aboutData: About }> = ({ aboutData }) => {
       <section className="space-y-2">
         <h2 className="text-xl font-semibold">9. Payments and Transactions</h2>
         <p>
-          If you make payments or transactions through Biotech Universe’s
+          If you make payments or transactions through BioTec Universe’s
           platform, you agree to provide valid payment details. {aboutData.name}{" "}
           is not responsible for fees or taxes associated with payments.
         </p>

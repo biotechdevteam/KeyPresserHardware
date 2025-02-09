@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev & npx next-video sync -w",
+    "dev:derick": "next dev -H 192.168.196.140 -p 3000 & npx next-video sync -w",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

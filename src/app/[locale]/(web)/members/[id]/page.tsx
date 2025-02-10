@@ -3,19 +3,20 @@ import { Member } from "@/types/memberSchema";
 import MemberHeader from "@/components/member/member-header/MemberHeader";
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
 
-// Fetch all member IDs for static generation
-export async function generateStaticParams() {
-  const members = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/members`,
-    {
-      next: { revalidate: 60 },
-    }
-  ).then((res) => res.json());
-  return members.map((member: Member) => ({
-    id: member._id, // Map each member ID
-  }));
-}
+// // Fetch all member IDs for static generation
+// export async function generateStaticParams() {
+//   const members = await fetch(
+//     `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/members`,
+//     {
+//       next: { revalidate: 60 },
+//     }
+//   ).then((res) => res.json());
+//   return members.map((member: Member) => ({
+//     id: member._id, // Map each member ID
+//   }));
+// }
 
 // // Dynamic Metadata Generation
 // export async function generateMetadata(
@@ -63,6 +64,9 @@ export default async function MemberPage({
 }: {
   params: { id: string };
 }) {
+  // Set locale explicitly for static rendering
+  setRequestLocale("en"); // Adjust based on your locale strategy
+
   const members = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/members`,
     {

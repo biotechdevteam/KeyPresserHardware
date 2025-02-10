@@ -74,7 +74,7 @@ const Hero: React.FC<HeroProps> = ({ aboutData }) => {
       {/* Hero Content */}
       <div className="absolute inset-0 flex items-center justify-center px-8 lg:px-16 py-16">
         <div className="relative z-10 grid grid-cols-1 items-center gap-12 min-h-full">
-          <div className="space-y-6 text-center">
+          <div className="space-y-12 text-center">
             {/* Heading Animation */}
             <motion.h1
               key={index} // Key forces re-animation when index changes

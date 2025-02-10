@@ -3,19 +3,20 @@ import { Blog } from "@/types/blogSchema";
 import { Metadata, ResolvingMetadata } from "next";
 import Logo from "../../../../../../../public/images/logo.png";
 import { notFound } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
 
 // Fetch all blog IDs for static generation
-export async function generateStaticParams() {
-  const blogs = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/blog/posts`,
-    {
-      next: { revalidate: 60 },
-    }
-  ).then((res) => res.json());
-  return blogs.map((blog: Blog) => ({
-    id: blog._id, // Map each blog ID
-  }));
-}
+// export async function generateStaticParams() {
+//   const blogs = await fetch(
+//     `${process.env.NEXT_PUBLIC_API_BASE_URL}/blog/posts`,
+//     {
+//       next: { revalidate: 60 },
+//     }
+//   ).then((res) => res.json());
+//   return blogs.map((blog: Blog) => ({
+//     id: blog._id, // Map each blog ID
+//   }));
+// }
 
 // // Dynamic Metadata Generation
 // export async function generateMetadata(
@@ -59,6 +60,9 @@ export async function generateStaticParams() {
 // }
 
 export default async function PostPage({ params }: { params: { id: string } }) {
+  // Set locale explicitly for static rendering
+  setRequestLocale("en"); // Adjust based on your locale strategy
+
   const [blogs, aboutData] = await Promise.all([
     fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/blog/posts`, {
       next: { revalidate: 60 },

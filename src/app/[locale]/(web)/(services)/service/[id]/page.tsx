@@ -1,8 +1,57 @@
 import { notFound } from "next/navigation";
-import { setRequestLocale } from "next-intl/server"; // Import this
+import { setRequestLocale } from "next-intl/server";
 import ServiceDetails from "@/components/services/service-details/ServiceDetails";
 import { Service } from "@/types/ServiceSchema";
 import { Feedback } from "@/types/feedbackSchema";
+import { Metadata, ResolvingMetadata } from "next";
+
+// Fetch all service IDs for static generation
+export async function generateStaticParams() {
+  const services = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/services`,
+    {
+      cache: "force-cache",
+    }
+  ).then((res) => res.json());
+  return services.map((service: Service) => ({
+    id: service._id, // Map each service ID
+  }));
+}
+
+// // Dynamic Metadata Generation
+// export async function generateMetadata(
+//   { params }: { params: { id: string } },
+//   parent: ResolvingMetadata
+// ): Promise<Metadata> {
+//   const services = await fetch(
+//     `${process.env.NEXT_PUBLIC_API_BASE_URL}/services`,
+//     {
+//       cache: "force-cache",
+//     }
+//   ).then((res) => res.json());
+//   const service = services.find((s: Service) => s._id === params.id);
+
+//   if (!service) {
+//     return {
+//       title: "Service Not Found",
+//       description: "The requested service could not be found.",
+//     };
+//   }
+
+//   return {
+//     title: service.title,
+//     description: service.summary,
+//     openGraph: {
+//       title: service.title,
+//       description: service.summary,
+//     },
+//     twitter: {
+//       card: "summary_large_image",
+//       title: service.title,
+//       description: service.summary,
+//     },
+//   };
+// }
 
 export default async function ServicePage({
   params,

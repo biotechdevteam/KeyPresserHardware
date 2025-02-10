@@ -18,46 +18,46 @@ export async function generateStaticParams() {
   }));
 }
 
-// Dynamic Metadata Generation
-export async function generateMetadata(
-  { params }: { params: { id: string } },
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  const projects = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/projects`,
-    {
-      next: { revalidate: 60 },
-    }
-  ).then((res) => res.json());
-  const project = projects.find((p: Project) => p._id === params.id);
+// // Dynamic Metadata Generation
+// export async function generateMetadata(
+//   { params }: { params: { id: string } },
+//   parent: ResolvingMetadata
+// ): Promise<Metadata> {
+//   const projects = await fetch(
+//     `${process.env.NEXT_PUBLIC_API_BASE_URL}/projects`,
+//     {
+//       next: { revalidate: 60 },
+//     }
+//   ).then((res) => res.json());
+//   const project = projects.find((p: Project) => p._id === params.id);
 
-  if (!project) {
-    return {
-      title: "Project Not Found",
-      description: "The requested project could not be found.",
-    };
-  }
+//   if (!project) {
+//     return {
+//       title: "Project Not Found",
+//       description: "The requested project could not be found.",
+//     };
+//   }
 
-  // Access and extend parent metadata
-  const previousImages = (await parent).openGraph?.images || [];
-  const projectImage = project.projectImageUrl || Logo.src;
+//   // Access and extend parent metadata
+//   const previousImages = (await parent).openGraph?.images || [];
+//   const projectImage = project.projectImageUrl || Logo.src;
 
-  return {
-    title: project.title,
-    description: project.summary,
-    openGraph: {
-      title: project.title,
-      description: project.summary,
-      images: [projectImage, ...previousImages].filter(Boolean), // Filter out undefined values
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: project.title,
-      description: project.summary,
-      images: [projectImage],
-    },
-  };
-}
+//   return {
+//     title: project.title,
+//     description: project.summary,
+//     openGraph: {
+//       title: project.title,
+//       description: project.summary,
+//       images: [projectImage, ...previousImages].filter(Boolean), // Filter out undefined values
+//     },
+//     twitter: {
+//       card: "summary_large_image",
+//       title: project.title,
+//       description: project.summary,
+//       images: [projectImage],
+//     },
+//   };
+// }
 
 export default async function ProjectPage({
   params,

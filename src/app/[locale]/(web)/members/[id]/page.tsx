@@ -17,46 +17,46 @@ export async function generateStaticParams() {
   }));
 }
 
-// Dynamic Metadata Generation
-export async function generateMetadata(
-  { params }: { params: { id: string } },
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  const members = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/members`,
-    {
-      next: { revalidate: 60 },
-    }
-  ).then((res) => res.json());
-  const member = members.find((m: Member) => m._id === params.id);
+// // Dynamic Metadata Generation
+// export async function generateMetadata(
+//   { params }: { params: { id: string } },
+//   parent: ResolvingMetadata
+// ): Promise<Metadata> {
+//   const members = await fetch(
+//     `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/members`,
+//     {
+//       next: { revalidate: 60 },
+//     }
+//   ).then((res) => res.json());
+//   const member = members.find((m: Member) => m._id === params.id);
 
-  if (!member) {
-    return {
-      title: "Member Not Found",
-      description: "The requested member could not be found.",
-    };
-  }
+//   if (!member) {
+//     return {
+//       title: "Member Not Found",
+//       description: "The requested member could not be found.",
+//     };
+//   }
 
-  // Access and extend parent metadata
-  const previousImages = (await parent).openGraph?.images || [];
-  const memberImage = member.profile_photo_url || "";
+//   // Access and extend parent metadata
+//   const previousImages = (await parent).openGraph?.images || [];
+//   const memberImage = member.profile_photo_url || "";
 
-  return {
-    title: member.first_name + "'s Profile",
-    description: member.bio,
-    openGraph: {
-      title: member.first_name,
-      description: member.bio,
-      images: [memberImage, ...previousImages].filter(Boolean), // Filter out undefined values
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: member.first_name,
-      description: member.bio,
-      images: [memberImage],
-    },
-  };
-}
+//   return {
+//     title: member.first_name + "'s Profile",
+//     description: member.bio,
+//     openGraph: {
+//       title: member.first_name,
+//       description: member.bio,
+//       images: [memberImage, ...previousImages].filter(Boolean), // Filter out undefined values
+//     },
+//     twitter: {
+//       card: "summary_large_image",
+//       title: member.first_name,
+//       description: member.bio,
+//       images: [memberImage],
+//     },
+//   };
+// }
 
 export default async function MemberPage({
   params,

@@ -141,12 +141,12 @@ const navMenu: Pages[][] = [
 
   // Events
   [
-    // {
-    //   title: "events calender",
-    //   link: "/events-calender",
-    //   description:
-    //     "Stay updated with a calendar of upcoming events, meetings, and important dates.",
-    // },
+    {
+      title: "calender of activities",
+      link: "/calender-of-activities",
+      description:
+        "Stay updated with our calendar of upcoming events, meetings, and important dates.",
+    },
     {
       title: "upcoming events",
       link: "/upcoming-events",
@@ -209,12 +209,12 @@ const navMenu: Pages[][] = [
 
   // Projects
   [
-    {
-      title: "activities calendar",
-      link: "/projects-calendar",
-      description:
-        "Stay updated with a calendar of Our Activities, milestones and opportunities.",
-    },
+    // {
+    //   title: "activities calendar",
+    //   link: "/projects-calendar",
+    //   description:
+    //     "Stay updated with a calendar of Our Activities, milestones and opportunities.",
+    // },
     {
       title: "ongoing projects",
       link: "/ongoing-projects",
@@ -595,7 +595,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                       <NavigationMenuItem>
                         <NavigationMenuTrigger>
                           <Bell />
-                          <Badge>1</Badge>
+                          {/* <Badge>1</Badge> */}
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
                           {/* Logic enters here */}

@@ -56,7 +56,7 @@ const BlogsContainer: React.FC<{ blogsData: Blog[] }> = ({ blogsData }) => {
           ))
         ) : (
           <div className="col-span-full text-center text-muted-primary">
-            No blogs found.
+            No articles found yet.
           </div>
         )}
       </div>

@@ -17,46 +17,46 @@ export async function generateStaticParams() {
   }));
 }
 
-// Dynamic Metadata Generation
-export async function generateMetadata(
-  { params }: { params: { id: string } },
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  const blogs = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/blog/posts`,
-    {
-      next: { revalidate: 60 },
-    }
-  ).then((res) => res.json());
-  const blog = blogs.find((b: Blog) => b._id === params.id);
+// // Dynamic Metadata Generation
+// export async function generateMetadata(
+//   { params }: { params: { id: string } },
+//   parent: ResolvingMetadata
+// ): Promise<Metadata> {
+//   const blogs = await fetch(
+//     `${process.env.NEXT_PUBLIC_API_BASE_URL}/blog/posts`,
+//     {
+//       next: { revalidate: 60 },
+//     }
+//   ).then((res) => res.json());
+//   const blog = blogs.find((b: Blog) => b._id === params.id);
 
-  if (!blog) {
-    return {
-      title: "Blog Not Found",
-      description: "The requested blog could not be found.",
-    };
-  }
+//   if (!blog) {
+//     return {
+//       title: "Blog Not Found",
+//       description: "The requested blog could not be found.",
+//     };
+//   }
 
-  // Access and extend parent metadata
-  const previousImages = (await parent).openGraph?.images || [];
-  const blogImage = blog.featuredImageUrl || Logo.src;
+//   // Access and extend parent metadata
+//   const previousImages = (await parent).openGraph?.images || [];
+//   const blogImage = blog.featuredImageUrl || Logo.src;
 
-  return {
-    title: blog.title,
-    description: blog.summary,
-    openGraph: {
-      title: blog.title,
-      description: blog.summary,
-      images: [blogImage, ...previousImages].filter(Boolean), // Filter out undefined values
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: blog.title,
-      description: blog.summary,
-      images: [blogImage],
-    },
-  };
-}
+//   return {
+//     title: blog.title,
+//     description: blog.summary,
+//     openGraph: {
+//       title: blog.title,
+//       description: blog.summary,
+//       images: [blogImage, ...previousImages].filter(Boolean), // Filter out undefined values
+//     },
+//     twitter: {
+//       card: "summary_large_image",
+//       title: blog.title,
+//       description: blog.summary,
+//       images: [blogImage],
+//     },
+//   };
+// }
 
 export default async function PostPage({ params }: { params: { id: string } }) {
   const [blogs, aboutData] = await Promise.all([

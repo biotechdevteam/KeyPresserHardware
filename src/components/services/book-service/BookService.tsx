@@ -9,19 +9,19 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import useAuth from "@/lib/useAuth"; // Import useAuth to get the user
+import useAuth from "@/lib/useAuth";
 import { useBookService } from "@/lib/useBookService";
 
 interface BookServiceFormProps {
   serviceId: string;
-  serviceTitle: string; // New prop for service title
+  serviceTitle: string;
   onComplete: () => void;
   onCancel: () => void;
 }
 
 const BookServiceForm: React.FC<BookServiceFormProps> = ({
   serviceId,
-  serviceTitle, // Use serviceTitle in the modal
+  serviceTitle,
   onComplete,
   onCancel,
 }) => {
@@ -63,10 +63,10 @@ const BookServiceForm: React.FC<BookServiceFormProps> = ({
         <div className="space-y-4">
           {/* Display user name and service title */}
           <div className="text-lg font-semibold">
-            Booking as: <span className="text-primary">{user?.first_name}</span>
+            Booking as: <span className="text-accent">{user?.first_name}</span>
           </div>
           <div className="text-lg font-semibold">
-            Service: <span className="text-primary">{serviceTitle}</span>
+            Service: <span className="text-accent">{serviceTitle}</span>
           </div>
 
           {/* Error Message */}

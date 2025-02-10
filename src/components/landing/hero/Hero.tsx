@@ -72,7 +72,7 @@ const Hero: React.FC<HeroProps> = ({ aboutData }) => {
       {/* Hero Content */}
       <div className="absolute inset-0 flex items-center justify-center px-8 lg:px-16 py-16">
         <div className="relative z-10 grid grid-cols-1 items-center gap-12 min-h-full">
-          <div className="space-y-6 text-center">
+          <div className="space-y-12 text-center">
             {/* Heading Animation */}
             <motion.h1
               key={index} // Key forces re-animation when index changes
@@ -106,15 +106,35 @@ const Hero: React.FC<HeroProps> = ({ aboutData }) => {
           </div>
 
           {/* Call-to-Actions */}
-          <div className="flex flex-col sm:flex-row justify-center lg:justify-start items-center">
-            <Link href="/ongoing-projects">
-              <Button className="px-6 py-6 text-lg animate-beep">
-                Explore Our Work <ArrowRight className="w-5 h-5 ml-2 inline" />
-              </Button>
-            </Link>
-          </div>
+          {/* <div className="flex flex-col sm:flex-row justify-center items-center">
+              <Link href="/ongoing-projects">
+                <Button
+                  className="px-6 py-6 text-lg animate-beep"
+                  onClick={() =>
+                    router.push("/ongoing-projects", {
+                      onTransitionReady: slideInOut,
+                    })
+                  }
+                >
+                  Explore Our Work{" "}
+                  <ArrowRight className="w-5 h-5 ml-2 inline" />
+                </Button>
+              </Link>
+            </div> */}
         </div>
       </div>
+
+      {/* Mobile Responsive Adjustments */}
+      <style jsx>{`
+        @media (max-width: 768px) {
+          .text-4xl {
+            font-size: 2rem;
+          }
+          .text-lg {
+            font-size: 1rem;
+          }
+        }
+      `}</style>
     </div>
   );
 };

@@ -5,18 +5,18 @@ import { Service } from "@/types/ServiceSchema";
 import { Feedback } from "@/types/feedbackSchema";
 import { Metadata, ResolvingMetadata } from "next";
 
-// Fetch all service IDs for static generation
-export async function generateStaticParams() {
-  const services = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/services`,
-    {
-      cache: "force-cache",
-    }
-  ).then((res) => res.json());
-  return services.map((service: Service) => ({
-    id: service._id, // Map each service ID
-  }));
-}
+// // Fetch all service IDs for static generation
+// export async function generateStaticParams() {
+//   const services = await fetch(
+//     `${process.env.NEXT_PUBLIC_API_BASE_URL}/services`,
+//     {
+//       cache: "force-cache",
+//     }
+//   ).then((res) => res.json());
+//   return services.map((service: Service) => ({
+//     id: service._id, // Map each service ID
+//   }));
+// }
 
 // // Dynamic Metadata Generation
 // export async function generateMetadata(

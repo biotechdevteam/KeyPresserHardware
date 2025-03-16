@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from "next-intl";
 import StoreProvider from "./storeProvider";
 import ClientLayout from "./ClientLayout";
 import { ViewTransitions } from "next-view-transitions";
+import { ThemeProvider } from "next-themes";
 
 export default async function LocaleLayout({
   children,
@@ -21,7 +22,9 @@ export default async function LocaleLayout({
           <NextIntlClientProvider messages={messages}>
             <ClientLayout>
               <StoreProvider>
-                <main className="bg-background">{children}</main>
+                <ThemeProvider>
+                  <main className="bg-background">{children}</main>
+                </ThemeProvider>
               </StoreProvider>
             </ClientLayout>
           </NextIntlClientProvider>

@@ -8,11 +8,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { About } from "@/types/aboutSchema";
 import { useRouter } from "next/navigation";
+import Logo from "../../../public/images/logo.png";
 
 const SignIn: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   const { signIn, error: authError, loading, user } = useAuth();
   const [formError, setFormError] = useState<string | null>(null);
-  const logo = aboutData.logo_url;
+  const logo = aboutData?.logo_url || Logo;
 
   const {
     register,

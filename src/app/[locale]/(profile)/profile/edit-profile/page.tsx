@@ -51,7 +51,6 @@ const ProfilePage = () => {
 
   return (
     <>
-      <HeadingDashboard tabs={tabs}>Profile</HeadingDashboard>
     </>
   );
 };

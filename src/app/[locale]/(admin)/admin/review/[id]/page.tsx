@@ -7,7 +7,6 @@ import HeadingDashboard from "@/components/profile/Header";
 const ReviewPage = () => {
   return (
     <div>
-      <HeadingDashboard>Review Application</HeadingDashboard>
       <Review />
     </div>
   );

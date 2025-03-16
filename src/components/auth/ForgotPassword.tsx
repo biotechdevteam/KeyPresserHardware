@@ -8,14 +8,21 @@ import { forgotPasswordSchema } from "@/types/forgotPasswordSchema";
 import Link from "next/link";
 import { z } from "zod";
 import useAuth from "@/lib/useAuth";
+import { ArrowLeft, Mail } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
 
 const ForgotPassword = () => {
-  const [resetMethod, setResetMethod] = useState<"email" | "phone" | null>(
-    null
-  );
-
+  const [emailSent, setEmailSent] = useState(false);
   const { forgotPassword, loading, error } = useAuth();
 
   const {
@@ -23,103 +30,107 @@ const ForgotPassword = () => {
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
   } = useForm<ForgotPasswordFormData>({
     resolver: zodResolver(forgotPasswordSchema),
+    defaultValues: {
+      email: "",
+    },
   });
+
+  const emailValue = watch("email");
+  const isFormValid = emailValue && !errors.email;
 
   // Handle form submission
   const handleForgotPassword = async (data: ForgotPasswordFormData) => {
-    const { email, phone } = data;
-    if (resetMethod === "email" && email) {
+    const { email } = data;
+    if (email) {
       const success = await forgotPassword(email);
       if (success) {
-        alert(success);
+        setEmailSent(true);
         reset();
       }
-    } else if (resetMethod === "phone" && phone) {
-      const success = await forgotPassword(phone);
-      if (success) {
-        alert(success);
-        reset();
-      }
-      console.log("Reset code sent to phone:", phone);
-      reset();
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen space-y-6 -mt-24 p-8">
-      <h2 className="text-2xl font-semibold mt-4">Forgot Password</h2>
-      <p className="text-center">
-        Please choose how you would like to reset your password.
-      </p>
+    <div className="flex flex-col items-center justify-center min-h-screen p-4">
+      <Card className="w-full max-w-md shadow-lg">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl font-bold text-center">
+            Forgot Password
+          </CardTitle>
+          <CardDescription className="text-center">
+            {!emailSent
+              ? "Enter your email to receive a password reset link"
+              : "Check your email"}
+          </CardDescription>
+        </CardHeader>
 
-      {!resetMethod && (
-        <div className="space-x-4">
-          <Button onClick={() => setResetMethod("email")} disabled={loading}>
-            Reset via Email
-          </Button>
-          <Button onClick={() => setResetMethod("phone")} disabled={loading}>
-            Reset via Phone
-          </Button>
-        </div>
-      )}
+        <CardContent>
+          {!emailSent ? (
+            <form
+              onSubmit={handleSubmit(handleForgotPassword)}
+              className="space-y-4"
+            >
+              <div className="space-y-2">
+                <Input
+                  label="Email Address"
+                  type="email"
+                  placeholder="Enter your email"
+                  {...register("email")}
+                  error={errors.email?.message}
+                />
+              </div>
 
-      {resetMethod && (
-        <form
-          onSubmit={handleSubmit(handleForgotPassword)}
-          className="space-y-4 w-full max-w-md"
-        >
-          <p className="text-center">
-            {resetMethod === "email"
-              ? "Enter the same email you used for registration to receive a reset link."
-              : "Enter the same phone number you used for registration to receive a reset code."}
-          </p>
+              {error && (
+                <Alert variant="error" className="mt-4">
+                  <AlertDescription>
+                    {error === "value must be an email"
+                      ? "Please enter a valid email address"
+                      : error}
+                  </AlertDescription>
+                </Alert>
+              )}
 
-          {resetMethod === "email" && (
-            <Input
-              label="Email Address"
-              type="email"
-              placeholder="Enter your email"
-              {...register("email")}
-              error={errors.email?.message}
-            />
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={loading || !isFormValid}
+              >
+                {loading ? "Sending..." : "Send Reset Link"}
+              </Button>
+            </form>
+          ) : (
+            <div className="space-y-4 text-center">
+              <div className="bg-primary text-primary-foreground p-4 rounded-md">
+                <p className="font-medium">Reset link sent!</p>
+                <p className="text-sm">
+                  Check your email inbox for instructions to reset your
+                  password.
+                </p>
+              </div>
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => setEmailSent(false)}
+              >
+                Send to a different email
+              </Button>
+            </div>
           )}
+        </CardContent>
 
-          {resetMethod === "phone" && (
-            <Input
-              label="Phone Number"
-              type="tel"
-              placeholder="Enter your phone number"
-              {...register("phone")}
-              error={errors.phone?.message}
-            />
-          )}
-
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading
-              ? "Processing..."
-              : resetMethod === "email"
-              ? "Send Reset Link"
-              : "Send Reset Code"}
-          </Button>
-
-          {error && (
-            <p className="text-red-500 text-center mt-4">
-              {error === "email must be an email"
-                ? "Please verify and try using a valid Email"
-                : error}
-            </p>
-          )}
-
-          <p className="text-center mt-4">
-            Rememer Password?{" "}
-            <Link href="/auth/signin" onClick={() => setResetMethod(null)} legacyBehavior>
-              Back to Signin
-            </Link>
-          </p>
-        </form>
-      )}
+        <CardFooter className="flex justify-center">
+          <Link
+            href="/auth/signin"
+            className="flex items-center gap-2 text-sm transition-colors"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            <span>Back to Sign In</span>
+          </Link>
+        </CardFooter>
+      </Card>
     </div>
   );
 };

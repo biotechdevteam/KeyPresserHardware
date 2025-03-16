@@ -52,7 +52,7 @@ const CookieConsent: React.FC = () => {
       <Button
         onClick={closeBanner}
         aria-label="Close"
-        size="close"
+        size="sm"
         className="absolute top-4 right-4"
       >
         <XIcon />

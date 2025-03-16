@@ -6,6 +6,11 @@ import { ChevronDownIcon } from "@radix-ui/react-icons";
 
 import { cn } from "@/lib/utils/utils";
 
+// Exported type for better type safety when using the component
+export type AccordionProps = React.ComponentPropsWithoutRef<
+  typeof AccordionPrimitive.Root
+>;
+
 const Accordion = AccordionPrimitive.Root;
 
 const AccordionItem = React.forwardRef<
@@ -15,7 +20,9 @@ const AccordionItem = React.forwardRef<
   <AccordionPrimitive.Item
     ref={ref}
     className={cn(
-      "border-b border-muted transition-all duration-300 hover:shadow-md rounded-lg overflow-hidden",
+      "border border-muted/60 rounded-lg mb-3 transition-all duration-300",
+      "hover:border-muted hover:shadow-lg hover:shadow-muted/10",
+      "focus-within:border-primary/30 focus-within:shadow-md focus-within:shadow-primary/10",
       className
     )}
     {...props}
@@ -31,14 +38,24 @@ const AccordionTrigger = React.forwardRef<
     <AccordionPrimitive.Trigger
       ref={ref}
       className={cn(
-        "flex w-full justify-between items-center text-left p-4 text-md lg:text-lg text-foreground bg-transparent hover:bg-transparent rounded-lg font-medium focus:outline-none focus:bg-background transition-colors duration-200 ease-in-out",
-        "[&[data-state=open]>svg]:rotate-180",
+        "flex w-full justify-between items-center gap-2 text-left p-4 text-md lg:text-lg font-medium",
+        "text-foreground bg-transparent rounded-lg",
+        "focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-1",
+        "transition-all duration-200 ease-out",
+        "data-[state=open]:bg-muted/10",
         className
       )}
       {...props}
     >
-      {children}
-      <ChevronDownIcon className="h-6 w-6 text-muted-foreground transition-transform duration-200 ease-in-out" />
+      <span className="flex-1">{children}</span>
+      <ChevronDownIcon
+        className={cn(
+          "h-5 w-5 flex-shrink-0 text-muted-foreground",
+          "transition-transform duration-300 ease-in-out",
+          "group-hover:text-primary",
+          "data-[state=open]:rotate-180 data-[state=open]:text-primary"
+        )}
+      />
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>
 ));
@@ -51,13 +68,14 @@ const AccordionContent = React.forwardRef<
   <AccordionPrimitive.Content
     ref={ref}
     className={cn(
-      "px-5 py-4 bg-transparent text-sm lg:text-base text-muted-foreground transition-all duration-300 ease-in-out",
-      "data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
+      "px-5 py-4 text-sm lg:text-base text-muted-foreground",
+      "border-t border-muted/40",
+      "transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
       className
     )}
     {...props}
   >
-      {children}
+    <div className="pt-1">{children}</div>
   </AccordionPrimitive.Content>
 ));
 AccordionContent.displayName = AccordionPrimitive.Content.displayName;

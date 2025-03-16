@@ -27,7 +27,6 @@ const ProfilePage = () => {
 
   return (
     <>
-      <HeadingDashboard tabs={tabs}>Settings</HeadingDashboard>
     </>
   );
 };

@@ -7,7 +7,6 @@ import HeadingDashboard from "@/components/profile/Header";
 const ProfilePage = () => {
   return (
     <>
-      <HeadingDashboard>Dashboard</HeadingDashboard>
       <div className="m-8">
         <CounterDashboard />
       </div>

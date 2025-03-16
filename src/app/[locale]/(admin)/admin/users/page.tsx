@@ -52,7 +52,6 @@ const UsersPage = () => {
 
   return (
     <>
-      <HeadingDashboard tabs={tabs}>Users</HeadingDashboard>
     </>
   );
 };

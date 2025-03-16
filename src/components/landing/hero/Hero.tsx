@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Link, useTransitionRouter } from "next-view-transitions";
+import { Link } from "next-view-transitions";
 import { ArrowRight } from "lucide-react";
 import BackgroundVideo from "next-video/background-video";
 import CattleRanging from "../../../../videos/cattle-ranging.mp4";
@@ -10,7 +10,6 @@ import Farming from "../../../../videos/farming.mp4";
 import LabScience from "../../../../videos/lab-science.mp4";
 import WebDev from "../../../../videos/web-development.mp4";
 import { About } from "@/types/aboutSchema";
-import { slideInOut } from "@/lib/utils/pageTransitions";
 import { motion } from "framer-motion";
 
 interface HeroProps {
@@ -26,7 +25,6 @@ const backgroundVideos: any[] = [
 ];
 
 const Hero: React.FC<HeroProps> = ({ aboutData }) => {
-  const router = useTransitionRouter();
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [index, setIndex] = useState(0);
 

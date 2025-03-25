@@ -1,5 +1,6 @@
 import { z } from "zod";
 import UserSchema from "./userSchema";
+import { AssociationRole } from "./memberRoleSchema";
 
 const MemberSchema = UserSchema.extend({
   _id: z.string(),
@@ -11,6 +12,7 @@ const MemberSchema = UserSchema.extend({
   specialization: z.string().optional(),
   address: z.string().optional(),
   resume_url: z.string().url().optional(),
+  role: AssociationRole.optional(),
 });
 
 export type Member = z.infer<typeof MemberSchema>;

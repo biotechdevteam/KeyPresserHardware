@@ -1,5 +1,4 @@
 import { z } from "zod";
-import MemberSchema from "./memberSchema";
 
 // Social links schema
 export const SocialLinksSchema = z.object({
@@ -8,12 +7,6 @@ export const SocialLinksSchema = z.object({
   facebook: z.string().url().optional(),
   instagram: z.string().url().optional(),
   github: z.string().url().optional(),
-});
-
-// Leadership team schema
-const LeadershipTeamSchema = z.object({
-  _id: z.string(),
-  member: MemberSchema,
 });
 
 // Achievements schema
@@ -49,7 +42,6 @@ const AboutSchema = z.object({
   contact_email: z.string().email().optional(),
   contact_phone: z.string().optional(),
   address: z.string().optional(),
-  leadership_team: z.array(LeadershipTeamSchema),
   achievements: z.array(AchievementsSchema).optional(),
   partnerships: z.array(PartnershipsSchema).optional(),
   social_links: SocialLinksSchema.optional(),
@@ -57,10 +49,7 @@ const AboutSchema = z.object({
   videos: z.array(FileSchema).optional(),
   images: z.array(FileSchema).optional(),
   documents: z.array(FileSchema).optional(),
-  terms_and_conditions: z.string().optional(),
-  privacy_policy: z.string().optional(),
 });
 
 export type About = z.infer<typeof AboutSchema>;
-export type LeadershipTeam = z.infer<typeof LeadershipTeamSchema>;
 export default AboutSchema;

@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { useRouter } from "next/navigation";
 import ApplicationForm from "@/components/application-form/ApplicationForm";
 import SignUpForm from "@/components/application-form/SignUpForm";
 import { useQuery } from "@tanstack/react-query";
@@ -10,10 +9,12 @@ import Terms from "@/components/application-form/Terms";
 import Loader from "@/components/loader/Loader";
 import { About } from "@/types/aboutSchema";
 import { Button } from "@/components/ui/button";
+import { useTransitionRouter } from "next-view-transitions";
+import { slideInOut } from "@/lib/utils/pageTransitions";
 
 export default function ApplyPage() {
   const { currentStep, setCurrentStep } = useStep();
-  const router = useRouter();
+  const router = useTransitionRouter();
 
   // Fetch about and members data using react-query
   const { data: aboutData, isLoading: aboutLoading } = useQuery({
@@ -27,16 +28,22 @@ export default function ApplyPage() {
   const { data: membersData, isLoading: membersLoading } = useQuery({
     queryKey: ["members"],
     queryFn: fetchMembers,
+    staleTime: Infinity,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
-  const handleCancel = () => router.push("/membership-tiers");
+  const handleCancel = () =>
+    router.push("/membership-tiers", { onTransitionReady: slideInOut });
   const handleTermsAccepted = () => setCurrentStep(1);
   const handleBackToTerms = () => setCurrentStep(0);
   const handleSignUpComplete = () => setCurrentStep(2);
   const handleBackToSignUp = () => setCurrentStep(1);
   const handleApplicationComplete = () => setCurrentStep(3);
   const handleBackToApplication = () => setCurrentStep(2);
-  const handleFinalComplete = () => router.push("/profile");
+  const handleFinalComplete = () =>
+    router.push("/profile", { onTransitionReady: slideInOut });
 
   if (aboutLoading || membersLoading) {
     return <Loader />;

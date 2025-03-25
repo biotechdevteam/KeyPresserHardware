@@ -48,7 +48,7 @@ const sizeVariants: Record<NavigationMenuSize, string> = {
 
 // Theme variants
 const themeVariants: Record<NavigationMenuTheme, string> = {
-  light: "text-gray-800 hover:text-primary data-[active]:text-primary",
+  light: "text-muted-foreground hover:text-primary data-[active]:text-primary",
   dark: "text-gray-200 hover:text-primary data-[active]:text-primary",
   auto: "",
 };

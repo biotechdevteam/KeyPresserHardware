@@ -9,12 +9,14 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import HistoryTimeline from "@/components/about/about-history/AboutHistory";
 import { Link } from "next-view-transitions";
 import { ArrowRight } from "lucide-react";
+import { Member } from "@/types/memberSchema";
 
 interface AboutSectionProps {
   aboutData: About;
+  members: Member[];
 }
 
-const AboutSection: React.FC<AboutSectionProps> = ({ aboutData }) => {
+const AboutSection: React.FC<AboutSectionProps> = ({ aboutData, members }) => {
   return (
     <section className="p-8">
       <div className="container mx-auto px-4 lg:px-8 text-center">
@@ -46,7 +48,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({ aboutData }) => {
 
         {/* Team Highlights */}
         <div>
-          <AboutTeam aboutData={aboutData} />
+          <AboutTeam members={members} />
         </div>
 
         {/* Call to Action */}

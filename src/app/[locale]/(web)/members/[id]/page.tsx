@@ -5,59 +5,86 @@ import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 
-// // Fetch all member IDs for static generation
-// export async function generateStaticParams() {
-//   const members = await fetch(
-//     `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/members`,
-//     {
-//       next: { revalidate: 60 },
-//     }
-//   ).then((res) => res.json());
-//   return members.map((member: Member) => ({
-//     id: member._id, // Map each member ID
-//   }));
-// }
+// Fetch all member IDs for static generation
+export async function generateStaticParams() {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/members`,
+      {
+        next: { revalidate: 60 },
+      }
+    );
 
-// // Dynamic Metadata Generation
-// export async function generateMetadata(
-//   { params }: { params: { id: string } },
-//   parent: ResolvingMetadata
-// ): Promise<Metadata> {
-//   const members = await fetch(
-//     `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/members`,
-//     {
-//       next: { revalidate: 60 },
-//     }
-//   ).then((res) => res.json());
-//   const member = members.find((m: Member) => m._id === params.id);
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
 
-//   if (!member) {
-//     return {
-//       title: "Member Not Found",
-//       description: "The requested member could not be found.",
-//     };
-//   }
+    const members: Member[] = await res.json();
 
-//   // Access and extend parent metadata
-//   const previousImages = (await parent).openGraph?.images || [];
-//   const memberImage = member.profile_photo_url || "";
+    return members.map((member: Member) => ({
+      id: member._id, // Map each member ID
+    }));
+  } catch (error) {
+    console.error("Error fetching members:", error);
+    return []; // Return an empty array in case of error
+  }
+}
 
-//   return {
-//     title: member.first_name + "'s Profile",
-//     description: member.bio,
-//     openGraph: {
-//       title: member.first_name,
-//       description: member.bio,
-//       images: [memberImage, ...previousImages].filter(Boolean), // Filter out undefined values
-//     },
-//     twitter: {
-//       card: "summary_large_image",
-//       title: member.first_name,
-//       description: member.bio,
-//       images: [memberImage],
-//     },
-//   };
-// }
+// Dynamic Metadata Generation
+export async function generateMetadata(
+  { params }: { params: { id: string } },
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/members`,
+      {
+        next: { revalidate: 60 },
+      }
+    );
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+
+    const members: Member[] = await res.json();
+
+    const member = members.find((m: Member) => m._id === params.id);
+
+    if (!member) {
+      return {
+        title: "Member Not Found",
+        description: "The requested member could not be found.",
+      };
+    }
+
+    // Access and extend parent metadata
+    const previousImages = (await parent).openGraph?.images || [];
+    const memberImage = member.profile_photo_url || "";
+
+    return {
+      title: member.first_name + "'s Profile",
+      description: member.bio,
+      openGraph: {
+        title: member.first_name,
+        description: member.bio,
+        images: [memberImage, ...previousImages].filter(Boolean), // Filter out undefined values
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: member.first_name,
+        description: member.bio,
+        images: [memberImage].filter(Boolean),
+      },
+    };
+  } catch (error) {
+    console.error("Error generating metadata:", error);
+    return {
+      title: "Error",
+      description: "An error occurred while generating metadata.",
+    };
+  }
+}
 
 export default async function MemberPage({
   params,

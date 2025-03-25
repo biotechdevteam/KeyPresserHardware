@@ -95,7 +95,7 @@ const navMenu: Pages[][] = [
     },
     {
       title: "faqs",
-      link: "/about/faqs",
+      link: "/faqs",
       description:
         "Find answers to frequently asked questions about the association.",
       icon: <FileText className="h-4 w-4" />,
@@ -213,7 +213,7 @@ const navMenu: Pages[][] = [
   [{ title: "contact us", link: "/contact" }],
 
   // Donate
-  [{ title: "donate", link: "/donate" }],
+  [{ title: "support", link: "/donate" }],
 
   // Profile
   [
@@ -236,6 +236,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   const router = useTransitionRouter();
   const pathname = usePathname();
   const themeClass = useNavigationItemTheme({ theme: "auto" });
+    const isLandingPage = pathname === "/en/home" || pathname === "/fr/home";
 
   const handleClick = (e: React.MouseEvent, url: string) => {
     e.preventDefault();
@@ -329,7 +330,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                       </SheetClose>
                     )}
                   </div>
-                  <Separator className="my-2" />
+                  <Separator className={cn("my-2", isLandingPage && "bg-gray-200")} />
                 </SheetHeader>
 
                 <SheetBody className="flex-1 overflow-y-auto py-4 space-y-2">
@@ -508,10 +509,10 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
 
                 <SheetFooter
                   sticky
-                  className="border-t bg-card/90 py-3 px-6 mt-auto"
+                  className={cn("border-t bg-card/90 py-3 px-6 mt-auto", isLandingPage && "border-gray-200")}
                 >
                   <div className="w-full flex justify-center gap-2 text-xs">
-                    <span className="text-muted-foreground">
+                    <span className={cn("text-muted-foreground", isLandingPage && "text-gray-200")}>
                       &copy; {new Date().getFullYear()} {aboutData?.name}
                     </span>
                   </div>
@@ -529,7 +530,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                     <NavigationMenuItem>
                       <NavigationMenuTrigger>About Us</NavigationMenuTrigger>
                       <NavigationMenuContent>
-                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                        <ul className="grid w-[700px] gap-3 p-4 md:w-[800px] md:grid-cols-3 lg:w-[900px]">
                           {aboutPages.map((page) => (
                             <ListItem
                               key={page.title}
@@ -548,7 +549,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                     <NavigationMenuItem>
                       <NavigationMenuTrigger>Membership</NavigationMenuTrigger>
                       <NavigationMenuContent>
-                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                        <ul className="grid w-[700px] gap-3 p-4 md:w-[800px] md:grid-cols-3 lg:w-[900px]">
                           {membershipPages.map((page) => (
                             <ListItem
                               key={page.title}
@@ -567,7 +568,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                     <NavigationMenuItem>
                       <NavigationMenuTrigger>Events</NavigationMenuTrigger>
                       <NavigationMenuContent>
-                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                        <ul className="grid w-[700px] gap-3 p-4 md:w-[800px] md:grid-cols-3 lg:w-[900px]">
                           {eventsPages.map((page) => (
                             <ListItem
                               key={page.title}
@@ -586,7 +587,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                     <NavigationMenuItem>
                       <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
                       <NavigationMenuContent>
-                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                        <ul className="grid w-[700px] gap-3 p-4 md:w-[800px] md:grid-cols-3 lg:w-[900px]">
                           {resourcesPages.map((page) => (
                             <ListItem
                               key={page.title}
@@ -605,7 +606,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                     <NavigationMenuItem>
                       <NavigationMenuTrigger>Projects</NavigationMenuTrigger>
                       <NavigationMenuContent>
-                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                        <ul className="grid w-[700px] gap-3 p-4 md:w-[800px] md:grid-cols-3 lg:w-[900px]">
                           {projectsPages.map((page) => (
                             <ListItem
                               key={page.title}

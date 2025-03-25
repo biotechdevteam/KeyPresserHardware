@@ -12,13 +12,39 @@ import {
 } from "@/components/ui/select";
 import useAuth from "@/lib/useAuth";
 import useImgbb from "@/lib/useImgBB";
-import useGoogleDrive from "@/lib/useGoogleDrive";
 import { Member } from "@/types/memberSchema";
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
 import Image from "next/image";
 import { Application, ApplicationSchema } from "@/types/ApplicationSchema";
 import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  Upload,
+  FileText,
+  CheckCircle,
+  AlertCircle,
+  X,
+  User,
+  UserCheck,
+} from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface ApplicationFormProps {
   onComplete: () => void;
@@ -83,19 +109,28 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
     resume_url: "",
     referred_by_member_id: "",
   });
+
   const [showOtherField, setShowOtherField] = useState(false);
+  const [showUnsavedDialog, setShowUnsavedDialog] = useState(false);
+  const [formTouched, setFormTouched] = useState(false);
+  const [formSection, setFormSection] = useState<
+    "profile" | "specialization" | "motivation"
+  >("profile");
 
   useEffect(() => {
     if (imageUrl) {
       setFormData((prev) => ({ ...prev, profile_photo_url: imageUrl }));
+      setFormTouched(true);
     }
     if (fileUrl) {
       setFormData((prev) => ({ ...prev, resume_url: fileUrl }));
+      setFormTouched(true);
     }
   }, [imageUrl, fileUrl]);
 
   const handleMotivationChange = (value: string) => {
     setFormData({ ...formData, motivation_letter: value });
+    setFormTouched(true);
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -113,6 +148,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
   ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    setFormTouched(true);
   };
 
   const handleSpecializationSelect = (specialization: string) => {
@@ -121,10 +157,12 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
       ...formData,
       specialization_area: specialization === "Other" ? "" : specialization,
     });
+    setFormTouched(true);
   };
 
   const handleDropdownChange = (value: string) => {
     setFormData({ ...formData, referred_by_member_id: value });
+    setFormTouched(true);
   };
 
   const validateForm = () => {
@@ -187,6 +225,14 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
   };
 
   const handleBack = () => {
+    if (formTouched) {
+      setShowUnsavedDialog(true);
+    } else {
+      goBack();
+    }
+  };
+
+  const goBack = () => {
     if (onBack) {
       onBack();
     } else {
@@ -201,190 +247,496 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
     }
   };
 
+  const getCompletionStatus = () => {
+    const sections = {
+      profile: !!formData.profile_photo_url && !!formData.resume_url,
+      specialization: !!formData.specialization_area,
+      motivation: formData.motivation_letter.length > 50,
+    };
+
+    return sections;
+  };
+
+  const completionStatus = getCompletionStatus();
+
+  // Modules configuration for ReactQuill
+  const quillModules = {
+    toolbar: [
+      [{ header: [1, 2, false] }],
+      ["bold", "italic", "underline"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["clean"],
+    ],
+  };
+  console.log("formSection:", formSection);
   return (
-    <form
-      onSubmit={onSubmit}
-      className="grid gap-12 grid-cols-1 md:grid-cols-2 w-full p-4"
-    >
-      <div className="col-span-2 text-center">
-        <h2 className="text-2xl font-semibold">Membership Application</h2>
-        <p className="text-muted-foreground">
-          Complete this form to apply for membership with us.
-        </p>
-      </div>
+    <div>
+      <AnimatePresence mode="wait">
+        <form onSubmit={onSubmit} className="space-y-8">
+          {/* Form Header */}
+          <div className="text-center space-y-2">
+            <h2 className="text-2xl font-bold text-primary">
+              Membership Application
+            </h2>
+            <p className="text-muted-foreground">
+              Complete this form to apply for membership with us.
+            </p>
+          </div>
 
-      {error && (
-        <div className="col-span-2 text-destructive text-sm">{error}</div>
-      )}
-      {imgError && (
-        <div className="col-span-2 text-destructive text-sm">{imgError}</div>
-      )}
-      {fileError && (
-        <div className="col-span-2 text-destructive text-sm">{fileError}</div>
-      )}
-
-      <div className="col-span-2 flex flex-col">
-        {/* Profile Photo Upload */}
-        <Label>Your Photo</Label>
-        <div className="relative mt-2">
-          <Input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="sr-only"
-            id="profile-photo"
-          />
-          <Label htmlFor="profile-photo" type="file">
-            <span>Click to upload an image</span>
-          </Label>
-          {imgLoading && (
-            <p className="text-xs text-border">Uploading image...</p>
-          )}
-          {imageUrl && (
-            <div className="mt-4 relative">
-              <Image
-                src={imageUrl}
-                alt="Profile Preview"
-                width={50}
-                height={50}
-                className="rounded-sm border border-muted shadow-md"
-              />
-              <p className="text-xs">Image Preview</p>
-            </div>
-          )}
-          {!formErrors.profile_photo_url && (
-            <p className="text-xs">This will be displayed on your profile.</p>
-          )}
-          {formErrors.profile_photo_url && (
-            <p className="text-destructive">{formErrors.profile_photo_url}</p>
-          )}
-        </div>
-
-        {/* Resume Upload */}
-        <Label className="mt-6">Resume</Label>
-        <div className="relative mt-2">
-          <Input
-            type="file"
-            accept="application/pdf"
-            onChange={handleResumeChange}
-            className="sr-only"
-            id="resume-upload"
-          />
-          <Label htmlFor="resume-upload" type="file">
-            <span>Click to upload your resume (PDF)</span>
-          </Label>
-          {fileLoading && (
-            <p className="text-xs text-muted">Uploading resume...</p>
-          )}
-          {fileUrl && (
-            <div className="mt-4 text-sm text-muted-foreground">
-              {/* Preview Link */}
-              <Link
-                href={fileUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block mt-2 underline"
-              >
-                View Uploaded Resume
-              </Link>
-            </div>
-          )}
-
-          {formErrors.resume_url && (
-            <p className="text-destructive">{formErrors.resume_url}</p>
-          )}
-        </div>
-      </div>
-
-      <div className="col-span-2">
-        <Label className="font-semibold">Your Area of Specialization:</Label>
-        <div className="flex flex-wrap gap-4 mt-3">
-          {specializationOptions.map((option) => (
+          {/* Form Navigation */}
+          <div className="flex justify-between border-b border-border pb-4">
             <Button
-              key={option}
               type="button"
+              variant="ghost"
               size="sm"
-              variant={
-                formData.specialization_area === option ? "default" : "outline"
-              }
-              onClick={() => handleSpecializationSelect(option)}
-              className={
-                formData.specialization_area === option
-                  ? "bg-primary border-transparent"
-                  : "bg-card  border-border"
-              }
+              className={`flex items-center gap-2 ${
+                formSection === "profile"
+                  ? "text-primary border-b-2 border-primary"
+                  : ""
+              }`}
+              onClick={() => setFormSection("profile")}
             >
-              {option}
+              <User size={16} />
+              <span>Profile</span>
+              {completionStatus.profile && (
+                <CheckCircle size={16} className="text-green-500" />
+              )}
             </Button>
-          ))}
-        </div>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className={`flex items-center gap-2 ${
+                formSection === "specialization"
+                  ? "text-primary border-b-2 border-primary"
+                  : ""
+              }`}
+              onClick={() => setFormSection("specialization")}
+            >
+              <FileText size={16} />
+              <span>Specialization</span>
+              {completionStatus.specialization && (
+                <CheckCircle size={16} className="text-green-500" />
+              )}
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className={`flex items-center gap-2 ${
+                formSection === "motivation"
+                  ? "text-primary border-b-2 border-primary"
+                  : ""
+              }`}
+              onClick={() => setFormSection("motivation")}
+            >
+              <Upload size={16} />
+              <span>Motivation</span>
+              {completionStatus.motivation && (
+                <CheckCircle size={16} className="text-green-500" />
+              )}
+            </Button>
+          </div>
 
-        {/* Additional Input for "Other" Specialization */}
-        {showOtherField && (
-          <Input
-            placeholder="Please specify your specialization"
-            name="specialization_area"
-            value={formData.specialization_area}
-            onChange={handleSpecializationChange}
-            className="mt-4 px-4 py-2 border border-border rounded-lg"
-          />
-        )}
+          {/* Error Notifications */}
+          {(error || imgError || fileError) && (
+            <div className="bg-destructive/10 border border-destructive rounded-lg p-4 text-destructive flex items-start gap-3">
+              <AlertCircle size={18} />
+              <div className="space-y-1">
+                <p className="font-medium">There was a problem:</p>
+                <ul className="list-disc list-inside text-sm ml-2">
+                  {error && <li>{error}</li>}
+                  {imgError && <li>{imgError}</li>}
+                  {fileError && <li>{fileError}</li>}
+                </ul>
+              </div>
+            </div>
+          )}
 
-        {/* Error Message for Specialization */}
-        {formErrors.specialization_area && (
-          <p className="text-destructive text-sm">
-            {formErrors.specialization_area}
-          </p>
-        )}
-      </div>
+          {/* Profile Section */}
+          {formSection === "profile" && (
+            <motion.div
+              key="profile"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="space-y-8"
+            >
+              {/* Profile Photo Upload */}
+              <div className="space-y-3">
+                <Label className="text-base font-medium">
+                  Your Photo / Resume
+                </Label>
+                <div className="flex flex-col md:flex-row gap-6 items-start">
+                  <div className="w-full md:w-1/2">
+                    <div className="relative border-2 border-dashed border-muted hover:border-muted-foreground rounded-lg p-6 transition-colors group flex flex-col items-center justify-center">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                        id="profile-photo"
+                      />
+                      <div className="flex flex-col items-center text-center">
+                        {!imageUrl ? (
+                          <>
+                            <div className="h-16 w-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                              <Upload className="h-8 w-8 text-primary" />
+                            </div>
+                            <span className="font-medium text-foreground group-hover:text-primary transition-colors">
+                              Click to upload
+                            </span>
+                            <p className="text-xs text-muted-foreground max-w-xs">
+                              Upload a professional profile photo (JPG, PNG)
+                            </p>
+                          </>
+                        ) : (
+                          <>
+                            <div className="relative">
+                              <Image
+                                src={imageUrl}
+                                alt="Profile Preview"
+                                width={100}
+                                height={100}
+                                className="rounded-full object-cover border-4 border-background shadow-lg"
+                              />
+                              <Button
+                                type="button"
+                                variant="destructive"
+                                size="icon"
+                                className="absolute -top-2 -right-2 h-6 w-6 rounded-full"
+                                onClick={() =>
+                                  setFormData({
+                                    ...formData,
+                                    profile_photo_url: "",
+                                  })
+                                }
+                              >
+                                <X size={12} />
+                              </Button>
+                            </div>
+                            <p className="text-xs text-muted-foreground mt-2">
+                              Click again to replace image
+                            </p>
+                          </>
+                        )}
+                      </div>
+                      {imgLoading && (
+                        <div className="absolute inset-0 bg-background/80 flex items-center justify-center rounded-lg">
+                          <div className="h-8 w-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                        </div>
+                      )}
+                    </div>
+                    {formErrors.profile_photo_url && (
+                      <p className="text-destructive text-sm mt-2">
+                        {formErrors.profile_photo_url}
+                      </p>
+                    )}
+                  </div>
 
-      <div className="col-span-2 mb-8">
-        <Label className="font-semibold">Your Motivation Letter</Label>
-        <ReactQuill
-          value={formData.motivation_letter}
-          onChange={handleMotivationChange}
-          style={{
-            height: "250px",
-            border: "1px solid border",
-            padding: "8px",
-            color: "var(--foreground)",
-          }}
-          placeholder="Write your motivation letter here..."
-        />
-        {formErrors.motivation_letter && (
-          <p className="text-destructive">{formErrors.motivation_letter}</p>
-        )}
-      </div>
+                  {/* Resume Upload */}
+                  <div className="w-full md:w-1/2">
+                    <div className="relative border-2 border-dashed border-muted hover:border-muted-foreground rounded-lg p-6 transition-colors group flex flex-col items-center justify-center">
+                      <input
+                        type="file"
+                        accept="application/pdf"
+                        onChange={handleResumeChange}
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                        id="resume-upload"
+                      />
+                      <div className="flex flex-col items-center text-center">
+                        {!fileUrl ? (
+                          <>
+                            <div className="h-16 w-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                              <FileText className="h-8 w-8 text-primary" />
+                            </div>
+                            <span className="font-medium text-foreground group-hover:text-primary transition-colors">
+                              Upload your resume
+                            </span>
+                            <p className="text-xs text-muted-foreground max-w-xs">
+                              PDF format preferred (max 5MB)
+                            </p>
+                          </>
+                        ) : (
+                          <>
+                            <div className="flex items-center gap-2">
+                              <FileText className="h-8 w-8 text-primary" />
+                              <div className="flex flex-col items-start">
+                                <span className="font-medium text-sm">
+                                  Resume uploaded
+                                </span>
+                                <Link
+                                  href={fileUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-xs text-primary hover:underline"
+                                >
+                                  View file
+                                </Link>
+                              </div>
+                              <Button
+                                type="button"
+                                variant="destructive"
+                                size="icon"
+                                className="h-6 w-6 rounded-full ml-2"
+                                onClick={() =>
+                                  setFormData({ ...formData, resume_url: "" })
+                                }
+                              >
+                                <X size={12} />
+                              </Button>
+                            </div>
+                            <p className="text-xs text-muted-foreground mt-2">
+                              Click again to replace file
+                            </p>
+                          </>
+                        )}
+                      </div>
+                      {fileLoading && (
+                        <div className="absolute inset-0 bg-background/80 flex items-center justify-center rounded-lg">
+                          <div className="h-8 w-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                        </div>
+                      )}
+                    </div>
+                    {formErrors.resume_url && (
+                      <p className="text-destructive text-sm mt-2">
+                        {formErrors.resume_url}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
 
-      <div className="col-span-2">
-        <Label>Referred by a Member?</Label>
-        <Select
-          value={formData.referred_by_member_id}
-          onValueChange={handleDropdownChange}
-        >
-          <SelectTrigger className="w-full px-4 py-2 rounded-lg shadow-lg mt-2">
-            <SelectValue placeholder="Select member..." />
-          </SelectTrigger>
-          <SelectContent>
-            {members.map((member) => (
-              <SelectItem key={member._id} value={member._id}>
-                {member.user_id.first_name} {member.user_id.last_name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+              {/* Referred By Section */}
+              <div className="space-y-3">
+                <Label className="text-base font-medium">
+                  Referred by a Member?
+                </Label>
+                <Card className="border border-muted overflow-hidden">
+                  <CardContent className="p-4">
+                    <Select
+                      value={formData.referred_by_member_id}
+                      onValueChange={handleDropdownChange}
+                    >
+                      <SelectTrigger className="w-full bg-muted/20 border border-input hover:bg-muted/30 transition-colors">
+                        <SelectValue placeholder="Select a member (optional)" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {members.map((member) => (
+                          <SelectItem key={member._id} value={member._id}>
+                            <div className="flex items-center gap-2">
+                              <UserCheck size={16} className="text-primary" />
+                              <span>
+                                {member.user_id.first_name}{" "}
+                                {member.user_id.last_name}
+                              </span>
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Being referred by an existing member can increase your
+                      chances of acceptance
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+            </motion.div>
+          )}
 
-      <div className="col-span-2 flex justify-between mt-4">
-        <Button type="button" variant="outline" onClick={handleBack}>
-          Back
-        </Button>
+          {/* Specialization Section */}
+          {formSection === "specialization" && (
+            <motion.div
+              key="specialization" // Add a unique key
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="space-y-6"
+            >
+              <div>
+                <Label className="text-lg font-medium text-foreground">
+                  Your Area of Specialization
+                </Label>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Select the field that best represents your expertise
+                </p>
+              </div>
 
-        <Button type="submit" disabled={loading || imgLoading || fileLoading}>
-          {loading ? "Submitting Application..." : "Next"}
-        </Button>
-      </div>
-    </form>
+              <div className="flex flex-row flex-wrap gap-3">
+                {specializationOptions.map((option) => (
+                  <TooltipProvider key={option}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          type="button"
+                          variant={
+                            formData.specialization_area === option
+                              ? "default"
+                              : "outline"
+                          }
+                          onClick={() => handleSpecializationSelect(option)}
+                          className={`h-auto py-3 w-auto justify-start ${
+                            formData.specialization_area === option
+                              ? "bg-primary text-primary-foreground border-primary"
+                              : "bg-card hover:bg-muted/50"
+                          }`}
+                        >
+                          {option}
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Select this specialization</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                ))}
+              </div>
+
+              {/* Additional Input for "Other" Specialization */}
+              {showOtherField && (
+                <motion.div
+                  key="otherField" // Add a unique key
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="overflow-hidden"
+                >
+                  <Label>Please specify your specialization</Label>
+                  <Input
+                    placeholder="E.g. Quantum Computing, Synthetic Biology..."
+                    name="specialization_area"
+                    value={formData.specialization_area}
+                    onChange={handleSpecializationChange}
+                    className="mt-2"
+                  />
+                </motion.div>
+              )}
+
+              {/* Error Message for Specialization */}
+              {formErrors.specialization_area && (
+                <p className="text-destructive text-sm bg-destructive/10 p-2 rounded-md">
+                  {formErrors.specialization_area}
+                </p>
+              )}
+            </motion.div>
+          )}
+
+          {/* Motivation Section */}
+          {formSection === "motivation" && (
+            <motion.div
+              key="specialization" // Add a unique key
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="space-y-6"
+            >
+              <div>
+                <Label className="text-lg font-medium text-foreground">
+                  Your Motivation Letter
+                </Label>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Tell us why you want to join and what you can contribute
+                  (minimum 100 words)
+                </p>
+              </div>
+
+              <div className="bg-card border border-border rounded-lg overflow-hidden">
+                <div className="border-b border-border px-4 py-2 bg-muted/30 flex items-center justify-between">
+                  <span className="text-sm font-medium">Motivation Letter</span>
+                  <span className="text-xs text-muted-foreground">
+                    {formData.motivation_letter.length > 0
+                      ? formData.motivation_letter.split(" ").length
+                      : 0}{" "}
+                    words
+                  </span>
+                </div>
+                <div className="p-1">
+                  <ReactQuill
+                    value={formData.motivation_letter}
+                    onChange={handleMotivationChange}
+                    modules={quillModules}
+                    className="h-64 text-foreground"
+                    placeholder="Write your motivation letter here. Explain your interest in our team, your relevant experience, and how you can contribute to our mission..."
+                    theme="snow"
+                  />
+                </div>
+              </div>
+
+              {formErrors.motivation_letter && (
+                <p className="text-destructive text-sm bg-destructive/10 p-2 rounded-md">
+                  {formErrors.motivation_letter}
+                </p>
+              )}
+            </motion.div>
+          )}
+
+          {/* Navigation Buttons */}
+          <div className="flex justify-between pt-6 border-t border-border">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleBack}
+              className="flex items-center gap-2"
+            >
+              Back
+            </Button>
+
+            <div className="flex gap-3">
+              {formSection !== "motivation" ? (
+                <Button
+                  type="button"
+                  onClick={() =>
+                    setFormSection(
+                      formSection === "profile"
+                        ? "specialization"
+                        : "motivation"
+                    )
+                  }
+                  className="flex items-center gap-2"
+                >
+                  Continue
+                </Button>
+              ) : (
+                <Button
+                  type="submit"
+                  disabled={loading || imgLoading || fileLoading}
+                  className="flex items-center gap-2 bg-primary hover:bg-primary/90"
+                >
+                  {loading ? (
+                    <>
+                      <div className="h-4 w-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin mr-2"></div>
+                      Submitting...
+                    </>
+                  ) : (
+                    <>Submit Application</>
+                  )}
+                </Button>
+              )}
+            </div>
+          </div>
+        </form>
+      </AnimatePresence>
+
+      {/* Unsaved Changes Dialog */}
+      <AlertDialog open={showUnsavedDialog} onOpenChange={setShowUnsavedDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Unsaved Changes</AlertDialogTitle>
+            <AlertDialogDescription>
+              You have unsaved changes in your application form. Are you sure
+              you want to go back? All your changes will be lost.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={goBack}>
+              Discard Changes
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </div>
   );
 };
 

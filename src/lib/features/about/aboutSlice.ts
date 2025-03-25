@@ -20,7 +20,6 @@ const initialState: AboutState = {
     contact_email: "",
     contact_phone: "",
     address: "",
-    leadership_team: [],
     achievements: [],
     partnerships: [],
     social_links: {
@@ -33,8 +32,6 @@ const initialState: AboutState = {
     videos: [],
     images: [],
     documents: [],
-    terms_and_conditions: "",
-    privacy_policy: "",
   },
   loading: false,
   error: null,

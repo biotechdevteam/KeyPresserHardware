@@ -1,9 +1,10 @@
 import RefundPolicy from "@/components/Policies/RefundPolicy";
 import Error from "@/app/[locale]/error";
+import { About } from "@/types/aboutSchema";
 
 export default async function RefundPolicyPage() {
   try {
-    const aboutData = await fetch(
+    const aboutData: About = await fetch(
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/about`,
       {
         cache: "force-cache",

@@ -115,7 +115,7 @@
   }
 
   button:hover {
-    @apply bg-muted-primary text-primary-foreground;
+    @apply shadow-lg;
   }
 
   /* Refined card styles */

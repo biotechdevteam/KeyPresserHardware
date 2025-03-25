@@ -71,7 +71,7 @@ const MemberDetails: React.FC<MemberDetailsProps> = ({ member }) => {
         {/* Resume */}
         {member.resume_url && (
           <div className="mb-4">
-            <Button asChild>
+            <Button>
               <a
                 href={member.resume_url}
                 target="_blank"

@@ -5,6 +5,7 @@ import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils/utils";
 import { Link } from "next-view-transitions";
+import { usePathname } from "next/navigation";
 
 const Collapsible = CollapsiblePrimitive.Root;
 const CollapsibleTrigger = CollapsiblePrimitive.CollapsibleTrigger;
@@ -53,6 +54,9 @@ const NavCollapsible = React.forwardRef<
       lg: "py-4 px-6 text-lg",
     };
 
+    const pathname = usePathname();
+    const isLandingPage = pathname === "/en/home" || pathname === "/fr/home";
+
     return (
       <CollapsiblePrimitive.Root
         ref={ref}
@@ -67,12 +71,14 @@ const NavCollapsible = React.forwardRef<
             "transition-colors duration-200 ease-in-out",
             "focus:outline-none focus:ring-2 focus:ring-primary/30 focus:ring-offset-1",
             "font-medium rounded-md",
+            isLandingPage && "text-gray-200",
             variants[variant],
             sizes[size],
-            isOpen && variant === "default" && "bg-primary/10",
-            isOpen && variant === "outlined" && "border-primary/50",
-            isOpen && variant === "subtle" && "bg-muted",
-            isOpen && "rounded-b-none"
+            isOpen && variant === "default" && "bg-primary/10 text-primary",
+            isOpen && variant === "outlined" && "border-primary/50 text-primary",
+            isOpen && variant === "subtle" && "bg-muted text-primary",
+            isOpen && "rounded-b-none",
+            isOpen && isLandingPage && "text-primary"
           )}
         >
           <div className="flex items-center">

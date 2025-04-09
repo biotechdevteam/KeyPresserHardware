@@ -1,5 +1,5 @@
 "use client";
-import MembershipSection from "@/components/landing/tiers/MemberShipTier";
+import MembershipSection from "@/components/membership/tiers/MemberShipTier";
 import React from "react";
 
 const MembershipTiersPage = () => {

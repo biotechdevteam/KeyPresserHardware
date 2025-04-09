@@ -9,12 +9,18 @@ import {
   contactFormSchema,
   ContactFormValues,
 } from "@/types/contactFormSchema";
-import { SendIcon } from "lucide-react";
+import { SendIcon, CheckCircle, AlertCircle } from "lucide-react";
+import { motion } from "framer-motion";
+import { Label } from "@/components/ui/label";
 
 const ContactForm: React.FC = () => {
   const t = useTranslations("contactform");
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<
+    "idle" | "success" | "error"
+  >("idle");
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -22,14 +28,12 @@ const ContactForm: React.FC = () => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setIsVisible(true);
-          } else {
-            setIsVisible(false);
           }
         });
       },
       {
-        root: null, // Observe relative to the viewport
-        threshold: 0.1, // Trigger when 10% of the section is visible
+        root: null,
+        threshold: 0.1,
       }
     );
 
@@ -39,7 +43,6 @@ const ContactForm: React.FC = () => {
       observer.observe(section);
     }
 
-    // Cleanup observer on component unmount
     return () => {
       if (section) {
         observer.unobserve(section);
@@ -50,109 +53,231 @@ const ContactForm: React.FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    reset,
+    formState: { errors, isValid, isDirty },
   } = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
+    mode: "onChange",
   });
 
-  const onSubmit = (data: ContactFormValues) => {
-    console.log("Form Submitted", data);
+  const onSubmit = async (data: ContactFormValues) => {
+    try {
+      setIsSubmitting(true);
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      console.log("Form Submitted", data);
+      setSubmitStatus("success");
+      reset();
+      // Reset status after 3 seconds
+      setTimeout(() => setSubmitStatus("idle"), 3000);
+    } catch (error) {
+      console.error("Form submission error:", error);
+      setSubmitStatus("error");
+      setTimeout(() => setSubmitStatus("idle"), 3000);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Form field animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { duration: 0.5 },
+    },
   };
 
   return (
     <div
       ref={sectionRef}
-      className="container mx-auto p-8 border-muted bg-card rounded-lg max-w-3xl transition-all duration-700"
+      className={`container mx-auto p-8 border border-muted bg-card/80 backdrop-blur-sm rounded-xl shadow-lg max-w-3xl transition-all duration-700 ${
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+      }`}
     >
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate={isVisible ? "visible" : "hidden"}
       >
-        {/* First Name Field */}
-        <div className="transition-transform duration-300 hover:scale-105">
-          <Input
-            id="firstName"
-            {...register("firstName")}
-            label={t("firstNameLabel")}
-            placeholder={t("firstNamePlaceholder")}
-          />
-          {errors.firstName && (
-            <p className="text-destructive text-xs border-destructive focus-visible:ring-destructive">
-              {t("firstNameError")}
-            </p>
-          )}
-        </div>
+        <h3 className="text-xl font-semibold text-center mb-6">
+          We'd Love to Hear from You
+        </h3>
 
-        {/* Last Name Field */}
-        <div className="transition-transform duration-300 hover:scale-105">
-          <Input
-            id="lastName"
-            {...register("lastName")}
-            label={t("lastNameLabel")}
-            placeholder={t("lastNamePlaceholder")}
-          />
-          {errors.lastName && (
-            <p className="text-destructive text-xs border-destructive focus-visible:ring-destructive">
-              {t("lastNameError")}
-            </p>
-          )}
-        </div>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+        >
+          {/* First Name Field */}
+          <motion.div variants={itemVariants} className="group">
+            <Label
+              htmlFor="firstName"
+              className="block mb-2 text-sm font-medium text-foreground/80 group-hover:text-primary transition-colors"
+            >
+              {t("firstNameLabel")}
+            </Label>
+            <Input
+              id="firstName"
+              {...register("firstName")}
+              placeholder={t("firstNamePlaceholder")}
+              className={`w-full rounded-md border ${
+                errors.firstName ? "border-destructive" : ""
+              }`}
+            />
+            {errors.firstName && (
+              <p className="text-destructive text-xs mt-1 flex items-center">
+                <AlertCircle className="w-3 h-3 mr-1" />
+                {t("firstNameError")}
+              </p>
+            )}
+          </motion.div>
 
-        {/* Email Field */}
-        <div className="transition-transform duration-300 hover:scale-105">
-          <Input
-            id="email"
-            type="email"
-            {...register("email")}
-            label={t("emailLabel")}
-            placeholder={t("emailPlaceholder")}
-          />
-          {errors.email && (
-            <p className="text-destructive text-xs border-destructive focus-visible:ring-destructive">
-              {t("emailError")}
-            </p>
-          )}
-        </div>
+          {/* Last Name Field */}
+          <motion.div variants={itemVariants} className="group">
+            <Label
+              htmlFor="lastName"
+              className="block mb-2 text-sm font-medium text-foreground/80 group-hover:text-primary transition-colors"
+            >
+              {t("lastNameLabel")}
+            </Label>
+            <Input
+              id="lastName"
+              {...register("lastName")}
+              placeholder={t("lastNamePlaceholder")}
+              className={`w-full rounded-md border ${
+                errors.lastName ? "border-destructive" : ""
+              }`}
+            />
+            {errors.lastName && (
+              <p className="text-destructive text-xs mt-1 flex items-center">
+                <AlertCircle className="w-3 h-3 mr-1" />
+                {t("lastNameError")}
+              </p>
+            )}
+          </motion.div>
 
-        {/* Phone Field */}
-        <div className="transition-transform duration-300 hover:scale-105 ">
-          <Input
-            id="phone"
-            {...register("phone")}
-            label={t("phoneLabel")}
-            placeholder={t("phonePlaceholder")}
-          />
-          {errors.phone && (
-            <p className="text-destructive text-xs border-destructive focus-visible:ring-destructive">
-              {t("phoneError")}
-            </p>
-          )}
-        </div>
+          {/* Email Field */}
+          <motion.div variants={itemVariants} className="group">
+            <Label
+              htmlFor="email"
+              className="block mb-2 text-sm font-medium text-foreground/80 group-hover:text-primary transition-colors"
+            >
+              {t("emailLabel")}
+            </Label>
+            <Input
+              id="email"
+              type="email"
+              {...register("email")}
+              placeholder={t("emailPlaceholder")}
+              className={`w-full rounded-md border ${
+                errors.email ? "border-destructive" : ""
+              }`}
+            />
+            {errors.email && (
+              <p className="text-destructive text-xs mt-1 flex items-center">
+                <AlertCircle className="w-3 h-3 mr-1" />
+                {t("emailError")}
+              </p>
+            )}
+          </motion.div>
 
-        {/* Message Field */}
-        <div className="sm:col-span-2 transition-transform duration-300 hover:scale-105">
-          <label htmlFor="message" className="block mb-2 text-sm font-medium">
-            {t("messageLabel")}
-          </label>
-          <Textarea
-            id="message"
-            {...register("message")}
-            placeholder={t("messagePlaceholder")}
-          />
-          {errors.message && (
-            <p className="text-destructive text-xs border-destructive focus-visible:ring-destructive">
-              {t("messageError")}
-            </p>
-          )}
-        </div>
+          {/* Phone Field */}
+          <motion.div variants={itemVariants} className="group">
+            <Label
+              htmlFor="phone"
+              className="block mb-2 text-sm font-medium text-foreground/80 group-hover:text-primary transition-colors"
+            >
+              {t("phoneLabel")}
+            </Label>
+            <Input
+              id="phone"
+              {...register("phone")}
+              placeholder={t("phonePlaceholder")}
+              className={`w-full rounded-md border ${
+                errors.phone ? "border-destructive" : ""
+              }`}
+            />
+            {errors.phone && (
+              <p className="text-destructive text-xs mt-1 flex items-center">
+                <AlertCircle className="w-3 h-3 mr-1" />
+                {t("phoneError")}
+              </p>
+            )}
+          </motion.div>
 
-        {/* Submit Button */}
-        <div className="sm:col-span-2 flex justify-center">
-          <Button type="submit">
-            {t("sendMessageButton")} <SendIcon className="w-4 h-4 ml-2" />
-          </Button>
-        </div>
-      </form>
+          {/* Message Field */}
+          <motion.div variants={itemVariants} className="sm:col-span-2 group">
+            <Label
+              htmlFor="message"
+              className="block mb-2 text-sm font-medium text-foreground/80 group-hover:text-primary transition-colors"
+            >
+              {t("messageLabel")}
+            </Label>
+            <Textarea
+              id="message"
+              {...register("message")}
+              placeholder={t("messagePlaceholder")}
+              className={`w-full rounded-md border min-h-32 ${
+                errors.message ? "border-destructive" : ""
+              }`}
+            />
+            {errors.message && (
+              <p className="text-destructive text-xs mt-1 flex items-center">
+                <AlertCircle className="w-3 h-3 mr-1" />
+                {t("messageError")}
+              </p>
+            )}
+          </motion.div>
+
+          {/* Submit Button */}
+          <motion.div
+            variants={itemVariants}
+            className="sm:col-span-2 flex justify-center mt-4"
+          >
+            <Button
+              type="submit"
+              disabled={isSubmitting || !isValid || !isDirty}
+              className={`px-6 py-2 rounded-full min-w-40 flex items-center justify-center gap-2 ${
+                isSubmitting
+                  ? "bg-primary/80"
+                  : "bg-primary hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
+              }`}
+            >
+              {isSubmitting ? (
+                <>
+                  <div className="h-4 w-4 rounded-full border-2 border-white border-r-transparent animate-spin"></div>
+                  <span>Sending...</span>
+                </>
+              ) : submitStatus === "success" ? (
+                <>
+                  <CheckCircle className="w-4 h-4" />
+                  <span>Message Sent!</span>
+                </>
+              ) : submitStatus === "error" ? (
+                <>
+                  <AlertCircle className="w-4 h-4" />
+                  <span>Failed to Send</span>
+                </>
+              ) : (
+                <>
+                  {t("sendMessageButton")} <SendIcon className="w-4 h-4 ml-2" />
+                </>
+              )}
+            </Button>
+          </motion.div>
+        </form>
+      </motion.div>
     </div>
   );
 };

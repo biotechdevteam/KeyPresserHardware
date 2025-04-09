@@ -1,5 +1,5 @@
-import PastProjects from "@/components/projects/past-projects/PastProjects";
 import Error from "@/app/[locale]/error";
+import FilteredProjects from "@/components/projects/filtered-projects/FilteredProjects";
 
 export default async function PortfolioPage() {
   try {
@@ -9,7 +9,13 @@ export default async function PortfolioPage() {
         next: { revalidate: 60 },
       }
     ).then((res) => res.json());
-    return <PastProjects projectsData={projectsData} />;
+    return (
+      <FilteredProjects
+        projectsData={projectsData}
+        status="past"
+        title="Completed Projects"
+      />
+    );
   } catch (error: any) {
     return (
       <Error

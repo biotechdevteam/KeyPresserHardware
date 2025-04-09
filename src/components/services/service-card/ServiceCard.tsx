@@ -7,6 +7,8 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Service } from "@/types/ServiceSchema";
+import { Badge } from "@/components/ui/badge";
+import { motion } from "framer-motion";
 
 import {
   HeartPulse,
@@ -15,18 +17,29 @@ import {
   Briefcase,
   FlaskConical,
   Stethoscope,
-  Globe
-} from "lucide-react"; // Import your icons
+  Globe,
+  Calendar,
+  Users,
+  Clock,
+  CheckCircle2,
+} from "lucide-react";
 
-// Define category icons mapping
-const categoryIcons: { [key: string]: React.ReactNode } = {
-  health: <HeartPulse className="w-6 h-6 text-primary mr-2" />,
-  education: <BookOpen className="w-6 h-6 text-primary mr-2" />,
-  technology: <Cpu className="w-6 h-6 text-primary mr-2" />,
-  business: <Briefcase className="w-6 h-6 text-primary mr-2" />,
-  microbiology: <FlaskConical className="w-6 h-6 text-primary mr-2" />,
-  telemedicine: <Stethoscope className="w-6 h-6 text-primary mr-2" />,
-  other: <Globe className="w-6 h-6 text-primary mr-2" />,
+// Define category icons mapping with consistent styling function
+const getCategoryIcon = (category: string) => {
+  const iconMap: { [key: string]: React.ReactNode } = {
+    health: <HeartPulse className="w-5 h-5" />,
+    education: <BookOpen className="w-5 h-5" />,
+    technology: <Cpu className="w-5 h-5" />,
+    business: <Briefcase className="w-5 h-5" />,
+    microbiology: <FlaskConical className="w-5 h-5" />,
+    telemedicine: <Stethoscope className="w-5 h-5" />,
+    it_and_design: <Cpu className="w-5 h-5" />,
+    laboratory_and_scientific: <FlaskConical className="w-5 h-5" />,
+    training_and_workshops: <BookOpen className="w-5 h-5" />,
+    other: <Globe className="w-5 h-5" />,
+  };
+
+  return iconMap[category] || <Globe className="w-5 h-5" />;
 };
 
 interface ServiceCardProps {
@@ -36,39 +49,42 @@ interface ServiceCardProps {
 
 const ServiceCard: React.FC<ServiceCardProps> = ({ service, onClick }) => {
   return (
-    <div className="transform transition-transform hover:scale-105 h-full w-full">
-      <Card className="h-full w-full shadow-lg rounded-lg overflow-hidden hover:shadow-xl bg-card text-card-foreground">
-        <CardHeader className="p-4 flex items-center">
-          {/* Add the category icon */}
-          {categoryIcons[service.service_category] || (
-            <Globe className="w-6 h-6 text-primary mr-2" />
-          )}
-          <h3 className="text-xl font-semibold text-primary text-center">
+    <Card className="h-full overflow-hidden group hover:shadow-xl transition-all duration-300">
+      <CardHeader className="p-5 pb-3 flex flex-row items-center justify-between gap-2">
+        <div className="flex items-center gap-3">
+          <div
+            className={`p-2 rounded-full bg-primary text-primary-foreground`}
+          >
+            {getCategoryIcon(service.service_category)}
+          </div>
+          <h3 className="text-lg font-semibold line-clamp-2">
             {service.title}
           </h3>
-        </CardHeader>
-        <CardContent className="px-4 py-2 flex-grow">
-          <p className="text-muted-foreground">{service.summary}</p>
-          {service.pricing_plans.length > 0 && (
-            <p className="mt-4 text-muted-foreground">
-              Starting at:{" "}
-              <span className="font-bold text-accent">
-                ${service.pricing_plans[0].price}
-              </span>
-            </p>
-          )}
-        </CardContent>
-        <CardFooter className="flex justify-end p-4">
-          <Button
-            variant="default"
-            onClick={onClick}
-            className="transition-transform hover:scale-105"
+        </div>
+      </CardHeader>
+
+      <CardContent className="px-5 py-2 flex-grow space-y-4">
+        {/* Summary */}
+        <p className="text-muted-foreground line-clamp-3 text-sm">
+          {service.summary}
+        </p>
+      </CardContent>
+
+      <CardFooter className="p-5 pt-3 flex justify-between items-center">
+        {service.pricing_plans.length > 0 && (
+          <Badge
+            variant="outline"
+            className="flex items-center gap-1 text-xs font-normal"
           >
-            View Details
-          </Button>
-        </CardFooter>
-      </Card>
-    </div>
+            <CheckCircle2 className="w-3 h-3" />
+            From ${service.pricing_plans[0].price}
+          </Badge>
+        )}
+        <Button size="sm" onClick={onClick}>
+          View Details
+        </Button>
+      </CardFooter>
+    </Card>
   );
 };
 

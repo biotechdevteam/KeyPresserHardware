@@ -1,5 +1,5 @@
-import UpcomingProjects from "@/components/projects/upcoming-projects/UpcomingProjects";
 import Error from "@/app/[locale]/error";
+import FilteredProjects from "@/components/projects/filtered-projects/FilteredProjects";
 
 export default async function UpcomingProjectsPage() {
   try {
@@ -9,7 +9,12 @@ export default async function UpcomingProjectsPage() {
         next: { revalidate: 60 },
       }
     ).then((res) => res.json());
-    return <UpcomingProjects projectsData={projectsData} />;
+    return (
+      <FilteredProjects
+        projectsData={projectsData}
+        status="upcoming"
+      />
+    );
   } catch (error: any) {
     return (
       <Error

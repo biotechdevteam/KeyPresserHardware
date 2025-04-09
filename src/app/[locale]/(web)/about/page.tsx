@@ -3,16 +3,18 @@ import Error from "@/app/[locale]/error";
 
 export default async function AboutPage() {
   try {
-    const aboutData = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/about`,
-      {
+    const [aboutData, members] = await Promise.all([
+      fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/about`, {
         next: { revalidate: 60 },
-      }
-    ).then((res) => res.json());
+      }).then((res) => res.json()),
+      fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/members`, {
+        next: { revalidate: 60 },
+      }).then((res) => res.json()),
+    ]);
 
     return (
       <div className="p-6">
-        <AboutContainer aboutData={aboutData} />
+        <AboutContainer aboutData={aboutData} members={members} />
       </div>
     );
   } catch (error: any) {

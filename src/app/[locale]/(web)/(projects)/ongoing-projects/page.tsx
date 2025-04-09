@@ -1,5 +1,5 @@
-import CurrentProjects from "@/components/projects/current-projects/CurrentProjects";
 import Error from "@/app/[locale]/error";
+import FilteredProjects from "@/components/projects/filtered-projects/FilteredProjects";
 
 export default async function OngoingProjectsPage() {
   try {
@@ -9,7 +9,7 @@ export default async function OngoingProjectsPage() {
         next: { revalidate: 60 },
       }
     ).then((res) => res.json());
-    return <CurrentProjects projectsData={projectsData} />;
+    return <FilteredProjects projectsData={projectsData} status="current" />;
   } catch (error: any) {
     return (
       <Error

@@ -28,7 +28,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import useAuth from "@/lib/useAuth";
-import { cn } from "@/lib/utils/utils";
+import { cn } from "@/lib/utils";
 import {
   AlertDialog,
   AlertDialogAction,

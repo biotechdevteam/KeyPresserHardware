@@ -2,195 +2,107 @@
 import React from "react";
 import { Separator } from "@/components/ui/separator";
 import FollowUs from "../speed-dial/FollowUs";
-import { Link, useTransitionRouter } from "next-view-transitions";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
 import Logo from "../../../public/images/logo.png";
-// import { slideInOut } from "../../lib/utils/pageTransitions";
 import { About } from "@/types/aboutSchema";
+import SubscribeDialog from "../speed-dial/SubscribeDialogue";
 
 const Footer: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   const logo = aboutData?.logo_url || Logo.src;
-  // const router = useTransitionRouter();
-
-  // const handleClick = (e: React.MouseEvent, url: string) => {
-  //   e.preventDefault(); // Prevent default link behavior
-  //   router.push(url, { onTransitionReady: slideInOut });
-  // };
 
   return (
-    <div className="bg-secondary py-12">
-      <div className="container grid grid-cols-1 lg:grid-cols-3 gap-4 px-4 mx-auto">
-        {/* Logo Section */}
-        <div className="sm:col-span-2 lg:col-span-1 flex flex-col items-center">
-          <Link href="/" aria-label="Homepage">
-            <Image
-              src={logo}
-              alt={aboutData?.name}
-              width={100}
-              height={100}
-              priority
-              className="mx-auto lg:mx-0 rounded-lg"
-            />
-          </Link>
-          <p className="mt-4 text-lg font-semibold text-primary-foreground">
-            {aboutData?.slogan}
-          </p>
-        </div>
+    <footer className="bg-secondary py-8">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Logo and Slogan */}
+          <div className="flex flex-col items-center lg:items-start">
+            <Link href="/" aria-label="Homepage">
+              <Image
+                src={logo}
+                alt={aboutData?.name || "Company Logo"}
+                width={80}
+                height={80}
+                priority
+                className="rounded-lg"
+              />
+            </Link>
+            <p className="mt-3 text-primary-foreground font-medium">
+              {aboutData?.slogan}
+            </p>
+          </div>
 
-        <div className="container grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-8 mx-auto sm:col-span-2 lg:col-span-1">
-          {/* Quick Links Section */}
-          <div className="text-center lg:text-left">
-            <h3 className="text-lg font-semibold mb-4 text-primary-foreground underline">
+          {/* Quick Links */}
+          <div>
+            <h3 className="text-lg font-semibold mb-3 text-primary-foreground border-b pb-1">
               Quick Links
             </h3>
             <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/about/story"
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/ongoing-projects"
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  Our Projects
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/upcoming-events"
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  Our Events
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/news-&-insights"
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  News & Insights
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services"
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  Our Services
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/faqs"
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  FAQs
-                </Link>
-              </li>
+              {[
+                { href: "/projects", text: "Our Projects" },
+                { href: "/events", text: "Events" },
+                { href: "/news-&-insights", text: "News" },
+                { href: "/services", text: "Services" },
+                { href: "/faqs", text: "FAQs" },
+              ].map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-primary-foreground hover:underline"
+                  >
+                    {link.text}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Explore Section */}
-          <div className="text-center lg:text-left">
-            <h3 className="text-lg font-semibold mb-4 text-primary-foreground underline">
+          {/* Explore */}
+          <div>
+            <h3 className="text-lg font-semibold mb-3 text-primary-foreground border-b pb-1">
               Explore
             </h3>
             <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/about/partners-&-sponsors"
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  Our Partners & Sponsors
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/about/mission-&-vision"
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  Our Mission & Vision
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/about/achievements"
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  Our Achievements
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/exhibitions-&-sponsorship"
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  Our Exhibitions & Sponsorship
-                </Link>
-              </li>
+              {[
+                {
+                  href: "/about/partners-&-sponsors",
+                  text: "Partners & Sponsors",
+                },
+                { href: "/about/mission-&-vision", text: "Mission & Vision" },
+                { href: "/about/achievements", text: "Achievements" },
+                { href: "/exhibitions-&-sponsorship", text: "Exhibitions" },
+              ].map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-primary-foreground hover:underline"
+                  >
+                    {link.text}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Legal Section */}
-          <div className="text-center lg:text-left">
-            <h3 className="text-lg font-semibold mb-4 text-primary-foreground underline">
-              Legal Pages
+          {/* Follow Us */}
+          <div>
+            <h3 className="text-lg font-semibold mb-3 text-primary-foreground border-b pb-1">
+              Connect With Us
             </h3>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/cookie-settings"
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  Cookie Settings
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/privacy-policy"
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/refund-policy"
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  Refund Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/disclaimer"
-                  className="text-base hover:underline text-primary-foreground"
-                >
-                  Disclaimer
-                </Link>
-              </li>
-            </ul>
+            <FollowUs aboutData={aboutData} />
           </div>
         </div>
 
-        {/* Social Media Links Section */}
-        <FollowUs aboutData={aboutData} />
-      </div>
+        <Separator className="my-6 bg-primary-foreground" />
 
-      {/* Footer Bottom */}
-      <Separator className="m-6 w-auto bg-primary-foreground" />
-      <div className="container mx-auto text-center">
-        <p className="text-sm text-primary-foreground italic">
-          &copy; {new Date().getFullYear()} {aboutData?.name}. All rights
-          reserved.
-        </p>
+        <div className="text-center">
+          <p className="text-xs text-primary-foreground">
+            &copy; {new Date().getFullYear()}{" "}
+            {aboutData?.name || "Company Name"}. All rights reserved.
+          </p>
+        </div>
       </div>
-    </div>
+    </footer>
   );
 };
 

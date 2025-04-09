@@ -518,7 +518,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
                       value={formData.referred_by_member_id}
                       onValueChange={handleDropdownChange}
                     >
-                      <SelectTrigger className="w-full bg-muted/20 border border-input hover:bg-muted/30 transition-colors">
+                      <SelectTrigger>
                         <SelectValue placeholder="Select a member (optional)" />
                       </SelectTrigger>
                       <SelectContent>
@@ -576,11 +576,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
                               : "outline"
                           }
                           onClick={() => handleSpecializationSelect(option)}
-                          className={`h-auto py-3 w-auto justify-start ${
-                            formData.specialization_area === option
-                              ? "bg-primary text-primary-foreground border-primary"
-                              : "bg-card hover:bg-muted/50"
-                          }`}
+                          className={`h-auto py-3 w-auto justify-start`}
                         >
                           {option}
                         </Button>

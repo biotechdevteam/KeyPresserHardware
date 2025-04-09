@@ -62,7 +62,7 @@ const SocialMediaShareTemplate: React.FC<SocialMediaTemplateProps> = ({
       isMonthly ? "became a monthly supporter" : "donated"
     } ${
       amount ? `$${amount}` : ""
-    } to support groundbreaking research in biotechnology! Join me in making a difference! #SupportScience #Biotechnology #BioTecUniverse #BTverse`;
+    } to support groundbreaking research in BioTec Universe! Join me in making a difference! #SupportScience #Biotechnology #BioTecUniverse #BTverse`;
 
     switch (platform) {
       case "twitter":
@@ -72,15 +72,15 @@ const SocialMediaShareTemplate: React.FC<SocialMediaTemplateProps> = ({
           isMonthly ? "became a monthly supporter" : "donated"
         } ${
           amount ? `$${amount}` : ""
-        } to help drive innovation in biotechnology research.\n\nEvery contribution helps fund important projects and educational programs that will shape our future.\n\nJoin me in supporting this important cause! #SupportScience #BioTecUniverse #BTverse\n\n${websiteUrl}/donate`;
+        } to help drive innovation in BioTec Universe.\n\nEvery contribution helps fund important projects and educational programs that will shape our future.\n\nJoin me in supporting this important cause! #SupportScience #BioTecUniverse #BTverse\n\n${websiteUrl}/donate`;
       case "linkedin":
         return `I'm pleased to share that I've ${
           isMonthly ? "become a monthly supporter" : "made a donation"
-        } to an organization advancing biotechnology research and education.\n\nInvesting in science and innovation is something I'm passionate about, and I encourage my network to consider supporting this cause as well.\n\n#SupportScience #Innovation #Biotechnology #BioTecUniverse #BTverse\n\n${websiteUrl}/donate`;
+        } to support groundbreaking research in BioTec Universe.\n\nInvesting in science and innovation is something I'm passionate about, and I encourage my network to consider supporting this cause as well.\n\n#SupportScience #Innovation #Biotechnology #BioTecUniverse #BTverse\n\n${websiteUrl}/donate`;
       case "instagram":
         return `I just ${
           isMonthly ? "became a monthly supporter" : "donated"
-        } to help advance biotechnology research and education! 🧬🔬\n\nEvery contribution helps fund important projects that will shape our future.\n\n#SupportScience #Biotechnology #Innovation #Research #Science #MakingADifference #BioTecUniverse #BTverse`;
+        } to help advance research in BioTec Universe! 🧬🔬\n\nEvery contribution helps fund important projects that will shape our future.\n\n#SupportScience #Biotechnology #Innovation #Research #Science #MakingADifference #BioTecUniverse #BTverse`;
       default:
         return baseMessage;
     }
@@ -110,7 +110,7 @@ const SocialMediaShareTemplate: React.FC<SocialMediaTemplateProps> = ({
     if (navigator.share) {
       navigator
         .share({
-          title: "I just donated to support biotechnology research!",
+          title: "I just donated to support BioTec Universe!",
           text: customMessage,
           url: `${websiteUrl}/donate`,
         })

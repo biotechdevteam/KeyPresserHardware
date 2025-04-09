@@ -26,7 +26,7 @@ import {
 
 // Override default react-big-calendar styles
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { cn } from "@/lib/utils/utils";
+import { cn } from "@/lib/utils";
 
 const localizer = momentLocalizer(moment);
 

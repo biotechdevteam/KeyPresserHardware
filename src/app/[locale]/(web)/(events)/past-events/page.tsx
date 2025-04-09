@@ -13,14 +13,17 @@ export default async function PastEventsPage() {
     ]);
 
     return (
-      <section className="grid min-h-screen place-items-center p-8">
-        <div className="w-full max-w-4xl mx-auto">
-          <header className="mb-8 text-center">
-            <h1 className="text-4xl font-bold">Past Events</h1>
-            <p className="text-lg mt-4">
-              Take a look at our previous events and activities.
+      <section className="bg-gradient-to-b from-background to-muted/20 py-16">
+        <div className="container max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <header className="mb-12 text-center max-w-2xl mx-auto">
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
+              Past Events
+            </h1>
+            <p className="mt-4 text-lg text-muted-foreground">
+              Explore our previous events and see what you might have missed.
             </p>
           </header>
+
           <EventsContainer
             eventsData={eventsData}
             feedbacksData={feedbacks}
@@ -32,7 +35,7 @@ export default async function PastEventsPage() {
   } catch (error: any) {
     return (
       <Error
-        error={error.message || "Failed to load data. Please try again."}
+        error={error.message || "Failed to load past events. Please try again."}
       />
     );
   }

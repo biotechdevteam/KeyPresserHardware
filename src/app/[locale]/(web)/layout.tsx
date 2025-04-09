@@ -4,6 +4,7 @@ import NavBar from "@/components/nav-bar/NavBar";
 import ScrollToTopButton from "@/components/ScrollToTop/ScrollToTopButton";
 import CookieConsent from "@/components/Cookies/CookieConsent";
 import Error from "@/app/[locale]/error";
+import SubscribeDialog from "@/components/speed-dial/SubscribeDialogue";
 
 export const metadata: Metadata = {
   title: "BioTec Universe",
@@ -48,9 +49,9 @@ export const metadata: Metadata = {
       "fr-FR": "/fr-FR",
     },
   },
-  // openGraph: {
-  //   images: '/og-image.png',
-  // },
+  openGraph: {
+    images: "../../../../public/images/logo.png",
+  },
 };
 
 export default async function RootLayout({
@@ -75,18 +76,22 @@ export default async function RootLayout({
         <main className="flex-grow mt-24">
           {children}
           <CookieConsent />
+          <SubscribeDialog />
           <ScrollToTopButton />
         </main>
 
         <footer>
-          <Footer aboutData={aboutData}/>
+          <Footer aboutData={aboutData} />
         </footer>
       </div>
     );
   } catch (error: any) {
     return (
       <Error
-        error={error.message || "Failed to load data at root layout. Please try again."}
+        error={
+          error.message ||
+          "Failed to load data at root layout. Please try again."
+        }
       />
     );
   }

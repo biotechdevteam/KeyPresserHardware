@@ -13,14 +13,17 @@ export default async function UpcomingEventsPage() {
     ]);
 
     return (
-      <section className="grid min-h-screen place-items-center p-8">
-        <div className="w-full max-w-4xl mx-auto">
-          <header className="mb-8 text-center">
-            <h1 className="text-4xl font-bold">Upcoming Events</h1>
-            <p className="text-lg mt-4">
-              Stay updated on our future events and activities.
+      <section className="bg-gradient-to-b from-background to-muted/20 py-16">
+        <div className="container max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <header className="mb-12 text-center max-w-2xl mx-auto">
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
+              Upcoming Events
+            </h1>
+            <p className="mt-4 text-lg text-muted-foreground">
+              Join us for these exciting future events and expand your network.
             </p>
           </header>
+
           <EventsContainer
             eventsData={eventsData}
             feedbacksData={feedbacks}
@@ -32,7 +35,9 @@ export default async function UpcomingEventsPage() {
   } catch (error: any) {
     return (
       <Error
-        error={error.message || "Failed to load data. Please try again."}
+        error={
+          error.message || "Failed to load upcoming events. Please try again."
+        }
       />
     );
   }

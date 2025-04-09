@@ -87,7 +87,7 @@ const FAQContainer: React.FC<FAQContainerProps> = ({
 
   const renderSingleCategory = (category: string, faqs: FAQ[]) => (
     <motion.div key={category} variants={itemVariants}>
-      <Card className="border border-border shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
+      <Card className="bg-background border border-border shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
         <CardHeader className="bg-background border-b border-border pb-4">
           <div className="flex justify-center gap-2">
             {categoryIcons[category] || (
@@ -102,14 +102,15 @@ const FAQContainer: React.FC<FAQContainerProps> = ({
           <FAQList faqs={faqs} />
         </CardContent>
         {(general || membership) && (
-          <CardFooter className="flex justify-center py-6 bg-card">
+          <CardFooter className="flex justify-center py-6">
             <Button
+              variant="link"
               onClick={() =>
-                router.push("/contact", { onTransitionReady: slideInOut })
+                router.push("/faqs", { onTransitionReady: slideInOut })
               }
               className="font-medium shadow-md hover:shadow-lg flex items-center gap-2"
             >
-              Contact Us For More Questions
+              See Answers To Frequently Asked Questions
               <ChevronRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
             </Button>
           </CardFooter>

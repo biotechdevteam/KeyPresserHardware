@@ -6,7 +6,7 @@ import {
   Handshake,
 } from "lucide-react";
 import { useStep } from "@/contexts/ApplicationStepContext";
-import { cn } from "@/lib/utils/utils";
+import { cn } from "@/lib/utils";
 
 const steps = [
   { label: "Agreement", icon: Handshake },

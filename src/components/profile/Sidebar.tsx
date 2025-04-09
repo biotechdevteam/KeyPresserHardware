@@ -33,7 +33,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils/utils";
+import { cn } from "@/lib/utils";
 import {
   AlertDialog,
   AlertDialogAction,

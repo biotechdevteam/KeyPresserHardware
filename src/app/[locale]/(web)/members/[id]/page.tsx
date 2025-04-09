@@ -1,41 +1,43 @@
 import MemberContainer from "@/components/member/member-container/MemberContainer";
 import { Member } from "@/types/memberSchema";
 import MemberHeader from "@/components/member/member-header/MemberHeader";
-import { Metadata, ResolvingMetadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 
 // Fetch all member IDs for static generation
 export async function generateStaticParams() {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/members`,
-      {
-        next: { revalidate: 60 },
-      }
-    );
-
-    if (!res.ok) {
-      throw new Error(`HTTP error! status: ${res.status}`);
+  const members = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/members`,
+    {
+      cache: "force-cache", // Use static caching for SSG
     }
+  )
+    .then((res) => res.json())
+    .catch((error) => {
+      console.error("Error fetching members for static params:", error);
+      return []; // Return empty array on error
+    });
 
-    const members: Member[] = await res.json();
-
-    return members.map((member: Member) => ({
-      id: member._id, // Map each member ID
-    }));
-  } catch (error) {
-    console.error("Error fetching members:", error);
-    return []; // Return an empty array in case of error
-  }
+  return members.map((member: Member) => ({
+    id: member._id,
+  }));
 }
 
-// Dynamic Metadata Generation
+type Props = {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
 export async function generateMetadata(
-  { params }: { params: { id: string } },
+  { params }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   try {
+    // Resolve the params Promise to get the id
+    const { id } = await params;
+
+    // Fetch members data
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/members`,
       {
@@ -48,8 +50,7 @@ export async function generateMetadata(
     }
 
     const members: Member[] = await res.json();
-
-    const member = members.find((m: Member) => m._id === params.id);
+    const member = members.find((m: Member) => m._id === id);
 
     if (!member) {
       return {
@@ -58,17 +59,17 @@ export async function generateMetadata(
       };
     }
 
-    // Access and extend parent metadata
+    // Access parent metadata
     const previousImages = (await parent).openGraph?.images || [];
     const memberImage = member.profile_photo_url || "";
 
     return {
-      title: member.first_name + "'s Profile",
+      title: `${member.first_name}'s Profile`,
       description: member.bio,
       openGraph: {
         title: member.first_name,
         description: member.bio,
-        images: [memberImage, ...previousImages].filter(Boolean), // Filter out undefined values
+        images: [memberImage, ...previousImages].filter(Boolean),
       },
       twitter: {
         card: "summary_large_image",
@@ -86,13 +87,9 @@ export async function generateMetadata(
   }
 }
 
-export default async function MemberPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  // Set locale explicitly for static rendering
+export default async function MemberPage({ params }: Props) {
   setRequestLocale("en"); // Adjust based on your locale strategy
+  const { id } = await params;
 
   const members = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/members`,
@@ -100,20 +97,18 @@ export default async function MemberPage({
       next: { revalidate: 60 },
     }
   ).then((res) => res.json());
-  const member = members.find((m: Member) => m._id === params.id); // Find member by ID
+
+  const member = members.find((m: Member) => m._id === id);
 
   if (!member) {
-    return notFound(); // Return 404 if no member found
+    return notFound();
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start py-12 px-4 bg-background">
-      {/* Profile Header */}
+    <div className="flex flex-col items-center justify-start w-full min-h-screen bg-gradient-to-b from-background to-background/95 py-8 px-4 sm:py-12">
       <MemberHeader member={member} />
-      <div className="w-full max-w-4xl grid grid-cols-1 gap-6">
-        <div>
-          <MemberContainer member={member} />
-        </div>
+      <div className="w-full max-w-4xl">
+        <MemberContainer member={member} />
       </div>
     </div>
   );

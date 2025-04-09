@@ -27,6 +27,7 @@ import {
   FileText,
   FolderOpen,
   Briefcase,
+  Newspaper,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -49,7 +50,7 @@ import { slideInOut } from "../../lib/utils/pageTransitions";
 import useAuth from "@/lib/useAuth";
 import { About } from "@/types/aboutSchema";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils/utils";
+import { cn } from "@/lib/utils";
 
 // array of pages
 type Pages = {
@@ -64,43 +65,7 @@ const navMenu: Pages[][] = [
   [{ title: "home", link: "/" }],
 
   // About
-  [
-    {
-      title: "story",
-      link: "/about/story",
-      description:
-        "Learn about the history and founding of the association, its origins, and the journey so far.",
-      icon: <Info className="h-4 w-4" />,
-    },
-    {
-      title: "mission & vision",
-      link: "/about/mission-&-vision",
-      description:
-        "Understand the mission and vision that guide the association's long-term goals and core values.",
-      icon: <Info className="h-4 w-4" />,
-    },
-    {
-      title: "executive board",
-      link: "/about/executive-board",
-      description:
-        "Meet the leadership team and executives who drive the association's strategic direction.",
-      icon: <Users className="h-4 w-4" />,
-    },
-    {
-      title: "achievements",
-      link: "/about/achievements",
-      description:
-        "Discover the milestones and successes the association has achieved over time.",
-      icon: <FileText className="h-4 w-4" />,
-    },
-    {
-      title: "faqs",
-      link: "/faqs",
-      description:
-        "Find answers to frequently asked questions about the association.",
-      icon: <FileText className="h-4 w-4" />,
-    },
-  ],
+  [{ title: "about us", link: "/about" }],
 
   // Membership
   [
@@ -180,6 +145,19 @@ const navMenu: Pages[][] = [
       link: "/news-&-insights",
       description:
         "Stay informed with the latest news, industry insights, and updates from the association.",
+      icon: <Newspaper className="h-4 w-4" />,
+    },
+    // {
+    //   title: "brochure",
+    //   link: "/brochure",
+    //   description:
+    //     "Download the official association brochure to get a detailed overview of its services and activities.",
+    // },
+    {
+      title: "whitepapers",
+      link: "/whitepapers",
+      description:
+        "Read in-depth whitepapers on key topics and research areas in the industry.",
       icon: <FileText className="h-4 w-4" />,
     },
   ],
@@ -236,7 +214,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   const router = useTransitionRouter();
   const pathname = usePathname();
   const themeClass = useNavigationItemTheme({ theme: "auto" });
-    const isLandingPage = pathname === "/en/home" || pathname === "/fr/home";
+  const isLandingPage = pathname === "/en/home" || pathname === "/fr/home";
 
   const handleClick = (e: React.MouseEvent, url: string) => {
     e.preventDefault();
@@ -254,7 +232,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   };
 
   let homePage = navMenu[0][0];
-  let aboutPages = navMenu[1];
+  let aboutPage = navMenu[1][0];
   let membershipPages = navMenu[2];
   let eventsPages = navMenu[3];
   let resourcesPages = navMenu[4];
@@ -292,10 +270,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
               >
                 <Menu className="h-6 w-6 text-foreground hover:text-primary focus:text-primary transition-all duration-300" />
               </SheetTrigger>
-              <SheetContent
-                size="md"
-                className="flex flex-col"
-              >
+              <SheetContent size="md" className="flex flex-col">
                 <SheetHeader className="mb-0">
                   <div className="flex justify-between items-center mb-2">
                     <SheetTitle className="text-2xl tracking-tight font-bold text-primary">
@@ -330,32 +305,32 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                       </SheetClose>
                     )}
                   </div>
-                  <Separator className={cn("my-2", isLandingPage && "bg-gray-200")} />
+                  <Separator
+                    className={cn("my-2", isLandingPage && "bg-gray-200")}
+                  />
                 </SheetHeader>
 
                 <SheetBody className="flex-1 overflow-y-auto py-4 space-y-2">
                   <NavCollapsible
-                    triggerText="About Us"
-                    isOpen={openIndex === 0}
-                    onOpenChange={() => handleOpenChange(0)}
+                    triggerText="Services"
+                    isOpen={openIndex === 5}
+                    onOpenChange={() => handleOpenChange(5)}
                     variant="subtle"
                     size="md"
-                    icon={<Info className="h-4 w-4 text-primary" />}
+                    icon={<Briefcase className="h-4 w-4 text-primary" />}
                   >
                     <ul className="space-y-1 py-1 pl-2">
-                      {aboutPages.map((page) => (
-                        <SheetClose asChild key={page.title}>
-                          <NavCollapsibleListItem
-                            href={page.link}
-                            active={pathname === page.link}
-                            className="group justify-start"
-                          >
-                            <span className="group-hover:translate-x-1 transition-transform duration-200">
-                              {page.title}
-                            </span>
-                          </NavCollapsibleListItem>
-                        </SheetClose>
-                      ))}
+                      <SheetClose asChild key={aboutPage.title}>
+                        <NavCollapsibleListItem
+                          href={aboutPage.link}
+                          active={pathname === aboutPage.link}
+                          className="group justify-start"
+                        >
+                          <span className="group-hover:translate-x-1 transition-transform duration-200">
+                            {aboutPage.title}
+                          </span>
+                        </NavCollapsibleListItem>
+                      </SheetClose>
                     </ul>
                   </NavCollapsible>
 
@@ -509,10 +484,18 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
 
                 <SheetFooter
                   sticky
-                  className={cn("border-t bg-card/90 py-3 px-6 mt-auto", isLandingPage && "border-gray-200")}
+                  className={cn(
+                    "border-t bg-card/90 py-3 px-6 mt-auto",
+                    isLandingPage && "border-gray-200"
+                  )}
                 >
                   <div className="w-full flex justify-center gap-2 text-xs">
-                    <span className={cn("text-muted-foreground", isLandingPage && "text-gray-200")}>
+                    <span
+                      className={cn(
+                        "text-muted-foreground",
+                        isLandingPage && "text-gray-200"
+                      )}
+                    >
                       &copy; {new Date().getFullYear()} {aboutData?.name}
                     </span>
                   </div>
@@ -527,22 +510,11 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                 <NavigationMenu theme="auto" size="md">
                   <NavigationMenuList>
                     {/* About Us */}
+
                     <NavigationMenuItem>
-                      <NavigationMenuTrigger>About Us</NavigationMenuTrigger>
-                      <NavigationMenuContent>
-                        <ul className="grid w-[700px] gap-3 p-4 md:w-[800px] md:grid-cols-3 lg:w-[900px]">
-                          {aboutPages.map((page) => (
-                            <ListItem
-                              key={page.title}
-                              title={page.title}
-                              href={page.link}
-                              description={page.description}
-                              icon={page.icon}
-                              className="hover:bg-primary/5 border border-transparent hover:border-primary/10 rounded-lg transition-all duration-300"
-                            />
-                          ))}
-                        </ul>
-                      </NavigationMenuContent>
+                      <NavigationMenuLink href={aboutPage.link}>
+                        {aboutPage.title}
+                      </NavigationMenuLink>
                     </NavigationMenuItem>
 
                     {/* Membership */}
@@ -621,7 +593,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                       </NavigationMenuContent>
                     </NavigationMenuItem>
 
-                    {/* Services (single link) */}
+                    {/* Services */}
                     <NavigationMenuItem>
                       <NavigationMenuLink href={servicesPage.link}>
                         {servicesPage.title}

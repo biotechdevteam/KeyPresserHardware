@@ -2,6 +2,7 @@
 import React from "react";
 import { Service } from "@/types/ServiceSchema";
 import ServiceCard from "../service-card/ServiceCard";
+import { motion } from "framer-motion";
 
 interface FilteredServicesProps {
   services: Service[];
@@ -9,49 +10,38 @@ interface FilteredServicesProps {
   onServiceClick: (serviceId: string) => void;
 }
 
-// Category-specific titles and descriptions
+// Category-specific titles and descriptions with more engaging content
 const categoryDetails: {
-  [key: string]: { title: string; description: string };
+  [key: string]: {
+    title: string;
+    description: string;
+  };
 } = {
-  health: {
-    title: "Health Services",
-    description:
-      "Explore our range of health-related services designed to meet your needs.",
-  },
-  education: {
-    title: "Educational Services",
-    description:
-      "Discover our expert educational services, workshops, and training sessions.",
-  },
-  technology: {
-    title: "Technology Services",
-    description:
-      "Cutting-edge technological services to keep your business ahead of the curve.",
-  },
-  business: {
-    title: "Business Services",
-    description:
-      "Our business consulting and development services are tailored to help you grow.",
-  },
-  microbiology: {
-    title: "Microbiology Services",
-    description:
-      "Specialized microbiology services for research and practical applications.",
-  },
-  telemedicine: {
-    title: "Telemedicine Services",
-    description:
-      "Get access to our advanced telemedicine solutions for remote health consultations.",
-  },
-  other: {
-    title: "Other Services",
-    description:
-      "Explore our other miscellaneous services designed to cater to various needs.",
-  },
   all: {
     title: "All Services",
     description:
-      "Browse all the services we offer across various domains and specialties.",
+      "Browse our complete portfolio of professional services tailored to meet your needs.",
+  },
+  it_and_design: {
+    title: "Technology Services",
+    description:
+      "Cutting-edge solutions to drive your digital transformation and keep you ahead of the curve.",
+  },
+  laboratory_and_scientific: {
+    title: "Scientific Services",
+    description:
+      "Specialized scientific and laboratory solutions backed by expert research and precision.",
+  },
+  training_and_workshops: {
+    title: "Workshop & Training",
+    description:
+      "Expert-led training sessions and workshops designed to empower your team with new skills.",
+  },
+  // Add fallback for other categories
+  default: {
+    title: "Our Services",
+    description:
+      "Explore our professional services designed to help you succeed.",
   },
 };
 
@@ -67,37 +57,66 @@ const FilteredServices: React.FC<FilteredServicesProps> = ({
         )
       : services;
 
-  // Fetch the title and description for the selected category
-  const { title, description } = categoryDetails[selectedCategory || "all"] || {
-    title: "Services",
-    description: "Explore our services.",
+  // Fetch the title and description for the selected category with fallback
+  const { title, description } =
+    categoryDetails[selectedCategory || "all"] || categoryDetails.default;
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+    },
   };
 
   return (
-    <section className="py-12 px-6">
-      <div className="max-w-6xl mx-auto text-center mb-10">
-        {/* Dynamic Title and Description (kept for demonstration) */}
-        <h2 className="text-3xl font-bold text-foreground mb-4">{title}</h2>
-        <p className="text-lg text-muted-foreground">{description}</p>
+    <section className="py-6">
+      <div className="max-w-6xl mx-auto text-center mb-10 px-4">
+        <h2 className={"text-3xl font-bold mb-6"}>{title}</h2>
+        <p className="text-lg max-w-3xl mx-auto">{description}</p>
       </div>
 
       {/* Services Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+      <motion.div
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 max-w-7xl mx-auto"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
         {filteredServices.length > 0 ? (
           filteredServices.map((service) => (
-            <div key={service._id} className="h-full w-full">
+            <motion.div
+              key={service._id}
+              className="h-full"
+              variants={itemVariants}
+            >
               <ServiceCard
                 service={service}
                 onClick={() => onServiceClick(service._id)}
               />
-            </div>
+            </motion.div>
           ))
         ) : (
-          <p className="text-center text-muted-foreground">
-            No services found for this category.
-          </p>
+          <div className="col-span-3 text-center py-12">
+            <p className="text-xl text-muted-foreground mb-4">
+              No services found for this category.
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Please try selecting another category or check back later.
+            </p>
+          </div>
         )}
-      </div>
+      </motion.div>
     </section>
   );
 };

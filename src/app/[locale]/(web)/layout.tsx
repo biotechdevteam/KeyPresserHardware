@@ -6,6 +6,8 @@ import CookieConsent from "@/components/Cookies/CookieConsent";
 import Error from "@/app/[locale]/error";
 import SubscribeDialog from "@/components/speed-dial/SubscribeDialogue";
 import { Toaster } from "@/components/ui/toaster";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: "BioTec Universe ~ Bio-Technology Association Cameroon",
@@ -118,6 +120,8 @@ export default async function RootLayout({
 
         <main className="flex-grow mt-24">
           {children}
+          <Analytics />
+          <SpeedInsights />
           <Toaster />
           <CookieConsent />
           <SubscribeDialog />

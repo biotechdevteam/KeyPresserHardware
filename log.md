@@ -5,3 +5,4 @@ disabled dynamic metedata temporally
 didn't disable completely
 updated: forgot password, navbar, profile dashboards
 modified ui components
+implemented SEO

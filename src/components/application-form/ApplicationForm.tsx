@@ -63,13 +63,34 @@ type FormErrorType = {
 
 const specializationOptions = [
   "Biotechnology",
-  "Graphic Designing",
+  "Bioinformatics",
   "Biomedical Engineering",
-  "Molecular Biology",
-  "Data Science",
   "Artificial Intelligence",
-  "Biochemistry",
-  "Environmental Biotechnology",
+  "Machine Learning",
+  "Software Engineering",
+  "Data Science",
+  "Cybersecurity",
+  "Robotics",
+  "Graphic Designing",
+  "Web Development",
+  "UI/UX Design",
+  "Synthetic Biology",
+  "Genetic Engineering",
+  "Environmental Science",
+  "Medical Technology",
+  "Agricultural Technology",
+  "Mechanical Engineering",
+  "Civil Engineering",
+  "Electrical Engineering",
+  "Business Administration",
+  "Marketing",
+  "Digital Media",
+  "Photography",
+  "Creative Writing",
+  "Public Health",
+  "Education Technology",
+  "Finance",
+  "Project Management",
   "Other",
 ];
 
@@ -404,7 +425,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
                                 type="button"
                                 variant="destructive"
                                 size="icon"
-                                className="absolute -top-2 -right-2 h-6 w-6 rounded-full"
+                                className="absolute -top-2 -right-2 h-6 w-6 p-1 rounded-full"
                                 onClick={() =>
                                   setFormData({
                                     ...formData,
@@ -478,7 +499,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
                                 type="button"
                                 variant="destructive"
                                 size="icon"
-                                className="h-6 w-6 rounded-full ml-2"
+                                className="h-6 w-6 rounded-full ml-2 p-1"
                                 onClick={() =>
                                   setFormData({ ...formData, resume_url: "" })
                                 }

@@ -75,9 +75,11 @@ export default function ApplyPage() {
           </h2>
           <p className="text-base mb-8">
             Thank you for completing your application. Your information has been
-            submitted, and our team will review your application shortly. You’ll
-            receive an email confirmation soon. In the meantime, you can access
-            your profile for further updates.
+            submitted, and our team will review it shortly. Please check your
+            email for a confirmation and a link to pay your registration fee.
+            Ensure you complete the payment as soon as possible—your application
+            will not be approved until the fee is received. In the meantime, you
+            can access your profile for further updates.
           </p>
           <div className="flex justify-center space-x-4 mt-8">
             <Button variant="outline" onClick={handleBackToApplication}>

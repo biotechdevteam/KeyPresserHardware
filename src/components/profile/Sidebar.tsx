@@ -97,9 +97,27 @@ const Sidebar: React.FC<SidebarProps> = ({
       href: `${user?.user_type === "admin" ? "/admin" : "/profile"}`,
       icon: LayoutDashboard,
     },
-    { label: "Edit Profile", href: "/edit-profile", icon: Edit },
-    { label: "Settings", href: "/settings", icon: Settings },
-    { label: "Help", href: "/help", icon: HelpCircle },
+    {
+      label: `${user?.user_type === "admin" ? "Edit About" : "Edit Profile"}`,
+      href: `${
+        user?.user_type === "admin"
+          ? "/admin/edit-about"
+          : "/profile/edit-profile"
+      }`,
+      icon: Edit,
+    },
+    {
+      label: "Settings",
+      href: `${
+        user?.user_type === "admin" ? "/admin/settings" : "/profile/settings"
+      }`,
+      icon: Settings,
+    },
+    {
+      label: "Help",
+      href: `${user?.user_type === "admin" ? "/admin/help" : "/profile/help"}`,
+      icon: HelpCircle,
+    },
   ];
 
   // Role-specific navigation items
@@ -110,17 +128,11 @@ const Sidebar: React.FC<SidebarProps> = ({
         items: [
           { label: "Users", href: "/admin/users", icon: Users },
           { label: "Projects", href: "/projects", icon: Briefcase },
-          { label: "Events", href: "/Events", icon: Calendar },
-          { label: "Analytics", href: "/analytics", icon: BarChart3 },
-          { label: "Content", href: "/content", icon: FileText },
+          { label: "Events", href: "/events", icon: Calendar },
+          { label: "Analytics", href: "/admin/analytics", icon: BarChart3 },
+          { label: "Content", href: "/admin/content", icon: FileText },
           { label: "Reviews", href: "/admin/reviews", icon: Star },
-          { label: "Services", href: "/services", icon: ShoppingCart },
-          {
-            label: "Messages",
-            href: "/messages",
-            icon: MessageSquare,
-            tag: 12,
-          },
+          { label: "Services", href: "/admin/services", icon: ShoppingCart },
         ],
       },
     ],
@@ -128,19 +140,17 @@ const Sidebar: React.FC<SidebarProps> = ({
       {
         title: "Main Menu",
         items: [
-          { label: "My Articles", href: "/articles", icon: Newspaper },
-          { label: "Projects", href: "/projects", icon: Briefcase },
-          { label: "My Services", href: "/services", icon: ShoppingCart },
-          { label: "Bookmarks", href: "/bookmarks", icon: Bookmark },
-          { label: "Reviews", href: "/reviews", icon: Star },
-          { label: "Bookings", href: "/bookings", icon: Calendar },
-          { label: "Events", href: "/events", icon: Calendar },
+          { label: "My Articles", href: "/profile/articles", icon: Newspaper },
+          { label: "Projects", href: "/profile/projects", icon: Briefcase },
           {
-            label: "Messages",
-            href: "/messages",
-            icon: MessageSquare,
-            tag: 12,
+            label: "My Services",
+            href: "/profile/services",
+            icon: ShoppingCart,
           },
+          { label: "Bookmarks", href: "/profile/bookmarks", icon: Bookmark },
+          { label: "Reviews", href: "/profile/reviews", icon: Star },
+          { label: "Bookings", href: "/profile/bookings", icon: Calendar },
+          { label: "Events", href: "/profile/events", icon: Calendar },
         ],
       },
     ],
@@ -148,11 +158,15 @@ const Sidebar: React.FC<SidebarProps> = ({
       {
         title: "Services",
         items: [
-          { label: "Order History", href: "/orders", icon: ShoppingBag },
-          { label: "Bookmarks", href: "/bookmarks", icon: Bookmark },
-          { label: "Projects", href: "/projects", icon: Monitor },
-          { label: "Invoices", href: "/invoices", icon: FileText },
-          { label: "Support", href: "/support", icon: MessageSquare },
+          {
+            label: "Order History",
+            href: "/profile/orders",
+            icon: ShoppingBag,
+          },
+          { label: "Bookmarks", href: "/profile/bookmarks", icon: Bookmark },
+          { label: "Projects", href: "/profile/projects", icon: Monitor },
+          { label: "Invoices", href: "/profile/invoices", icon: FileText },
+          { label: "Support", href: "/profile/support", icon: MessageSquare },
         ],
       },
     ],
@@ -160,10 +174,14 @@ const Sidebar: React.FC<SidebarProps> = ({
       {
         title: "Applications",
         items: [
-          { label: "Applications", href: "/applications", icon: FileText },
-          { label: "Interviews", href: "/interviews", icon: Calendar },
-          { label: "Projects", href: "/projects", icon: Briefcase },
-          { label: "Wishlist", href: "/wishlist", icon: Heart },
+          {
+            label: "Applications",
+            href: "/profile/applications",
+            icon: FileText,
+          },
+          { label: "Interviews", href: "/profile/interviews", icon: Calendar },
+          { label: "Projects", href: "/profile/projects", icon: Briefcase },
+          { label: "Wishlist", href: "/profile/wishlist", icon: Heart },
         ],
       },
     ],
@@ -249,7 +267,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             {/* User profile section */}
             <div className="mb-6">
               <Link
-                href="/edit-profile"
+                href="/profile/edit-profile"
                 className="group flex items-center gap-3 rounded-md px-3 py-2 hover:bg-muted transition-colors"
               >
                 <Avatar className="h-10 w-10">
@@ -378,7 +396,9 @@ const Sidebar: React.FC<SidebarProps> = ({
             <div className="mt-auto p-4 border-t border-border">
               <div className="flex items-center justify-center">
                 <div className="text-xs text-muted-foreground">
-                  <p>&copy; {new Date().getFullYear()} {aboutData?.name}</p>
+                  <p>
+                    &copy; {new Date().getFullYear()} {aboutData?.name}
+                  </p>
                 </div>
               </div>
             </div>

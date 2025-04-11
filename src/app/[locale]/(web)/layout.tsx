@@ -5,11 +5,23 @@ import ScrollToTopButton from "@/components/ScrollToTop/ScrollToTopButton";
 import CookieConsent from "@/components/Cookies/CookieConsent";
 import Error from "@/app/[locale]/error";
 import SubscribeDialog from "@/components/speed-dial/SubscribeDialogue";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-  title: "BioTec Universe",
+  title: "BioTec Universe ~ Bio-Technology Association Cameroon",
   description:
-    "BioTech Universe is a biotechnology association based in Buea, Cameroon, founded by the 2024/2025 Master's graduates from the Department of Biochemistry at the University of Buea.",
+    "Discover BioTec Universe, a Bio-Technology association in Buea, Cameroon, founded by 2024/2025 Master's graduates from the University of Buea’s Biochemistry Department.",
+  keywords: [
+    "biotechnology",
+    "BioTec Universe",
+    "Cameroon",
+    "science",
+    "technology",
+    "biochemistry",
+    "Buea",
+    "University of Buea",
+  ],
+  metadataBase: new URL("https://biotecuniverse.org"),
   icons: {
     icon: "/favicon-48x48.png",
     shortcut: "/favicon.ico",
@@ -24,11 +36,10 @@ export const metadata: Metadata = {
   },
   manifest: "/site.webmanifest",
   generator: "Next.js",
-  applicationName: "bt-verse",
+  applicationName: "BioTec Universe",
   referrer: "origin-when-cross-origin",
-  keywords: ["biotechnology", "universe", "science", "technology"],
   authors: [
-    { name: "Nkengbeza Derick Ajong", url: "http://" },
+    { name: "Nkengbeza Derick Ajong" },
     {
       name: "Nyochembeng Enzo Nkengafack",
       url: "https://nyochembeng-enzo-01.vercel.app/",
@@ -41,7 +52,6 @@ export const metadata: Metadata = {
     address: true,
     telephone: true,
   },
-  metadataBase: new URL("https://biotecuniverse.com"),
   alternates: {
     canonical: "/home",
     languages: {
@@ -50,7 +60,40 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    images: "../../../../public/images/logo.png",
+    type: "website",
+    url: "https://biotecuniverse.org/",
+    title: "BioTec Universe ~ Bio-Technology Association Cameroon",
+    description:
+      "Join BioTec Universe, a Bio-Technology association in Buea, Cameroon, founded by 2024/2025 Master's graduates from the University of Buea.",
+    siteName: "BioTec Universe",
+    images: [
+      {
+        url: "/images/logo.png",
+        width: 1200,
+        height: 630,
+        alt: "BioTec Universe Logo",
+      },
+    ],
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "BioTec Universe ~ Bio-Technology Association Cameroon",
+    description:
+      "Discover BioTec Universe, a Bio-Technology association in Buea, Cameroon, founded by University of Buea graduates.",
+    images: ["/images/logo.png"],
+    creator: "@BioTecUniverse",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 
@@ -75,6 +118,7 @@ export default async function RootLayout({
 
         <main className="flex-grow mt-24">
           {children}
+          <Toaster />
           <CookieConsent />
           <SubscribeDialog />
           <ScrollToTopButton />

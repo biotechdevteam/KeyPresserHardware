@@ -32,16 +32,17 @@ const Custom404 = () => {
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <Button onClick={() => router.back()} size="lg">
+            Go Back
+          </Button>
+
           <Button
+            variant="outline"
             onClick={handleGoHome}
             className="flex items-center gap-2"
             size="lg"
           >
-            Back to Home
-          </Button>
-
-          <Button variant="outline" onClick={() => router.back()} size="lg">
-            Go Back
+            Go Home
           </Button>
         </div>
       </div>

@@ -243,7 +243,7 @@ const Header: React.FC<HeaderProps> = ({
               <DropdownMenuSeparator />
               <div className="p-2 text-center">
                 <Link
-                  href="/notifications"
+                  href="/profile/notifications"
                   className="text-sm text-primary hover:underline"
                 >
                   View all notifications
@@ -276,7 +276,7 @@ const Header: React.FC<HeaderProps> = ({
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href="/settings" className="flex items-center">
+                <Link href="/profile/settings" className="flex items-center">
                   <Settings className="mr-2 h-4 w-4" />
                   <span>Settings</span>
                 </Link>

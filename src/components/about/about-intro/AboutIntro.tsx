@@ -6,6 +6,19 @@ import { About } from "@/types/aboutSchema";
 import CTASection from "@/components/about/about-cta/CTASection";
 import { useTransitionRouter } from "next-view-transitions";
 import { slideFadeInOut } from "@/lib/utils/pageTransitions";
+import { motion } from "framer-motion";
+import { Separator } from "@/components/ui/separator";
+
+// Importing images
+import img1 from "../../../../public/images/img-6.jpg";
+import img2 from "../../../../public/images/unenhanced/img-11.jpg";
+import img3 from "../../../../public/images/img-5.jpg";
+
+const Gallery = {
+  img1,
+  img2,
+  img3,
+};
 
 const AboutIntro: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   const router = useTransitionRouter();
@@ -18,12 +31,10 @@ const AboutIntro: React.FC<{ aboutData: About }> = ({ aboutData }) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setIsVisible(true);
-          } else {
-            setIsVisible(false);
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.1, rootMargin: "0px 0px -100px 0px" }
     );
 
     if (introRef.current) {
@@ -37,78 +48,150 @@ const AboutIntro: React.FC<{ aboutData: About }> = ({ aboutData }) => {
     };
   }, []);
 
+  // Animation variants for framer-motion
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.2,
+        duration: 0.5,
+      },
+    }),
+  };
+
+  const textVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  // Gallery data derived from history
+  const galleryItems = [
+    {
+      src: Gallery.img1,
+      alt: "Students founding BioTec Universe at the University of Buea",
+      title: "The Beginning",
+      description:
+        "A group of dedicated students ignited a vision to blend science and technology for global change.",
+    },
+    {
+      src: Gallery.img2,
+      alt: "BioTec Universe team launching pioneering projects",
+      title: "Innovation in Action",
+      description:
+        "Launching projects like plastic-to-fuel recycling to tackle environmental and societal challenges.",
+    },
+    {
+      src: Gallery.img3,
+      alt: "Community training session by BioTec Universe Group",
+      title: "Empowering Lives",
+      description:
+        "Empowering Cameroonians through hands-on training and community health programs.",
+    },
+  ];
+
   return (
     <div
       ref={introRef}
-      className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-8 width-auto"
+      className="container mx-auto max-w-6xl py-20 px-4 sm:px-6 lg:px-8"
     >
-      <div className="col-span-1 lg:col-span-2">
-        {/* Name and Slogan Section */}
-        <div className="text-center">
-          <h1
-            className={`text-2xl xl:text-4xl font-bold transition-all duration-500 ease-in-out ${
-              isVisible ? "animate-fadeInUp" : "opacity-0"
-            }`}
+      {/* Our Story/Bio Section */}
+      {aboutData.history && (
+        <motion.div
+          className="flex flex-col items-center mb-20"
+          initial="hidden"
+          animate={isVisible ? "visible" : "hidden"}
+        >
+          <motion.h2
+            className="text-3xl md:text-5xl font-bold text-center mb-12 text-foreground"
+            custom={1}
+            variants={fadeInUp}
           >
-            {aboutData.name}
-          </h1>
-          {aboutData.slogan && (
-            <p
-              className={`xl:text-lg transition-all duration-500 ease-in-out ${
-                isVisible ? "animate-fadeInUp delay-100" : "opacity-0"
-              }`}
-            >
-              {aboutData.slogan}
+            Our Story
+          </motion.h2>
+
+          <motion.div
+            className="max-w-4xl mx-auto bg-background/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-primary/10"
+            variants={textVariants}
+          >
+            <div
+              className="prose prose-lg dark:prose-invert max-w-none text-muted-foreground leading-relaxed whitespace-pre-wrap"
+              dangerouslySetInnerHTML={{
+                __html: aboutData.history.replace(/\n\n/g, "<br><br>"),
+              }}
+            />
+            <Separator className="mt-8 bg-primary/30" />
+            <p className="text-center text-sm text-muted-foreground/70 italic mt-4">
+              A journey of resilience, innovation, and impact
             </p>
-          )}
-        </div>
+          </motion.div>
+        </motion.div>
+      )}
 
-        {/* Cover Photo Section */}
-        <div className="mt-16">
-          {aboutData.cover_photo_url && (
-            <AspectRatio ratio={16/9} className="mx-auto rounded-lg">
-              <Image
-                src={aboutData.cover_photo_url}
-                alt={aboutData.name}
-                width={100}
-                height={100}
-                priority={true}
-                className={`w-auto h-auto object-cover rounded-lg transition-all duration-500 ease-in-out ${
-                  isVisible ? "animate-fadeIn" : "opacity-0"
-                }`}
-              />
-            </AspectRatio>
-          )}
-        </div>
+      {/* Additional images gallery */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+        transition={{ duration: 0.8, delay: 0.4 }}
+        className="mb-20"
+      >
+        <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center">
+          Our Impact
+        </h2>
 
-        {/* Story/Bio Section */}
-        <div className="p-8 mt-2 text-center">
-          {aboutData.history && (
-            <>
-              <h3
-                className={`text-lg xl:text-4lg font-bold transition-all duration-500 ease-in-out ${
-                  isVisible ? "animate-fadeInUp" : "opacity-0"
-                }`}
-              >
-                Our Story
-              </h3>
-              <p className="mt-2 whitespace-pre-line">{aboutData.history}</p>
-              {/* <p dangerouslySetInnerHTML={{ __html: history.replace(/\n\n/g, "<br /><br />") }} /> */}
-            </>
-          )}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {galleryItems.map((item, index) => (
+            <div
+              key={index}
+              className="group relative overflow-hidden rounded-xl shadow-md"
+            >
+              <AspectRatio ratio={1 / 1}>
+                <Image
+                  src={item.src}
+                  alt={item.alt}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                  <h3 className="text-white font-medium text-lg">
+                    {item.title}
+                  </h3>
+                  <p className="text-white/80 text-sm">{item.description}</p>
+                </div>
+              </AspectRatio>
+            </div>
+          ))}
         </div>
-      </div>
+      </motion.div>
 
-      {/* CTA Section */}
-      <div className="col-span-1 lg:col-span-2">
+      {/* CTA Section with improved visual appeal */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+        transition={{ duration: 0.6, delay: 0.6 }}
+        className="bg-primary/5 rounded-2xl p-8 shadow-lg border border-primary/10 relative overflow-hidden"
+      >
+        {/* Decorative elements */}
+        <div className="absolute -top-24 -right-24 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
+
         <CTASection
-          title="Join Us"
-          description="Become a part of our mission!"
+          title="Join Our Mission"
+          description="Become a part of our journey and help us make a difference in communities around the world."
           action={() =>
             router.push("/apply", { onTransitionReady: slideFadeInOut })
           }
         />
-      </div>
+      </motion.div>
     </div>
   );
 };

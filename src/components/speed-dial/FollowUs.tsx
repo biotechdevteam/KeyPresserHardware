@@ -5,59 +5,81 @@ import {
   FacebookIcon,
   InstagramIcon,
   TwitterIcon,
+  MessageCircleMoreIcon,
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { About } from "@/types/aboutSchema";
 
-// Helper function to render the appropriate icon
-const getSocialIcon = (url: string) => {
-  if (url.includes("linkedin.com")) {
-    return <LinkedinIcon className="w-5 h-5" />;
-  }
-  if (url.includes("facebook.com")) {
-    return <FacebookIcon className="w-5 h-5" />;
-  }
-  if (url.includes("instagram.com")) {
+const getSocialIcon = (url: string, phone?: string) => {
+  if (url.includes("linkedin.com")) return <LinkedinIcon className="w-5 h-5" />;
+  if (url.includes("facebook.com")) return <FacebookIcon className="w-5 h-5" />;
+  if (url.includes("instagram.com"))
     return <InstagramIcon className="w-5 h-5" />;
-  }
-  if (url.includes("twitter.com")) {
-    return <TwitterIcon className="w-5 h-5" />;
-  }
-  return null; // If no match, return null
+  if (url.includes("twitter.com")) return <TwitterIcon className="w-5 h-5" />;
+  if (url === `https://wa.me/${phone?.replace(/\D/g, "")}`)
+    return <MessageCircleMoreIcon className="w-5 h-5" />;
+  return null;
+};
+
+// Helper to get platform name from URL
+const getPlatformName = (url: string, phone?: string) => {
+  if (url.includes("linkedin.com")) return "LinkedIn";
+  if (url.includes("facebook.com")) return "Facebook";
+  if (url.includes("instagram.com")) return "Instagram";
+  if (url.includes("twitter.com")) return "Twitter";
+  if (url === `https://wa.me/${phone?.replace(/\D/g, "")}`) return "WhatsApp";
+  return "Social Media";
 };
 
 const FollowUs: React.FC<{ aboutData: About }> = ({ aboutData }) => {
-  // Ensure social_links is an array before mapping
-  const socialLinks = Array.isArray(aboutData?.social_links)
-    ? aboutData.social_links
+  // Extract social links from object if it exists, otherwise use empty array
+  const socialLinksBase = aboutData?.social_links
+    ? Object.values(aboutData.social_links).filter(
+        (link) =>
+          typeof link === "string" && link.trim() !== "" && link !== undefined
+      )
     : [];
 
+  // Add WhatsApp link if phone number exists
+  const whatsappLink =
+    aboutData?.contact_phone && typeof aboutData.contact_phone === "string"
+      ? `https://wa.me/${aboutData.contact_phone.replace(/\D/g, "")}`
+      : null;
+  const socialLinks = whatsappLink
+    ? [...socialLinksBase, whatsappLink]
+    : socialLinksBase;
+
+  if (socialLinks.length === 0) {
+    return (
+      <p className="text-primary-foreground text-sm">
+        No social links available.
+      </p>
+    );
+  }
+
   return (
-    <Card className="bg-transparent border-none shadow-none mx-auto">
-      <CardHeader>
-        <CardTitle className="text-center text-primary-foreground">Follow Us On</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="flex space-x-4 justify-center">
-          {socialLinks.length > 0 ? (
-            socialLinks.map((link: string, i: number) => (
-              <Link
-                key={i}
-                href={link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="transition-transform transform hover:scale-110"
-              >
-                {getSocialIcon(link)}
-              </Link>
-            ))
-          ) : (
-            <p className="text-primary-foreground">No social media links available.</p>
-          )}
-        </div>
-      </CardContent>
-    </Card>
+    <div className="flex flex-wrap gap-4">
+      {socialLinks.map((link: string, i: number) => {
+        const icon = getSocialIcon(link, aboutData?.contact_phone);
+        // Only render if we have a valid icon
+        if (!icon) return null;
+
+        const platformName = getPlatformName(link, aboutData?.contact_phone);
+
+        return (
+          <Link
+            key={i}
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-2 bg-primary/10 rounded-full transition-transform hover:scale-110"
+            aria-label={`Follow us on ${platformName}`}
+          >
+            {icon}
+          </Link>
+        );
+      })}
+    </div>
   );
 };
 

@@ -3,7 +3,7 @@
 import * as React from "react";
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
 import { ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils/utils";
+import { cn } from "@/lib/utils";
 import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 

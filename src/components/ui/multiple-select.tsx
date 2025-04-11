@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Combobox } from "@headlessui/react";
 import { CheckIcon, ChevronDownIcon, XIcon } from "lucide-react";
-import { cn } from "@/lib/utils/utils";
+import { cn } from "@/lib/utils";
 
 type Option = {
   id: number;

@@ -1,0 +1,41 @@
+import { YouTubeVideo } from '@/components/ui/video';
+
+// Basic usage
+export function BasicVideo() {
+  return (
+    <YouTubeVideo
+      videoId="dQw4w9WgXcQ"
+      title="Never Gonna Give You Up"
+    />
+  );
+}
+
+// With custom overlay
+export function VideoWithOverlay() {
+  return (
+    <YouTubeVideo
+      videoId="dQw4w9WgXcQ"
+      size="lg"
+      overlay={
+        <div className="absolute bottom-0 left-0 p-4 bg-black/50 w-full">
+          <h3 className="text-white font-medium">Video title with custom overlay</h3>
+        </div>
+      }
+    />
+  );
+}
+
+// Full width responsive video in a card
+export function ResponsiveCardVideo() {
+  return (
+    <div className="p-4 border rounded-lg shadow">
+      <h2 className="text-xl font-bold mb-4">Featured Video</h2>
+      <YouTubeVideo
+        videoId="dQw4w9WgXcQ"
+        size="full"
+        className="mb-4"
+      />
+      <p className="text-muted-foreground">Video description goes here...</p>
+    </div>
+  );
+}

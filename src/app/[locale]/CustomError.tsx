@@ -1,23 +1,23 @@
 "use client";
 import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { HomeIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { HomeIcon, RefreshCcw } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useTransitionRouter } from "next-view-transitions";
+import { slideInOut } from "@/lib/utils/pageTransitions";
 
 interface CustomErrorProps {
   error: Error | string;
+  resetError?: () => void;
 }
 
-const CustomError: React.FC<CustomErrorProps> = ({ error }) => {
-  const router = useRouter();
+const CustomError: React.FC<CustomErrorProps> = ({ error, resetError }) => {
+  const router = useTransitionRouter();
 
   useEffect(() => {
-    // Optionally log the error to a service or console
     console.error(error);
   }, [error]);
 
-  // Extract the error message based on the type of error
   const errorMessage =
     process.env.NODE_ENV === "development"
       ? typeof error === "string"
@@ -25,42 +25,50 @@ const CustomError: React.FC<CustomErrorProps> = ({ error }) => {
         : error.message
       : undefined;
 
+  const handleRetry = () => {
+    if (resetError) {
+      resetError();
+    } else {
+      window.location.reload();
+    }
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen text-foreground p-6">
-      <Card className="w-full max-w-2xl">
-        <CardHeader>
-          <CardTitle className="text-center text-6xl font-bold mb-4">
+    <div className="flex items-center justify-center min-h-screen bg-background/95 p-4">
+      <Card className="w-full max-w-md shadow-lg border-destructive/20">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-center text-4xl font-bold text-primary">
             Oops!
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-center text-2xl mb-8">
-            Something went wrong. Please try again, or go back to the Home page.
+          <p className="text-center text-lg mb-6">
+            Something went wrong. Please try again or return to the home page.
           </p>
 
-          {/* Error details */}
           {errorMessage && (
-            <pre className="bg-destructive/50 p-4 rounded-md text-destructive mb-4 text-wrap">
-              {errorMessage}
-            </pre>
+            <div className="bg-destructive/10 p-3 rounded-md mb-6 overflow-auto max-h-32">
+              <p className="text-destructive text-sm font-mono">
+                {errorMessage}
+              </p>
+            </div>
           )}
 
-          <div className="flex justify-center space-x-4">
-            {/* Retry Button */}
-            <Button
-              onClick={() => window.location.reload()}
-              className="px-6 py-2"
-            >
+          <div className="flex justify-center gap-4">
+            <Button onClick={handleRetry} className="flex items-center gap-2">
+              <RefreshCcw className="h-4 w-4" />
               Try Again
             </Button>
 
-            {/* Redirect to Home Button */}
             <Button
-              onClick={() => router.push("/home")}
-              className="inline-flex items-center px-6 py-3"
+              variant="outline"
+              onClick={() =>
+                router.push("/home", { onTransitionReady: slideInOut })
+              }
+              className="flex items-center gap-2"
             >
-              <HomeIcon className="mr-2 h-5 w-5" />
-              Back to Home
+              <HomeIcon className="h-4 w-4" />
+              Home
             </Button>
           </div>
         </CardContent>

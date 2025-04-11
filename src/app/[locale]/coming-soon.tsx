@@ -1,28 +1,52 @@
 import React from "react";
-import { Button } from "@/components/ui/button"; // Assuming you're using shadcn's Button component
+import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+import { Bell } from "lucide-react";
 
-const ComingSoon: React.FC = () => {
+interface ComingSoonProps {
+  title?: string;
+  description?: string;
+  buttonText?: string;
+  className?: string;
+}
+
+const ComingSoon: React.FC<ComingSoonProps> = ({
+  title = "Coming Soon",
+  description = "This feature is currently under development.",
+  buttonText = "Notify Me",
+  className,
+}) => {
   return (
-    <div className="flex flex-col items-center justify-center my-20 text-center space-y-4">
-      <h1 className="text-5xl font-bold">Coming Soon!</h1>
-      <p className="text-lg">
-        This feature is currently under development. Stay tuned for updates!
-      </p>
-      <div className="relative mt-8 flex justify-center">
-        {/* Circle Animation */}
-        <div className="absolute rounded-full border-4 border-primary w-48 h-48 animate-spin-slow"></div>
-        <div className="absolute rounded-full border-4 border-primary w-32 h-32 animate-spin-slow-reverse"></div>
+    <section className="min-h-screen p-4 md:p-8">
+      <div
+        className={`flex flex-col items-center justify-center py-16 px-4 text-center ${className}`}
+      >
+        <h1 className="text-3xl font-bold mb-3">{title}</h1>
+        <p className="text-muted-foreground mb-8 max-w-md">{description}</p>
 
-        {/* Inner Circle */}
-        <div className="relative w-16 h-16 rounded-full bg-primary"></div>
-      </div>
-      <div>
-        <Button size="lg" className="mt-8">
-          Notify Me
+        {/* Simple pulse animation */}
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0.5 }}
+          animate={{
+            scale: [0.8, 1, 0.8],
+            opacity: [0.5, 0.8, 0.5],
+          }}
+          transition={{
+            duration: 3,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-8"
+        >
+          <div className="w-8 h-8 rounded-full bg-primary"></div>
+        </motion.div>
+
+        <Button className="gap-2" size="lg">
+          <Bell className="h-4 w-4" />
+          {buttonText}
         </Button>
-        <p className="mt-12">We can notify you once the work is done.</p>
       </div>
-    </div>
+    </section>
   );
 };
 

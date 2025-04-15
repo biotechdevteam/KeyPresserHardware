@@ -8,3 +8,4 @@ modified ui components
 implemented SEO
 web analytics and speed insights with vercel
 merging branches and redeploying
+modified navbar

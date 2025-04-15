@@ -312,9 +312,9 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
 
                 <SheetBody className="flex-1 overflow-y-auto py-4 space-y-2">
                   <NavCollapsible
-                    triggerText="Services"
-                    isOpen={openIndex === 5}
-                    onOpenChange={() => handleOpenChange(5)}
+                    triggerText="About Us"
+                    isOpen={openIndex === 0}
+                    onOpenChange={() => handleOpenChange(0)}
                     variant="subtle"
                     size="md"
                     icon={<Briefcase className="h-4 w-4 text-primary" />}

@@ -335,3 +335,21 @@ export const reactToComment = async (
     throw error;
   }
 };
+
+// Verify Payment Function
+export const verifyPayment = async (
+  externalId: string,
+  transactionId: string
+) => {
+  try {
+    const response = await fetchData("/payments/verify", "POST", {
+      externalId,
+      transactionId,
+    });
+
+    return response?.data; // Will contain message and details
+  } catch (error) {
+    console.error("Error during verifyPayment:", error);
+    throw new Error("Failed to verify payment.");
+  }
+};

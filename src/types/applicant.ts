@@ -10,6 +10,7 @@ const ApplicantSchema = z.object({
   referred_by_member_id: z.string().nullable(),
   application_status: z.enum(["pending", "approved", "rejected"]),
   specialization_area: z.string().optional(),
+  transactionId: z.string().optional(),
   resume_url: z.string().url().optional(),
   applied_at: z.string(),
   createdAt: z.string(),

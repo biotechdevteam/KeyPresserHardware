@@ -36,7 +36,7 @@ export default function ProfileLayout({
           isOpen={sidebarOpen}
           closeSidebar={() => setSidebarOpen(false)}
         />
-        <main className="pt-16 md:ml-64">
+        <main className="md:ml-64">
           <div className="p-4 md:p-6 max-w-7xl mx-auto">{children}</div>
           <ScrollToTopButton />
         </main>

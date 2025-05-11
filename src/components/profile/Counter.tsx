@@ -24,7 +24,7 @@ import {
   Newspaper,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { cn } from "@/lib/utils/utils";
+import { cn } from "@/lib/utils";
 
 // Define the type for the count item
 interface CountItem {

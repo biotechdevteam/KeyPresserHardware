@@ -26,7 +26,7 @@ import {
   CreditCard,
   AlertCircle,
 } from "lucide-react";
-import { cn } from "@/lib/utils/utils";
+import { cn } from "@/lib/utils";
 import { Label } from "../ui/label";
 import SocialMediaShareTemplate from "../templates/SocialMediaShareTemplate";
 

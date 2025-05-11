@@ -5,3 +5,7 @@ disabled dynamic metedata temporally
 didn't disable completely
 updated: forgot password, navbar, profile dashboards
 modified ui components
+implemented SEO
+web analytics and speed insights with vercel
+merging branches and redeploying
+modified navbar

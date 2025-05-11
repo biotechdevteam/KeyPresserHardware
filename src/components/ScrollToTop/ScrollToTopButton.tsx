@@ -6,16 +6,10 @@ import { ChevronsUp } from "lucide-react";
 const ScrollToTopButton: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
 
-  // Show button when page is scrolled beyond a certain distance
   const toggleVisibility = () => {
-    if (window.pageYOffset > 300) {
-      setIsVisible(true);
-    } else {
-      setIsVisible(false);
-    }
+    setIsVisible(window.pageYOffset > 300);
   };
 
-  // Scroll to top smoothly
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -24,25 +18,28 @@ const ScrollToTopButton: React.FC = () => {
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", toggleVisibility);
+    // Initial check for when component mounts on a page that's already scrolled
+    toggleVisibility();
+
+    // Use passive event listener for better performance
+    window.addEventListener("scroll", toggleVisibility, { passive: true });
 
     return () => {
       window.removeEventListener("scroll", toggleVisibility);
     };
   }, []);
 
+  if (!isVisible) return null;
+
   return (
-    <div
-      className={`fixed bottom-10 right-8 transition-all duration-500 ease-in-out transform ${
-        isVisible ? "animate-fadeInUp" : "opacity-0 translate-y-10"
-      }`}
+    <Button
+      onClick={scrollToTop}
+      size="icon"
+      className="fixed bottom-8 right-8 shadow-md rounded-full z-50 animate-fade-in"
+      aria-label="Scroll to top"
     >
-      {isVisible && (
-        <Button onClick={scrollToTop} className="p-6">
-          <ChevronsUp /> Top
-        </Button>
-      )}
-    </div>
+      <ChevronsUp className="h-5 w-5" />
+    </Button>
   );
 };
 

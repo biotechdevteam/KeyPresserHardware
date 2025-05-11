@@ -178,29 +178,33 @@ const useAuth = create<AuthStore>()(
       },
 
       getProfile: async () => {
-        set({ loading: true, error: null });
-        try {
-          const user = get().user;
-          if (!user || !user._id) throw new Error("User is not authenticated.");
+  set({ loading: true, error: null });
+  try {
+    const user = get().user;
+    if (!user || !user._id) throw new Error("User is not authenticated.");
 
-          const response = await fetchData(
-            `/auth/${user.user_type}/${user._id}`,
-            "GET"
-          );
-          const profileData = response.data;
-          const profile =
-            user.user_type === "member"
-              ? (profileData as Member)
-              : (profileData as Applicant);
+    const response = await fetchData(
+      `/auth/${user.user_type}/${user._id}`,
+      "GET"
+    );
+    const profileData = response.data;
+    const profile =
+      user.user_type === "member"
+        ? (profileData as Member)
+        : (profileData as Applicant);
 
-          set({ profile });
-        } catch (err: any) {
-          const errorMessage = handleApiError(err);
-          set({ error: errorMessage });
-        } finally {
-          set({ loading: false });
-        }
-      },
+    set({ profile });
+  } catch (err: any) {
+    const errorMessage = handleApiError(err);
+    if (errorMessage === "No member found" || errorMessage.includes("not found")) {
+      set({ profile: null }); // No profile exists yet, not an error
+    } else {
+      set({ error: errorMessage }); // Unexpected error
+    }
+  } finally {
+    set({ loading: false });
+  }
+},
 
       apply: async (
         profilePhotoUrl,

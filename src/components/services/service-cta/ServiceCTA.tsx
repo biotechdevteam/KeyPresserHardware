@@ -1,6 +1,8 @@
-"use client"
+"use client";
 import React from "react";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
 interface ServiceCTAProps {
   title: string;
@@ -20,20 +22,27 @@ const ServiceCTA: React.FC<ServiceCTAProps> = ({
   secondaryAction,
 }) => {
   return (
-    <div className="p-6 space-y-4 bg-background text-foreground rounded-lg shadow-md">
+    <motion.div
+      className="p-8 space-y-4 rounded-xl shadow-lg border border-primary"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      viewport={{ once: true }}
+    >
       <h2 className="text-3xl font-bold">{title}</h2>
       <p className="text-lg">{description}</p>
-      <div className="flex flex-col md:flex-row gap-4">
-        <Button onClick={onClick} className="animate-beep">
+      <div className="flex flex-col sm:flex-row gap-4 pt-4">
+        <Button onClick={onClick} size="lg" animation="scale">
           {buttonText}
+          <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
         </Button>
         {secondaryText && secondaryAction && (
-          <Button variant="outline" onClick={secondaryAction}>
+          <Button variant="outline" onClick={secondaryAction} size="lg">
             {secondaryText}
           </Button>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

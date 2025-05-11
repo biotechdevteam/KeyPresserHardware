@@ -100,14 +100,14 @@ const Contact: React.FC<ContactProps> = ({ aboutData, className }) => {
       color: "bg-[#0077B5]",
       label: "LinkedIn",
     },
-    // {
-    //   key: "twitter",
-    //   url: aboutData.social_links?.twitter,
-    //   icon: <Twitter size={24} />,
-    //   extract: extractUsername,
-    //   color: "bg-[#1DA1F2]",
-    //   label: "Twitter",
-    // },
+    {
+      key: "twitter",
+      url: aboutData.social_links?.twitter,
+      icon: <Twitter size={24} />,
+      extract: extractUsername,
+      color: "bg-[#1DA1F2]",
+      label: "Twitter",
+    },
     {
       key: "facebook",
       url: aboutData.social_links?.facebook,
@@ -116,22 +116,22 @@ const Contact: React.FC<ContactProps> = ({ aboutData, className }) => {
       color: "bg-[#1877F2]",
       label: "Facebook",
     },
-    // {
-    //   key: "github",
-    //   url: aboutData.social_links?.github,
-    //   icon: <Github size={24} />,
-    //   extract: extractUsername,
-    //   color: "bg-[#333333]",
-    //   label: "GitHub",
-    // },
-    // {
-    //   key: "instagram",
-    //   url: aboutData.social_links?.instagram,
-    //   icon: <Instagram size={24} />,
-    //   extract: extractUsername,
-    //   color: "bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#FCAF45]",
-    //   label: "Instagram",
-    // },
+    {
+      key: "github",
+      url: aboutData.social_links?.github,
+      icon: <Github size={24} />,
+      extract: extractUsername,
+      color: "bg-[#333333]",
+      label: "GitHub",
+    },
+    {
+      key: "instagram",
+      url: aboutData.social_links?.instagram,
+      icon: <Instagram size={24} />,
+      extract: extractUsername,
+      color: "bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#FCAF45]",
+      label: "Instagram",
+    },
   ].filter((link) => link.url);
 
   return (
@@ -227,33 +227,38 @@ const Contact: React.FC<ContactProps> = ({ aboutData, className }) => {
                     variants={staggerContainer}
                     className="grid grid-cols-1 gap-4"
                   >
-                    {socialLinks.map((social, index) => (
-                      <motion.div
-                        key={social.key}
-                        variants={fadeInUp}
-                        custom={index}
-                      >
-                        <Link
-                          href={social.url ?? "#"}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center p-3 rounded-lg hover:bg-accent transition-colors group"
-                        >
-                          <div
-                            className={`${social.color} p-2 rounded-full mr-4 text-white`}
+                    {socialLinks &&
+                      socialLinks
+                        .filter(
+                          (social) => social.url && social.url !== undefined
+                        )
+                        .map((social, index) => (
+                          <motion.div
+                            key={social.key}
+                            variants={fadeInUp}
+                            custom={index}
                           >
-                            {social.icon}
-                          </div>
-                          <span className="flex-grow font-medium">
-                            {social.label}
-                          </span>
-                          <ExternalLink
-                            size={16}
-                            className="opacity-70 group-hover:opacity-100"
-                          />
-                        </Link>
-                      </motion.div>
-                    ))}
+                            <Link
+                              href={social.url || "#"}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center p-3 rounded-lg hover:bg-accent transition-colors group"
+                            >
+                              <div
+                                className={`${social.color} p-2 rounded-full mr-4 text-white`}
+                              >
+                                {social.icon}
+                              </div>
+                              <span className="flex-grow font-medium">
+                                {social.label}
+                              </span>
+                              <ExternalLink
+                                size={16}
+                                className="opacity-70 group-hover:opacity-100"
+                              />
+                            </Link>
+                          </motion.div>
+                        ))}
                   </motion.div>
                 </CardContent>
               </Card>

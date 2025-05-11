@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils/utils";
+import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
 import { Link } from "next-view-transitions";
 import { motion, AnimatePresence } from "framer-motion";
@@ -63,7 +63,7 @@ const CookieConsent: React.FC = () => {
               aria-label="Close cookie consent banner"
               size="icon"
               variant="ghost"
-              className="absolute top-2 right-2 h-8 w-8 rounded-full"
+              className="absolute top-2 right-2 h-8 w-8 p-1 rounded-full"
             >
               <X className="h-4 w-4" />
             </Button>
@@ -101,13 +101,13 @@ const CookieConsent: React.FC = () => {
                 >
                   Accept All
                 </Button>
-                <Button
+                {/* <Button
                   variant="outline"
                   onClick={rejectCookies}
                   className="w-full xs:w-auto"
                 >
                   Reject All
-                </Button>
+                </Button> */}
               </div>
             </div>
           </div>

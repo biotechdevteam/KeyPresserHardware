@@ -6,7 +6,7 @@ import {
   TwitterIcon,
   InstagramIcon,
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge"; // Import Badge from shadcn
+import { Badge } from "@/components/ui/badge";
 
 // Helper function to get the social media icon based on the URL
 const getSocialIcon = (url: string) => {

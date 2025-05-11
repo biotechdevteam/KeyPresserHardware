@@ -11,6 +11,8 @@ import DOMPurify from "dompurify";
 import ServiceHeader from "../service-header/ServiceHeader";
 import RegisterDialog from "@/components/register-dialog/RegisterDialog";
 import BookServiceForm from "../book-service/BookService";
+import { motion } from "framer-motion";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface ServiceDetailsProps {
   service: Service;
@@ -25,32 +27,60 @@ const ServiceDetails: React.FC<ServiceDetailsProps> = ({
   const [isRegisterDialogOpen, setIsRegisterDialogOpen] = useState(false);
 
   const handleBookService = () => {
-    // Booking action logic
     console.log("Booking Service");
     setIsRegisterDialogOpen(false);
   };
 
   const handleLearnMore = () => {
-    // Learn more logic
-    console.log("Learning more about the service");
+    // Scroll to pricing plans section
+    const pricingElement = document.getElementById("pricing-plans");
+    if (pricingElement) {
+      pricingElement.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
-  // Open register dialog before booking
   const handleOpenRegisterDialog = () => {
-    setIsRegisterDialogOpen(true); // Show register dialog when user tries to book
+    setIsRegisterDialogOpen(true);
   };
 
-  // After registration, open booking form
   const handleRegisterComplete = () => {
-    setIsRegisterDialogOpen(false); // Close registration dialog
-    setIsBookingFormOpen(true); // Open booking form
+    setIsRegisterDialogOpen(false);
+    setIsBookingFormOpen(true);
+  };
+
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+      },
+    },
   };
 
   return (
-    <div className="space-y-6">
+    <motion.div
+      className="space-y-8 mb-8"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
       {/* Register Dialog for service booking */}
       {isRegisterDialogOpen && (
         <RegisterDialog
+          open={isRegisterDialogOpen}
           onComplete={handleRegisterComplete}
           onCancel={() => setIsRegisterDialogOpen(false)}
         />
@@ -66,75 +96,98 @@ const ServiceDetails: React.FC<ServiceDetailsProps> = ({
         />
       )}
 
-      <ServiceHeader
-        title={service.title}
-        summary={service.summary}
-        backgroundImageUrl={
-          service.portfolio_urls ? service.portfolio_urls[0] : ""
-        }
-      />
+      <motion.div variants={itemVariants}>
+        <ServiceHeader
+          title={service.title}
+          summary={service.summary}
+          backgroundImageUrl={
+            service.portfolio_urls ? service.portfolio_urls[0] : ""
+          }
+        />
+      </motion.div>
 
-      {/* Service Title and Description */}
-      <Card>
-        <CardHeader>
-          <h1 className="text-4xl font-bold">{service.title}</h1>
-        </CardHeader>
-        <CardContent>
-          <div
-            className="text-lg"
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(service.description),
-            }}
-          />
-        </CardContent>
-      </Card>
+      {/* Tabbed Content for better organization */}
+      <motion.div variants={itemVariants}>
+        <Tabs defaultValue="overview" className="w-full mb-8">
+          <TabsList className="grid grid-cols-3 mb-4">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="gallery">Gallery</TabsTrigger>
+            <TabsTrigger value="testimonials">Testimonials</TabsTrigger>
+          </TabsList>
 
-      {/* Call to Action after portfolio */}
-      <ServiceCTA
-        title="Interested in this service?"
-        description="Check out our pricing plans and book this service today!"
-        buttonText="Book Now"
-        onClick={handleOpenRegisterDialog}
-        secondaryAction={handleLearnMore}
-      />
+          {/* Overview Tab */}
+          <TabsContent value="overview">
+            <div className="mb-6 overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 p-8 text-center">
+              <div>
+                <h1 className="text-4xl font-bold">{service.title}</h1>
+              </div>
+              <div className="pt-6">
+                <div
+                  className="text-lg prose max-w-none"
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(service.description),
+                  }}
+                />
+              </div>
+            </div>
 
-      {/* Pricing Plans */}
-      {service.pricing_plans && service.pricing_plans.length > 0 && (
-        <Card>
-          <CardHeader>
-            <h3 className="text-2xl font-semibold">Pricing Plans</h3>
-          </CardHeader>
-          <CardContent>
-            <PricingPlan plans={service.pricing_plans} />{" "}
-          </CardContent>
-        </Card>
-      )}
+            {/* Pricing Plans */}
+            {service.pricing_plans && service.pricing_plans.length > 0 && (
+              <div
+                className="mb-6 overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 p-6"
+                id="pricing-plans"
+              >
+                <div>
+                  <h3 className="text-2xl font-semibold">
+                    Pricing Plans
+                  </h3>
+                </div>
+                <div className="pt-6">
+                  <PricingPlan plans={service.pricing_plans} />
+                </div>
+              </div>
+            )}
 
-      {/* Portfolio URLs */}
-      {service.portfolio_urls && service.portfolio_urls.length > 0 && (
-        <Card>
-          <Gallery
-            services={[service]}
-            selectedCategory={service.service_category}
-          />
-        </Card>
-      )}
+            {/* Call to Action */}
+            <ServiceCTA
+              title="Ready to get started?"
+              description="Book this service now or contact us for more information."
+              buttonText="Book Now"
+              onClick={handleOpenRegisterDialog}
+              secondaryText="Learn More"
+              secondaryAction={handleLearnMore}
+            />
+          </TabsContent>
 
-      {/* Final Call to Action */}
-      <ServiceCTA
-        title="Have you made your decision?"
-        description="Click below to book this service or reach out to us for more information."
-        buttonText="Book This Service"
-        onClick={handleOpenRegisterDialog}
-      />
+          {/* Gallery Tab */}
+          <TabsContent value="gallery">
+            {service.portfolio_urls && service.portfolio_urls.length > 0 ? (
+              <div className="overflow-hidden shadow-md">
+                <Gallery
+                  services={[service]}
+                  selectedCategory={service.service_category}
+                />
+              </div>
+            ) : (
+              <div className="p-8 text-center">
+                <p className="text-muted-foreground">
+                  No gallery images available for this service.
+                </p>
+              </div>
+            )}
+          </TabsContent>
 
-      {/* Testimonials Section */}
-      <Testimonials
-        feedbacks={feedbacks}
-        selectedCategory={service.service_category}
-        title={"What others are saying"}
-      />
-    </div>
+          {/* Testimonials Tab */}
+          <TabsContent value="testimonials">
+            <Testimonials
+              feedbacks={feedbacks}
+              selectedCategory={service.service_category}
+              title="Client Testimonials"
+            />
+          </TabsContent>
+        </Tabs>
+      </motion.div>
+    </motion.div>
   );
 };
 

@@ -16,7 +16,7 @@ import { Progress } from "@/components/ui/progress";
 import { CornerDownLeft, FileText, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils/utils";
+import { cn } from "@/lib/utils";
 import { Checkbox } from "../ui/checkbox";
 
 interface TermsProps {

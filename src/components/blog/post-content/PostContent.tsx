@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DOMPurify from "dompurify";
-import { Card } from "@/components/ui/card"; // Assuming you are using Shadcn's card component for layout
+import { Card } from "@/components/ui/card";
 
 interface PostContentProps {
   content: string;

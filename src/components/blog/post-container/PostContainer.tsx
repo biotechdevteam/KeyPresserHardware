@@ -236,12 +236,13 @@ const PostContainer: React.FC<PostContainerProps> = ({
 
         {/* Render Share Buttons */}
         <section id="follow-us" className="max-w-4xl mx-auto mt-6">
-          <FollowUs aboutData={aboutData}/>
+          <FollowUs aboutData={aboutData} />
         </section>
       </div>
 
       {showRegisterDialog && (
         <RegisterDialog
+          open={showRegisterDialog}
           onComplete={handleRegistrationComplete}
           onCancel={() => setShowRegisterDialog(false)}
         />

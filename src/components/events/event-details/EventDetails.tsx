@@ -26,15 +26,14 @@ import { motion } from "framer-motion";
 import RegisterDialog from "@/components/register-dialog/RegisterDialog";
 import EnrollEventForm from "../events-enroll/EnrollForm";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useToast } from "@/hooks/use-toast";
 import EventCard from "../events-card/EventsCard";
+import { toast } from "sonner";
 
 interface EventDetailsProps {
   event: Event;
 }
 
 const EventDetails: React.FC<EventDetailsProps> = ({ event }) => {
-  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("details");
   const [isRegisterDialogOpen, setIsRegisterDialogOpen] = useState(false);
   const [isEnrollFormOpen, setIsEnrollFormOpen] = useState(false);
@@ -107,34 +106,14 @@ const EventDetails: React.FC<EventDetailsProps> = ({ event }) => {
           )}. Join me there!`,
           url: shareUrl,
         });
-        toast({
-          title: "Event Shared",
-          description: "The event has been shared successfully!",
-        });
+        toast.success("The event has been shared successfully!");
       } else {
         await navigator.clipboard.writeText(shareUrl);
-        toast({
-          title: "Link Copied",
-          description: "The event URL has been copied to your clipboard.",
-          action: (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => window.open(shareUrl, "_blank")}
-            >
-              Open
-            </Button>
-          ),
-        });
-      }
+        toast("The event URL has been copied to your clipboard.")
+                }
     } catch (error) {
       console.error("Error sharing event:", error);
-      toast({
-        title: "Sharing Failed",
-        description:
-          "There was an issue sharing the event. The URL has been copied to your clipboard as a fallback.",
-        variant: "destructive",
-      });
+      toast.error("There was an issue sharing the event. The URL has been copied to your clipboard as a fallback.");
       const shareUrl = `${
         process.env.NEXT_PUBLIC_WEBSITE_URL || "https://biotecuniverse.org"
       }/events/${event._id}`;

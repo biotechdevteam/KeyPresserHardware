@@ -26,7 +26,7 @@ export default function ProfileLayout({
   return (
     <AuthGuard allowedRoles={["member", "applicant", "customer", "client"]}>
       <div className="min-h-screen bg-background text-foreground">
-        <div className="">
+        <div className="fixed top-0 w-full">
           <Header toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
           <div className="md:ml-64">
             <NotificationBanner />
@@ -36,7 +36,7 @@ export default function ProfileLayout({
           isOpen={sidebarOpen}
           closeSidebar={() => setSidebarOpen(false)}
         />
-        <main className="md:ml-64">
+        <main className="md:ml-64 mt-[100px]">
           <div className="p-4 md:p-6 max-w-7xl mx-auto">{children}</div>
           <ScrollToTopButton />
         </main>

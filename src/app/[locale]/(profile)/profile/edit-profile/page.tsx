@@ -17,13 +17,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { motion } from "framer-motion";
-import { useToast } from "@/hooks/use-toast";
 import { useTransitionRouter } from "next-view-transitions";
 import { slideFadeInOut } from "@/lib/utils/pageTransitions";
+import { toast } from "sonner";
 
 const ProfileEditPage: React.FC = () => {
   const router = useTransitionRouter();
-  const { toast } = useToast();
   const {
     user,
     profile,
@@ -68,17 +67,10 @@ const ProfileEditPage: React.FC = () => {
     );
 
     if (success) {
-      toast({
-        title: "Profile Updated",
-        description: "Your profile has been successfully updated.",
-      });
+      toast.success("Your profile has been successfully updated.");
       getProfile(); // Refresh profile after update
     } else {
-      toast({
-        title: "Update Failed",
-        description: "There was an error updating your profile.",
-        variant: "destructive",
-      });
+      toast.error("There was an error updating your profile.");
     }
   };
 
@@ -139,7 +131,9 @@ const ProfileEditPage: React.FC = () => {
           <AlertCircle className="h-8 w-8 text-primary" />
         </div>
         <h2 className="text-xl font-medium">
-          {user.user_type === "member" ? "Profile Not Created" : "Application Pending"}
+          {user.user_type === "member"
+            ? "Profile Not Created"
+            : "Application Pending"}
         </h2>
         <p className="text-muted-foreground mb-6 text-center max-w-md">
           {user.user_type === "member"
@@ -149,12 +143,17 @@ const ProfileEditPage: React.FC = () => {
         <div className="flex gap-4">
           <Button
             onClick={() =>
-              router.push(user.user_type === "member" ? "/profile/create" : "/apply", {
-                onTransitionReady: slideFadeInOut,
-              })
+              router.push(
+                user.user_type === "member" ? "/profile/create" : "/apply",
+                {
+                  onTransitionReady: slideFadeInOut,
+                }
+              )
             }
           >
-            {user.user_type === "member" ? "Create Profile" : "Submit Application"}
+            {user.user_type === "member"
+              ? "Create Profile"
+              : "Submit Application"}
           </Button>
           <Button
             variant="outline"
@@ -226,7 +225,9 @@ const ProfileEditPage: React.FC = () => {
                 variant="outline"
                 className="w-full sm:w-auto"
                 onClick={() =>
-                  router.push("/profile/help", { onTransitionReady: slideFadeInOut })
+                  router.push("/profile/help", {
+                    onTransitionReady: slideFadeInOut,
+                  })
                 }
               >
                 Contact Support

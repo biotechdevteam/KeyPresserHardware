@@ -103,7 +103,7 @@ const ForgotPassword = () => {
             </form>
           ) : (
             <div className="space-y-4 text-center">
-              <div className="bg-primary text-primary-foreground p-4 rounded-md">
+              <div className="bg-accent text-primary-foreground p-4 rounded-md">
                 <p className="font-medium">Reset link sent!</p>
                 <p className="text-sm">
                   Check your email inbox for instructions to reset your

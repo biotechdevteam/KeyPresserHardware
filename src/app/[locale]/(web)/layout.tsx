@@ -5,7 +5,6 @@ import ScrollToTopButton from "@/components/ScrollToTop/ScrollToTopButton";
 import CookieConsent from "@/components/Cookies/CookieConsent";
 import Error from "@/app/[locale]/error";
 import SubscribeDialog from "@/components/speed-dial/SubscribeDialogue";
-import { Toaster } from "@/components/ui/toaster";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -122,7 +121,6 @@ export default async function RootLayout({
           {children}
           <Analytics />
           <SpeedInsights />
-          <Toaster />
           <CookieConsent />
           <SubscribeDialog />
           <ScrollToTopButton />

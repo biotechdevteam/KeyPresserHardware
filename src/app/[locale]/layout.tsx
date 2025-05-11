@@ -5,6 +5,7 @@ import StoreProvider from "./storeProvider";
 import ClientLayout from "./ClientLayout";
 import { ViewTransitions } from "next-view-transitions";
 import { ThemeProvider } from "next-themes";
+import { Toaster } from "sonner";
 
 export default async function LocaleLayout({
   children,
@@ -23,6 +24,7 @@ export default async function LocaleLayout({
             <ClientLayout>
               <StoreProvider>
                 <ThemeProvider>
+                  <Toaster />
                   <main className="bg-background">{children}</main>
                 </ThemeProvider>
               </StoreProvider>

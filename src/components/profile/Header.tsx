@@ -109,7 +109,7 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <div
       className={cn(
-        "sticky top-0 z-30 w-full bg-background transition-all",
+        "top-0 z-30 w-full bg-background transition-all",
         variant === "dashboard" ? "pb-0" : ""
       )}
     >

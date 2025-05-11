@@ -51,8 +51,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
+import { toast } from "sonner";
 
 // Define the social links schema
 const SocialLinksSchema = z.array(z.string().url()).optional();
@@ -105,7 +105,6 @@ const EditProfile: React.FC<EditProfileProps> = ({
   user,
   onUpdate,
 }) => {
-  const { toast } = useToast();
   const { loading: authLoading } = useAuth();
   const {
     imageUrl,
@@ -280,12 +279,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
       setNewSocialLink("");
       setIsFormDirty(true);
     } else {
-      toast({
-        title: "Invalid URL",
-        description:
-          "Please enter a valid URL starting with http:// or https://",
-        variant: "destructive",
-      });
+      toast.error("Please enter a valid URL starting with http:// or https://");
     }
   };
 
@@ -330,29 +324,21 @@ const EditProfile: React.FC<EditProfileProps> = ({
         );
 
         if (success !== null) {
-          toast({
-            title: "Profile Updated",
-            description: "Your profile has been successfully updated",
-            variant: "default",
-          });
+          toast.success("Your profile has been successfully updated");
           setIsFormDirty(false);
           reset(data); // Reset form with updated values
         }
       } else if (isApplicant) {
         // Applicants don't use updateProfile directly in this context; handle separately if needed
-        toast({
-          title: "Notice",
-          description:
-            "Applicant profiles cannot be updated this way. Please contact support.",
-          variant: "default",
-        });
+        toast.info(
+          "Applicant profiles cannot be updated this way. Please contact support."
+        );
+        toast.warning(
+          "Applicant profiles cannot be updated this way. Please contact support."
+        );
       }
     } catch (error) {
-      toast({
-        title: "Update Failed",
-        description: "There was a problem updating your profile",
-        variant: "destructive",
-      });
+      toast.error("There was a problem updating your profile");
     }
   };
 

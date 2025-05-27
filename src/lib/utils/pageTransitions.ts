@@ -77,13 +77,3 @@ function slideFadeInOut() {
 }
 
 export { fadeInOut, slideInOut, slideFadeInOut };
-
-// How to use
-
-// onClick={(e) => {
-//   e.preventDefault()
-//   router.push('/', {
-//     // Edit here
-//     onTransitionReady: slideInOut,
-//   })
-// }}

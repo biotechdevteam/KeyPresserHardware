@@ -9,3 +9,4 @@ implemented SEO
 web analytics and speed insights with vercel
 merging branches and redeploying
 modified navbar
+updated profile and member management

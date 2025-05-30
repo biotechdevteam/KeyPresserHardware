@@ -11,10 +11,17 @@ export const signupSchema = z.object({
     }),
   first_name: z.string().nonempty({ message: "First name cannot be empty" }),
   last_name: z.string().nonempty({ message: "Last name cannot be empty" }),
-  profile_photo_url: z.string().optional(),
   user_type: z.enum(["admin", "member", "customer", "applicant"], {
     errorMap: () => ({
       message: "User type must be one of admin, member, customer, or applicant",
     }),
   }),
+  user_category: z
+    .enum(["student", "professional", "institutional", "organizational"], {
+      errorMap: () => ({
+        message:
+          "User category must be one of student, professional, institutional, or organizational",
+      }),
+    })
+    .default("student"),
 });

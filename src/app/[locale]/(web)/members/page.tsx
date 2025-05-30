@@ -20,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
     const specializations = [
       ...new Set(members?.map((m: any) => m.specialization).filter(Boolean)),
     ].join(", ");
-    const title = `${orgName} Members ~ Bio-Technology Experts`;
+    const title = `${orgName} Members ~ Bio-Tech Experts`;
     const description = specializations
       ? `Meet ${memberCount} ${orgName} members specializing in ${specializations}.`
       : `Meet ${memberCount} dedicated members of ${orgName}, advancing biotechnology in Cameroon.`;
@@ -89,7 +89,7 @@ export async function generateMetadata(): Promise<Metadata> {
   } catch (error) {
     console.error("Failed to fetch data for metadata:", error);
     return {
-      title: "Members ~ BioTec Universe ~ Biotechnology Experts",
+      title: "Members ~ BioTec Universe ~ Bio-Tech Experts",
       description:
         "Meet the dedicated members of BioTec Universe, advancing biotechnology in Cameroon.",
       keywords: [

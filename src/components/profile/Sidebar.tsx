@@ -81,7 +81,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   const logo = aboutData?.logo_url || Logo;
   const pathname = usePathname();
   const router = useTransitionRouter();
-  const { user, signOut } = useAuth();
+  const { user, profile, signOut } = useAuth();
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
   const handleLogout = () => {
@@ -141,13 +141,11 @@ const Sidebar: React.FC<SidebarProps> = ({
         title: "Main Menu",
         items: [
           { label: "My Articles", href: "/profile/articles", icon: Newspaper },
-          { label: "Projects", href: "/profile/projects", icon: Briefcase },
           {
             label: "My Services",
             href: "/profile/services",
             icon: ShoppingCart,
           },
-          { label: "Bookmarks", href: "/profile/bookmarks", icon: Bookmark },
           { label: "Reviews", href: "/profile/reviews", icon: Star },
           { label: "Bookings", href: "/profile/bookings", icon: Calendar },
           { label: "Events", href: "/profile/events", icon: Calendar },
@@ -163,25 +161,21 @@ const Sidebar: React.FC<SidebarProps> = ({
             href: "/profile/orders",
             icon: ShoppingBag,
           },
-          { label: "Bookmarks", href: "/profile/bookmarks", icon: Bookmark },
           { label: "Projects", href: "/profile/projects", icon: Monitor },
           { label: "Invoices", href: "/profile/invoices", icon: FileText },
-          { label: "Support", href: "/profile/support", icon: MessageSquare },
+          { label: "Events", href: "/profile/events", icon: Calendar },
         ],
       },
     ],
     applicant: [
       {
-        title: "Applications",
+        title: "Main Menu",
         items: [
           {
-            label: "Applications",
-            href: "/profile/applications",
+            label: "Application",
+            href: "/profile/application",
             icon: FileText,
           },
-          { label: "Interviews", href: "/profile/interviews", icon: Calendar },
-          { label: "Projects", href: "/profile/projects", icon: Briefcase },
-          { label: "Wishlist", href: "/profile/wishlist", icon: Heart },
         ],
       },
     ],
@@ -242,7 +236,6 @@ const Sidebar: React.FC<SidebarProps> = ({
                 alt={aboutData?.name || "Logo"}
                 className="transition-transform duration-300 hover:scale-110"
               />
-              <span>Home</span>
             </Link>
             <Button
               variant="ghost"
@@ -266,13 +259,10 @@ const Sidebar: React.FC<SidebarProps> = ({
           <div className="px-4 py-4">
             {/* User profile section */}
             <div className="mb-6">
-              <Link
-                href="/profile/edit-profile"
-                className="group flex items-center gap-3 rounded-md px-3 py-2 hover:bg-muted transition-colors"
-              >
+              <div className="group flex items-center gap-3 rounded-md px-3 py-2">
                 <Avatar className="h-10 w-10">
                   <AvatarImage
-                    src={user?.profile_photo_url || ""}
+                    src={profile?.profile_photo_url as string}
                     alt={user?.first_name}
                   />
                   <AvatarFallback className="bg-primary/10">
@@ -288,7 +278,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                     {user?.user_type}
                   </span>
                 </div>
-              </Link>
+              </div>
             </div>
 
             <Separator className="my-4" />
@@ -397,7 +387,8 @@ const Sidebar: React.FC<SidebarProps> = ({
               <div className="flex items-center justify-center">
                 <div className="text-xs text-muted-foreground">
                   <p>
-                    &copy; {new Date().getFullYear()} {aboutData?.name}
+                    &copy; {new Date().getFullYear()}{" "}
+                    {aboutData?.name || "Biotec Universe"}
                   </p>
                 </div>
               </div>

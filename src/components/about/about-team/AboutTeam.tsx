@@ -68,6 +68,7 @@ const Members: React.FC<MembersProps> = ({
 }) => {
   const teamRef = useRef<HTMLDivElement | null>(null);
   const router = useTransitionRouter();
+  console.log("Members:", members);
 
   const filteredMembers = isExecutiveBoard
     ? members.filter(
@@ -134,14 +135,12 @@ const Members: React.FC<MembersProps> = ({
                   <CardHeader className="relative p-6 pb-2 flex items-center justify-center">
                     <div className="relative h-36 w-36 rounded-full overflow-hidden ring-4 ring-primary/10 group-hover:ring-primary/30 transition-all duration-300">
                       <Image
-                        src={
-                          member.user_id?.profile_photo_url || PlaceholderImg.src
-                        }
+                        src={member?.profile_photo_url || PlaceholderImg.src}
                         fill
                         sizes="(max-width: 768px) 100vw, 144px"
                         alt={
-                          member.user_id
-                            ? `${member.user_id.first_name} ${member.user_id.last_name}`
+                          member.user
+                            ? `${member.user.first_name} ${member.user.last_name}`
                             : "Unknown Member"
                         }
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -152,8 +151,8 @@ const Members: React.FC<MembersProps> = ({
                   <CardContent className="p-6 pt-2 flex-grow flex flex-col">
                     <div className="text-center mb-2">
                       <CardTitle className="text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">
-                        {member.user_id
-                          ? `${member.user_id.first_name} ${member.user_id.last_name}`
+                        {member.user
+                          ? `${member.user.first_name} ${member.user.last_name}`
                           : "Unknown Member"}
                       </CardTitle>
 
@@ -214,14 +213,13 @@ const Members: React.FC<MembersProps> = ({
                           <div className="relative h-16 w-16 sm:h-20 sm:w-20 rounded-full overflow-hidden ring-2 ring-primary/5 group-hover:ring-primary/20 transition-all duration-300">
                             <Image
                               src={
-                                member.user_id?.profile_photo_url ||
-                                PlaceholderImg.src
+                                member?.profile_photo_url || PlaceholderImg.src
                               }
                               fill
                               sizes="(max-width: 640px) 64px, 80px"
                               alt={
-                                member.user_id
-                                  ? `${member.user_id.first_name} ${member.user_id.last_name}`
+                                member
+                                  ? `${member.user.first_name} ${member.user.last_name}`
                                   : "Unknown Member"
                               }
                               className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -231,8 +229,8 @@ const Members: React.FC<MembersProps> = ({
 
                         <div className="px-2 py-1 text-center flex-grow flex flex-col justify-center">
                           <h3 className="text-sm font-medium text-foreground group-hover:text-primary line-clamp-1 transition-colors duration-300">
-                            {member.user_id
-                              ? `${member.user_id.first_name} ${member.user_id.last_name}`
+                            {member.user
+                              ? `${member.user.first_name} ${member.user.last_name}`
                               : "Unknown Member"}
                           </h3>
 
@@ -246,7 +244,8 @@ const Members: React.FC<MembersProps> = ({
                         <div
                           className={cn(
                             "flex justify-between items-center px-3 py-2 mt-1",
-                            member.social_links && member.social_links.length > 0
+                            member.social_links &&
+                              member.social_links.length > 0
                               ? "border-t"
                               : ""
                           )}
@@ -254,18 +253,20 @@ const Members: React.FC<MembersProps> = ({
                           {member.social_links &&
                           member.social_links.length > 0 ? (
                             <div className="flex space-x-2">
-                              {member.social_links.slice(0, 2).map((link, i) => (
-                                <Link
-                                  key={i}
-                                  href={link}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  onClick={(e) => e.stopPropagation()}
-                                  className="text-muted-foreground hover:text-primary transition-colors"
-                                >
-                                  {getSocialIcon(link)}
-                                </Link>
-                              ))}
+                              {member.social_links
+                                .slice(0, 2)
+                                .map((link, i) => (
+                                  <Link
+                                    key={i}
+                                    href={link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="text-muted-foreground hover:text-primary transition-colors"
+                                  >
+                                    {getSocialIcon(link)}
+                                  </Link>
+                                ))}
                               {member.social_links.length > 2 && (
                                 <span className="text-xs text-muted-foreground">
                                   +{member.social_links.length - 2}
@@ -282,8 +283,8 @@ const Members: React.FC<MembersProps> = ({
                     <TooltipContent side="top">
                       <div className="text-center">
                         <p className="font-medium">
-                          {member.user_id
-                            ? `${member.user_id.first_name} ${member.user_id.last_name}`
+                          {member
+                            ? `${member.user.first_name} ${member.user.last_name}`
                             : "Unknown Member"}
                         </p>
                         {member.role && (
@@ -314,12 +315,15 @@ const Members: React.FC<MembersProps> = ({
               No Members Found
             </h2>
             <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-              It looks like we don’t have any {isExecutiveBoard ? "executive board" : "team"} members to display right now. Check back later or contact us for more information!
+              It looks like we don’t have any{" "}
+              {isExecutiveBoard ? "executive board" : "team"} members to display
+              right now. Check back later or contact us for more information!
             </p>
             <Button
               variant="outline"
-              onClick={() => router.push("/contact")}
-              className="hover:bg-primary hover:text-primary-foreground transition-colors"
+              onClick={() =>
+                router.push("/contact", { onTransitionReady: slideInOut })
+              }
             >
               Contact Us
             </Button>

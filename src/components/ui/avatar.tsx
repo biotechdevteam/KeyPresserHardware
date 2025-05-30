@@ -75,6 +75,7 @@ const AvatarImage = React.forwardRef<
   AvatarImageProps
 >(({ className, placeholderUrl, ...props }, ref) => {
   const imgRef = React.useRef<HTMLImageElement | null>(null);
+  const [isLoaded, setIsLoaded] = React.useState(false);
 
   return (
     <AvatarPrimitive.Image
@@ -87,11 +88,13 @@ const AvatarImage = React.forwardRef<
         imgRef.current = node;
       }}
       className={cn(
-        "aspect-square h-full w-full object-cover transition-opacity",
-        "opacity-0 data-[state=loaded]:opacity-100", // Corrected typo here
+        "aspect-square h-full w-full object-cover transition-opacity duration-200",
+        isLoaded ? "opacity-100" : "opacity-0",
         className
       )}
+      onLoad={() => setIsLoaded(true)}
       onLoadingStatusChange={(status) => {
+        if (status === "loaded") setIsLoaded(true);
         if (status === "error" && placeholderUrl && imgRef.current) {
           imgRef.current.src = placeholderUrl;
         }
@@ -100,6 +103,7 @@ const AvatarImage = React.forwardRef<
     />
   );
 });
+
 AvatarImage.displayName = AvatarPrimitive.Image.displayName;
 
 interface AvatarFallbackProps

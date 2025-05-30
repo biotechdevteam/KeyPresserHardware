@@ -16,79 +16,49 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import useImgbb from "@/lib/useImgBB";
 import useAuth from "@/lib/useAuth";
 import { User } from "@/types/userSchema";
 import { Member } from "@/types/memberSchema";
-import { Applicant } from "@/types/applicant";
-import {
-  Save,
-  Upload,
-  X,
-  AlertCircle,
-  CheckCircle,
-  User as UserIcon,
-  FileText,
-} from "lucide-react";
+import { Save, Upload, X, AlertCircle, FileText } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import Link from "next/link";
 import { toast } from "sonner";
+import { Applicant } from "@/types/applicant";
 
-// Define the social links schema
-const SocialLinksSchema = z.array(z.string().url()).optional();
-
-// Define the form schema based on user type
-const BaseProfileSchema = z.object({
+// User profile schema
+const UserProfileSchema = z.object({
   first_name: z.string().min(1, "First name is required"),
   last_name: z.string().min(1, "Last name is required"),
   email: z.string().email("Invalid email address"),
-  profile_photo_url: z.string().url().optional(),
+  profile_photo_url: z.string().url().optional().or(z.literal("")),
 });
 
-const MemberProfileSchema = BaseProfileSchema.extend({
-  specialization: z.string().min(1, "Specialization is required"),
-  bio: z.string().min(10, "Bio should be at least 10 characters"),
-  skills: z.array(z.string()).min(1, "At least one skill is required"),
+// Member profile schema
+const MemberProfileSchema = UserProfileSchema.extend({
+  specialization: z.string().optional(),
+  bio: z.string().optional(),
+  skills: z.array(z.string()).optional(),
   interests: z.array(z.string()).optional(),
   address: z.string().optional(),
-  resume_url: z.string().url().optional(),
-  social_links: SocialLinksSchema,
+  resume_url: z.string().url().optional().or(z.literal("")),
+  social_links: z.array(z.string().url()).optional(),
 });
 
-const ApplicantProfileSchema = BaseProfileSchema.extend({
-  specialization_area: z.string().min(1, "Specialization area is required"),
-  motivation_letter: z.string().min(50, "Motivation letter is too short"),
-  resume_url: z.string().url().optional(),
-});
-
-type BaseProfileFormData = z.infer<typeof BaseProfileSchema>;
+type UserProfileFormData = z.infer<typeof UserProfileSchema>;
 type MemberProfileFormData = z.infer<typeof MemberProfileSchema>;
-type ApplicantProfileFormData = z.infer<typeof ApplicantProfileSchema>;
 
 interface EditProfileProps {
-  profile: Member | Applicant;
   user: User;
-  onUpdate: (
+  profile: Member | Applicant;
+  memberProfile?: Member;
+  onUserUpdate?: (
+    firstName: string,
+    lastName: string,
+    profilePhotoUrl: string
+  ) => void;
+  onMemberUpdate?: (
     memberId: string,
     bio: string,
     skills: string[],
@@ -97,13 +67,15 @@ interface EditProfileProps {
     address: string,
     socialLinks: string[],
     resumeUrl: string
-  ) => void; // Updated to match useAuth's updateProfile signature
+  ) => void;
 }
 
 const EditProfile: React.FC<EditProfileProps> = ({
-  profile,
   user,
-  onUpdate,
+  profile,
+  memberProfile,
+  onUserUpdate,
+  onMemberUpdate,
 }) => {
   const { loading: authLoading } = useAuth();
   const {
@@ -120,7 +92,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
   } = useImgbb();
 
   const [formSection, setFormSection] = useState<
-    "personal" | "professional" | "social"
+    "personal" | "professional" | "public"
   >("personal");
   const [skills, setSkills] = useState<string[]>([]);
   const [newSkill, setNewSkill] = useState("");
@@ -128,15 +100,11 @@ const EditProfile: React.FC<EditProfileProps> = ({
   const [newInterest, setNewInterest] = useState("");
   const [socialLinks, setSocialLinks] = useState<string[]>([]);
   const [newSocialLink, setNewSocialLink] = useState("");
-  const [motivationLetter, setMotivationLetter] = useState("");
-  const [showUnsavedDialog, setShowUnsavedDialog] = useState(false);
   const [isFormDirty, setIsFormDirty] = useState(false);
 
-  // Determine if profile is a Member or Applicant
-  const isMember = "specialization" in profile;
-  const isApplicant = "specialization_area" in profile;
+  const isMember = user.user_type === "member";
 
-  // Create the appropriate form based on user type
+  // Use appropriate schema based on user type
   const {
     register,
     handleSubmit,
@@ -144,63 +112,56 @@ const EditProfile: React.FC<EditProfileProps> = ({
     setValue,
     reset,
     watch,
-  } = useForm<MemberProfileFormData | ApplicantProfileFormData>({
-    resolver: zodResolver(
-      isMember ? MemberProfileSchema : ApplicantProfileSchema
-    ),
-    defaultValues: isMember
-      ? {
-          first_name: user.first_name,
-          last_name: user.last_name,
-          email: user.email,
-          profile_photo_url: user.profile_photo_url || "",
-          specialization: (profile as Member).specialization || "",
-          bio: (profile as Member).bio || "",
-          skills: (profile as Member).skills || [],
-          interests: (profile as Member).interests || [],
-          address: (profile as Member).address || "",
-          resume_url: (profile as Member).resume_url || "",
-          social_links: (profile as Member).social_links || [],
-        }
-      : {
-          first_name: user.first_name,
-          last_name: user.last_name,
-          email: user.email,
-          profile_photo_url: user.profile_photo_url || "",
-          specialization_area: (profile as Applicant).specialization_area || "",
-          motivation_letter: (profile as Applicant).motivation_letter || "",
-          resume_url: (profile as Applicant).resume_url || "",
-        },
+  } = useForm<
+    typeof isMember extends false ? UserProfileFormData : MemberProfileFormData
+  >({
+    resolver: zodResolver(isMember ? MemberProfileSchema : UserProfileSchema),
+    defaultValues: {
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      profile_photo_url: profile.profile_photo_url as string,
+      ...(isMember && memberProfile
+        ? {
+            specialization: memberProfile.specialization || "",
+            bio: memberProfile.bio || "",
+            skills: memberProfile.skills || [],
+            interests: memberProfile.interests || [],
+            address: memberProfile.address || "",
+            resume_url: memberProfile.resume_url || "",
+            social_links: memberProfile.social_links || [],
+          }
+        : {}),
+    },
   });
 
-  // Initialize form values from profile
+  // Initialize form values
   useEffect(() => {
     if (user) {
       setValue("first_name", user.first_name);
       setValue("last_name", user.last_name);
       setValue("email", user.email);
-      setValue("profile_photo_url", user.profile_photo_url || "");
+      setValue("profile_photo_url", profile.profile_photo_url as string);
     }
 
-    if (isMember) {
-      const memberProfile = profile as Member;
-      setValue("specialization", memberProfile.specialization || "");
-      setValue("bio", memberProfile.bio || "");
-      setValue("address", memberProfile.address || "");
-      setValue("resume_url", memberProfile.resume_url || "");
+    if (isMember && memberProfile) {
+      const memberForm = setValue as (
+        name: keyof MemberProfileFormData,
+        value: any
+      ) => void;
+      memberForm("specialization", memberProfile.specialization || "");
+      memberForm("bio", memberProfile.bio || "");
+      memberForm("address", memberProfile.address || "");
+      memberForm("resume_url", memberProfile.resume_url || "");
+      memberForm("skills", memberProfile.skills || []);
+      memberForm("interests", memberProfile.interests || []);
+      memberForm("social_links", memberProfile.social_links || []);
+
       setSkills(memberProfile.skills || []);
       setInterests(memberProfile.interests || []);
       setSocialLinks(memberProfile.social_links || []);
-    } else if (isApplicant) {
-      const applicantProfile = profile as Applicant;
-      setValue(
-        "specialization_area",
-        applicantProfile.specialization_area || ""
-      );
-      setMotivationLetter(applicantProfile.motivation_letter || "");
-      setValue("resume_url", applicantProfile.resume_url || "");
     }
-  }, [profile, user, setValue, isMember, isApplicant]);
+  }, [user, profile, memberProfile, setValue, isMember]);
 
   // Update form value when imageUrl changes
   useEffect(() => {
@@ -212,11 +173,11 @@ const EditProfile: React.FC<EditProfileProps> = ({
 
   // Update form value when fileUrl changes
   useEffect(() => {
-    if (fileUrl) {
+    if (fileUrl && isMember) {
       setValue("resume_url", fileUrl);
       setIsFormDirty(true);
     }
-  }, [fileUrl, setValue]);
+  }, [fileUrl, setValue, isMember]);
 
   // Handle profile photo upload
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -235,7 +196,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
     if (newSkill && !skills.includes(newSkill)) {
       const updatedSkills = [...skills, newSkill];
       setSkills(updatedSkills);
-      setValue("skills", updatedSkills);
+      if (isMember) setValue("skills", updatedSkills);
       setNewSkill("");
       setIsFormDirty(true);
     }
@@ -244,7 +205,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
   const removeSkill = (index: number) => {
     const updatedSkills = skills.filter((_, i) => i !== index);
     setSkills(updatedSkills);
-    setValue("skills", updatedSkills);
+    if (isMember) setValue("skills", updatedSkills);
     setIsFormDirty(true);
   };
 
@@ -253,7 +214,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
     if (newInterest && !interests.includes(newInterest)) {
       const updatedInterests = [...interests, newInterest];
       setInterests(updatedInterests);
-      setValue("interests", updatedInterests);
+      if (isMember) setValue("interests", updatedInterests);
       setNewInterest("");
       setIsFormDirty(true);
     }
@@ -262,7 +223,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
   const removeInterest = (index: number) => {
     const updatedInterests = interests.filter((_, i) => i !== index);
     setInterests(updatedInterests);
-    setValue("interests", updatedInterests);
+    if (isMember) setValue("interests", updatedInterests);
     setIsFormDirty(true);
   };
 
@@ -275,7 +236,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
     ) {
       const updatedLinks = [...socialLinks, newSocialLink];
       setSocialLinks(updatedLinks);
-      setValue("social_links", updatedLinks);
+      if (isMember) setValue("social_links", updatedLinks);
       setNewSocialLink("");
       setIsFormDirty(true);
     } else {
@@ -286,14 +247,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
   const removeSocialLink = (index: number) => {
     const updatedLinks = socialLinks.filter((_, i) => i !== index);
     setSocialLinks(updatedLinks);
-    setValue("social_links", updatedLinks);
-    setIsFormDirty(true);
-  };
-
-  // Handle motivation letter change for applicants
-  const handleMotivationChange = (value: string) => {
-    setMotivationLetter(value);
-    setValue("motivation_letter", value);
+    if (isMember) setValue("social_links", updatedLinks);
     setIsFormDirty(true);
   };
 
@@ -307,36 +261,38 @@ const EditProfile: React.FC<EditProfileProps> = ({
 
   // Handle form submission
   const onSubmit = async (
-    data: MemberProfileFormData | ApplicantProfileFormData
+    data: UserProfileFormData | MemberProfileFormData
   ) => {
     try {
-      if (isMember) {
+      // Update user information
+      // if (onUserUpdate) {
+      //   await onUserUpdate(
+      //     data.first_name,
+      //     data.last_name,
+      //     data.profile_photo_url || ""
+      //   );
+      // }
+
+      // Update member profile if applicable
+      if (isMember && memberProfile && onMemberUpdate) {
         const memberData = data as MemberProfileFormData;
-        const success = await onUpdate(
-          (profile as Member)._id, // Assuming profile has _id
-          memberData.bio,
+        await onMemberUpdate(
+          memberProfile._id,
+          memberData.bio || "",
           skills,
           interests,
-          memberData.specialization,
+          memberData.specialization || "",
           memberData.address || "",
           socialLinks,
           memberData.resume_url || ""
         );
-
-        if (success !== null) {
-          toast.success("Your profile has been successfully updated");
-          setIsFormDirty(false);
-          reset(data); // Reset form with updated values
-        }
-      } else if (isApplicant) {
-        // Applicants don't use updateProfile directly in this context; handle separately if needed
-        toast.info(
-          "Applicant profiles cannot be updated this way. Please contact support."
-        );
-        toast.warning(
-          "Applicant profiles cannot be updated this way. Please contact support."
-        );
       }
+
+      console.log("Data submitted:", data);
+
+      toast.success("Profile updated successfully!");
+      setIsFormDirty(false);
+      reset(data);
     } catch (error) {
       toast.error("There was a problem updating your profile");
     }
@@ -352,95 +308,95 @@ const EditProfile: React.FC<EditProfileProps> = ({
     return "Website";
   };
 
-  // ReactQuill modules configuration
-  const quillModules = {
-    toolbar: [
-      [{ header: [1, 2, false] }],
-      ["bold", "italic", "underline"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      ["clean"],
-    ],
-  };
-
-  // Handle navigation with unsaved changes
-  const handleSectionChange = (
-    section: "personal" | "professional" | "social"
-  ) => {
-    if (isFormDirty) {
-      setShowUnsavedDialog(true);
-    } else {
-      setFormSection(section);
-    }
-  };
-
   return (
     <div className="max-w-4xl mx-auto">
       <Card className="shadow-lg border-border">
-        <CardHeader className="border-b border-border bg-muted/30">
+        <CardHeader className="border-b border-border">
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="text-2xl font-bold text-primary">
-                Edit Profile
-              </CardTitle>
-              <CardDescription>
-                Update your personal and professional information
+              <CardTitle className="text-2xl font-bold">Edit Profile</CardTitle>
+              <CardDescription className="text-base">
+                Update your personal{isMember ? " and professional" : ""}{" "}
+                information
               </CardDescription>
             </div>
             {isFormDirty && (
-              <div className="flex items-center text-sm text-muted-foreground">
-                <span className="inline-block w-2 h-2 rounded-full bg-amber-500 mr-2"></span>
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="flex items-center text-sm text-amber-200 px-3 py-1 rounded-full border border-amber-200"
+              >
+                <span className="inline-block w-2 h-2 rounded-full bg-amber-500 mr-2 animate-pulse"></span>
                 Unsaved changes
-              </div>
+              </motion.div>
             )}
           </div>
         </CardHeader>
 
         {/* Form Navigation */}
-        <div className="border-b border-border">
-          <div className="flex">
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              className={`rounded-none py-4 px-6 ${
-                formSection === "personal"
-                  ? "border-b-2 border-primary text-primary font-medium"
-                  : ""
-              }`}
-              onClick={() => handleSectionChange("personal")}
-            >
-              Personal Info
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              className={`rounded-none py-4 px-6 ${
-                formSection === "professional"
-                  ? "border-b-2 border-primary text-primary font-medium"
-                  : ""
-              }`}
-              onClick={() => handleSectionChange("professional")}
-            >
-              {isMember ? "Professional Details" : "Application Details"}
-            </Button>
-            {isMember && (
+        {isMember && (
+          <div className="border-b border-border bg-muted/10">
+            <div className="flex">
               <Button
                 type="button"
                 variant="ghost"
                 size="sm"
-                className={`rounded-none py-4 px-6 ${
-                  formSection === "social"
-                    ? "border-b-2 border-primary text-primary font-medium"
-                    : ""
+                className={`rounded-none py-4 px-6 relative transition-all duration-200 ${
+                  formSection === "personal"
+                    ? "text-primary font-medium"
+                    : "hover:text-primary/70"
                 }`}
-                onClick={() => handleSectionChange("social")}
+                onClick={() => setFormSection("personal")}
               >
-                Social Profiles
+                Personal Info
+                {formSection === "personal" && (
+                  <motion.div
+                    layoutId="activeTab"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
+                  />
+                )}
               </Button>
-            )}
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className={`rounded-none py-4 px-6 relative transition-all duration-200 ${
+                  formSection === "professional"
+                    ? "text-primary font-medium"
+                    : "hover:text-primary/70"
+                }`}
+                onClick={() => setFormSection("professional")}
+              >
+                Professional Details
+                {formSection === "professional" && (
+                  <motion.div
+                    layoutId="activeTab"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
+                  />
+                )}
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className={`rounded-none py-4 px-6 relative transition-all duration-200 ${
+                  formSection === "public"
+                    ? "text-primary font-medium"
+                    : "hover:text-primary/70"
+                }`}
+                onClick={() => setFormSection("public")}
+              >
+                Public Profiles
+                {formSection === "public" && (
+                  <motion.div
+                    layoutId="activeTab"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
+                  />
+                )}
+              </Button>
+            </div>
           </div>
-        </div>
+        )}
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardContent className="p-6">
@@ -452,6 +408,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
                   className="space-y-6"
                 >
                   <div className="flex flex-col md:flex-row gap-8">
@@ -461,34 +418,40 @@ const EditProfile: React.FC<EditProfileProps> = ({
                         Profile Photo
                       </Label>
                       <div className="relative group">
-                        <Avatar className="h-40 w-40 cursor-pointer transition-opacity group-hover:opacity-80">
-                          <AvatarImage
-                            src={watch("profile_photo_url") || ""}
-                            alt={`${user.first_name} ${user.last_name}`}
-                          />
-                          <AvatarFallback className="text-2xl">
-                            {user.first_name[0]}
-                            {user.last_name[0]}
-                          </AvatarFallback>
-                          {/* Overlay input for clicking the avatar */}
-                          <input
-                            type="file"
-                            accept="image/*"
-                            onChange={handleImageChange}
-                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                            id="profile-photo"
-                          />
-                          {/* Hover overlay */}
-                          <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-full">
-                            <Upload size={24} className="text-white" />
-                          </div>
-                        </Avatar>
+                        <motion.div
+                          whileHover={{ scale: 1.02 }}
+                          transition={{ type: "spring", stiffness: 300 }}
+                        >
+                          <Avatar className="h-40 w-40 cursor-pointer transition-all duration-300 group-hover:shadow-xl ring-2 ring-transparent group-hover:ring-primary/20">
+                            <AvatarImage
+                              src={
+                                watch("profile_photo_url") ||
+                                (profile.profile_photo_url as string)
+                              }
+                              alt={`${user.first_name} ${user.last_name}`}
+                            />
+                            <AvatarFallback className="text-2xl bg-gradient-to-br from-primary/20 to-primary/10">
+                              {user.first_name[0]}
+                              {user.last_name[0]}
+                            </AvatarFallback>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={handleImageChange}
+                              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                              id="profile-photo"
+                            />
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-full">
+                              <Upload size={24} className="text-white" />
+                            </div>
+                          </Avatar>
+                        </motion.div>
                         {watch("profile_photo_url") && (
                           <Button
                             type="button"
                             size="icon"
                             variant="destructive"
-                            className="absolute -top-2 -right-2 h-8 w-8 rounded-full p-1 z-20"
+                            className="absolute -top-2 -right-2 h-8 w-8 rounded-full p-1 z-20 shadow-lg"
                             onClick={() => {
                               setValue("profile_photo_url", "");
                               setIsFormDirty(true);
@@ -499,64 +462,98 @@ const EditProfile: React.FC<EditProfileProps> = ({
                         )}
                       </div>
                       {imgLoading && (
-                        <div className="text-sm text-muted-foreground flex items-center gap-2">
-                          <div className="h-3 w-3 rounded-full border-2 border-primary border-t-transparent animate-spin"></div>
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          className="text-sm text-muted-foreground flex items-center gap-2"
+                        >
+                          <div className="h-4 w-4 rounded-full border-2 border-primary border-t-transparent animate-spin"></div>
                           Uploading...
-                        </div>
+                        </motion.div>
                       )}
                       {imgError && (
-                        <p className="text-sm text-destructive flex items-center gap-2">
+                        <motion.p
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          className="text-sm text-destructive flex items-center gap-2"
+                        >
                           <AlertCircle size={14} />
                           {imgError}
-                        </p>
+                        </motion.p>
                       )}
                       <p className="text-sm text-muted-foreground text-center max-w-xs">
-                        Click the photo to upload a new one or enhance your
-                        profile
+                        Click the photo to upload a new one
                       </p>
                     </div>
 
                     {/* Personal Details */}
                     <div className="w-full md:w-2/3 space-y-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-2">
+                        <motion.div
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.1 }}
+                          className="space-y-2"
+                        >
                           <Label htmlFor="first_name" className="font-medium">
                             First Name
                           </Label>
                           <Input
                             id="first_name"
                             {...register("first_name")}
-                            className={
-                              errors.first_name ? "border-destructive" : ""
-                            }
+                            className={`transition-all duration-200 ${
+                              errors.first_name
+                                ? "border-destructive focus:ring-destructive/20"
+                                : "focus:ring-primary/20"
+                            }`}
                           />
                           {errors.first_name && (
-                            <p className="text-xs text-destructive">
+                            <motion.p
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              className="text-xs text-destructive"
+                            >
                               {errors.first_name.message}
-                            </p>
+                            </motion.p>
                           )}
-                        </div>
+                        </motion.div>
 
-                        <div className="space-y-2">
+                        <motion.div
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.2 }}
+                          className="space-y-2"
+                        >
                           <Label htmlFor="last_name" className="font-medium">
                             Last Name
                           </Label>
                           <Input
                             id="last_name"
                             {...register("last_name")}
-                            className={
-                              errors.last_name ? "border-destructive" : ""
-                            }
+                            className={`transition-all duration-200 ${
+                              errors.last_name
+                                ? "border-destructive focus:ring-destructive/20"
+                                : "focus:ring-primary/20"
+                            }`}
                           />
                           {errors.last_name && (
-                            <p className="text-xs text-destructive">
+                            <motion.p
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              className="text-xs text-destructive"
+                            >
                               {errors.last_name.message}
-                            </p>
+                            </motion.p>
                           )}
-                        </div>
+                        </motion.div>
                       </div>
 
-                      <div className="space-y-2">
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="space-y-2"
+                      >
                         <Label htmlFor="email" className="font-medium">
                           Email Address
                         </Label>
@@ -564,444 +561,453 @@ const EditProfile: React.FC<EditProfileProps> = ({
                           id="email"
                           {...register("email")}
                           disabled
-                          className="bg-muted"
+                          className="bg-muted/50 cursor-not-allowed"
                         />
                         <p className="text-xs text-muted-foreground">
                           Contact support to change your email address
                         </p>
-                      </div>
-
-                      {isMember && (
-                        <div className="space-y-2">
-                          <Label htmlFor="address" className="font-medium">
-                            Address
-                          </Label>
-                          <Input id="address" {...register("address")} />
-                        </div>
-                      )}
+                      </motion.div>
                     </div>
                   </div>
                 </motion.div>
               )}
 
-              {/* Professional/Application Details Section */}
-              {formSection === "professional" && (
+              {/* Professional Details Section */}
+              {formSection === "professional" && isMember && (
                 <motion.div
                   key="professional"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
                   className="space-y-6"
                 >
-                  {/* Member Professional Details */}
-                  {isMember && (
-                    <>
-                      <div className="space-y-4">
-                        <div className="space-y-2">
-                          <Label
-                            htmlFor="specialization"
-                            className="font-medium"
-                          >
-                            Specialization
-                          </Label>
-                          <Input
-                            id="specialization"
-                            {...register("specialization")}
-                            // className={
-                            //   errors.specialization ? "border-destructive" : ""
-                            // }
-                          />
-                          {/* {errors.specialization && (
-                            <p className="text-xs text-destructive">
-                              {errors.specialization.message}
-                            </p>
-                          )} */}
-                        </div>
+                  <div className="space-y-4">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1 }}
+                      className="space-y-2"
+                    >
+                      <Label htmlFor="specialization" className="font-medium">
+                        Specialization
+                      </Label>
+                      <Input
+                        id="specialization"
+                        {...register("specialization")}
+                        className={`transition-all duration-200 ${
+                          errors.specialization
+                            ? "border-destructive focus:ring-destructive/20"
+                            : "focus:ring-primary/20"
+                        }`}
+                      />
+                      {errors.specialization && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="text-xs text-destructive"
+                        >
+                          {errors.specialization.message}
+                        </motion.p>
+                      )}
+                    </motion.div>
 
-                        <div className="space-y-2">
-                          <Label htmlFor="bio" className="font-medium">
-                            Professional Bio
-                          </Label>
-                          <Textarea
-                            id="bio"
-                            {...register("bio")}
-                            rows={5}
-                            // className={errors.bio ? "border-destructive" : ""}
-                          />
-                          {/* {errors.bio && (
-                            <p className="text-xs text-destructive">
-                              {errors.bio.message}
-                            </p>
-                          )} */}
-                        </div>
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 }}
+                      className="space-y-2"
+                    >
+                      <Label htmlFor="bio" className="font-medium">
+                        Bio
+                      </Label>
+                      <Textarea
+                        id="bio"
+                        {...register("bio")}
+                        className={`min-h-[100px] transition-all duration-200 ${
+                          errors.bio
+                            ? "border-destructive focus:ring-destructive/20"
+                            : "focus:ring-primary/20"
+                        }`}
+                      />
+                      {errors.bio && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="text-xs text-destructive"
+                        >
+                          {errors.bio.message}
+                        </motion.p>
+                      )}
+                    </motion.div>
+
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 }}
+                      className="space-y-2"
+                    >
+                      <Label className="font-medium">Skills</Label>
+                      <div className="flex gap-2">
+                        <Input
+                          value={newSkill}
+                          onChange={(e) => setNewSkill(e.target.value)}
+                          placeholder="Add a skill"
+                          className="flex-1"
+                        />
+                        <Button
+                          type="button"
+                          onClick={addSkill}
+                          disabled={!newSkill}
+                        >
+                          Add
+                        </Button>
                       </div>
-
-                      {/* Skills */}
-                      <div className="space-y-2">
-                        <Label className="font-medium">Skills</Label>
-                        <div className="flex flex-wrap gap-2 mb-2">
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        <AnimatePresence>
                           {skills.map((skill, index) => (
-                            <span
-                              key={index}
-                              className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm flex items-center gap-1"
+                            <motion.div
+                              key={skill}
+                              initial={{ opacity: 0, scale: 0.8 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              exit={{ opacity: 0, scale: 0.8 }}
+                              className="flex items-center gap-1 bg-primary/10 px-3 py-1 rounded-full text-sm"
                             >
                               {skill}
                               <Button
                                 type="button"
-                                variant="ghost"
                                 size="icon"
-                                className="h-5 w-5 rounded-full"
+                                variant="ghost"
+                                className="h-5 w-5 p-1"
                                 onClick={() => removeSkill(index)}
                               >
-                                <X size={12} />
+                                <X size={14} />
                               </Button>
-                            </span>
+                            </motion.div>
                           ))}
-                        </div>
-                        <div className="flex gap-2">
-                          <Input
-                            placeholder="Add a skill"
-                            value={newSkill}
-                            onChange={(e) => setNewSkill(e.target.value)}
-                            onKeyPress={(e) => {
-                              if (e.key === "Enter") {
-                                e.preventDefault();
-                                addSkill();
-                              }
-                            }}
-                          />
-                          <Button type="button" onClick={addSkill}>
-                            Add
-                          </Button>
-                        </div>
-                        {/* {errors.skills && (
-                          <p className="text-xs text-destructive">
-                            {errors.skills.message}
-                          </p>
-                        )} */}
+                        </AnimatePresence>
                       </div>
+                      {errors.skills && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="text-xs text-destructive"
+                        >
+                          {errors.skills.message}
+                        </motion.p>
+                      )}
+                    </motion.div>
 
-                      {/* Interests */}
-                      <div className="space-y-2">
-                        <Label className="font-medium">Interests</Label>
-                        <div className="flex flex-wrap gap-2 mb-2">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4 }}
+                      className="space-y-2"
+                    >
+                      <Label className="font-medium">Interests</Label>
+                      <div className="flex gap-2">
+                        <Input
+                          value={newInterest}
+                          onChange={(e) => setNewInterest(e.target.value)}
+                          placeholder="Add an interest"
+                          className="flex-1"
+                        />
+                        <Button
+                          type="button"
+                          onClick={addInterest}
+                          disabled={!newInterest}
+                        >
+                          Add
+                        </Button>
+                      </div>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        <AnimatePresence>
                           {interests.map((interest, index) => (
-                            <span
-                              key={index}
-                              className="bg-secondary/10 text-secondary px-3 py-1 rounded-full text-sm flex items-center gap-1"
+                            <motion.div
+                              key={interest}
+                              initial={{ opacity: 0, scale: 0.8 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              exit={{ opacity: 0, scale: 0.8 }}
+                              className="flex items-center gap-1 bg-primary/10 px-3 py-1 rounded-full text-sm"
                             >
                               {interest}
                               <Button
                                 type="button"
-                                variant="ghost"
                                 size="icon"
-                                className="h-5 w-5 rounded-full"
+                                variant="ghost"
+                                className="h-5 w-5 p-1"
                                 onClick={() => removeInterest(index)}
                               >
-                                <X size={12} />
+                                <X size={14} />
                               </Button>
-                            </span>
+                            </motion.div>
                           ))}
-                        </div>
-                        <div className="flex gap-2">
-                          <Input
-                            placeholder="Add an interest"
-                            value={newInterest}
-                            onChange={(e) => setNewInterest(e.target.value)}
-                            onKeyPress={(e) => {
-                              if (e.key === "Enter") {
-                                e.preventDefault();
-                                addInterest();
-                              }
-                            }}
-                          />
-                          <Button type="button" onClick={addInterest}>
-                            Add
-                          </Button>
-                        </div>
+                        </AnimatePresence>
                       </div>
-                    </>
-                  )}
+                      {errors.interests && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="text-xs text-destructive"
+                        >
+                          {errors.interests.message}
+                        </motion.p>
+                      )}
+                    </motion.div>
 
-                  {/* Applicant Details */}
-                  {isApplicant && (
-                    <>
-                      <div className="space-y-4">
-                        <div className="space-y-2">
-                          <Label
-                            htmlFor="specialization_area"
-                            className="font-medium"
-                          >
-                            Specialization Area
-                          </Label>
-                          <Input
-                            id="specialization_area"
-                            {...register("specialization_area")}
-                            // className={
-                            //   errors.specialization_area
-                            //     ? "border-destructive"
-                            //     : ""
-                            // }
-                          />
-                          {/* {errors.specialization_area && (
-                            <p className="text-xs text-destructive">
-                              {errors.specialization_area.message}
-                            </p>
-                          )} */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.5 }}
+                      className="space-y-2"
+                    >
+                      <Label htmlFor="address" className="font-medium">
+                        Address
+                      </Label>
+                      <Input
+                        id="address"
+                        {...register("address")}
+                        className={`transition-all duration-200 ${
+                          errors.address
+                            ? "border-destructive focus:ring-destructive/20"
+                            : "focus:ring-primary/20"
+                        }`}
+                      />
+                      {errors.address && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="text-xs text-destructive"
+                        >
+                          {errors.address.message}
+                        </motion.p>
+                      )}
+                    </motion.div>
+
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.6 }}
+                      className="space-y-2"
+                    >
+                      <Label className="font-medium">Resume</Label>
+                      <div className="flex items-center gap-3 p-4 border rounded-lg">
+                        <div className="h-10 w-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                          <FileText className="h-5 w-5 text-primary" />
                         </div>
-
-                        <div className="space-y-2">
-                          <Label
-                            htmlFor="motivation_letter"
-                            className="font-medium"
-                          >
-                            Motivation Letter
-                          </Label>
-                          <div className="bg-card border border-border rounded-lg overflow-hidden">
-                            <div className="border-b border-border px-4 py-2 bg-muted/30 flex items-center justify-between">
-                              <span className="text-sm font-medium">
-                                Edit Letter
-                              </span>
-                              <span className="text-xs text-muted-foreground">
-                                {motivationLetter.length > 0
-                                  ? motivationLetter.split(" ").length
-                                  : 0}{" "}
-                                words
-                              </span>
-                            </div>
-                            <div className="p-1">
-                              <ReactQuill
-                                value={motivationLetter}
-                                onChange={handleMotivationChange}
-                                modules={quillModules}
-                                className="h-64 text-foreground"
-                                theme="snow"
-                              />
-                            </div>
-                          </div>
-                          {/* {errors.motivation_letter && (
-                            <p className="text-xs text-destructive">
-                              {errors.motivation_letter.message}
-                            </p>
-                          )} */}
+                        <div className="flex-1">
+                          <p className="font-medium text-foreground">
+                            {watch("resume_url")
+                              ? "Resume Uploaded"
+                              : "No resume uploaded"}
+                          </p>
+                          {watch("resume_url") && (
+                            <Link
+                              href={watch("resume_url")!}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-sm text-primary hover:underline"
+                            >
+                              View Resume
+                            </Link>
+                          )}
                         </div>
-                      </div>
-                    </>
-                  )}
-
-                  {/* Resume Upload */}
-                  <div className="space-y-2">
-                    <Label className="font-medium">Resume / CV</Label>
-                    <div className="relative group">
-                      <div className="border-2 border-dashed border-muted hover:border-primary rounded-lg p-6 transition-colors cursor-pointer bg-background group-hover:bg-primary/5">
-                        <div className="flex flex-col items-center text-center relative">
+                        <div className="flex items-center gap-2">
                           <input
                             type="file"
-                            accept="application/pdf"
+                            accept=".pdf"
                             onChange={handleResumeChange}
-                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                            className="hidden"
                             id="resume-upload"
                           />
-                          {!watch("resume_url") ? (
-                            <>
-                              <div className="h-16 w-16 bg-primary/10 rounded-full flex items-center justify-center mb-4 transition-colors group-hover:bg-primary/20">
-                                <FileText className="h-8 w-8 text-primary" />
-                              </div>
-                              <span className="font-medium text-foreground group-hover:text-primary transition-colors">
-                                Click to upload your resume
-                              </span>
-                              <p className="text-xs text-muted-foreground max-w-xs">
-                                PDF format preferred (max 5MB)
-                              </p>
-                            </>
-                          ) : (
-                            <div className="flex items-center gap-2">
-                              <FileText className="h-8 w-8 text-primary" />
-                              <div className="flex flex-col items-start">
-                                <span className="font-medium text-sm">
-                                  Resume uploaded
-                                </span>
-                                <a
-                                  href={watch("resume_url")}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-xs text-primary hover:underline"
-                                >
-                                  View file
-                                </a>
-                              </div>
-                            </div>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() =>
+                              document.getElementById("resume-upload")?.click()
+                            }
+                          >
+                            <Upload className="h-4 w-4 mr-2" />
+                            Upload
+                          </Button>
+                          {watch("resume_url") && (
+                            <Button
+                              type="button"
+                              size="icon"
+                              variant="destructive"
+                              onClick={() => {
+                                setValue("resume_url", "");
+                                setIsFormDirty(true);
+                              }}
+                              className="h-8 w-8 p-1"
+                            >
+                              <X size={14} />
+                            </Button>
                           )}
-                          {/* Hover overlay */}
-                          <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg pointer-events-none">
-                            <Upload size={24} className="text-white" />
-                          </div>
                         </div>
                       </div>
-                      {watch("resume_url") && (
-                        <Button
-                          type="button"
-                          variant="destructive"
-                          size="icon"
-                          className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-1 z-20"
-                          onClick={() => {
-                            setValue("resume_url", "");
-                            setIsFormDirty(true);
-                          }}
-                        >
-                          <X size={12} />
-                        </Button>
-                      )}
                       {fileLoading && (
-                        <div className="absolute inset-0 bg-background/80 flex items-center justify-center rounded-lg">
-                          <div className="h-8 w-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-                        </div>
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          className="text-sm text-muted-foreground flex items-center gap-2"
+                        >
+                          <div className="h-4 w-4 rounded-full border-2 border-primary border-t-transparent animate-spin"></div>
+                          Uploading resume...
+                        </motion.div>
                       )}
-                    </div>
-                    {fileError && (
-                      <p className="text-xs text-destructive flex items-center gap-1">
-                        <AlertCircle size={12} /> {fileError}
-                      </p>
-                    )}
+                      {fileError && (
+                        <motion.p
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          className="text-sm text-destructive flex items-center gap-2"
+                        >
+                          <AlertCircle size={14} />
+                          {fileError}
+                        </motion.p>
+                      )}
+                    </motion.div>
                   </div>
                 </motion.div>
               )}
 
-              {/* Social Profiles Section - Only for Members */}
-              {formSection === "social" && isMember && (
+              {/* Public Profiles Section */}
+              {formSection === "public" && isMember && (
                 <motion.div
-                  key="social"
+                  key="public"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
                   className="space-y-6"
                 >
                   <div className="space-y-4">
-                    <Label className="font-medium">Social Links</Label>
-                    <div className="space-y-4">
-                      {socialLinks.map((link, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg"
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1 }}
+                      className="space-y-2"
+                    >
+                      <Label className="font-medium">Public Links</Label>
+                      <div className="flex gap-2">
+                        <Input
+                          value={newSocialLink}
+                          onChange={(e) => setNewSocialLink(e.target.value)}
+                          placeholder="Add a public link (e.g., https://linkedin.com/)"
+                          className="flex-1"
+                        />
+                        <Button
+                          type="button"
+                          onClick={addSocialLink}
+                          disabled={!newSocialLink}
                         >
-                          <div className="flex-1">
-                            <div className="font-medium text-sm">
-                              {getSocialPlatform(link)}
-                            </div>
-                            <Link
-                              href={link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-xs text-primary hover:underline truncate block"
-                            >
-                              {link}
-                            </Link>
-                          </div>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8"
-                            onClick={() => removeSocialLink(index)}
-                          >
-                            <X size={16} />
-                          </Button>
-                        </div>
-                      ))}
-
-                      <div className="space-y-2">
-                        <Label htmlFor="social-link">Add Social Profile</Label>
-                        <div className="flex gap-2">
-                          <Input
-                            id="social-link"
-                            placeholder="https://..."
-                            value={newSocialLink}
-                            onChange={(e) => setNewSocialLink(e.target.value)}
-                            onKeyPress={(e) => {
-                              if (e.key === "Enter") {
-                                e.preventDefault();
-                                addSocialLink();
-                              }
-                            }}
-                          />
-                          <Button type="button" onClick={addSocialLink}>
-                            Add
-                          </Button>
-                        </div>
+                          Add
+                        </Button>
                       </div>
-                    </div>
+                      <div className="space-y-2 mt-2">
+                        <AnimatePresence>
+                          {socialLinks.map((link, index) => (
+                            <motion.div
+                              key={link}
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -10 }}
+                              className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg"
+                            >
+                              <div className="flex-1">
+                                <p className="font-medium">
+                                  {getSocialPlatform(link)}
+                                </p>
+                                <Link
+                                  href={link}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-sm text-primary hover:underline"
+                                >
+                                  {link}
+                                </Link>
+                              </div>
+                              <Button
+                                type="button"
+                                size="icon"
+                                variant="destructive"
+                                onClick={() => removeSocialLink(index)}
+                                className="h-8 w-8 p-1"
+                              >
+                                <X size={14} />
+                              </Button>
+                            </motion.div>
+                          ))}
+                        </AnimatePresence>
+                      </div>
+                      {errors.social_links && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="text-xs text-destructive"
+                        >
+                          {errors.social_links.message}
+                        </motion.p>
+                      )}
+                    </motion.div>
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
           </CardContent>
 
-          <CardFooter className="flex justify-between border-t border-border bg-muted/30 p-4">
+          <CardFooter className="flex justify-end gap-4 border-t border-border bg-muted/10 p-6">
             <Button
               type="button"
               variant="outline"
               onClick={() => {
-                if (isFormDirty) {
-                  setShowUnsavedDialog(true);
-                } else {
-                  reset();
-                }
+                reset({
+                  first_name: user.first_name,
+                  last_name: user.last_name,
+                  email: user.email,
+                  profile_photo_url: profile.profile_photo_url as string,
+                  ...(isMember && memberProfile
+                    ? {
+                        specialization: memberProfile.specialization || "",
+                        bio: memberProfile.bio || "",
+                        skills: memberProfile.skills || [],
+                        interests: memberProfile.interests || [],
+                        address: memberProfile.address || "",
+                        resume_url: memberProfile.resume_url || "",
+                        social_links: memberProfile.social_links || [],
+                      }
+                    : {}),
+                });
+                setSkills(memberProfile?.skills || []);
+                setInterests(memberProfile?.interests || []);
+                setSocialLinks(memberProfile?.social_links || []);
+                setIsFormDirty(false);
               }}
-              disabled={authLoading}
             >
               Cancel
             </Button>
             <Button
               type="submit"
               disabled={
-                authLoading || (!isFormDirty && !imgLoading && !fileLoading)
+                !isFormDirty || authLoading || imgLoading || fileLoading
               }
-              className="min-w-[120px]"
             >
-              {authLoading ? (
-                <>
-                  <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                  Saving...
-                </>
-              ) : (
-                <>
-                  <Save className="h-4 w-4 mr-2" />
-                  Save Changes
-                </>
-              )}
+              <Save className="h-4 w-4 mr-2" />
+              Save Changes
             </Button>
           </CardFooter>
         </form>
       </Card>
 
-      {/* Unsaved Changes Dialog */}
-      <AlertDialog open={showUnsavedDialog} onOpenChange={setShowUnsavedDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Unsaved Changes</AlertDialogTitle>
-            <AlertDialogDescription>
-              You have unsaved changes that will be lost. Do you want to
-              continue?
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={() => {
-                if (formSection !== "personal") {
-                  setFormSection("personal");
-                } else {
-                  reset();
-                  setIsFormDirty(false);
-                }
-                setShowUnsavedDialog(false);
-              }}
-            >
-              Continue
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <div className="mt-4">
+        <p className="text-xs text-muted-foreground">
+          Contact support to change your email address at{" "}
+          <Link href="/profile/help">
+            Help & Support.
+          </Link>
+        </p>
+      </div>
     </div>
   );
 };

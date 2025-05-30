@@ -1,5 +1,5 @@
 import { z } from "zod";
-import MemberSchema from "./memberSchema"; // Assuming this already includes the nested structure for user_id and other details
+import MemberSchema from "./memberSchema";
 
 const ProjectSchema = z.object({
   _id: z.string(),

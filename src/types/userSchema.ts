@@ -8,7 +8,9 @@ const UserSchema = z.object({
   first_name: z.string(),
   last_name: z.string(),
   user_type: z.enum(["member", "client", "admin", "applicant"]), // Enum to specify user type
-  profile_photo_url: z.string().url().optional(),
+  user_category: z
+    .enum(["student", "professional", "institutional", "organizational"])
+    .default("student"), // Enum to specify user category
   created_at: z.date().optional(),
   updated_at: z.date().optional(),
 });

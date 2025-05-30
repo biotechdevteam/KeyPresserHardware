@@ -84,7 +84,7 @@ const Header: React.FC<HeaderProps> = ({
   notifications = [],
 }) => {
   const { theme, setTheme } = useTheme();
-  const { user, signOut } = useAuth();
+  const { user, profile, signOut } = useAuth();
   const router = useTransitionRouter();
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -253,19 +253,17 @@ const Header: React.FC<HeaderProps> = ({
           </DropdownMenu>
 
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                className="relative flex items-center ml-2"
-                aria-label="User menu"
-              >
-                <Avatar className="h-8 w-8 ring-2 ring-background">
-                  <AvatarImage src={user?.profile_photo_url} />
-                  <AvatarFallback className="bg-primary/10 text-primary">
-                    {userInitials}
-                  </AvatarFallback>
-                </Avatar>
-              </Button>
+            <DropdownMenuTrigger
+              asChild
+              className="cursor-pointer"
+              aria-label="User menu"
+            >
+              <Avatar className="h-8 w-8 ring-2 ring-background">
+                <AvatarImage src={profile?.profile_photo_url as string} />
+                <AvatarFallback className="bg-primary/10 text-primary">
+                  {userInitials}
+                </AvatarFallback>
+              </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuSeparator className="md:hidden" />

@@ -6,6 +6,7 @@ import useAuth from "@/lib/useAuth";
 import { Label } from "../ui/label";
 import { motion } from "framer-motion";
 import { AlertCircle, CheckCircle } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 interface SignUpFormProps {
   onComplete: () => void;
@@ -29,6 +30,10 @@ interface FormErrors {
 }
 
 const SignUpForm: React.FC<SignUpFormProps> = ({ onComplete, onBack }) => {
+  const searchParams = useSearchParams();
+  // Get the 'category' query parameter
+  const userCategory = searchParams.get("category");
+
   const {
     signUp,
     loading: authLoading,
@@ -128,7 +133,8 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onComplete, onBack }) => {
         formData.password,
         formData.first_name,
         formData.last_name,
-        "applicant"
+        "applicant",
+        userCategory as any
       );
 
       if (success) {
@@ -338,18 +344,11 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onComplete, onBack }) => {
         className="flex items-center justify-between mt-8 pt-2 border-t border-border"
         variants={itemVariants}
       >
-        <Button
-          type="button"
-          variant="outline"
-          onClick={handleBack}
-        >
+        <Button type="button" variant="outline" onClick={handleBack}>
           Back
         </Button>
 
-        <Button
-          type="submit"
-          disabled={authLoading}
-        >
+        <Button type="submit" disabled={authLoading}>
           {authLoading ? (
             <>
               <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"></span>

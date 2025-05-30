@@ -4,6 +4,7 @@ import { Applicant } from "@/types/applicant";
 import useAuth from "@/lib/useAuth";
 import { AxiosError } from "axios";
 import { verifyPayment } from "@/lib/utils/fetchUtils";
+import { Button } from "../ui/button";
 
 function handleApiError(errorResponse: any): string {
   if (errorResponse.response && errorResponse.response.data) {
@@ -21,7 +22,7 @@ export default function NotificationBanner() {
   const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
-  const { profile, getProfile } = useAuth();
+  const { user, profile, getProfile } = useAuth();
 
   useEffect(() => {
     if (!profile) {
@@ -89,24 +90,26 @@ export default function NotificationBanner() {
 
   return (
     <div className="bg-yellow-100 text-yellow-800 px-4 py-3 text-sm border-b border-yellow-300 flex justify-between items-center">
-      <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
-        <span>
-          🚧 Heads up! Some features may be under development. Application
-          Payment Status:
-        </span>
-        <span>{statusMessage}</span>
+      <div className="flex flex-col sm:items-center gap-1 sm:gap-3">
         <span className="font-semibold">
-          Applicant ID: {externalId}
+          🚧 Heads up! Some features may be under development.
         </span>
-        <span className="font-semibold">Transaction ID: {transactionId}</span>
+        <span>Payment Status: {statusMessage}</span>
       </div>
-      <button
+      {user?.user_type === "applicant" && (
+        <div className="flex flex-col sm:items-center gap-1 sm:gap-3">
+          <span>Applicant ID: {externalId}</span>
+          <span>Transaction ID: {transactionId ? transactionId : "-"}</span>
+        </div>
+      )}
+      <Button
+        variant="outline"
         onClick={() => setVisible(false)}
-        className="ml-4 text-yellow-800 hover:text-yellow-600"
+        className="h-7 w-7 p-1"
         aria-label="Dismiss notification"
       >
-        <X size={18} />
-      </button>
+        <X size={16} />
+      </Button>
     </div>
   );
 }

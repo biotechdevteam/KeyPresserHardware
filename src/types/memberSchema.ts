@@ -1,10 +1,11 @@
 import { z } from "zod";
 import UserSchema from "./userSchema";
 import { AssociationRole } from "./memberRoleSchema";
+import { profile } from "console";
 
 const MemberSchema = UserSchema.extend({
   _id: z.string(),
-  user_id: UserSchema,
+  user: UserSchema,
   bio: z.string().optional(),
   skills: z.array(z.string()).optional(),
   interests: z.array(z.string()).optional(),
@@ -12,6 +13,7 @@ const MemberSchema = UserSchema.extend({
   specialization: z.string().optional(),
   address: z.string().optional(),
   resume_url: z.string().url().optional(),
+  profile_photo_url: z.string().url().optional(),
   role: AssociationRole.optional(),
 });
 

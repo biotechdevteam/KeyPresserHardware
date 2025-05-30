@@ -70,5 +70,58 @@
     "emailError": "Please enter a valid email address.",
     "phoneError": "Please enter a valid phone number.",
     "messageError": "Message must be at least 10 characters long."
+  },
+  "Settings": {
+    "pageTitle": "Settings",
+    "title": "Settings",
+    "description": "Manage your account preferences",
+    "appearance": "Appearance",
+    "language": "Language",
+    "notifications": "Notifications",
+    "theme": {
+      "label": "Theme",
+      "placeholder": "Select a theme",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    },
+    "language2": {
+      "label": "Language",
+      "placeholder": "Select a language",
+      "english": "English",
+      "french": "French"
+    },
+    "notifications2": {
+      "label": "Enable Notifications"
+    },
+    "save": "Save Changes",
+    "cancel": "Cancel",
+    "fetchError": "Failed to load settings",
+    "saveSuccess": "Settings updated successfully",
+    "saveError": "Failed to update settings"
+  },
+  "Help": {
+    "pageTitle": "Help & Support",
+    "subjectLabel": "Issue Type",
+    "subjectPlaceholder": "Select an issue type",
+    "subjectError": "Please select an issue type",
+    "subjectOptions": {
+      "technical_issue": "Technical Issue",
+      "billing_problem": "Billing Problem",
+      "feature_request": "Feature Request",
+      "account_issue": "Account Issue",
+      "other": "Other"
+    },
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Provide a detailed description of the issue",
+    "descriptionError": "Description must be 10-1000 characters",
+    "attachmentLabel": "Attachment (Optional)",
+    "attachmentPlaceholder": "No file selected",
+    "attachmentHint": "Upload a PNG, JPEG, or PDF file (max 5MB)",
+    "attachmentUpload": "Upload",
+    "attachmentError": "Invalid file type or size (PNG, JPEG, PDF, max 5MB)",
+    "sendingMessage": "Submitting...",
+    "messageSent": "Issue Reported",
+    "sendMessageButton": "Submit Issue"
   }
 }

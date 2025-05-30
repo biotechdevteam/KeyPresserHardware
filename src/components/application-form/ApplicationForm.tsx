@@ -13,8 +13,6 @@ import {
 import useAuth from "@/lib/useAuth";
 import useImgbb from "@/lib/useImgBB";
 import { Member } from "@/types/memberSchema";
-import "react-quill/dist/quill.snow.css";
-import ReactQuill from "react-quill";
 import Image from "next/image";
 import { Application, ApplicationSchema } from "@/types/ApplicationSchema";
 import Link from "next/link";
@@ -45,6 +43,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+
+// Dynamically import ReactQuill to avoid SSR issues
+import dynamic from "next/dynamic";
+import Loader from "../loader/Loader";
+const ReactQuill = dynamic(() => import("react-quill"), {
+  ssr: false,
+  loading: () => <Loader />,
+});
 
 interface ApplicationFormProps {
   onComplete: () => void;

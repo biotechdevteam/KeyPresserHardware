@@ -210,7 +210,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   const t = useTranslations("NavBar");
   const logo = aboutData?.logo_url || Logo;
   const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
-  const { isAuthenticated, user, signOut } = useAuth();
+  const { isAuthenticated, user, profile, signOut } = useAuth();
   const router = useTransitionRouter();
   const pathname = usePathname();
   const themeClass = useNavigationItemTheme({ theme: "auto" });
@@ -294,7 +294,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                         >
                           <Avatar className="h-8 w-8 border-transparent group-hover:border-primary transition-all shadow-sm">
                             <AvatarImage
-                              src={user?.profile_photo_url}
+                              src={profile?.profile_photo_url as string}
                               alt="Profile"
                             />
                             <AvatarFallback className="bg-primary/10 text-primary">
@@ -684,7 +684,15 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                     ) : (
                       <NavigationMenuItem>
                         <NavigationMenuTrigger>
-                          <CircleUser className="h-5 w-5" />
+                          <Avatar className="h-10 w-10 mr-2">
+                            <AvatarImage
+                              src={profile?.profile_photo_url as string}
+                              alt={user?.first_name || "User"}
+                            />
+                            <AvatarFallback>
+                              <CircleUser className="h-5 w-5" />
+                            </AvatarFallback>
+                          </Avatar>
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
                           <div className="w-auto">
@@ -692,7 +700,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                             <div className="flex  items-center p-2 mb-2 border-b">
                               <Avatar className="h-10 w-10 mr-2">
                                 <AvatarImage
-                                  src={user?.profile_photo_url}
+                                  src={profile?.profile_photo_url as string}
                                   alt={user?.first_name || "User"}
                                 />
                                 <AvatarFallback>

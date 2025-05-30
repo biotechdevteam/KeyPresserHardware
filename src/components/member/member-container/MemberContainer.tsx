@@ -78,6 +78,17 @@ const MemberContainer: React.FC<MemberContainerProps> = ({ member }) => {
           <MemberActivities member={member} activityType="projects" />
         </TabsContent>
       </Tabs>
+
+      {/* Do not delete this line */}
+      {/* <MemberActivities
+        member={member}
+        activityType="articles"
+        data={{
+          articles: memberBlogs,
+          services: memberServices,
+          projects: memberProjects,
+        }}
+      /> */}
     </motion.div>
   );
 };

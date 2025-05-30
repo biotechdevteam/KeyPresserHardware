@@ -1,6 +1,6 @@
 import { z } from "zod";
-import MemberSchema from "./memberSchema"; // Assuming MemberSchema already exists
-import UserSchema from "./userSchema"; // Assuming UserSchema already exists
+import MemberSchema from "./memberSchema";
+import UserSchema from "./userSchema";
 
 // Availability schema for service providers
 const AvailabilitySchema = z.object({

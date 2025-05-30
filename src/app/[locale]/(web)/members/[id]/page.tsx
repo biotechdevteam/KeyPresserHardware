@@ -61,14 +61,14 @@ export async function generateMetadata(
     const memberImage = member.resume_url || member.social_links?.[0]; // Fallback to social link if no resume
 
     return {
-      title: `${member.first_name} ~ Member Profile ~ BioTec Universe`,
+      title: `${member.user.first_name}'s Profile ~ BioTec Universe`,
       description:
         member.bio ||
-        `${member.first_name} is a ${
+        `${member.user.first_name} is a ${
           member.specialization || "biotechnology"
         } expert at BioTec Universe.`,
       keywords: [
-        member.first_name,
+        member.user.first_name,
         member.specialization || "biotechnology",
         "BioTec Universe",
         "member profile",
@@ -88,10 +88,10 @@ export async function generateMetadata(
       openGraph: {
         type: "profile",
         url: `https://biotecuniverse.org/members/${id}`,
-        title: `${member.first_name} ~ BioTec Universe`,
+        title: `${member.user.first_name} ~ BioTec Universe`,
         description:
           member.bio ||
-          `${member.first_name}, ${
+          `${member.user.first_name}, ${
             member.specialization || "biotechnology"
           } expert at BioTec Universe.`,
         siteName: "BioTec Universe",
@@ -101,28 +101,30 @@ export async function generateMetadata(
                 url: memberImage,
                 width: 1200,
                 height: 630,
-                alt: `${member.first_name}'s Profile`,
+                alt: `${member.user.first_name}'s Profile`,
               },
             ]
           : [
               {
-                url: "/images/logo.png",
+                url: member.profile_photo_url as string,
                 width: 1200,
                 height: 630,
-                alt: `${member.first_name}'s Profile`,
+                alt: `${member.user.first_name}'s Profile`,
               },
             ],
         locale: "en_US",
       },
       twitter: {
         card: "summary_large_image",
-        title: `${member.first_name} ~ BioTec Universe`,
+        title: `${member.user.first_name} ~ BioTec Universe`,
         description:
           member.bio ||
-          `${member.first_name}, ${
+          `${member.user.first_name}, ${
             member.specialization || "biotechnology"
           } expert at BioTec Universe.`,
-        images: memberImage ? [memberImage] : ["/images/logo.png"],
+        images: memberImage
+          ? [memberImage]
+          : [member.profile_photo_url as string],
         creator: member.social_links?.find((link: string) =>
           link.includes("twitter.com")
         )
@@ -174,7 +176,7 @@ export default async function MemberPage({ params }: Props) {
   }
 
   return (
-    <div className="flex flex-col items-center justify-start w-full min-h-screen bg-gradient-to-b from-background to-background/95 py-8 px-4 sm:py-12">
+    <div className="flex flex-col items-center justify-start w-full min-h-screen py-8 px-4 sm:py-12">
       <MemberHeader member={member} />
       <div className="w-full max-w-4xl">
         <MemberContainer member={member} />

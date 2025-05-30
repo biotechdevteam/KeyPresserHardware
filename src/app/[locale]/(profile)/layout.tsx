@@ -16,8 +16,6 @@ export default function ProfileLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
 
-
-
   // Close sidebar on path change (mobile)
   useEffect(() => {
     setSidebarOpen(false);

@@ -13,10 +13,10 @@ interface Achievement {
 
 // Icon mapping for achievement categories
 const iconMap: Record<string, JSX.Element> = {
-  project: <Projector className="h-10 w-10 text-primary" />,
-  partners: <Users className="h-10 w-10 text-secondary" />,
-  event: <Calendar className="h-10 w-10 text-accent" />,
-  mentorship: <Star className="h-10 w-10 text-yellow-500" />,
+  project: <Projector className="h-10 w-10 text-muted-foreground" />,
+  partners: <Users className="h-10 w-10 text-muted-foreground" />,
+  event: <Calendar className="h-10 w-10 text-muted-foreground" />,
+  mentorship: <Star className="h-10 w-10 text-muted-foreground" />,
 };
 
 // Function to match icons based on keywords in title

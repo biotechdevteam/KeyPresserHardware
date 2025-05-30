@@ -65,5 +65,58 @@
     "emailError": "Veuillez entrer une adresse e-mail valide.",
     "phoneError": "Veuillez entrer un numéro de téléphone valide.",
     "messageError": "Le message doit comporter au moins 10 caractères."
+  },
+  "Settings": {
+    "pageTitle": "Paramètres",
+    "title": "Paramètres",
+    "description": "Gérez les préférences de votre compte",
+    "appearance": "Apparence",
+    "language": "Langue",
+    "notifications": "Notifications",
+    "theme": {
+      "label": "Thème",
+      "placeholder": "Sélectionnez un thème",
+      "light": "Clair",
+      "dark": "Sombre",
+      "system": "Système"
+    },
+    "language2": {
+      "label": "Langue",
+      "placeholder": "Sélectionnez une langue",
+      "english": "Anglais",
+      "french": "Français"
+    },
+    "notifications2": {
+      "label": "Activer les notifications"
+    },
+    "save": "Enregistrer les modifications",
+    "cancel": "Annuler",
+    "fetchError": "Échec du chargement des paramètres",
+    "saveSuccess": "Paramètres mis à jour avec succès",
+    "saveError": "Échec de la mise à jour des paramètres"
+  },
+  "Help": {
+    "pageTitle": "Aide et Support",
+    "subjectLabel": "Type de Problème",
+    "subjectPlaceholder": "Sélectionnez un type de problème",
+    "subjectError": "Veuillez sélectionner un type de problème",
+    "subjectOptions": {
+      "technical_issue": "Problème Technique",
+      "billing_problem": "Problème de Facturation",
+      "feature_request": "Demande de Fonctionnalité",
+      "account_issue": "Problème de Compte",
+      "other": "Autre"
+    },
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Fournissez une description détaillée du problème",
+    "descriptionError": "La description doit contenir 10 à 1000 caractères",
+    "attachmentLabel": "Pièce Jointe (Facultatif)",
+    "attachmentPlaceholder": "Aucun fichier sélectionné",
+    "attachmentHint": "Téléchargez un fichier PNG, JPEG ou PDF (max 5MB)",
+    "attachmentUpload": "Télécharger",
+    "attachmentError": "Type ou taille de fichier invalide (PNG, JPEG, PDF, max 5MB)",
+    "sendingMessage": "Envoi en cours...",
+    "messageSent": "Problème Signalé",
+    "sendMessageButton": "Soumettre le Problème"
   }
 }

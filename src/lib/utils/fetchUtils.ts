@@ -1,5 +1,6 @@
 import axiosInstance from "@/lib/axiosInstance";
 import { About } from "@/types/aboutSchema";
+import { Applicant } from "@/types/applicant";
 import { Blog } from "@/types/blogSchema";
 import { Event } from "@/types/eventsSchema";
 import { FAQs, FAQsSchema } from "@/types/FAQSchema";
@@ -7,6 +8,7 @@ import { Feedback } from "@/types/feedbackSchema";
 import { Member } from "@/types/memberSchema";
 import { Project } from "@/types/projectSchema";
 import { Service } from "@/types/ServiceSchema";
+import { Settings } from "@/types/SettingsSchema";
 import { AxiosError } from "axios";
 
 export const fetchData = async (
@@ -60,6 +62,17 @@ export const fetchServices = async (): Promise<Service[]> => {
   } catch (error) {
     console.error("Error during fetchServices:", error);
     throw new Error("Network request failed.");
+  }
+};
+
+// Fetch Applicant Details
+export const fetchApplicant = async (userId: string): Promise<Applicant> => {
+  try {
+    const response = await fetchData(`/auth/applicant/${userId}`, "GET");
+    return response?.data;
+  } catch (error) {
+    console.error("Error during fetchApplicant:", error);
+    throw new Error("Failed to fetch applicant.");
   }
 };
 
@@ -135,7 +148,8 @@ export const signUpRequest = async (
   password: string,
   firstName: string,
   lastName: string,
-  userType: string
+  userType: string,
+  userCategory: string
 ) => {
   try {
     const response = await fetchData("/auth/signup", "POST", {
@@ -144,6 +158,7 @@ export const signUpRequest = async (
       first_name: firstName,
       last_name: lastName,
       user_type: userType,
+      user_category: userCategory,
     });
     return response?.data;
   } catch (error) {
@@ -202,7 +217,6 @@ export const resetPasswordRequest = async (
     throw error;
   }
 };
-
 
 // Apply Function
 export const applyRequest = async (
@@ -351,5 +365,28 @@ export const verifyPayment = async (
   } catch (error) {
     console.error("Error during verifyPayment:", error);
     throw new Error("Failed to verify payment.");
+  }
+};
+
+// Fetch User Settings
+// Not yet implemented in the original code, but assuming it follows a similar pattern
+export const fetchUserSettings = async (userId: string): Promise<Settings[]> => {
+  try {
+    const response = await fetchData(`/auth/settings/${userId}`, "GET");
+    return response?.data;
+  } catch (error) {
+    console.error("Error during fetchUserSettings:", error);
+    throw new Error("Failed to fetch user settings.");
+  }
+};
+
+// Update User Settings
+export const updateUserSettings = async (settings: Settings): Promise<Settings> => {
+  try {
+    const response = await fetchData("/auth/update-settings", "PUT", settings);
+    return response?.data;
+  } catch (error) {
+    console.error("Error during updateUserSettings:", error);
+    throw new Error("Failed to update user settings.");
   }
 };

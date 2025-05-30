@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import HeadingDashboard from "@/components/profile/Header";
 import Loader from "@/components/loader/Loader";
 import useAuth from "@/lib/useAuth";
-import Applicants from "@/components/profile/Applicants";
+import Applicants from "@/components/profile/Applicant";
 import Members from "@/components/profile/Members";
 
 const UsersPage = () => {

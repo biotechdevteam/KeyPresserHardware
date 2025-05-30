@@ -30,7 +30,8 @@ interface AuthActions {
     password: string,
     firstName: string,
     lastName: string,
-    userType: string
+    userType: string,
+    userCategory: string,
   ) => Promise<boolean>;
   getProfile: () => Promise<void>;
   apply: (
@@ -152,7 +153,7 @@ const useAuth = create<AuthStore>()(
         }
       },
 
-      signUp: async (email, password, firstName, lastName, userType) => {
+      signUp: async (email, password, firstName, lastName, userType, userCategory) => {
         set({ loading: true, error: null });
         try {
           const data = await signUpRequest(
@@ -160,7 +161,8 @@ const useAuth = create<AuthStore>()(
             password,
             firstName,
             lastName,
-            userType
+            userType,
+            userCategory
           );
           const { access_token, user } = data;
 

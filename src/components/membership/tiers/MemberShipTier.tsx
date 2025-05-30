@@ -152,7 +152,7 @@ const MembershipSection: React.FC = () => {
             <motion.div
               key={tier.id}
               initial={{ opacity: 0, y: 30 }}
-              animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+              animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 1, y: 30 }}
               transition={{ duration: 0.7, delay: index * 0.2 }}
             >
               <Card
@@ -211,7 +211,9 @@ const MembershipSection: React.FC = () => {
                     variant={tier.recommended ? "default" : "outline"}
                     className="w-full group"
                     onClick={() =>
-                      router.push("/apply", { onTransitionReady: slideInOut })
+                      router.push(`/apply?category=${tier.type}`, {
+                        onTransitionReady: slideInOut,
+                      })
                     }
                   >
                     <span>Apply for {tier.name}</span>

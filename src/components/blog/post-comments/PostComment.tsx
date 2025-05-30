@@ -8,9 +8,9 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { formatDistanceToNow } from "date-fns"; // For formatting dates
+import { formatDistanceToNow } from "date-fns";
 import { NewComment, Comment } from "@/types/blogSchema";
-import ReactionsSection from "../post-reaction/PostReaction"; // Import the ReactionsSection
+import ReactionsSection from "../post-reaction/PostReaction";
 import { useBlog } from "@/lib/useBlog";
 import useAuth from "@/lib/useAuth";
 import { ReactionType } from "@/lib/utils/fetchUtils";
@@ -19,6 +19,7 @@ import {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@/components/ui/collapsible";
+import Placeholder from "../../../../public/images/Profile_placeholder.png";
 
 interface CommentsSectionProps {
   comments: Comment[];
@@ -138,7 +139,7 @@ const CommentsSection: React.FC<CommentsSectionProps> = ({
                       <div>
                         <Avatar>
                           <AvatarImage
-                            src={comment.userId.profile_photo_url}
+                            src={Placeholder.src}
                             alt={comment.userId.last_name}
                           />
                           <AvatarFallback>
@@ -222,7 +223,7 @@ const CommentsSection: React.FC<CommentsSectionProps> = ({
                             <div>
                               <Avatar>
                                 <AvatarImage
-                                  src={comment.userId.profile_photo_url}
+                                  src={Placeholder.src}
                                   alt={comment.userId.last_name}
                                 />
                                 <AvatarFallback>

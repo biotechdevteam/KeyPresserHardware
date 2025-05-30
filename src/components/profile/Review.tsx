@@ -61,7 +61,7 @@ const Review = () => {
       <Card>
         <CardHeader className="flex items-center gap-4">
           <Avatar>
-            <AvatarImage src={applicant.user.profile_photo_url || ""} />
+            <AvatarImage src={applicant.profile_photo_url || ""} />
             <AvatarFallback>
               {applicant.user.first_name[0]}
               {applicant.user.last_name[0]}
@@ -104,7 +104,7 @@ const Review = () => {
             <p className="font-medium">Referred By:</p>
             <p>
               {applicant.referredByMember
-                ? `${applicant.referredByMember.user_id.first_name} ${applicant.referredByMember.user_id.last_name}`
+                ? `${applicant.referredByMember.user.first_name} ${applicant.referredByMember.user.last_name}`
                 : "Not provided"}
             </p>
           </div>

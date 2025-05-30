@@ -554,8 +554,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
                             <div className="flex items-center gap-2">
                               <UserCheck size={16} className="text-primary" />
                               <span>
-                                {member.user_id.first_name}{" "}
-                                {member.user_id.last_name}
+                                {member.user.first_name} {member.user.last_name}
                               </span>
                             </div>
                           </SelectItem>

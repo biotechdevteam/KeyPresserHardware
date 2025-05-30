@@ -191,10 +191,10 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
                         <div className="relative w-16 h-16 rounded-full overflow-hidden border-4 border-background">
                           <Image
                             src={
-                              member.memberId.user_id.profile_photo_url ||
+                              member.memberId.profile_photo_url ||
                               "/placeholder-avatar.jpg"
                             }
-                            alt={member.memberId.user_id.first_name}
+                            alt={member.memberId.user.first_name}
                             fill
                             className="object-cover"
                           />
@@ -203,9 +203,9 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
                     </CardHeader>
                     <CardContent className="text-center">
                       <h4 className="font-medium">
-                        {member.memberId.user_id.first_name +
+                        {member.memberId.user.first_name +
                           " " +
-                          member.memberId.user_id.last_name}
+                          member.memberId.user.last_name}
                       </h4>
                       <p className="text-sm text-primary/80 font-medium">
                         {member.roleInProject}

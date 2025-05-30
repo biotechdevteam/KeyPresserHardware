@@ -28,6 +28,7 @@ import EnrollEventForm from "../events-enroll/EnrollForm";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import EventCard from "../events-card/EventsCard";
 import { toast } from "sonner";
+import Placeholder from "../../../../public/images/Profile_placeholder.png";
 
 interface EventDetailsProps {
   event: Event;
@@ -272,7 +273,7 @@ const EventDetails: React.FC<EventDetailsProps> = ({ event }) => {
                     >
                       <Avatar className="h-10 w-10 mr-3">
                         <AvatarImage
-                          src={attendee.userId.profile_photo_url || ""}
+                          src={Placeholder.src}
                           alt={`${attendee.userId.first_name} ${attendee.userId.last_name}`}
                         />
                         <AvatarFallback>
@@ -305,7 +306,7 @@ const EventDetails: React.FC<EventDetailsProps> = ({ event }) => {
                         <Avatar className="h-12 w-12 mr-4">
                           <AvatarImage
                             src={
-                              speaker.memberId.user_id.profile_photo_url || ""
+                              speaker.memberId.profile_photo_url || ""
                             }
                             alt={`${speaker.memberId.first_name} ${speaker.memberId.last_name}`}
                           />

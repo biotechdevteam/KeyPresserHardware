@@ -171,9 +171,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({
                 }`}
                 role={feedback.userId?.user_type || "Client"}
                 serviceName={feedback.serviceId?.title || "Service"}
-                imageUrl={
-                  feedback.userId?.profile_photo_url || PlaceholderImg.src
-                }
+                imageUrl={PlaceholderImg.src}
                 comment={feedback.comment}
                 rating={feedback.rating}
               />

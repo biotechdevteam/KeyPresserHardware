@@ -275,8 +275,8 @@ const ApplicationDetails: React.FC<ApplicationDetailsProps> = ({
                           <Users className="h-5 w-5 text-primary" />
                           <div>
                             <p className="font-medium">
-                              {referredMember.user_id.first_name}{" "}
-                              {referredMember.user_id.last_name}
+                              {referredMember.user.first_name}{" "}
+                              {referredMember.user.last_name}
                             </p>
                             <p className="text-sm text-muted-foreground">
                               Member since{" "}

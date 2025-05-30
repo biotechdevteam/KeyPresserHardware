@@ -5,7 +5,7 @@ import { BookOpen, Award, Star, StarHalf, ArrowRight } from "lucide-react";
 import useAuth from "@/lib/useAuth";
 
 const HeroDashboard = () => {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const isAdmin = user?.user_type === "admin";
   const isMember = user?.user_type === "member";
   const isApplicant = user?.user_type === "applicant";
@@ -28,7 +28,7 @@ const HeroDashboard = () => {
           <div className="flex items-center flex-wrap justify-center sm:justify-start">
             <div className="mr-2 lg:mr-5">
               <Image
-                src={user?.profile_photo_url || ""}
+                src={profile?.profile_photo_url || ""}
                 alt="Profile"
                 width={100}
                 height={100}

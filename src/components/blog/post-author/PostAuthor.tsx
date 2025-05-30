@@ -26,19 +26,19 @@ const AuthorInformation: React.FC<AuthorInformationProps> = ({ author }) => {
           {/* Author Avatar */}
           <Avatar className="w-16 h-16 mx-auto sm:mx-0">
             <AvatarImage
-              src={author.user_id.profile_photo_url}
-              alt={author.user_id.first_name}
+              src={author.profile_photo_url}
+              alt={author.user.first_name}
             />
             <AvatarFallback>
-              {author.user_id.first_name.charAt(0)}
-              {author.user_id.last_name.charAt(0)}
+              {author.user.first_name.charAt(0)}
+              {author.user.last_name.charAt(0)}
             </AvatarFallback>
           </Avatar>
 
           {/* Author Information */}
           <div className="text-center sm:text-left">
             <CardTitle className="text-xl font-semibold">
-              {author.user_id.first_name} {author.user_id.last_name}
+              {author.user.first_name} {author.user.last_name}
             </CardTitle>
             <CardDescription className="text-sm text-muted-foreground">
               {author.bio}

@@ -31,7 +31,7 @@ const PostTitleAndMetadata: React.FC<PostTitleAndMetadataProps> = ({
   post,
 }) => {
   const readingTime = calculateReadingTime(post.content);
-  const tags = generateTags(post.title, post.authorId.user_id.first_name);
+  const tags = generateTags(post.title, post.authorId.user.first_name);
 
   return (
     <Card className="max-w-4xl mx-auto mt-6">
@@ -43,18 +43,18 @@ const PostTitleAndMetadata: React.FC<PostTitleAndMetadataProps> = ({
         <div className="flex items-center space-x-4 mb-4">
           <Avatar>
             <AvatarImage
-              src={post.authorId.user_id.profile_photo_url}
-              alt={post.authorId.user_id.first_name}
+              src={post.authorId.profile_photo_url}
+              alt={post.authorId.user.first_name}
             />
             <AvatarFallback>
-              {post.authorId.user_id.first_name.charAt(0)}
+              {post.authorId.user.first_name.charAt(0)}
             </AvatarFallback>
           </Avatar>
           <div>
             <p className="text-sm text-muted">
               By{" "}
               <span className="font-medium">
-                {post.authorId.user_id.first_name}
+                {post.authorId.user.first_name}
               </span>
             </p>
             <p className="text-xs">

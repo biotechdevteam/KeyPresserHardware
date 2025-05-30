@@ -68,7 +68,7 @@ const PostCard: React.FC<PostCardProps> = ({ blog, onClick }) => {
           <CardContent className="text-sm text-muted mt-4">
             <Link href={`/members/${blog.authorId._id}`} legacyBehavior>
               <a className="text-primary underline hover:text-secondary">
-                By {blog.authorId.user_id.last_name}
+                By {blog.authorId.user.last_name}
               </a>
             </Link>
             {" | "}

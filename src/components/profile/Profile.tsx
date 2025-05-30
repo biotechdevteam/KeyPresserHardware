@@ -63,17 +63,17 @@ const Profile: React.FC<ProfileProps> = ({ profile }) => {
             {/* Profile Avatar */}
             <Avatar>
               <AvatarImage
-                src={profile.user_id.profile_photo_url}
-                alt={`${profile.user_id.first_name} ${profile.user_id.last_name}`}
+                src={profile.profile_photo_url}
+                alt={`${profile.user.first_name} ${profile.user.last_name}`}
               />
               <AvatarFallback>
-                {profile.user_id.first_name[0]}
-                {profile.user_id.last_name[0]}
+                {profile.user.first_name[0]}
+                {profile.user.last_name[0]}
               </AvatarFallback>
             </Avatar>
             <div>
               <CardTitle className="text-2xl font-semibold">
-                {profile.user_id.first_name} {profile.user_id.last_name}
+                {profile.user.first_name} {profile.user.last_name}
               </CardTitle>
               <CardDescription>
                 {profile.specialization || "No specialization"}
@@ -161,7 +161,7 @@ const Profile: React.FC<ProfileProps> = ({ profile }) => {
             {/* Profile Avatar */}
             <Avatar>
               <AvatarImage
-                src={profile.user.profile_photo_url}
+                src={profile.profile_photo_url as string}
                 alt={`${profile.user.first_name} ${profile.user.last_name}`}
               />
               <AvatarFallback>
@@ -228,8 +228,8 @@ const Profile: React.FC<ProfileProps> = ({ profile }) => {
               <div>
                 <h3 className="text-lg font-semibold">Referred By</h3>
                 <p>
-                  {profile.referredByMember.user_id.first_name}{" "}
-                  {profile.referredByMember.user_id.last_name}
+                  {profile.referredByMember.user.first_name}{" "}
+                  {profile.referredByMember.user.last_name}
                 </p>
               </div>
             )}

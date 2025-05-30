@@ -16,15 +16,15 @@ const Members: React.FC<MembersProps> = ({ members }) => {
         <Card key={member._id} className="shadow-md hover:shadow-lg transition">
           <CardHeader className="flex items-center gap-4">
             <Avatar>
-              <AvatarImage src={member.user_id.profile_photo_url || ""} />
+              <AvatarImage src={member.profile_photo_url || ""} />
               <AvatarFallback>
-                {member.user_id.first_name[0]}
-                {member.user_id.last_name[0]}
+                {member.user.first_name[0]}
+                {member.user.last_name[0]}
               </AvatarFallback>
             </Avatar>
             <div>
               <CardTitle>
-                {member.user_id.first_name} {member.user_id.last_name}
+                {member.user.first_name} {member.user.last_name}
               </CardTitle>
               <p className="text-sm">
                 {member.specialization || "No specialization"}

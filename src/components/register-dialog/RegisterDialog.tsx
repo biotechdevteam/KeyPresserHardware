@@ -24,7 +24,7 @@ const RegisterDialog: React.FC<RegisterDialogProps> = ({
   onComplete,
   onCancel,
 }) => {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, profile } = useAuth();
 
   // Handle dialog close action
   const handleClose = () => {
@@ -73,7 +73,7 @@ const RegisterDialog: React.FC<RegisterDialogProps> = ({
                 {isAuthenticated && user ? (
                   <Avatar className="h-16 w-16 border-2 border-border">
                     <AvatarImage
-                      src={user.profile_photo_url || ""}
+                      src={profile?.profile_photo_url as string}
                       alt={user.first_name}
                     />
                     <AvatarFallback className="bg-primary-foreground text-primary">

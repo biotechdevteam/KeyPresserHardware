@@ -33,7 +33,7 @@ const Applicants: React.FC<ApplicantsProps> = ({ applicants }) => {
         >
           <CardHeader className="flex items-center gap-4">
             <Avatar>
-              <AvatarImage src={applicant.user.profile_photo_url || ""} />
+              <AvatarImage src={applicant.profile_photo_url || ""} />
               <AvatarFallback>
                 {applicant.user.first_name[0]}
                 {applicant.user.last_name[0]}

@@ -13,13 +13,16 @@ import {
   User as UserIcon,
   MapPin,
 } from "lucide-react";
+import { Member } from "@/types/memberSchema";
+import { Applicant } from "@/types/applicant";
 
 interface PersonalProps {
   user: User;
+  profile: Member | Applicant;
 }
 
 
-const Personal: React.FC<PersonalProps> = ({ user }) => {
+const Personal: React.FC<PersonalProps> = ({ user, profile }) => {
   // Format the created date to a readable format
   const joinedDate = new Date(user.created_at || Date.now()).toLocaleDateString("en-US", {
     year: "numeric",
@@ -32,7 +35,7 @@ const Personal: React.FC<PersonalProps> = ({ user }) => {
       <CardHeader className="flex items-center gap-4">
         <Avatar>
           <AvatarImage
-            src={user.profile_photo_url}
+            src={profile.profile_photo_url as string}
             alt={`${user.first_name} ${user.last_name}`}
           />
           <AvatarFallback>

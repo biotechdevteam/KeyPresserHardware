@@ -38,7 +38,7 @@ const PostContainer: React.FC<PostContainerProps> = ({
 
   const { loading, error, handleCreateComment, handleReactToBlogPost } =
     useBlog();
-  const { user, isAuthenticated } = useAuth();
+  const { user, profile, isAuthenticated } = useAuth();
 
   // Function to be called after registration is completed
   const handleRegistrationComplete = () => {
@@ -91,7 +91,8 @@ const PostContainer: React.FC<PostContainerProps> = ({
             first_name: user.first_name,
             last_name: user.last_name,
             user_type: user.user_type,
-            profile_photo_url: user.profile_photo_url || "",
+            profile_photo_url: profile?.profile_photo_url || "",
+            user_category: user.user_category,
           },
           commentText: newComment.commentText,
           createdAt: new Date(),

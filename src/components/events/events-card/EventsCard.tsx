@@ -176,7 +176,7 @@ const EventCard: React.FC<EventCardProps> = ({
                                 href={`/members/${speaker.memberId._id}`}
                                 className="text-primary hover:underline"
                               >
-                                {speaker.memberId?.user_id?.first_name ||
+                                {speaker.memberId?.user?.first_name ||
                                   "Unknown Speaker"}
                               </Link>
                               <span className="text-xs bg-muted px-2 py-0.5 rounded-full">

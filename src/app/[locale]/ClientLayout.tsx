@@ -12,7 +12,7 @@ import localforage from "localforage";
 import Loader from "@/components/loader/Loader";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
-const reCaptchaKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "";
+const reCaptchaKey = process.env.RECAPTCHA_SITE_KEY || "";
 
 const ClientLayout: React.FC<{ children: React.ReactNode }> = ({
   children,

@@ -39,26 +39,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Log the reCAPTCHA score for monitoring
-    console.log(`Event registration submitted with reCAPTCHA score: ${recaptchaResult.score}`);
-
-    // Process the event registration
-    // This is where you would:
-    // 1. Check event capacity and availability
-    // 2. Validate user eligibility
-    // 3. Save registration to database
-    // 4. Send confirmation emails
-    // 5. Update event attendee count
-    // 6. Generate tickets/confirmation codes
-    // etc.
-
-    console.log('Event registration submission:', {
-      userId,
-      eventId,
-      notes: notes.substring(0, 200) + '...', // Log truncated notes
-      recaptchaScore: recaptchaResult.score,
-    });
-
     return NextResponse.json({
       success: true,
       message: 'Event registration submitted successfully',

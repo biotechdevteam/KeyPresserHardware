@@ -27,8 +27,6 @@ interface MembershipTier {
   type: "student" | "professional" | "institutional";
   description: string;
   benefits: string[];
-  mostPopular?: boolean;
-  recommended?: boolean;
 }
 
 const membershipTiers: MembershipTier[] = [
@@ -44,7 +42,6 @@ const membershipTiers: MembershipTier[] = [
       "Exclusive networking opportunities",
       "Biotech research internship opportunities",
     ],
-    mostPopular: true,
   },
   {
     id: "2",
@@ -58,7 +55,6 @@ const membershipTiers: MembershipTier[] = [
       "Career development and training sessions",
       "Opportunities to collaborate on industry projects",
     ],
-    recommended: true,
   },
   {
     id: "3",
@@ -155,60 +151,46 @@ const MembershipSection: React.FC = () => {
               animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 1, y: 30 }}
               transition={{ duration: 0.7, delay: index * 0.2 }}
             >
-              <Card
-                className={`h-full overflow-hidden ${
-                  tier.recommended
-                    ? "border-primary shadow-lg"
-                    : "border-border"
-                }`}
-              >
-                {tier.mostPopular && (
-                  <div className="bg-primary text-primary-foreground text-center py-1 text-xs font-medium">
-                    MOST POPULAR
-                  </div>
-                )}
-                {tier.recommended && (
-                  <div className="bg-primary text-primary-foreground text-center py-1 text-xs font-medium">
-                    RECOMMENDED
-                  </div>
-                )}
-                <CardHeader className="pb-4">
-                  <div className="flex justify-between items-start">
-                    <div className="flex flex-col">
-                      <div
-                        className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium mb-2 ${getTierColor(
-                          tier.type
-                        )}`}
-                      >
-                        {getTierIcon(tier.type)}
-                        <span className="ml-1">
-                          {tier.type.charAt(0).toUpperCase() +
-                            tier.type.slice(1)}
-                        </span>
+              <Card className="h-full overflow-hidden border-border flex flex-col justify-between">
+                <div>
+                  <CardHeader className="pb-4">
+                    <div className="flex justify-between items-start">
+                      <div className="flex flex-col">
+                        <div
+                          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium mb-2 ${getTierColor(
+                            tier.type
+                          )}`}
+                        >
+                          {getTierIcon(tier.type)}
+                          <span className="ml-1">
+                            {tier.type.charAt(0).toUpperCase() +
+                              tier.type.slice(1)}
+                          </span>
+                        </div>
+                        <CardTitle className="text-xl">{tier.name}</CardTitle>
                       </div>
-                      <CardTitle className="text-xl">{tier.name}</CardTitle>
                     </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="pb-6">
-                  <p className="mb-6 text-muted-foreground">
-                    {tier.description}
-                  </p>
-                  <h4 className="text-sm font-semibold mb-3">
-                    Benefits include:
-                  </h4>
-                  <ul className="space-y-3 mb-6">
-                    {tier.benefits.map((benefit, i) => (
-                      <li key={i} className="flex items-start text-sm">
-                        <Check className="w-4 h-4 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                        <span>{benefit}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
+                  </CardHeader>
+                  <CardContent className="pb-6">
+                    <p className="mb-6 text-muted-foreground">
+                      {tier.description}
+                    </p>
+                    <h4 className="text-sm font-semibold mb-3">
+                      Benefits include:
+                    </h4>
+                    <ul className="space-y-3 mb-6">
+                      {tier.benefits.map((benefit, i) => (
+                        <li key={i} className="flex items-start text-sm">
+                          <Check className="w-4 h-4 text-primary mr-2 mt-0.5 flex-shrink-0" />
+                          <span>{benefit}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </div>
+
                 <CardFooter className="pt-0">
                   <Button
-                    variant={tier.recommended ? "default" : "outline"}
                     className="w-full group"
                     onClick={() =>
                       router.push(`/apply?category=${tier.type}`, {

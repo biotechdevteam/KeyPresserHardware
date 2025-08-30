@@ -8,7 +8,7 @@ import { forgotPasswordSchema } from "@/types/forgotPasswordSchema";
 import Link from "next/link";
 import { z } from "zod";
 import useAuth from "@/lib/useAuth";
-import { ArrowLeft, Mail } from "lucide-react";
+import { ArrowLeft, Mail, Shield } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -18,12 +18,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useRecaptcha, RECAPTCHA_ACTIONS } from "@/lib/useRecaptcha";
 
 type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
 
 const ForgotPassword = () => {
   const [emailSent, setEmailSent] = useState(false);
   const { forgotPassword, loading, error } = useAuth();
+  const { executeRecaptcha, isLoading: recaptchaLoading, error: recaptchaError } = useRecaptcha();
 
   const {
     register,
@@ -45,10 +47,21 @@ const ForgotPassword = () => {
   const handleForgotPassword = async (data: ForgotPasswordFormData) => {
     const { email } = data;
     if (email) {
-      const success = await forgotPassword(email);
-      if (success) {
-        setEmailSent(true);
-        reset();
+      try {
+        // Execute reCAPTCHA
+        const recaptchaToken = await executeRecaptcha(RECAPTCHA_ACTIONS.FORGOT_PASSWORD);
+        
+        if (!recaptchaToken) {
+          throw new Error('reCAPTCHA verification failed. Please try again.');
+        }
+
+        const success = await forgotPassword(email);
+        if (success) {
+          setEmailSent(true);
+          reset();
+        }
+      } catch (error) {
+        console.error("Error during forgot password:", error);
       }
     }
   };
@@ -93,13 +106,27 @@ const ForgotPassword = () => {
                 </Alert>
               )}
 
+              {recaptchaError && (
+                <Alert variant="error" className="mt-4">
+                  <AlertDescription className="flex items-center gap-2">
+                    <Shield className="h-4 w-4" />
+                    {recaptchaError}
+                  </AlertDescription>
+                </Alert>
+              )}
+
               <Button
                 type="submit"
                 className="w-full"
-                disabled={loading || !isFormValid}
+                disabled={loading || recaptchaLoading || !isFormValid}
               >
                 {loading ? "Sending..." : "Send Reset Link"}
               </Button>
+
+              <p className="text-xs text-muted-foreground flex items-center justify-center pt-2">
+                <Shield className="mr-1 h-3 w-3" />
+                This form is protected by reCAPTCHA
+              </p>
             </form>
           ) : (
             <div className="space-y-4 text-center">

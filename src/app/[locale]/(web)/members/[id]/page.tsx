@@ -5,19 +5,39 @@ import MemberContainer from "@/components/member/member-container/MemberContaine
 import MemberHeader from "@/components/member/member-header/MemberHeader";
 import { Member } from "@/types/memberSchema";
 
+// A small helper to normalize API responses
+async function fetchMembers(options?: RequestInit): Promise<Member[]> {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/members`,
+      options
+    );
+
+    if (!res.ok) {
+      console.error("Failed to fetch members:", res.status, res.statusText);
+      return [];
+    }
+
+    const json = await res.json();
+
+    // Handle both array and {data: [...]}
+    const members: Member[] = Array.isArray(json) ? json : json.data || [];
+
+    if (!Array.isArray(members)) {
+      console.error("Members response is not an array:", json);
+      return [];
+    }
+
+    return members;
+  } catch (err) {
+    console.error("Error fetching members:", err);
+    return [];
+  }
+}
+
 // Fetch all member IDs for static generation
 export async function generateStaticParams() {
-  const members = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/members`,
-    {
-      cache: "force-cache",
-    }
-  )
-    .then((res) => res.json())
-    .catch((error) => {
-      console.error("Error fetching members for static params:", error);
-      return [];
-    });
+  const members = await fetchMembers({ cache: "force-cache" });
 
   return members.map((member: Member) => ({
     id: member._id,
@@ -35,30 +55,19 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   try {
     const { id } = await params;
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/members`,
-      {
-        next: { revalidate: 60 },
-      }
-    );
-
-    if (!res.ok) {
-      throw new Error(`Failed to fetch members: ${res.status}`);
-    }
-
-    const members: Member[] = await res.json();
-    const member = members.find((m: Member) => m._id === id);
+    const members = await fetchMembers({ next: { revalidate: 60 } });
+    const member = members.find((m) => m._id === id);
 
     if (!member) {
       return {
         title: "Member Not Found ~ BioTec Universe",
         description: "The requested member could not be found.",
-        robots: { index: false, follow: false }, // Prevent indexing of 404
+        robots: { index: false, follow: false },
       };
     }
 
     const previousImages = (await parent).openGraph?.images || [];
-    const memberImage = member.resume_url || member.social_links?.[0]; // Fallback to social link if no resume
+    const memberImage = member.resume_url || member.social_links?.[0];
 
     return {
       title: `${member.user.first_name}'s Profile ~ BioTec Universe`,
@@ -74,7 +83,7 @@ export async function generateMetadata(
         "member profile",
         "Cameroon",
         "Buea",
-        ...(member.skills?.slice(0, 5) || []), // Top 5 skills
+        ...(member.skills?.slice(0, 5) || []),
         member.role || "member",
       ],
       metadataBase: new URL("https://biotecuniverse.org"),
@@ -128,8 +137,13 @@ export async function generateMetadata(
         creator: member.social_links?.find((link: string) =>
           link.includes("twitter.com")
         )
-          ? `@${(link: string) =>
-              link.replace("https://twitter.com/", "").split("/").pop()}`
+          ? `@${
+              member.social_links
+                .find((link: string) => link.includes("twitter.com"))
+                ?.replace("https://twitter.com/", "")
+                .split("/")
+                .pop() ?? "BioTecUniverse"
+            }`
           : "@BioTecUniverse",
       },
       robots: {
@@ -150,7 +164,7 @@ export async function generateMetadata(
       title: "Error ~ Member Profile ~ BioTec Universe",
       description: "An error occurred while loading this member profile.",
       metadataBase: new URL("https://biotecuniverse.org"),
-      robots: { index: false, follow: false }, // Prevent indexing of errors
+      robots: { index: false, follow: false },
     };
   }
 }
@@ -159,17 +173,8 @@ export default async function MemberPage({ params }: Props) {
   setRequestLocale("en"); // Adjust for dynamic locale if needed
   const { id } = await params;
 
-  const members = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/members`,
-    {
-      next: { revalidate: 60 },
-    }
-  ).then((res) => {
-    if (!res.ok) throw new Error(`Failed to fetch members: ${res.status}`);
-    return res.json();
-  });
-
-  const member = members.find((m: Member) => m._id === id);
+  const members = await fetchMembers({ next: { revalidate: 60 } });
+  const member = members.find((m) => m._id === id);
 
   if (!member) {
     notFound();

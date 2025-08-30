@@ -9,9 +9,12 @@ import Image from "next/image";
 import { About } from "@/types/aboutSchema";
 import { useRouter } from "next/navigation";
 import Logo from "../../../public/images/logo.png";
+import { useRecaptcha, RECAPTCHA_ACTIONS } from "@/lib/useRecaptcha";
+import { Shield } from "lucide-react";
 
 const SignIn: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   const { signIn, error: authError, loading, user } = useAuth();
+  const { executeRecaptcha, isLoading: recaptchaLoading, error: recaptchaError } = useRecaptcha();
   const [formError, setFormError] = useState<string | null>(null);
   const logo = aboutData?.logo_url || Logo;
 
@@ -25,17 +28,31 @@ const SignIn: React.FC<{ aboutData: About }> = ({ aboutData }) => {
 
   const onSubmit = async (data: any) => {
     setFormError(null);
-    const success = await signIn(data.email, data.password);
-    if (!success) {
-      setFormError("Failed to sign in. Please try again.");
-    } 
-    if (success) {
-      if(user?.user_type === "member" || user?.user_type === "applicant"){
-        router.push("/profile")
+    
+    try {
+      // Execute reCAPTCHA
+      const recaptchaToken = await executeRecaptcha(RECAPTCHA_ACTIONS.LOGIN);
+      
+      if (!recaptchaToken) {
+        setFormError('reCAPTCHA verification failed. Please try again.');
+        return;
       }
-      if(user?.user_type === "admin"){
-        router.push("/admin")
+
+      const success = await signIn(data.email, data.password);
+      if (!success) {
+        setFormError("Failed to sign in. Please try again.");
+      } 
+      if (success) {
+        if(user?.user_type === "member" || user?.user_type === "applicant"){
+          router.push("/profile")
+        }
+        if(user?.user_type === "admin"){
+          router.push("/admin")
+        }
       }
+    } catch (error) {
+      console.error("Error during sign in:", error);
+      setFormError("An error occurred. Please try again.");
     }
   };
 
@@ -57,6 +74,12 @@ const SignIn: React.FC<{ aboutData: About }> = ({ aboutData }) => {
           {(authError || formError) && (
             <div className="text-destructive text-sm">{authError || formError}</div>
           )}
+          {recaptchaError && (
+            <div className="text-destructive text-sm flex items-center gap-2">
+              <Shield className="h-4 w-4" />
+              {recaptchaError}
+            </div>
+          )}
 
           <Input
             label="Email"
@@ -75,9 +98,14 @@ const SignIn: React.FC<{ aboutData: About }> = ({ aboutData }) => {
             className="w-full"
           />
 
-          <Button type="submit" className="w-full" disabled={loading}>
+          <Button type="submit" className="w-full" disabled={loading || recaptchaLoading}>
             {loading ? "Signing In..." : "Sign In"}
           </Button>
+
+          <p className="text-xs text-muted-foreground flex items-center justify-center pt-2">
+            <Shield className="mr-1 h-3 w-3" />
+            This form is protected by reCAPTCHA
+          </p>
         </form>
 
         <div className="flex items-center justify-between pt-4">

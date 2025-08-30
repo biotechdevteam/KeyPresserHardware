@@ -54,26 +54,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Log the reCAPTCHA score for monitoring
-    console.log(`Testimonial submitted with reCAPTCHA score: ${recaptchaResult.score}`);
-
-    // Process the testimonial submission
-    // This is where you would:
-    // 1. Save to database
-    // 2. Update aggregated ratings
-    // 3. Send notifications
-    // etc.
-
-    console.log('Testimonial submission:', {
-      userId,
-      type,
-      rating,
-      comment: comment.substring(0, 100) + '...', // Log truncated comment
-      serviceId,
-      eventId,
-      recaptchaScore: recaptchaResult.score,
-    });
-
     return NextResponse.json({
       success: true,
       message: `${type === 'testimonial' ? 'Testimonial' : 'Review'} submitted successfully`,

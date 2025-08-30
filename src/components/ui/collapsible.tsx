@@ -67,7 +67,7 @@ const NavCollapsible = React.forwardRef<
       >
         <CollapsiblePrimitive.Trigger
           className={cn(
-            "flex justify-between items-center w-full text-foreground hover:text-primary",
+            "flex justify-between items-center w-full text-primary hover:text-primary",
             "transition-colors duration-200 ease-in-out",
             "focus:outline-none focus:ring-offset-1",
             "font-medium rounded-md",
@@ -147,7 +147,7 @@ const NavCollapsibleListItem = React.forwardRef<
         {icon && <span className="mr-2 text-primary/80">{icon}</span>}
         <span
           className={cn(
-            "font-medium text-foreground capitalize",
+            "font-medium capitalize",
             active ? "text-primary" : "text-foreground"
           )}
         >

@@ -50,26 +50,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Log the reCAPTCHA score for monitoring
-    console.log(`Service booking submitted with reCAPTCHA score: ${recaptchaResult.score}`);
-
-    // Process the service booking
-    // This is where you would:
-    // 1. Check service availability
-    // 2. Validate user permissions
-    // 3. Save booking to database
-    // 4. Send confirmation emails
-    // 5. Update service schedule
-    // etc.
-
-    console.log('Service booking submission:', {
-      userId,
-      serviceId,
-      bookingDate,
-      description: description?.substring(0, 100) + '...' || 'No description',
-      recaptchaScore: recaptchaResult.score,
-    });
-
     return NextResponse.json({
       success: true,
       message: 'Service booking submitted successfully',

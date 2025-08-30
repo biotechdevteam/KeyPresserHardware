@@ -9,9 +9,12 @@ import { About } from "@/types/aboutSchema";
 import { Link } from "next-view-transitions";
 import Logo from "../../../public/images/logo.png";
 import Image from "next/image";
+import { useRecaptcha, RECAPTCHA_ACTIONS } from "@/lib/useRecaptcha";
+import { Shield } from "lucide-react";
 
 const SignUp: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   const { signUp, error, loading } = useAuth(); // useAuth hook for authentication logic
+  const { executeRecaptcha, isLoading: recaptchaLoading, error: recaptchaError } = useRecaptcha();
   const logo = aboutData?.logo_url || Logo;
 
   const {
@@ -23,14 +26,25 @@ const SignUp: React.FC<{ aboutData: About }> = ({ aboutData }) => {
   });
 
   const onSubmit = async (data: any) => {
-    await signUp(
-      data.email,
-      data.password,
-      data.first_name,
-      data.last_name,
-      "customer",
-      "professional"
-    );
+    try {
+      // Execute reCAPTCHA
+      const recaptchaToken = await executeRecaptcha(RECAPTCHA_ACTIONS.SIGNUP);
+      
+      if (!recaptchaToken) {
+        throw new Error('reCAPTCHA verification failed. Please try again.');
+      }
+
+      await signUp(
+        data.email,
+        data.password,
+        data.first_name,
+        data.last_name,
+        "customer",
+        "professional"
+      );
+    } catch (error) {
+      console.error("Error during sign up:", error);
+    }
   };
 
   return (
@@ -55,6 +69,12 @@ const SignUp: React.FC<{ aboutData: About }> = ({ aboutData }) => {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {error && <div className="text-destructive">{error}</div>}
+          {recaptchaError && (
+            <div className="text-destructive flex items-center gap-2">
+              <Shield className="h-4 w-4" />
+              {recaptchaError}
+            </div>
+          )}
 
           <Input
             label="First Name"
@@ -86,9 +106,14 @@ const SignUp: React.FC<{ aboutData: About }> = ({ aboutData }) => {
             error={errors.password?.message as string | undefined}
           />
 
-          <Button type="submit" className="w-full" disabled={loading}>
+          <Button type="submit" className="w-full" disabled={loading || recaptchaLoading}>
             {loading ? "Signing Up..." : "Sign Up"}
           </Button>
+
+          <p className="text-xs text-muted-foreground flex items-center justify-center">
+            <Shield className="mr-1 h-3 w-3" />
+            This form is protected by reCAPTCHA
+          </p>
 
           <p className="text-center text-sm">
             By signing up, you agree to our{" "}

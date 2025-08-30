@@ -31,25 +31,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Log the reCAPTCHA score for monitoring
-    console.log(`Contact form submitted with reCAPTCHA score: ${recaptchaResult.score}`);
-
-    // Process the contact form submission
-    // This is where you would:
-    // 1. Save to database
-    // 2. Send email notification
-    // 3. Integrate with your CRM
-    // etc.
-
-    console.log('Contact form submission:', {
-      firstName,
-      lastName,
-      email,
-      phone,
-      message,
-      recaptchaScore: recaptchaResult.score,
-    });
-
     return NextResponse.json({
       success: true,
       message: 'Contact form submitted successfully',

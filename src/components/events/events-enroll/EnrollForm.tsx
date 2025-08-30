@@ -14,8 +14,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import useAuth from "@/lib/useAuth";
 import { useRegisterEvent } from "@/lib/useRegisterEvent";
-import { CheckCircle, CalendarClock, AlertCircle } from "lucide-react";
+import { CheckCircle, CalendarClock, AlertCircle, Shield } from "lucide-react";
 import { motion } from "framer-motion";
+import { useRecaptcha, RECAPTCHA_ACTIONS } from "@/lib/useRecaptcha";
 
 interface EnrollEventFormProps {
   eventId: string;
@@ -42,6 +43,7 @@ const EnrollEventForm: React.FC<EnrollEventFormProps> = ({
   const { user } = useAuth();
   const { loading, error, successMessage, response, handleRegisterEvent } =
     useRegisterEvent();
+  const { executeRecaptcha, isLoading: recaptchaLoading, error: recaptchaError } = useRecaptcha();
 
   const [heardAboutEvent, setHeardAboutEvent] = useState("");
   const [expectations, setExpectations] = useState("");
@@ -53,21 +55,32 @@ const EnrollEventForm: React.FC<EnrollEventFormProps> = ({
       return;
     }
 
-    // Combine the dropdown and expectations into a single string for 'notes'
-    const combinedNotes = `
-      How did you hear about this event: ${heardAboutEvent}
-      Key expectations for the event: ${expectations}
-    `;
+    try {
+      // Execute reCAPTCHA
+      const recaptchaToken = await executeRecaptcha(RECAPTCHA_ACTIONS.REGISTER_EVENT);
+      
+      if (!recaptchaToken) {
+        throw new Error('reCAPTCHA verification failed. Please try again.');
+      }
 
-    // Call the hook's handleRegisterEvent function with combined notes
-    await handleRegisterEvent(user._id as string, eventId, combinedNotes);
+      // Combine the dropdown and expectations into a single string for 'notes'
+      const combinedNotes = `
+        How did you hear about this event: ${heardAboutEvent}
+        Key expectations for the event: ${expectations}
+      `;
 
-    // If registration is successful, show success state
-    if (response) {
-      setShowSuccess(true);
-      setTimeout(() => {
-        onComplete();
-      }, 2000);
+      // Call the hook's handleRegisterEvent function with combined notes
+      await handleRegisterEvent(user._id as string, eventId, combinedNotes);
+
+      // If registration is successful, show success state
+      if (response) {
+        setShowSuccess(true);
+        setTimeout(() => {
+          onComplete();
+        }, 2000);
+      }
+    } catch (error) {
+      console.error("Error during event registration:", error);
     }
   };
 
@@ -120,6 +133,14 @@ const EnrollEventForm: React.FC<EnrollEventFormProps> = ({
                 </div>
               )}
 
+              {/* reCAPTCHA Error */}
+              {recaptchaError && (
+                <div className="p-3 bg-destructive/10 border border-destructive rounded-md text-destructive flex items-center gap-2">
+                  <Shield size={16} />
+                  {recaptchaError}
+                </div>
+              )}
+
               {/* Dropdown: How did you hear about this event? */}
               <div className="space-y-2">
                 <Label htmlFor="source" className="font-medium">
@@ -153,6 +174,14 @@ const EnrollEventForm: React.FC<EnrollEventFormProps> = ({
                   className="min-h-[100px]"
                 />
               </div>
+
+              {/* reCAPTCHA Info */}
+              <div className="flex items-center justify-center pt-2">
+                <p className="text-xs text-muted-foreground flex items-center">
+                  <Shield className="mr-1 h-3 w-3" />
+                  This form is protected by reCAPTCHA
+                </p>
+              </div>
             </div>
 
             <DialogFooter className="gap-2 sm:gap-0">
@@ -161,7 +190,7 @@ const EnrollEventForm: React.FC<EnrollEventFormProps> = ({
               </Button>
               <Button
                 onClick={handleSubmit}
-                disabled={loading}
+                disabled={loading || recaptchaLoading}
                 className="bg-primary hover:bg-primary/90"
               >
                 {loading ? (

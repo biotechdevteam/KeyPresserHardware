@@ -5,7 +5,7 @@ import { handleApiError } from "./apiErrorHandler";
 export const useBookService = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [response, setResponse] = useState<any>(null); // Adjust type based on the actual response
+  const [response, setResponse] = useState<any>(null);
   const [success, setSuccess] = useState<string | null>(null); // New success state
 
   const handleBookService = async (

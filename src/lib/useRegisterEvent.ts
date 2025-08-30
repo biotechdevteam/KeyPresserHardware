@@ -5,8 +5,8 @@ import { handleApiError } from "./apiErrorHandler";
 export const useRegisterEvent = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null); // Handle success message if needed
-  const [response, setResponse] = useState<any>(null); // Adjust type based on response structure
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [response, setResponse] = useState<any>(null);
 
   const handleRegisterEvent = async (
     userId: string,

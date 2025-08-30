@@ -309,10 +309,10 @@ const EditProfile: React.FC<EditProfileProps> = ({
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto px-2 sm:px-4">
       <Card className="shadow-lg border-border">
         <CardHeader className="border-b border-border">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
             <div>
               <CardTitle className="text-2xl font-bold">Edit Profile</CardTitle>
               <CardDescription className="text-base">
@@ -324,7 +324,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                className="flex items-center text-sm text-amber-200 px-3 py-1 rounded-full border border-amber-200"
+                className="flex items-center text-sm text-amber-200 px-3 py-1 rounded-full border border-amber-200 mt-2 sm:mt-0"
               >
                 <span className="inline-block w-2 h-2 rounded-full bg-amber-500 mr-2 animate-pulse"></span>
                 Unsaved changes
@@ -335,13 +335,13 @@ const EditProfile: React.FC<EditProfileProps> = ({
 
         {/* Form Navigation */}
         {isMember && (
-          <div className="border-b border-border bg-muted/10">
-            <div className="flex">
+          <div className="border-b border-border bg-muted/10 overflow-x-auto">
+            <div className="flex flex-row">
               <Button
                 type="button"
                 variant="ghost"
                 size="sm"
-                className={`rounded-none py-4 px-6 relative transition-all duration-200 ${
+                className={`rounded-none py-4 px-4 sm:px-6 relative transition-all duration-200 ${
                   formSection === "personal"
                     ? "text-primary font-medium"
                     : "hover:text-primary/70"
@@ -360,7 +360,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
                 type="button"
                 variant="ghost"
                 size="sm"
-                className={`rounded-none py-4 px-6 relative transition-all duration-200 ${
+                className={`rounded-none py-4 px-4 sm:px-6 relative transition-all duration-200 ${
                   formSection === "professional"
                     ? "text-primary font-medium"
                     : "hover:text-primary/70"
@@ -379,7 +379,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
                 type="button"
                 variant="ghost"
                 size="sm"
-                className={`rounded-none py-4 px-6 relative transition-all duration-200 ${
+                className={`rounded-none py-4 px-4 sm:px-6 relative transition-all duration-200 ${
                   formSection === "public"
                     ? "text-primary font-medium"
                     : "hover:text-primary/70"
@@ -399,7 +399,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
         )}
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <AnimatePresence mode="wait">
               {/* Personal Information Section */}
               {formSection === "personal" && (
@@ -422,7 +422,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
                           whileHover={{ scale: 1.02 }}
                           transition={{ type: "spring", stiffness: 300 }}
                         >
-                          <Avatar className="h-40 w-40 cursor-pointer transition-all duration-300 group-hover:shadow-xl ring-2 ring-transparent group-hover:ring-primary/20">
+                          <Avatar className="h-32 w-32 sm:h-40 sm:w-40 cursor-pointer transition-all duration-300 group-hover:shadow-xl ring-2 ring-transparent group-hover:ring-primary/20">
                             <AvatarImage
                               src={
                                 watch("profile_photo_url") ||
@@ -957,7 +957,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
             </AnimatePresence>
           </CardContent>
 
-          <CardFooter className="flex justify-end gap-4 border-t border-border bg-muted/10 p-6">
+          <CardFooter className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-4 border-t border-border bg-muted/10 p-4 sm:p-6">
             <Button
               type="button"
               variant="outline"

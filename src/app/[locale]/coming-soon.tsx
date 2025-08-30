@@ -83,12 +83,16 @@ const ComingSoon: React.FC<ComingSoonProps> = ({
     <section className="min-h-screen p-4 md:p-8 relative overflow-hidden">
       {/* Background gradient animation */}
       <motion.div
-        className="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-950/20 dark:via-indigo-950/20 dark:to-purple-950/20"
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(45deg, var(--primary)10, var(--primary)10, var(--primary)10)",
+        }}
         animate={{
           background: [
-            "linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1))",
-            "linear-gradient(225deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1), rgba(99, 102, 241, 0.1))",
-            "linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1))",
+            "linear-gradient(45deg, var(--primary)10, var(--primary)10, var(--primary)10)",
+            "linear-gradient(225deg, var(--primary)10, var(--primary)10, var(--primary)10)",
+            "linear-gradient(45deg, var(--primary)10, var(--primary)10, var(--primary)10)",
           ],
         }}
         transition={{
@@ -116,7 +120,13 @@ const ComingSoon: React.FC<ComingSoonProps> = ({
             ease: "easeInOut",
           }}
         >
-          <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full blur-sm" />
+          <div
+            className="w-2 h-2 rounded-full blur-sm"
+            style={{
+              background:
+                "linear-gradient(90deg, var(--primary), var(--primary))",
+            }}
+          />
         </motion.div>
       ))}
 
@@ -125,7 +135,7 @@ const ComingSoon: React.FC<ComingSoonProps> = ({
       >
         {/* Animated title */}
         <motion.h1
-          className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent"
+          className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-primary to-primary bg-clip-text text-transparent"
           variants={textVariants}
           initial="hidden"
           animate="visible"
@@ -149,7 +159,7 @@ const ComingSoon: React.FC<ComingSoonProps> = ({
           {[...Array(3)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute inset-0 rounded-full border-2 border-blue-400/30"
+              className="absolute inset-0 rounded-full border-2"
               variants={ringVariants}
               animate="animate"
               custom={i}
@@ -159,13 +169,20 @@ const ComingSoon: React.FC<ComingSoonProps> = ({
                 left: "50%",
                 top: "50%",
                 transform: "translate(-50%, -50%)",
+                borderColor: "var(--primary)",
+                opacity: 0.3,
               }}
             />
           ))}
 
           {/* Central magnetic orb */}
           <motion.div
-            className="relative w-24 h-24 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 flex items-center justify-center shadow-2xl"
+            className="relative w-24 h-24 rounded-full flex items-center justify-center shadow-2xl"
+            style={{
+              background:
+                "linear-gradient(90deg, var(--primary), var(--primary))",
+              boxShadow: "0 0 40px var(--primary)",
+            }}
             variants={orbVariants}
             animate="animate"
             transition={{
@@ -181,7 +198,8 @@ const ComingSoon: React.FC<ComingSoonProps> = ({
           >
             {/* Inner rotating elements */}
             <motion.div
-              className="absolute inset-2 rounded-full border-2 border-white/30"
+              className="absolute inset-2 rounded-full border-2"
+              style={{ borderColor: "rgba(255,255,255,0.2)" }}
               animate={{ rotate: 360 }}
               transition={{
                 duration: 3,
@@ -199,14 +217,20 @@ const ComingSoon: React.FC<ComingSoonProps> = ({
                 ease: "linear",
               }}
             >
-              <Rocket className="w-8 h-8 text-white" />
+              <Rocket className="w-8 h-8" style={{ color: "white" }} />
             </motion.div>
 
             {/* Orbiting mini elements */}
             {[Sparkles, Zap, Bell].map((Icon, i) => (
               <motion.div
                 key={i}
-                className="absolute w-6 h-6 rounded-full bg-white/20 flex items-center justify-center"
+                className="absolute w-6 h-6 rounded-full flex items-center justify-center"
+                style={{
+                  background: "rgba(31,82,86,0.2)",
+                  left: "50%",
+                  top: "50%",
+                  transformOrigin: `${-15 + i * 10}px ${-30 + i * 15}px`,
+                }}
                 animate={{
                   rotate: 360,
                 }}
@@ -216,13 +240,8 @@ const ComingSoon: React.FC<ComingSoonProps> = ({
                   ease: "linear",
                   delay: i * 2,
                 }}
-                style={{
-                  left: "50%",
-                  top: "50%",
-                  transformOrigin: `${-15 + i * 10}px ${-30 + i * 15}px`,
-                }}
               >
-                <Icon className="w-3 h-3 text-white" />
+                <Icon className="w-3 h-3" style={{ color: "white" }} />
               </motion.div>
             ))}
           </motion.div>
@@ -233,7 +252,7 @@ const ComingSoon: React.FC<ComingSoonProps> = ({
           {[...Array(6)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-1 h-1 bg-blue-400 rounded-full"
+              className="absolute w-1 h-1 rounded-full"
               animate={{
                 y: [0, -100, 0],
                 x: [0, i % 2 === 0 ? 50 : -50, 0],
@@ -249,6 +268,7 @@ const ComingSoon: React.FC<ComingSoonProps> = ({
               style={{
                 left: `${45 + i * 2}%`,
                 bottom: "20%",
+                background: "var(--primary)",
               }}
             />
           ))}

@@ -69,7 +69,7 @@ const NavCollapsible = React.forwardRef<
           className={cn(
             "flex justify-between items-center w-full text-foreground hover:text-primary",
             "transition-colors duration-200 ease-in-out",
-            "focus:outline-none focus:ring-2 focus:ring-primary/30 focus:ring-offset-1",
+            "focus:outline-none focus:ring-offset-1",
             "font-medium rounded-md",
             isLandingPage && "text-gray-200",
             variants[variant],

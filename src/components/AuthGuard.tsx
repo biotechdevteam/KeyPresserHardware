@@ -14,7 +14,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children, allowedRoles }) => {
   const { user } = useAuth();
   const router = useRouter();
 
-  console.log("Log User", JSON.stringify(user))
+  // console.log("Log User", JSON.stringify(user))
 
   useEffect(() => {
     if (!user || !allowedRoles.includes(user.user_type)) {

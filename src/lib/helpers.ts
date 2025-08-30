@@ -15,5 +15,5 @@ export const extractDomain = () => {
     // const { protocol, host } = window.location;
     // return `${protocol}//${host}`; // Extract the domain
   }
-  return "https://www.btverse.com"
+  return "https://www.biotecuniverse.org";
 };

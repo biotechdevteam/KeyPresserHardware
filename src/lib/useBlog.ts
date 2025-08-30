@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { createComment, ReactionType, reactToBlogPost, reactToComment } from "./utils/fetchUtils"; // Assuming you have these in fetchUtils
-import { handleApiError } from "./apiErrorHandler"; // Assuming handleApiError handles errors
+import { createComment, ReactionType, reactToBlogPost, reactToComment } from "./utils/fetchUtils";
+import { handleApiError } from "./apiErrorHandler";
 
 export const useBlog = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [response, setResponse] = useState<any>(null); // Adjust based on your response structure
+  const [response, setResponse] = useState<any>(null);
 
   // Handle comment creation on blog post
   const handleCreateComment = async (

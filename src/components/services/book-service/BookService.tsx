@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { CalendarIcon, CheckCircle, Loader2 } from "lucide-react";
+import { CalendarIcon, CheckCircle, Loader2, Shield } from "lucide-react";
 import useAuth from "@/lib/useAuth";
 import { useBookService } from "@/lib/useBookService";
 import { format } from "date-fns";
@@ -25,6 +25,7 @@ import {
 import { cn } from "@/lib/utils";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useRecaptcha, RECAPTCHA_ACTIONS } from "@/lib/useRecaptcha";
 
 interface BookServiceFormProps {
   serviceId: string;
@@ -42,6 +43,7 @@ const BookServiceForm: React.FC<BookServiceFormProps> = ({
   const { user } = useAuth();
   const { loading, error, success, response, handleBookService } =
     useBookService();
+  const { executeRecaptcha, isLoading: recaptchaLoading, error: recaptchaError } = useRecaptcha();
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [description, setDescription] = useState("");
   const [showCalendar, setShowCalendar] = useState(false);
@@ -56,21 +58,32 @@ const BookServiceForm: React.FC<BookServiceFormProps> = ({
       return;
     }
 
-    const formattedDate = format(date, "yyyy-MM-dd");
+    try {
+      // Execute reCAPTCHA
+      const recaptchaToken = await executeRecaptcha(RECAPTCHA_ACTIONS.BOOK_SERVICE);
+      
+      if (!recaptchaToken) {
+        throw new Error('reCAPTCHA verification failed. Please try again.');
+      }
 
-    // Call the hook's handleBookService function
-    await handleBookService(
-      user._id as string,
-      serviceId,
-      formattedDate,
-      description
-    );
+      const formattedDate = format(date, "yyyy-MM-dd");
 
-    // If booking is successful, call onComplete
-    if (response) {
-      setTimeout(() => {
-        onComplete();
-      }, 2000);
+      // Call the hook's handleBookService function
+      await handleBookService(
+        user._id as string,
+        serviceId,
+        formattedDate,
+        description
+      );
+
+      // If booking is successful, call onComplete
+      if (response) {
+        setTimeout(() => {
+          onComplete();
+        }, 2000);
+      }
+    } catch (error) {
+      console.error("Error during service booking:", error);
     }
   };
 
@@ -118,6 +131,14 @@ const BookServiceForm: React.FC<BookServiceFormProps> = ({
             <Alert className="border-green-200 bg-green-50 text-green-700 animate-in fade-in-50">
               <CheckCircle className="h-4 w-4 text-green-500" />
               <AlertDescription>{success}</AlertDescription>
+            </Alert>
+          )}
+
+          {/* reCAPTCHA Error */}
+          {recaptchaError && (
+            <Alert variant="error" className="animate-in fade-in-50">
+              <Shield className="h-4 w-4" />
+              <AlertDescription>{recaptchaError}</AlertDescription>
             </Alert>
           )}
 
@@ -175,6 +196,13 @@ const BookServiceForm: React.FC<BookServiceFormProps> = ({
               className="resize-none"
             />
           </div>
+          {/* reCAPTCHA Info */}
+          <div className="flex items-center justify-center pt-2">
+            <p className="text-xs text-muted-foreground flex items-center">
+              <Shield className="mr-1 h-3 w-3" />
+              This form is protected by reCAPTCHA
+            </p>
+          </div>
         </div>
 
         <DialogFooter className="flex space-x-2 justify-end border-t pt-4">
@@ -183,7 +211,7 @@ const BookServiceForm: React.FC<BookServiceFormProps> = ({
           </Button>
           <Button
             onClick={handleSubmit}
-            disabled={loading || !date}
+            disabled={loading || recaptchaLoading || !date}
             className="min-w-[100px]"
             size="sm"
           >

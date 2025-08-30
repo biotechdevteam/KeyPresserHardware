@@ -10,6 +10,9 @@ import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
 import localforage from "localforage";
 import Loader from "@/components/loader/Loader";
+import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
+
+const reCaptchaKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "";
 
 const ClientLayout: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -54,12 +57,10 @@ const ClientLayout: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Show your custom loader if any queries are fetching */}
-      {isFetching ? (
-          <Loader />
-      ) : (
-        children
-      )}
+      <GoogleReCaptchaProvider reCaptchaKey={reCaptchaKey}>
+        {/* Show your custom loader if any queries are fetching */}
+        {isFetching ? <Loader /> : children}
+      </GoogleReCaptchaProvider>
       {/* React Query Devtools */}
       <ReactQueryDevtools initialIsOpen={true} />
     </QueryClientProvider>

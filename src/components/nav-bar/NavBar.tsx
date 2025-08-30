@@ -268,7 +268,7 @@ const NavBar: React.FC<{ aboutData: About }> = ({ aboutData }) => {
                 aria-label="Open menu"
                 className="hover:bg-primary/10 transition-colors duration-300"
               >
-                <Menu className="h-6 w-6 text-foreground hover:text-primary focus:text-primary transition-all duration-300" />
+                <Menu className="h-6 w-6 text-primary-foreground hover:text-primary-foreground focus:text-primary-foreground transition-all duration-300" />
               </SheetTrigger>
               <SheetContent size="md" className="flex flex-col">
                 <SheetHeader className="mb-0">

@@ -11,7 +11,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Send, Loader2 } from "lucide-react";
+import { Send, Loader2, Shield } from "lucide-react";
+import { useRecaptcha, RECAPTCHA_ACTIONS } from "@/lib/useRecaptcha";
 
 interface ContactFormProps {
   onSuccess?: (data: ContactFormValues) => void;
@@ -22,6 +23,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess, className }) => {
   const t = useTranslations("contactform");
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [submitSuccess, setSubmitSuccess] = React.useState(false);
+  const { executeRecaptcha, isLoading: recaptchaLoading, error: recaptchaError } = useRecaptcha();
 
   const {
     register,
@@ -37,10 +39,23 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess, className }) => {
     try {
       setIsSubmitting(true);
 
+      // Execute reCAPTCHA
+      const recaptchaToken = await executeRecaptcha(RECAPTCHA_ACTIONS.CONTACT_FORM);
+      
+      if (!recaptchaToken) {
+        throw new Error('reCAPTCHA verification failed. Please try again.');
+      }
+
+      // Add reCAPTCHA token to form data
+      const formDataWithRecaptcha = {
+        ...data,
+        recaptchaToken,
+      };
+
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      console.log("Form Submitted", data);
+      console.log("Form Submitted", formDataWithRecaptcha);
       setSubmitSuccess(true);
 
       if (onSuccess) {
@@ -221,6 +236,26 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess, className }) => {
         )}
       </motion.div>
 
+      {/* reCAPTCHA Error */}
+      {recaptchaError && (
+        <motion.div className="sm:col-span-2" variants={itemVariants}>
+          <div className="p-3 bg-destructive/10 border border-destructive/20 rounded-md">
+            <p className="text-sm text-destructive flex items-center">
+              <Shield className="mr-2 h-4 w-4" />
+              {recaptchaError}
+            </p>
+          </div>
+        </motion.div>
+      )}
+
+      {/* reCAPTCHA Info */}
+      <motion.div className="sm:col-span-2" variants={itemVariants}>
+        <p className="text-xs text-muted-foreground flex items-center justify-center">
+          <Shield className="mr-1 h-3 w-3" />
+          This form is protected by reCAPTCHA
+        </p>
+      </motion.div>
+
       {/* Submit Button */}
       <motion.div className="sm:col-span-2" variants={itemVariants}>
         <Button
@@ -230,8 +265,8 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess, className }) => {
               ? "bg-green-500 hover:bg-green-600"
               : "bg-primary hover:bg-primary/90"
           }`}
-          disabled={isSubmitting}
-        >
+          disabled={isSubmitting || recaptchaLoading}
+          >
           {isSubmitting ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />

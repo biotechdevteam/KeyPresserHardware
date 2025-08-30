@@ -370,7 +370,9 @@ export const verifyPayment = async (
 
 // Fetch User Settings
 // Not yet implemented in the original code, but assuming it follows a similar pattern
-export const fetchUserSettings = async (userId: string): Promise<Settings[]> => {
+export const fetchUserSettings = async (
+  userId: string
+): Promise<Settings[]> => {
   try {
     const response = await fetchData(`/auth/settings/${userId}`, "GET");
     return response?.data;
@@ -381,12 +383,50 @@ export const fetchUserSettings = async (userId: string): Promise<Settings[]> => 
 };
 
 // Update User Settings
-export const updateUserSettings = async (settings: Settings): Promise<Settings> => {
+export const updateUserSettings = async (
+  settings: Settings
+): Promise<Settings> => {
   try {
     const response = await fetchData("/auth/update-settings", "PUT", settings);
     return response?.data;
   } catch (error) {
     console.error("Error during updateUserSettings:", error);
     throw new Error("Failed to update user settings.");
+  }
+};
+
+// Create Review/Feedback Function
+export const createReview = async (
+  userId: string,
+  type: "testimonial" | "review",
+  rating: number,
+  comment: string,
+  serviceId?: string,
+  eventId?: string
+): Promise<Feedback> => {
+  try {
+    const response = await fetchData("/feedback", "POST", {
+      userId,
+      type,
+      rating,
+      comment,
+      serviceId,
+      eventId,
+    });
+    return response?.data;
+  } catch (error) {
+    console.error("Error during createReview:", error);
+    throw error;
+  }
+};
+
+// Fetch Single Review/Feedback Function
+export const fetchReviewData = async (): Promise<Feedback[]> => {
+  try {
+    const response = await fetchData("/feedback", "GET");
+    return response?.data;
+  } catch (error) {
+    console.error("Error during fetchReview:", error);
+    throw new Error("Failed to fetch review.");
   }
 };

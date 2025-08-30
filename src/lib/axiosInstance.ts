@@ -4,7 +4,7 @@ import axios from "axios";
 const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 //const baseURL = "http://localhost:5000/api";
 
-console.log("Base URL:", baseURL);
+// console.log("Base URL:", baseURL);
 
 const axiosInstance = axios.create({
   baseURL: baseURL,
@@ -15,4 +15,4 @@ const axiosInstance = axios.create({
   },
 });
 
-export default axiosInstance
+export default axiosInstance;

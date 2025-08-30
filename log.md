@@ -11,3 +11,4 @@ merging branches and redeploying
 modified navbar
 updated profile and member management
 cleaning up
+reCAPTCHA 

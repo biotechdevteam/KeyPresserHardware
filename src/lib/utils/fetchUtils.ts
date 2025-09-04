@@ -71,6 +71,9 @@ export const fetchApplicant = async (userId: string): Promise<Applicant> => {
     const response = await fetchData(`/auth/applicant/${userId}`, "GET");
     return response?.data;
   } catch (error) {
+    if (error instanceof AxiosError && error.response?.status === 404) {
+      return null as any;
+    }
     console.error("Error during fetchApplicant:", error);
     throw new Error("Failed to fetch applicant.");
   }

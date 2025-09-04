@@ -120,7 +120,8 @@ const EditProfile: React.FC<EditProfileProps> = ({
       first_name: user.first_name,
       last_name: user.last_name,
       email: user.email,
-      profile_photo_url: profile.profile_photo_url as string,
+      profile_photo_url:
+        profile?.profile_photo_url ?? "/images/Profile_placeholder.png",
       ...(isMember && memberProfile
         ? {
             specialization: memberProfile.specialization || "",
@@ -141,7 +142,10 @@ const EditProfile: React.FC<EditProfileProps> = ({
       setValue("first_name", user.first_name);
       setValue("last_name", user.last_name);
       setValue("email", user.email);
-      setValue("profile_photo_url", profile.profile_photo_url as string);
+      setValue(
+        "profile_photo_url",
+        profile?.profile_photo_url ?? "/images/Profile_placeholder.png"
+      );
     }
 
     if (isMember && memberProfile) {
@@ -425,8 +429,9 @@ const EditProfile: React.FC<EditProfileProps> = ({
                           <Avatar className="h-32 w-32 sm:h-40 sm:w-40 cursor-pointer transition-all duration-300 group-hover:shadow-xl ring-2 ring-transparent group-hover:ring-primary/20">
                             <AvatarImage
                               src={
-                                watch("profile_photo_url") ||
-                                (profile.profile_photo_url as string)
+                                watch("profile_photo_url")?.trim()
+                                  ? watch("profile_photo_url")
+                                  : "/images/Profile_placeholder.png"
                               }
                               alt={`${user.first_name} ${user.last_name}`}
                             />
@@ -966,7 +971,9 @@ const EditProfile: React.FC<EditProfileProps> = ({
                   first_name: user.first_name,
                   last_name: user.last_name,
                   email: user.email,
-                  profile_photo_url: profile.profile_photo_url as string,
+                  profile_photo_url:
+                    profile?.profile_photo_url ??
+                    "/images/Profile_placeholder.png",
                   ...(isMember && memberProfile
                     ? {
                         specialization: memberProfile.specialization || "",
@@ -1003,9 +1010,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
       <div className="mt-4">
         <p className="text-xs text-muted-foreground">
           Contact support to change your email address at{" "}
-          <Link href="/profile/help">
-            Help & Support.
-          </Link>
+          <Link href="/profile/help">Help & Support.</Link>
         </p>
       </div>
     </div>

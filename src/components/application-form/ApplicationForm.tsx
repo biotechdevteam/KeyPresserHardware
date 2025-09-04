@@ -407,8 +407,9 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
                       <div className="flex flex-col items-center text-center">
                         {!imageUrl ? (
                           <>
-                            <div className="h-16 w-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                              <Upload className="h-8 w-8 text-primary" />
+                            <div className="h-24 w-24 bg-primary/10 rounded-full flex items-center justify-center mb-4 overflow-hidden border shadow-lg">
+                              {/* Circular placeholder */}
+                              <Upload className="h-10 w-10 text-primary" />
                             </div>
                             <span className="font-medium text-foreground group-hover:text-primary transition-colors">
                               Click to upload
@@ -419,13 +420,17 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
                           </>
                         ) : (
                           <>
-                            <div className="relative">
+                            <div className="relative h-24 w-24 rounded-full overflow-hidden border shadow-lg">
                               <Image
-                                src={imageUrl}
+                                src={
+                                  imageUrl && imageUrl.trim()
+                                    ? imageUrl
+                                    : "/images/Profile_placeholder.png"
+                                }
                                 alt="Profile Preview"
-                                width={100}
-                                height={100}
-                                className="rounded-full object-cover border-4 border-background shadow-lg"
+                                fill
+                                style={{ objectFit: "cover" }}
+                                className="rounded-full"
                               />
                               <Button
                                 type="button"
@@ -659,7 +664,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
                 </Label>
                 <p className="text-sm text-muted-foreground mb-4">
                   Tell us why you want to join and what you can contribute
-                  (minimum 100 words)
+                  (100 - 150 words)
                 </p>
               </div>
 

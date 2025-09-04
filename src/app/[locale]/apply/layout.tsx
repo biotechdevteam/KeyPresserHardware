@@ -1,6 +1,6 @@
 "use client";
 import Head from "next/head";
-import React, { ReactNode, useState, useEffect } from "react";
+import React, { ReactNode } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import authBG1 from "../../../../public/animations/agreement-animate.svg";
@@ -8,10 +8,6 @@ import authBG2 from "../../../../public/animations/personal-data-animate.svg";
 import authBG3 from "../../../../public/animations/new-team-members-animate.svg";
 import authBG4 from "../../../../public/animations/completed-animate.svg";
 import ProgressBar from "@/components/progress-bar/ProgressBar";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
-import localforage from "localforage";
-import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import { StepProvider, useStep } from "@/contexts/ApplicationStepContext";
 import Link from "next/link";
 
@@ -20,49 +16,16 @@ interface ApplyLayoutProps {
 }
 
 const ApplyLayout: React.FC<ApplyLayoutProps> = ({ children }) => {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setIsClient(true);
-    }
-  }, []);
-
-  const [queryClient] = useState(() => {
-    const client = new QueryClient({
-      defaultOptions: {
-        queries: {
-          staleTime: Infinity,
-        },
-      },
-    });
-
-    if (isClient) {
-      const persister = createAsyncStoragePersister({
-        storage: localforage,
-      });
-
-      persistQueryClient({
-        queryClient: client,
-        persister,
-        maxAge: 1000 * 60 * 60 * 24, // 1 day
-      });
-    }
-
-    return client;
-  });
-
   return (
-    <QueryClientProvider client={queryClient}>
-      <StepProvider>
-        <ApplyContent>{children}</ApplyContent>
-      </StepProvider>
-    </QueryClientProvider>
+    <StepProvider>
+      <ApplyContent>{children}</ApplyContent>
+    </StepProvider>
   );
 };
 
 const ApplyContent: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { currentStep, totalSteps = 4 } = useStep();
+  const associationEmail = process.env.NEXT_PUBLIC_BTVERSE_INFO_EMAIL;
 
   const getBackgroundImage = () => {
     switch (currentStep) {
@@ -97,7 +60,7 @@ const ApplyContent: React.FC<{ children: ReactNode }> = ({ children }) => {
   // Client-side metadata
   const title = "Apply to Join ~ BioTec Universe";
   const description =
-    "Apply to become a member of BioTec Universe, a biotechnology association in Cameroon, and join our community.";
+    "Apply to become a member of BioTec Universe, a bio-technology association in Cameroon, and join our community.";
 
   return (
     <>
@@ -235,9 +198,7 @@ const ApplyContent: React.FC<{ children: ReactNode }> = ({ children }) => {
           {/* Footer with help text - optional */}
           <div className="mt-8 pt-4 border-t border-border text-sm text-muted-foreground text-center">
             Need help? Contact{" "}
-            <Link href="mailto:support@biotecuniverse.org">
-              support@biotecuniverse.org
-            </Link>
+            <Link href={`mailto:${associationEmail}`}>{associationEmail}</Link>
           </div>
         </div>
       </div>

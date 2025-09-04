@@ -7,9 +7,13 @@ import { Member } from "@/types/memberSchema";
 import Loader from "@/components/loader/Loader";
 import Error from "@/app/[locale]/error";
 import ApplicationDetails from "@/components/profile/ApplicationDetails";
+import { Button } from "@/components/ui/button";
+import { useTransitionRouter } from "next-view-transitions";
+import { slideInOut } from "@/lib/utils/pageTransitions";
 
 export default function ApplicationPage() {
   const { user } = useAuth();
+  const router = useTransitionRouter();
 
   // Fetch application data using react-query
   const {
@@ -75,7 +79,25 @@ export default function ApplicationPage() {
   }
 
   if (!application) {
-    return <div>No application found. It seems you have not applied yet.</div>;
+    return (
+      <div className="flex flex-col items-center justify-center py-12">
+        <div className="text-lg font-semibold text-muted-foreground mb-2">
+          No application found
+        </div>
+        <div className="text-sm text-muted-foreground mb-4">
+          It seems you have not applied yet. Please fill out the application
+          form to get started.
+        </div>
+        <Button
+          className="mt-4"
+          onClick={() =>
+            router.push("/apply", { onTransitionReady: slideInOut })
+          }
+        >
+          Go to Application Form
+        </Button>
+      </div>
+    );
   }
 
   return (

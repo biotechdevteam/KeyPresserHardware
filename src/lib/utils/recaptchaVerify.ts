@@ -9,7 +9,7 @@ export interface RecaptchaVerifyResponse {
 }
 
 export async function verifyRecaptcha(token: string): Promise<RecaptchaVerifyResponse> {
-  const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+  const secretKey = process.env.NEXT_PUBLIC_RECAPTCHA_SECRET_KEY;
   
   if (!secretKey) {
     throw new Error('reCAPTCHA secret key not configured');

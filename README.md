@@ -2,7 +2,7 @@
 
 KeyPresser Hardware 是一款功能强大的自动化操作工具，通过 Arduino 硬件设备实现键盘模拟、鼠标操作等自动化功能。该项目由两部分组成：客户端应用程序和 Arduino 固件。
 
-![KeyPresser Hardware](https://s2.loli.net/2026/01/20/QOByl3wcRaSLkEX.png)
+![KeyPresser Hardware](https://s2.loli.net/2026/01/20/Sz59lBnyZCaHtAu.png)
 
 ## 项目组成
 

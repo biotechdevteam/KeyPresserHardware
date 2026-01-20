@@ -156,7 +156,8 @@ KeyPresserHardware::KeyPresserHardware(QWidget *parent) : QWidget(parent)
 
     //QPushButton *uploadSketchBtn = new QPushButton(QStringLiteral("烧录程序（首次运行时先点击此按钮）"));
     //layout->addWidget(uploadSketchBtn);
-    arduinoLabel = new QLabel(QStringLiteral("未连接"), this);
+    arduinoLabel = new QLabel(QStringLiteral("未连接到Arduino Leonardo"), this);
+    arduinoLabel->setStyleSheet("color: red;");
     layout->addWidget(arduinoLabel);
     QLabel *label = new QLabel(QStringLiteral("选择窗口:"), this);
     layout->addWidget(label);

